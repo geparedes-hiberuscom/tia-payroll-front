@@ -1,0 +1,152 @@
+{
+  "slice_id": "slice-4-consultas",
+  "slice_nombre": "👤 Consultas",
+  "moduleName": "consultas",
+  "fullPackage": "com.tia.consultas",
+  "target": "springboot",
+  "generatedAt": "2026-03-24T21:42:42.132Z",
+  "entities": [
+    {
+      "className": "AvPyProcesosinstanciasEntity",
+      "tableName": "av_py_procesosinstancias",
+      "sourceFile": "AvPyProcesosinstancias.java",
+      "sourceDescription": "Entidad de instancia de proceso de nómina usada como filtro de búsqueda",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvPyProcesosinstanciasEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvPyProcesosinstanciasRepository.java"
+    },
+    {
+      "className": "AvPyRubroslpreEntity",
+      "tableName": "av_py_rubroslpre",
+      "sourceFile": "AvPyRubroslpre.java",
+      "sourceDescription": "Entidad JPA de rubros de nómina pre-liquidación (cálculo pendiente)",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvPyRubroslpreEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvPyRubroslpreRepository.java"
+    },
+    {
+      "className": "AvPyRubroslhisEntity",
+      "tableName": "av_py_rubroslhis",
+      "sourceFile": "AvPyRubroslhis.java",
+      "sourceDescription": "Entidad JPA de rubros de nómina históricos (liquidación cerrada)",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvPyRubroslhisEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvPyRubroslhisRepository.java"
+    },
+    {
+      "className": "AvColaboradoreseEntity",
+      "tableName": "av_colaboradorese",
+      "sourceFile": "AvColaboradorese.java",
+      "sourceDescription": "Entidad de colaborador con datos personales y laborales",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvColaboradoreseEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvColaboradoreseRepository.java"
+    },
+    {
+      "className": "AvColaboradoreseEntity",
+      "tableName": "av_colaboradorese",
+      "sourceFile": "AvColaboradoresePK.java",
+      "sourceDescription": "Clave primaria compuesta de la entidad de colaborador",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvColaboradoreseEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvColaboradoreseRepository.java"
+    },
+    {
+      "className": "AvEmpresaEntity",
+      "tableName": "av_empresa",
+      "sourceFile": "AvEmpresa.java",
+      "sourceDescription": "Entidad de empresa para datos del encabezado del resumen",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvEmpresaEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvEmpresaRepository.java"
+    },
+    {
+      "className": "AvPyRubroEntity",
+      "tableName": "av_py_rubro",
+      "sourceFile": "AvPyRubro.java",
+      "sourceDescription": "Entidad de definición de rubro con clasificación asociada",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvPyRubroEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvPyRubroRepository.java"
+    },
+    {
+      "className": "AvPyClasesrubroEntity",
+      "tableName": "av_py_clasesrubro",
+      "sourceFile": "AvPyClasesrubro.java",
+      "sourceDescription": "Entidad de clasificación de rubro para filtros de reportes",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvPyClasesrubroEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvPyClasesrubroRepository.java"
+    },
+    {
+      "className": "AvPyComparativoNominaEntity",
+      "tableName": "av_py_comparativo_nomina",
+      "sourceFile": "AvPyComparativoNomina.java",
+      "sourceDescription": "Entidad con datos de comparativo de nóminas entre períodos",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvPyComparativoNominaEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvPyComparativoNominaRepository.java"
+    },
+    {
+      "className": "AvDimensioneslEntity",
+      "tableName": "av_dimensionesl",
+      "sourceFile": "AvDimensionesl.java",
+      "sourceDescription": "Entidad de localidad para filtros del comparativo",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvDimensioneslEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvDimensioneslRepository.java"
+    },
+    {
+      "className": "AvRegionEntity",
+      "tableName": "av_region",
+      "sourceFile": "AvRegion.java",
+      "sourceDescription": "Entidad de región para filtros del comparativo",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvRegionEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvRegionRepository.java"
+    },
+    {
+      "className": "AvZonaEntity",
+      "tableName": "av_zona",
+      "sourceFile": "AvZona.java",
+      "sourceDescription": "Entidad de zona para filtros del comparativo",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvZonaEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvZonaRepository.java"
+    },
+    {
+      "className": "AvCatalogosEntity",
+      "tableName": "av_catalogos",
+      "sourceFile": "AvCatalogos.java",
+      "sourceDescription": "Entidad de catálogo para tipos de consulta comparativa",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvCatalogosEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvCatalogosRepository.java"
+    },
+    {
+      "className": "AvCaPeriodostaEntity",
+      "tableName": "av_ca_periodosta",
+      "sourceFile": "AvCaPeriodosta.java",
+      "sourceDescription": "Entidad de período de control/asistencia para filtro temporal",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvCaPeriodostaEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvCaPeriodostaRepository.java"
+    },
+    {
+      "className": "AvCatalogoslEntity",
+      "tableName": "av_catalogosl",
+      "sourceFile": "AvCatalogosl.java",
+      "sourceDescription": "Entidad de sub-catálogo para clasificaciones de rol",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvCatalogoslEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvCatalogoslRepository.java"
+    },
+    {
+      "className": "AvEnEmpresaspatronalEntity",
+      "tableName": "av_en_empresaspatronal",
+      "sourceFile": "AvEnEmpresaspatronal.java",
+      "sourceDescription": "Entidad de empresa patronal asociada al colaborador",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvEnEmpresaspatronalEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvEnEmpresaspatronalRepository.java"
+    },
+    {
+      "className": "AvPyAcumuladoEntity",
+      "tableName": "av_py_acumulado",
+      "sourceFile": "AvPyAcumulado.java",
+      "sourceDescription": "Entidad JPA de acumulado de nómina con valor, período y clase de rubro",
+      "entityPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/entities/AvPyAcumuladoEntity.java",
+      "repositoryPath": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/repository/AvPyAcumuladoRepository.java"
+    }
+  ],
+  "vistas_bd": [],
+  "resumen": {
+    "total_entities": 17,
+    "total_repositories": 17,
+    "total_vistas_bd": 0
+  }
+}

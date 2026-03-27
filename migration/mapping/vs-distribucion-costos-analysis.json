@@ -1,0 +1,608 @@
+{
+  "functionalities": [
+    {
+      "id": "func-distribucion-costos",
+      "name": "Distribución de Costos",
+      "description": "Gestión de perfiles de distribución de costos por centro de costo: creación y mantenimiento de perfiles, asignación de colaboradores y localidades a perfiles, y configuración de la distribución contable por colaborador con plantillas contables, factores y dimensiones",
+      "screens": [
+        {
+          "name": "distribucionCostosList.zul",
+          "description": "Listado paginado de perfiles de distribución de costos con búsqueda por ID, parámetro y observaciones",
+          "actions": [
+            {
+              "name": "Listar perfiles de distribución",
+              "description": "Muestra la lista paginada de perfiles de distribución de costos con búsqueda y filtros",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista de perfiles de distribución de costos (extiende GFCBaseListCtrl<AvPyDistcosto>) con paginación, búsqueda por ID/parámetro/observaciones y evento de doble clic para abrir diálogo"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio que provee la consulta de perfiles de distribución de costos"
+                },
+                {
+                  "className": "AvPyDistcosto.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA que representa un perfil de distribución de costos"
+                },
+                {
+                  "className": "DistribCostosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de cada fila del listado de perfiles de distribución de costos"
+                }
+              ]
+            },
+            {
+              "name": "Buscar perfil de distribución",
+              "description": "Filtra la lista de perfiles por ID, parámetro u observaciones (SearchIdParametro, SearchParametro, SearchParametroObservaciones)",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Implementa métodos de búsqueda SearchIdParametro, SearchParametro y SearchParametroObservaciones usando JPASearchObject con filtros"
+                },
+                {
+                  "className": "AvPyDistcosto.java",
+                  "type": "Modelo",
+                  "description": "Entidad sobre la que se aplican los filtros de búsqueda"
+                }
+              ]
+            },
+            {
+              "name": "Abrir diálogo de perfil",
+              "description": "Abre el diálogo de creación/edición de un perfil de distribución al hacer doble clic o clic en botón Nuevo Perfil",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona eventos onDoubleClick y onClick$button_NewPerfil para abrir el diálogo de perfil de distribución"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "distribucionCostosDialog.zul",
+          "description": "Diálogo CRUD para crear, editar y eliminar perfiles de distribución de costos con asociación a empresa",
+          "actions": [
+            {
+              "name": "Mostrar diálogo de perfil",
+              "description": "Inicializa y muestra el diálogo de edición/creación de un perfil de distribución de costos",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de perfil de distribución (extiende GFCBaseCtrl) con métodos doShowDialog, doReadOnly y doWriteBeanToComponents para inicialización"
+                },
+                {
+                  "className": "AvPyDistcosto.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA del perfil de distribución que se edita en el diálogo"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa asociada al perfil de distribución"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener la lista de empresas para el combo del diálogo"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas en el diálogo"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio utilizado para CRUD (saveObject/updateObject/deleteObject) del perfil de distribución"
+                }
+              ]
+            },
+            {
+              "name": "Guardar perfil",
+              "description": "Guarda un perfil de distribución nuevo o actualiza uno existente",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta doSave con validación y escritura de datos del perfil a la entidad"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Persiste el perfil de distribución (saveObject / updateObject)"
+                },
+                {
+                  "className": "AvPyDistcosto.java",
+                  "type": "Modelo",
+                  "description": "Entidad del perfil a persistir"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar perfil",
+              "description": "Elimina un perfil de distribución de costos existente",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta lógica de eliminación del perfil desde el diálogo (onClick$btnDelete)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Elimina el perfil de distribución (deleteObject)"
+                }
+              ]
+            },
+            {
+              "name": "Editar / Nuevo / Cancelar",
+              "description": "Cambia el modo del diálogo entre lectura, edición y creación (onClick$btnEdit, onClick$btnNew, onClick$btnCancel, onClick$btnClose, doClear)",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona modos del formulario con doReadOnly, doWriteBeanToComponents, doClear y botones de control"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "distribucionCostosColabxPerfil.zul",
+          "description": "Listado de colaboradores asignados a un perfil de distribución de costos con funciones de agregar y eliminar asignaciones",
+          "actions": [
+            {
+              "name": "Listar colaboradores por perfil",
+              "description": "Muestra la lista de colaboradores asociados a un perfil de distribución seleccionado",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosColabxPerfilListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista de colaboradores por perfil (extiende GFCBaseListCtrl<AvPyDistcostoscxplV>) con doFillListbox para cargar datos y onCreate para inicialización"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar las asignaciones colaborador-perfil"
+                },
+                {
+                  "className": "AvPyDistcostoscxplV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA de la relación colaborador-perfil de distribución con datos denormalizados"
+                },
+                {
+                  "className": "AvPyDistcostoscxpl.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de la relación colaborador-perfil de distribución de costos"
+                },
+                {
+                  "className": "AvPyDistcosto.java",
+                  "type": "Modelo",
+                  "description": "Entidad del perfil de distribución padre"
+                },
+                {
+                  "className": "DistribCostosCxPListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de colaboradores por perfil"
+                }
+              ]
+            },
+            {
+              "name": "Agregar colaborador a perfil",
+              "description": "Abre un diálogo de búsqueda extendida de colaboradores para agregar uno al perfil seleccionado (onClick$btnNew)",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosColabxPerfilListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onClick$btnNew y doShowDialog para abrir el buscador de colaboradores"
+                },
+                {
+                  "className": "ColaboradoresExtendedSearchListBox.java",
+                  "type": "Componente",
+                  "description": "Diálogo de búsqueda extendida de colaboradores para selección"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador a asignar al perfil"
+                },
+                {
+                  "className": "AvColaboradoresV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista de colaboradores utilizada en la búsqueda extendida"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar colaborador del perfil",
+              "description": "Elimina la asignación de un colaborador al perfil de distribución seleccionado (onClick$btnDelete)",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosColabxPerfilListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la eliminación de la relación colaborador-perfil"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Elimina la entidad de relación (deleteObject)"
+                },
+                {
+                  "className": "AvPyDistcostoscxpl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de la relación a eliminar"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "distribucionCostosLocxPerfil.zul",
+          "description": "Listado de localidades asignadas a un perfil de distribución de costos con CRUD de localidades y selección de perfil",
+          "actions": [
+            {
+              "name": "Listar localidades por perfil",
+              "description": "Muestra la lista de localidades (dimensiones) asociadas al perfil seleccionado con llenado dinámico al seleccionar perfil",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosLocxPerfilListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de localidades por perfil (extiende GFCBaseListCtrl<AvPyDistcostoslxplV>) con doFillListbox, onSelect$lbox_DistribPerfil para carga dinámica"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar las relaciones localidad-perfil"
+                },
+                {
+                  "className": "AvPyDistcostoslxplV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA de la relación localidad-perfil con datos denormalizados"
+                },
+                {
+                  "className": "AvPyDistcostoslxpl.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de la relación localidad-perfil de distribución"
+                },
+                {
+                  "className": "AvPyDistcosto.java",
+                  "type": "Modelo",
+                  "description": "Entidad del perfil de distribución padre"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad asociada al perfil"
+                },
+                {
+                  "className": "AvDimensioneslListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de localidades por perfil"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar perfil de distribución",
+              "description": "Selecciona un perfil del listbox y carga las localidades asociadas (onSelect$lbox_DistribPerfil)",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosLocxPerfilListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona evento onSelect$lbox_DistribPerfil para recargar el listado de localidades del perfil seleccionado"
+                },
+                {
+                  "className": "AvPyDistcosto.java",
+                  "type": "Modelo",
+                  "description": "Entidad del perfil seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Crear / Editar localidad en perfil",
+              "description": "Agrega o edita una localidad asignada al perfil (onClick$btnNew, onClick$btnEdit, onClick$btnSave, doWriteBeanToComponents)",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosLocxPerfilListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona CRUD de la relación localidad-perfil con doWriteBeanToComponents, doResetValues y botones New/Edit/Save"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Persiste la relación localidad-perfil (saveObject/updateObject)"
+                },
+                {
+                  "className": "AvPyDistcostoslxpl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de la relación localidad-perfil a crear/editar"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de la localidad/dimensión a asignar"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar localidad del perfil",
+              "description": "Elimina la asignación de una localidad al perfil seleccionado (onClick$btnDelete)",
+              "relatedClasses": [
+                {
+                  "className": "DistribucionCostosLocxPerfilListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la eliminación de la relación localidad-perfil"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Elimina la entidad de relación (deleteObject)"
+                },
+                {
+                  "className": "AvPyDistcostoslxpl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de la relación a eliminar"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ColaboradoresDistribucion.zul",
+          "description": "Diálogo complejo para asignar y configurar la distribución contable de un colaborador: tipo de distribución, plantilla contable, factores, dimensiones/localidades y porcentajes de distribución",
+          "actions": [
+            {
+              "name": "Mostrar diálogo de distribución",
+              "description": "Inicializa el diálogo de distribución del colaborador con carga de catálogos, plantillas contables y tipo de distribución (onCreate, doShowDialog)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresDistribucionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de distribución por colaborador (extiende GFCBaseCtrl) con inicialización compleja: carga tipo de distribución, catálogos, plantillas contables y localidades"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar distribuciones, plantillas y colaboradores"
+                },
+                {
+                  "className": "AvColaboradoresV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista del colaborador al que se asigna la distribución"
+                },
+                {
+                  "className": "AvColaboradores.java",
+                  "type": "Modelo",
+                  "description": "Entidad principal de colaborador con datos laborales"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de datos extendidos del colaborador"
+                },
+                {
+                  "className": "AvColaboradoresePK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta de la entidad de colaborador extendido"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogos del sistema utilizada para tipo de distribución"
+                },
+                {
+                  "className": "AvCatalogosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener catálogos de tipos de distribución"
+                },
+                {
+                  "className": "CatalogosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del listbox de tipos de distribución (catálogos)"
+                },
+                {
+                  "className": "AvPyPlantillaContable.java",
+                  "type": "Modelo",
+                  "description": "Entidad de plantilla contable para la distribución de costos"
+                },
+                {
+                  "className": "AvPyPlantillaContableListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del listbox de plantillas contables"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar tipo de distribución",
+              "description": "Cambia el tipo de distribución en el combo y recarga la vista del detalle según la selección (onSelect$lbox_TipoDistribucion)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresDistribucionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_TipoDistribucion para cambiar configuración según tipo seleccionado"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad del tipo de distribución seleccionado en el combo"
+                }
+              ]
+            },
+            {
+              "name": "Agregar localidad a distribución",
+              "description": "Agrega una localidad/dimensión al detalle de distribución del colaborador con búsqueda extendida (onClick$btn_agregardistribucion, onClick$btnSearchLocalidadExtended)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresDistribucionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona la adición de localidades al detalle de distribución con búsqueda extendida y control de dimensiones"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad a agregar a la distribución"
+                },
+                {
+                  "className": "AvPyDistribucionDet.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle de distribución que vincula localidad con porcentaje"
+                },
+                {
+                  "className": "AvPyDistribucionDetPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta del detalle de distribución"
+                },
+                {
+                  "className": "DimensionesLLODistribListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de localidades/dimensiones en la lista de distribución"
+                }
+              ]
+            },
+            {
+              "name": "Quitar localidad de distribución",
+              "description": "Elimina una localidad/dimensión del detalle de distribución del colaborador (onClick$btn_QuitarLocalDistribucion, dodeletefactordistrib)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresDistribucionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la eliminación de la localidad del detalle de distribución y recalcula factores"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia JPA utilizado para eliminar detalles de distribución directamente"
+                },
+                {
+                  "className": "AvPyDistribucionDet.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle de distribución a eliminar"
+                }
+              ]
+            },
+            {
+              "name": "Aplicar distribución",
+              "description": "Calcula y aplica los factores de distribución de costos a las localidades asignadas (onClick$btnAplicarDistrib, doaplicardistrib)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresDistribucionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta doaplicardistrib para calcular y asignar los porcentajes/factores de distribución a cada localidad"
+                },
+                {
+                  "className": "AvPyDistribucionDet.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle de distribución con factor/porcentaje a calcular"
+                },
+                {
+                  "className": "AvPoFactor.java",
+                  "type": "Modelo",
+                  "description": "Entidad de factor utilizada en el cálculo de distribución"
+                },
+                {
+                  "className": "AvPoPuntajecalificacion.java",
+                  "type": "Modelo",
+                  "description": "Entidad de puntaje/calificación utilizada en los cálculos de distribución"
+                }
+              ]
+            },
+            {
+              "name": "Ver detalle de distribución",
+              "description": "Muestra el detalle de una distribución al hacer doble clic en una localidad (onLocalDistribucionDoubleClicked, showDetailView)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresDistribucionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onLocalDistribucionDoubleClicked y showDetailView para mostrar el detalle de una línea de distribución seleccionada"
+                },
+                {
+                  "className": "AvPyDistribucionDet.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle de distribución visualizada"
+                }
+              ]
+            },
+            {
+              "name": "Guardar distribución",
+              "description": "Persiste toda la configuración de distribución del colaborador (onClick$btnSave)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresDistribucionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la persistencia de la distribución principal y sus detalles con control transaccional"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Persiste las entidades de distribución (saveObject/updateObject)"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia JPA con control transaccional (begin/commit/rollback)"
+                },
+                {
+                  "className": "AvPyDistribucion.java",
+                  "type": "Modelo",
+                  "description": "Entidad principal de distribución del colaborador"
+                },
+                {
+                  "className": "AvPyDistribucionPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta de la distribución"
+                },
+                {
+                  "className": "AvPyDistribucionDet.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle de distribución (localidades y factores)"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro de nómina vinculado a la distribución"
+                },
+                {
+                  "className": "AvPyContabilizacionpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a datos de contabilización de nómina vinculados a la distribución"
+                },
+                {
+                  "className": "AvRegionesDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de regiones asociadas a las localidades de distribución"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa asociada al contexto de distribución"
+                },
+                {
+                  "className": "AvPoCargospostulan.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cargos que postulan, referencia laboral del colaborador en la distribución"
+                }
+              ]
+            },
+            {
+              "name": "Editar / Nuevo / Cancelar distribución",
+              "description": "Cambia el modo del diálogo de distribución entre lectura, edición y creación (onClick$btnEdit, onClick$btnClose, onClick$btnCancel, onClick$btn_cancelaredit, doReadOnly, doEdit, doNew, doClear)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresDistribucionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona los modos del formulario de distribución con doReadOnly, doEdit, doNew, doClear y botones de control de estado"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

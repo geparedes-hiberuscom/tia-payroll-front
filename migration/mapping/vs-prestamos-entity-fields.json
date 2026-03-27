@@ -1,0 +1,485 @@
+{
+  "_metadata": {
+    "generated_by": "migration-flow",
+    "source": "migration/plan/config.json",
+    "generated_at": "2026-03-19",
+    "vertical_slice": "vs-prestamos",
+    "description": "Complete entity field data for the Préstamos vertical slice (ZK → Spring Boot migration)"
+  },
+
+  "controllers": [
+    {
+      "controller": "RubrosPrestamoListCtrl",
+      "file": "gth/webui/RubrosPrestamoListCtrl.java",
+      "zul_screen": "rubrosPrestamoList.zul",
+      "main_entities": ["AvPyRubrosPrestamo"],
+      "renderer": "RubrosPrestamosListBoxListModelItemRenderer",
+      "notes": "List screen. Opens rubrosPrestamoBaja.zul dialog. Uses AvanteGTHService."
+    },
+    {
+      "controller": "RubrosPrestamoMainCtrl",
+      "file": "gth/webui/RubrosPrestamoMainCtrl.java",
+      "zul_screen": "rubrosPrestamoMain.zul",
+      "main_entities": ["AvPyRubrosPrestamo", "AvColaboradoresV"],
+      "notes": "Tab container. Holds prestamo, prestamoseleccionado, originalPrestamo fields."
+    },
+    {
+      "controller": "RubrosPrestamoDetailCtrl",
+      "file": "gth/webui/RubrosPrestamoDetailCtrl.java",
+      "zul_screen": "rubrosPrestamoDetail.zul",
+      "main_entities": ["AvPyRubrosPrestamo", "AvColaboradoresV", "AvColaboradorese", "AvCatalogos"],
+      "notes": "Detail/edit form. Uses AvCatalogos (catMotivoPrestamo) for loan reason dropdown."
+    },
+    {
+      "controller": "RubrosPrestamoCoMainCtrl",
+      "file": "gth/webui/RubrosPrestamoCoMainCtrl.java",
+      "zul_screen": "rubrosPrestamoCoDialog.zul",
+      "main_entities": ["AvPyRubrosPrestamo", "AvPyRubrosPrestamoCom", "AvPyRubrosPrestamoComV"],
+      "notes": "Commitments/compromises dialog. Uses view entity AvPyRubrosPrestamoComV for listing."
+    },
+    {
+      "controller": "RubrosPrestamoAbonosCtrl",
+      "file": "gth/webui/RubrosPrestamoAbonosCtrl.java",
+      "zul_screen": "rubrosPrestamoAbonos.zul",
+      "main_entities": ["AvPyRubrosPrestamo", "AvColaboradorese", "AvEmpresa", "AvPyRubrosPrestamoAbonos"],
+      "notes": "Loan payments screen. Uses AvPyRubrosPrestamoAbonos for new payments."
+    },
+    {
+      "controller": "RubrosPrestamoAbonosCancelCtrl",
+      "file": "gth/webui/RubrosPrestamoAbonosCancelCtrl.java",
+      "zul_screen": "rubrosPrestamoAbonosCancel.zul",
+      "main_entities": ["AvPyRubrosPrestamo", "AvColaboradorese", "AvPyRubrosPrestamoAbo"],
+      "notes": "Cancel/reverse payments. References setAvPyRubrosAbo method that creates AvPyRubrosPrestamoAbo."
+    },
+    {
+      "controller": "RubrosPrestamoBajaCtrl",
+      "file": "gth/webui/RubrosPrestamoBajaCtrl.java",
+      "zul_screen": "rubrosPrestamoBaja.zul",
+      "main_entities": ["AvPyRubrosPrestamo"],
+      "notes": "Deactivation/write-off screen."
+    },
+    {
+      "controller": "CuotasCompromDialogCtrl",
+      "file": "gth/webui/CuotasCompromDialogCtrl.java",
+      "zul_screen": "CuotasComprometDialog.zul",
+      "main_entities": ["AvEmpresa"],
+      "notes": "Committed installments dialog. Uses AvEmpresasDAOJpaImpl and AvPyRubroslHisDAOJpaImpl. Queries processes by company."
+    },
+    {
+      "controller": "SobregiroListCtrl",
+      "file": "gth/webui/SobregiroListCtrl.java",
+      "zul_screen": "sobregiro.zul",
+      "main_entities": ["AvPyRubrosSobregiroHi", "AvColaboradores", "AvDimensionesl"],
+      "renderer": "SobregiroListModelItemRenderer",
+      "notes": "Overdraft list. Opens sobregiroDialog.zul for editing."
+    },
+    {
+      "controller": "SobregiroDialogCtrl",
+      "file": "gth/webui/SobregiroDialogCtrl.java",
+      "zul_screen": "sobregiroDialog.zul",
+      "main_entities": ["AvPyRubrosSobregiroHi"],
+      "notes": "Overdraft detail/edit dialog."
+    }
+  ],
+
+  "entities": {
+    "AvPyRubrosPrestamo": {
+      "file": "backend/model/AvPyRubrosPrestamo.java",
+      "table": "av_py_rubros_prestamo",
+      "pk_strategy": "@Id + @GeneratedValue(SEQUENCE, generator='savcolaboradores')",
+      "fields": [
+        { "name": "iidrubroprestamo", "type": "Integer", "annotations": "@Id @GeneratedValue(strategy=SEQUENCE, generator='savcolaboradores')", "column": "iidrubroprestamo" },
+        { "name": "ictacte", "type": "Integer", "annotations": "(none)", "column": "ictacte" },
+        { "name": "avCatalogoMotivo", "type": "AvCatalogos", "annotations": "@ManyToOne @JoinColumn(name='imotivo_prestamo')", "column": "imotivo_prestamo", "relationship": "ManyToOne → AvCatalogos" },
+        { "name": "iidabono", "type": "int", "annotations": "(none)", "column": "iidabono" },
+        { "name": "botar", "type": "BigDecimal", "annotations": "(none)", "column": "botar" },
+        { "name": "ccontrol", "type": "String", "annotations": "(none)", "column": "ccontrol" },
+        { "name": "dcancelacion", "type": "Date", "annotations": "@Temporal(DATE)", "column": "dcancelacion" },
+        { "name": "dfiniciodsc", "type": "Date", "annotations": "@Temporal(DATE)", "column": "dfiniciodsc" },
+        { "name": "dfprestamo", "type": "Date", "annotations": "@Temporal(DATE)", "column": "dfprestamo" },
+        { "name": "horaingresoAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horaingreso_au')", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horamodificacion_au')", "column": "horamodificacion_au" },
+        { "name": "iidrubrosIdoUpl", "type": "int", "annotations": "@Column(name='iidrubros_ido_upl')", "column": "iidrubros_ido_upl" },
+        { "name": "inroalicuotas", "type": "int", "annotations": "(none)", "column": "inroalicuotas" },
+        { "name": "itcomporta", "type": "int", "annotations": "(none)", "column": "itcomporta" },
+        { "name": "mabono", "type": "BigDecimal", "annotations": "(none)", "column": "mabono" },
+        { "name": "malicuota", "type": "BigDecimal", "annotations": "(none)", "column": "malicuota" },
+        { "name": "mmonto", "type": "BigDecimal", "annotations": "(none)", "column": "mmonto" },
+        { "name": "msaldo", "type": "BigDecimal", "annotations": "(none)", "column": "msaldo" },
+        { "name": "mmontocompromisos", "type": "BigDecimal", "annotations": "(none)", "column": "mmontocompromisos" },
+        { "name": "usuarioingresoAu", "type": "String", "annotations": "@Column(name='usuarioingreso_au')", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "annotations": "@Column(name='usuariomodificacion_au')", "column": "usuariomodificacion_au" },
+        { "name": "vaccion", "type": "String", "annotations": "(none)", "column": "vaccion" },
+        { "name": "vdocreferencia", "type": "String", "annotations": "(none)", "column": "vdocreferencia" },
+        { "name": "vobservaciones", "type": "String", "annotations": "(none)", "column": "vobservaciones" },
+        { "name": "vstts", "type": "String", "annotations": "(none)", "column": "vstts" },
+        { "name": "icodigoprestamo", "type": "int", "annotations": "(none)", "column": "icodigoprestamo" },
+        { "name": "vmotivocancelacion", "type": "String", "annotations": "(none)", "column": "vmotivocancelacion" },
+        { "name": "avPyRubro", "type": "AvPyRubro", "annotations": "@ManyToOne @JoinColumn(name='vidrubro')", "column": "vidrubro", "relationship": "ManyToOne → AvPyRubro" },
+        { "name": "avColaboradorese", "type": "AvColaboradorese", "annotations": "@ManyToOne @JoinColumns({@JoinColumn(name='iidcolaborador', ref='iidcolaborador'), @JoinColumn(name='iidempresa', ref='iidempresa')})", "column": "iidcolaborador + iidempresa", "relationship": "ManyToOne → AvColaboradorese (composite FK)" },
+        { "name": "avPyRubrosPrestamoAbos", "type": "Set<AvPyRubrosPrestamoAbo>", "annotations": "@OneToMany(mappedBy='avPyRubrosPrestamo')", "column": "(inverse)", "relationship": "OneToMany → AvPyRubrosPrestamoAbo" },
+        { "name": "avPyRubrosPrestamoComs", "type": "Set<AvPyRubrosPrestamoCom>", "annotations": "@OneToMany(mappedBy='avPyRubrosPrestamo')", "column": "(inverse)", "relationship": "OneToMany → AvPyRubrosPrestamoCom" },
+        { "name": "cafectactatia", "type": "String", "annotations": "(none)", "column": "cafectactatia" },
+        { "name": "mvalorctatia", "type": "BigDecimal", "annotations": "(none)", "column": "mvalorctatia" },
+        { "name": "cafectactacia", "type": "String", "annotations": "(none)", "column": "cafectactacia" },
+        { "name": "mvalorctacia", "type": "BigDecimal", "annotations": "(none)", "column": "mvalorctacia" },
+        { "name": "cafectatransitoria", "type": "String", "annotations": "(none)", "column": "cafectatransitoria" },
+        { "name": "mvalortransitoria", "type": "BigDecimal", "annotations": "(none)", "column": "mvalortransitoria" },
+        { "name": "cxsobregiro", "type": "String", "annotations": "(none)", "column": "cxsobregiro" },
+        { "name": "cxrestructuracion", "type": "String", "annotations": "(none)", "column": "cxrestructuracion" },
+        { "name": "avPyCargaCreditia", "type": "AvPyCargacreditia", "annotations": "@ManyToOne @JoinColumn(name='iidcargacreditia')", "column": "iidcargacreditia", "relationship": "ManyToOne → AvPyCargacreditia" },
+        { "name": "avPyColaboradoresSolValDif", "type": "AvPyColaboradoressolValdif", "annotations": "@ManyToOne @JoinColumn(name='iidcolabsolvaldif')", "column": "iidcolabsolvaldif", "relationship": "ManyToOne → AvPyColaboradoressolValdif" }
+      ]
+    },
+
+    "AvPyRubrosPrestamoAbo": {
+      "file": "backend/model/AvPyRubrosPrestamoAbo.java",
+      "table": "av_py_rubros_prestamo_abo",
+      "pk_strategy": "@Id (simple, no GeneratedValue)",
+      "fields": [
+        { "name": "iidabonoprestamol", "type": "int", "annotations": "@Id", "column": "iidabonoprestamol" },
+        { "name": "horaingresoAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horaingreso_au')", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horamodificacion_au')", "column": "horamodificacion_au" },
+        { "name": "iidcolaborador", "type": "int", "annotations": "(none)", "column": "iidcolaborador" },
+        { "name": "iidejecproceso", "type": "int", "annotations": "(none)", "column": "iidejecproceso" },
+        { "name": "mabono", "type": "BigDecimal", "annotations": "(none)", "column": "mabono" },
+        { "name": "mabonoline", "type": "BigDecimal", "annotations": "(none)", "column": "mabonoline" },
+        { "name": "malicuota", "type": "BigDecimal", "annotations": "(none)", "column": "malicuota" },
+        { "name": "mmonto", "type": "BigDecimal", "annotations": "(none)", "column": "mmonto" },
+        { "name": "msaldo", "type": "BigDecimal", "annotations": "(none)", "column": "msaldo" },
+        { "name": "usuarioingresoAu", "type": "String", "annotations": "@Column(name='usuarioingreso_au')", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "annotations": "@Column(name='usuariomodificacion_au')", "column": "usuariomodificacion_au" },
+        { "name": "vidrubro", "type": "String", "annotations": "(none)", "column": "vidrubro" },
+        { "name": "vobservaciones", "type": "String", "annotations": "(none)", "column": "vobservaciones" },
+        { "name": "avPyRubrosPrestamo", "type": "AvPyRubrosPrestamo", "annotations": "@ManyToOne @JoinColumn(name='iidrubroprestamo')", "column": "iidrubroprestamo", "relationship": "ManyToOne → AvPyRubrosPrestamo" }
+      ]
+    },
+
+    "AvPyRubrosPrestamoAbonos": {
+      "file": "backend/model/AvPyRubrosPrestamoAbonos.java",
+      "table": "av_py_rubros_prestamo_abonos",
+      "pk_strategy": "@Id + @GeneratedValue(SEQUENCE, generator='savcolaboradores')",
+      "fields": [
+        { "name": "iidrubroprestamoabonos", "type": "int", "annotations": "@Id @GeneratedValue(strategy=SEQUENCE, generator='savcolaboradores')", "column": "iidrubroprestamoabonos" },
+        { "name": "avPyRubrosPrestamo", "type": "AvPyRubrosPrestamo", "annotations": "@ManyToOne @JoinColumn(name='iidrubroprestamo')", "column": "iidrubroprestamo", "relationship": "ManyToOne → AvPyRubrosPrestamo" },
+        { "name": "mmontoabono", "type": "BigDecimal", "annotations": "(none)", "column": "mmontoabono" },
+        { "name": "malicuota", "type": "BigDecimal", "annotations": "(none)", "column": "malicuota" },
+        { "name": "mmontocompromisos", "type": "BigDecimal", "annotations": "(none)", "column": "mmontocompromisos" },
+        { "name": "iformapago", "type": "int", "annotations": "(none)", "column": "iformapago" },
+        { "name": "msaldoprestamo", "type": "BigDecimal", "annotations": "(none)", "column": "msaldoprestamo" },
+        { "name": "iflagabono", "type": "int", "annotations": "(none)", "column": "iflagabono" },
+        { "name": "dfechainiciodsctoprestamo", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='dfechainiciodsctoprestamo')", "column": "dfechainiciodsctoprestamo" },
+        { "name": "inumerocuotas", "type": "int", "annotations": "(none)", "column": "inumerocuotas" },
+        { "name": "vstts", "type": "String", "annotations": "(none)", "column": "vstts" },
+        { "name": "horaingresoAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horaingreso_au')", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horamodificacion_au')", "column": "horamodificacion_au" },
+        { "name": "usuarioingresoAu", "type": "String", "annotations": "@Column(name='usuarioingreso_au')", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "annotations": "@Column(name='usuariomodificacion_au')", "column": "usuariomodificacion_au" },
+        { "name": "usuariocaja", "type": "String", "annotations": "(none)", "column": "usuariocaja" },
+        { "name": "dfechacaja", "type": "Date", "annotations": "@Temporal(TIMESTAMP) @Column(name='dfechacaja')", "column": "dfechacaja" }
+      ]
+    },
+
+    "AvPyRubrosPrestamoCom": {
+      "file": "backend/model/AvPyRubrosPrestamoCom.java",
+      "table": "av_py_rubros_prestamo_com",
+      "pk_strategy": "@Id + @GeneratedValue(SEQUENCE, generator='savcolaboradores')",
+      "fields": [
+        { "name": "iidrubroprestamocol", "type": "Integer", "annotations": "@Id @GeneratedValue(strategy=SEQUENCE, generator='savcolaboradores')", "column": "iidrubroprestamocol" },
+        { "name": "dfdesde", "type": "Date", "annotations": "@Temporal(DATE)", "column": "dfdesde" },
+        { "name": "dfhasta", "type": "Date", "annotations": "@Temporal(DATE)", "column": "dfhasta" },
+        { "name": "horaingresoAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horaingreso_au')", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horamodificacion_au')", "column": "horamodificacion_au" },
+        { "name": "iidproceso", "type": "int", "annotations": "(none)", "column": "iidproceso" },
+        { "name": "mmonto", "type": "BigDecimal", "annotations": "(none)", "column": "mmonto" },
+        { "name": "usuarioingresoAu", "type": "String", "annotations": "@Column(name='usuarioingreso_au')", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "annotations": "@Column(name='usuariomodificacion_au')", "column": "usuariomodificacion_au" },
+        { "name": "vstts", "type": "String", "annotations": "(none)", "column": "vstts" },
+        { "name": "creintegro", "type": "String", "annotations": "(none)", "column": "creintegro" },
+        { "name": "careintegro", "type": "String", "annotations": "(none)", "column": "careintegro" },
+        { "name": "cflagedito", "type": "String", "annotations": "(none)", "column": "cflagedito" },
+        { "name": "avPyRubrosPrestamo", "type": "AvPyRubrosPrestamo", "annotations": "@ManyToOne @JoinColumn(name='iidrubroprestamo')", "column": "iidrubroprestamo", "relationship": "ManyToOne → AvPyRubrosPrestamo" }
+      ]
+    },
+
+    "AvPyRubrosPrestamoComTmp": {
+      "file": "backend/model/AvPyRubrosPrestamoComTmp.java",
+      "table": "av_py_rubros_prestamo_com_tmp",
+      "pk_strategy": "@Id + @GeneratedValue(SEQUENCE, generator='savcolaboradores')",
+      "fields": [
+        { "name": "iidrubroprestamocol", "type": "int", "annotations": "@Id @GeneratedValue(strategy=SEQUENCE, generator='savcolaboradores')", "column": "iidrubroprestamocol" },
+        { "name": "avPyRubrosPrestamo", "type": "AvPyRubrosPrestamo", "annotations": "@ManyToOne @JoinColumn(name='iidrubroprestamo')", "column": "iidrubroprestamo", "relationship": "ManyToOne → AvPyRubrosPrestamo" },
+        { "name": "avPyRubrosPrestamoDetAbono", "type": "AvPyRubrosPrestamoDetAbono", "annotations": "@ManyToOne @JoinColumn(name='iidrubroprestamodetabono')", "column": "iidrubroprestamodetabono", "relationship": "ManyToOne → AvPyRubrosPrestamoDetAbono" },
+        { "name": "iidproceso", "type": "int", "annotations": "(none)", "column": "iidproceso" },
+        { "name": "mmontodsctomensual", "type": "BigDecimal", "annotations": "(none)", "column": "mmontodsctomensual" },
+        { "name": "cflagedito", "type": "String", "annotations": "(none)", "column": "cflagedito" },
+        { "name": "careintegro", "type": "String", "annotations": "(none)", "column": "careintegro" },
+        { "name": "creintegro", "type": "String", "annotations": "(none)", "column": "creintegro" },
+        { "name": "vstts", "type": "String", "annotations": "(none)", "column": "vstts" },
+        { "name": "dfdsctomensual", "type": "Date", "annotations": "@Temporal(DATE)", "column": "dfdsctomensual" },
+        { "name": "horaingresoAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horaingreso_au')", "column": "horaingreso_au" },
+        { "name": "usuarioingresoAu", "type": "String", "annotations": "@Column(name='usuarioingreso_au')", "column": "usuarioingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horamodificacion_au')", "column": "horamodificacion_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "annotations": "@Column(name='usuariomodificacion_au')", "column": "usuariomodificacion_au" }
+      ]
+    },
+
+    "AvPyRubrosPrestamoDetAbono": {
+      "file": "backend/model/AvPyRubrosPrestamoDetAbono.java",
+      "table": "av_py_rubros_prestamo_det_abono",
+      "pk_strategy": "@Id + @GeneratedValue(SEQUENCE, generator='savcolaboradores')",
+      "fields": [
+        { "name": "iidrubroprestamodetabono", "type": "int", "annotations": "@Id @GeneratedValue(strategy=SEQUENCE, generator='savcolaboradores')", "column": "iidrubroprestamodetabono" },
+        { "name": "avPyRubrosPrestamoAbonos", "type": "AvPyRubrosPrestamoAbonos", "annotations": "@ManyToOne @JoinColumn(name='iidrubroprestamoabonos')", "column": "iidrubroprestamoabonos", "relationship": "ManyToOne → AvPyRubrosPrestamoAbonos" },
+        { "name": "avPyRubrosPrestamoCom", "type": "AvPyRubrosPrestamoCom", "annotations": "@ManyToOne @JoinColumn(name='iidrubroprestamocol')", "column": "iidrubroprestamocol", "relationship": "ManyToOne → AvPyRubrosPrestamoCom" },
+        { "name": "itipoabono", "type": "int", "annotations": "(none)", "column": "itipoabono" },
+        { "name": "mmontoabono", "type": "BigDecimal", "annotations": "(none)", "column": "mmontoabono" },
+        { "name": "vstts", "type": "String", "annotations": "(none)", "column": "vstts" },
+        { "name": "horaingresoAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horaingreso_au')", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horamodificacion_au')", "column": "horamodificacion_au" },
+        { "name": "usuarioingresoAu", "type": "String", "annotations": "@Column(name='usuarioingreso_au')", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "annotations": "@Column(name='usuariomodificacion_au')", "column": "usuariomodificacion_au" }
+      ]
+    },
+
+    "AvPyRubrosPrestamodimension": {
+      "file": "backend/model/AvPyRubrosPrestamodimension.java",
+      "table": "av_py_rubros_prestamodimension",
+      "pk_strategy": "@Id (simple, no GeneratedValue)",
+      "fields": [
+        { "name": "iidprestamodimension", "type": "int", "annotations": "@Id", "column": "iidprestamodimension" },
+        { "name": "ctipodimension", "type": "String", "annotations": "(none)", "column": "ctipodimension" },
+        { "name": "horaingresoAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horaingreso_au')", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horamodificacion_au')", "column": "horamodificacion_au" },
+        { "name": "iordenaprobacion", "type": "int", "annotations": "(none)", "column": "iordenaprobacion" },
+        { "name": "ioficina_deposito", "type": "int", "annotations": "(none)", "column": "ioficina_deposito" },
+        { "name": "usuarioingresoAu", "type": "String", "annotations": "@Column(name='usuarioingreso_au')", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "annotations": "@Column(name='usuariomodificacion_au')", "column": "usuariomodificacion_au" },
+        { "name": "avPyRubro", "type": "AvPyRubro", "annotations": "@ManyToOne @JoinColumn(name='vidrubro')", "column": "vidrubro", "relationship": "ManyToOne → AvPyRubro" },
+        { "name": "avDimensionesl", "type": "AvDimensionesl", "annotations": "@ManyToOne @JoinColumn(name='iiddimensionesl')", "column": "iiddimensionesl", "relationship": "ManyToOne → AvDimensionesl" },
+        { "name": "avEmpresa", "type": "AvEmpresa", "annotations": "@ManyToOne @JoinColumn(name='iidempresa')", "column": "iidempresa", "relationship": "ManyToOne → AvEmpresa" }
+      ]
+    },
+
+    "AvPyRubrosPrestamoAcre": {
+      "file": "backend/model/AvPyRubrosPrestamoAcre.java",
+      "table": "av_py_rubros_prestamo_acre",
+      "pk_strategy": "@Id + @GeneratedValue(SEQUENCE, generator='savcolaboradores')",
+      "fields": [
+        { "name": "iidrubroprestamoacre", "type": "int", "annotations": "@Id @GeneratedValue(strategy=SEQUENCE, generator='savcolaboradores')", "column": "iidrubroprestamoacre" },
+        { "name": "avPyRubrosPrestamo", "type": "AvPyRubrosPrestamo", "annotations": "@ManyToOne @JoinColumn(name='iidrubroprestamo')", "column": "iidrubroprestamo", "relationship": "ManyToOne → AvPyRubrosPrestamo" },
+        { "name": "iidacreditacion", "type": "int", "annotations": "(none)", "column": "iidacreditacion" },
+        { "name": "acremonto", "type": "BigDecimal", "annotations": "(none)", "column": "acremonto" },
+        { "name": "acrefecha", "type": "Date", "annotations": "@Temporal(DATE)", "column": "acrefecha" },
+        { "name": "acreusuarioingreso", "type": "String", "annotations": "(none)", "column": "acreusuarioingreso" },
+        { "name": "acrebeneficiariocheque", "type": "String", "annotations": "(none)", "column": "acrebeneficiariocheque" },
+        { "name": "cestadocaja", "type": "String", "annotations": "(none)", "column": "cestadocaja" },
+        { "name": "fechapagocaja", "type": "Date", "annotations": "@Temporal(TIMESTAMP) @Column(name='fechapagocaja')", "column": "fechapagocaja" },
+        { "name": "usuariocaja", "type": "String", "annotations": "(none)", "column": "usuariocaja" }
+      ]
+    },
+
+    "AvPyRubrosSobregiroHi": {
+      "file": "backend/model/AvPyRubrosSobregiroHi.java",
+      "table": "av_py_rubros_sobregiro_his",
+      "pk_strategy": "@EmbeddedId (AvPyRubrosSobregiroHiPK)",
+      "fields": [
+        { "name": "id", "type": "AvPyRubrosSobregiroHiPK", "annotations": "@EmbeddedId", "column": "(composite PK: iidejecproceso + iidcolaborador + vidrubro)", "relationship": "Embedded PK" },
+        { "name": "iidejecproceso", "type": "BigDecimal", "annotations": "(none - duplicated from PK)", "column": "iidejecproceso" },
+        { "name": "iidcolaborador", "type": "Integer", "annotations": "(none - duplicated from PK)", "column": "iidcolaborador" },
+        { "name": "vidrubro", "type": "String", "annotations": "(none - duplicated from PK)", "column": "vidrubro" },
+        { "name": "horaingresoAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horaingreso_au')", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horamodificacion_au')", "column": "horamodificacion_au" },
+        { "name": "mvalor02", "type": "BigDecimal", "annotations": "@Column(precision=10, scale=2)", "column": "mvalor02" },
+        { "name": "mvlrout01", "type": "BigDecimal", "annotations": "@Column(precision=10, scale=2)", "column": "mvlrout01" },
+        { "name": "usuarioingresoAu", "type": "String", "annotations": "@Column(name='usuarioingreso_au', length=20)", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "annotations": "@Column(name='usuariomodificacion_au', length=20)", "column": "usuariomodificacion_au" }
+      ]
+    },
+
+    "AvPyRubrosPrestamoComV": {
+      "file": "backend/model/views/AvPyRubrosPrestamoComV.java",
+      "table": "av_py_rubros_prestamo_com_v",
+      "type": "VIEW_ENTITY",
+      "pk_strategy": "@Id (simple, mapped to iidrubroprestamocol)",
+      "fields": [
+        { "name": "dfdesde", "type": "Date", "annotations": "@Temporal(DATE)", "column": "dfdesde" },
+        { "name": "dfhasta", "type": "Date", "annotations": "@Temporal(DATE)", "column": "dfhasta" },
+        { "name": "horaingresoAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horaingreso_au')", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "annotations": "@Temporal(DATE) @Column(name='horamodificacion_au')", "column": "horamodificacion_au" },
+        { "name": "iidproceso", "type": "int", "annotations": "(none)", "column": "iidproceso" },
+        { "name": "iidrubroprestamo", "type": "int", "annotations": "(none)", "column": "iidrubroprestamo" },
+        { "name": "iidrubroprestamocol", "type": "int", "annotations": "@Id", "column": "iidrubroprestamocol" },
+        { "name": "mmonto", "type": "BigDecimal", "annotations": "(none)", "column": "mmonto" },
+        { "name": "proceso", "type": "String", "annotations": "(none)", "column": "proceso" },
+        { "name": "usuarioingresoAu", "type": "String", "annotations": "@Column(name='usuarioingreso_au')", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "annotations": "@Column(name='usuariomodificacion_au')", "column": "usuariomodificacion_au" }
+      ]
+    }
+  },
+
+  "composite_pk_classes": {
+    "AvPyRubrosSobregiroHiPK": {
+      "file": "backend/model/AvPyRubrosSobregiroHiPK.java",
+      "annotation": "@Embeddable",
+      "used_by": "AvPyRubrosSobregiroHi (@EmbeddedId)",
+      "fields": [
+        { "name": "iidejecproceso", "type": "long", "annotations": "@Column(unique=true, nullable=false, precision=10)", "column": "iidejecproceso" },
+        { "name": "iidcolaborador", "type": "int", "annotations": "@Column(unique=true, nullable=false)", "column": "iidcolaborador" },
+        { "name": "vidrubro", "type": "String", "annotations": "@Column(unique=true, nullable=false, length=100)", "column": "vidrubro" }
+      ]
+    }
+  },
+
+  "renderers": {
+    "RubrosPrestamosListBoxListModelItemRenderer": {
+      "file": "gth/webui/model/RubrosPrestamosListBoxListModelItemRenderer.java",
+      "entity": "AvPyRubrosPrestamo",
+      "columns_displayed": [
+        { "label": "Fecha Préstamo", "field": "dfprestamo", "format": "DateFormat" },
+        { "label": "Rubro", "field": "avPyRubro.vrubro", "format": "String" },
+        { "label": "Estado", "field": "vstts", "format": "String" },
+        { "label": "Acción", "field": "vaccion", "format": "String" },
+        { "label": "Nro. Alícuotas", "field": "inroalicuotas", "format": "int→String" },
+        { "label": "Monto", "field": "mmonto", "format": "BigDecimal→String" },
+        { "label": "Abono", "field": "mabono", "format": "BigDecimal→String" },
+        { "label": "Saldo", "field": "msaldo", "format": "BigDecimal→String" },
+        { "label": "F.Inicio Descuento", "field": "dfiniciodsc", "format": "DateFormat" },
+        { "label": "Doc.Referencia", "field": "vdocreferencia", "format": "String" },
+        { "label": "Usuario Ingreso", "field": "usuarioingresoAu", "format": "String" }
+      ],
+      "row_colors": {
+        "A_active": "black",
+        "I_inactive": "blue",
+        "RE_restructured": "green",
+        "C_cancelled": "red"
+      },
+      "double_click_event": "onDoubleClickedRubrosPrestamoItem"
+    },
+
+    "SobregiroListModelItemRenderer": {
+      "file": "gth/webui/model/SobregiroListModelItemRenderer.java",
+      "entity": "AvPyRubrosSobregiroHi",
+      "columns_displayed": [
+        { "label": "ID Ejec. Proceso", "field": "iidejecproceso", "format": "BigDecimal→String" },
+        { "label": "ID Colaborador", "field": "iidcolaborador", "format": "Integer→String" },
+        { "label": "ID Rubro", "field": "vidrubro", "format": "String" },
+        { "label": "Valor Out 01", "field": "mvlrout01", "format": "BigDecimal→String" }
+      ],
+      "double_click_event": "onSobregiroListItemDoubleClicked"
+    },
+
+    "DetalleAbonosListModelItemRenderer": {
+      "file": "gth/webui/model/DetalleAbonosListModelItemRenderer.java",
+      "entity": "AvPyRubrosPrestamoAbo",
+      "columns_displayed": [
+        { "label": "Fecha", "field": "horaingresoAu", "format": "DateFormat" },
+        { "label": "Monto Abono", "field": "mabono", "format": "BigDecimal→String" }
+      ]
+    },
+
+    "DetalleAbonoListModelItemRenderer": {
+      "file": "gth/webui/model/DetalleAbonoListModelItemRenderer.java",
+      "entity": "AvPyRubrosPrestamoDetAbono",
+      "columns_displayed_by_itipoabono": {
+        "0_cuotas_mensuales": [
+          { "label": "Tipo", "value": "'Abono por Cuotas Mensuales'" },
+          { "label": "Fecha", "value": "''" },
+          { "label": "Monto", "field": "mmontoabono", "format": "float" }
+        ],
+        "1_proceso_nomina": [
+          { "label": "Tipo", "value": "SecRight.rigName OR 'Nomina'" },
+          { "label": "Fecha", "field": "avPyRubrosPrestamoCom.dfdesde", "format": "DateFormat" },
+          { "label": "Monto", "field": "mmontoabono", "format": "float" }
+        ],
+        "2_mixed": [
+          { "label": "Tipo", "value": "SecRight.rigName OR 'Nomina' OR 'Abono por Cuotas Mensuales'" },
+          { "label": "Fecha", "field": "avPyRubrosPrestamoCom.dfdesde (if present)", "format": "DateFormat" },
+          { "label": "Monto", "field": "mmontoabono", "format": "float" }
+        ]
+      },
+      "notes": "Uses SecRight via JPAQuerys.getItemsSRightiidpyprocesos to resolve process name from iidproceso=90473 is 'Nomina'"
+    },
+
+    "DetalleCuotaMensualListModelItemRenderer": {
+      "file": "gth/webui/model/DetalleCuotaMensualListModelItemRenderer.java",
+      "entity": "AvPyRubrosPrestamoCom",
+      "columns_displayed": [
+        { "label": "Fecha Desde", "field": "dfdesde", "format": "DateFormat" },
+        { "label": "Monto", "field": "mmonto", "format": "BigDecimal→String" }
+      ],
+      "row_colors": {
+        "C_cancelled_no_reintegro": "red (tooltip: 'Cancelado')",
+        "C_cancelled_reintegro_S": "blue (tooltip: 'Cancelado por Reintegro')",
+        "E_eliminated": "orange (tooltip: 'Eliminado')",
+        "R_restructured": "green (tooltip: 'Reestructurado')",
+        "D_baja": "blue (tooltip: 'Dado de Baja')"
+      },
+      "double_click_event": "onDoubleClickDetalleDescuentoMensual (only for active records)"
+    },
+
+    "PrestamoCpDropDowmItemRenderer": {
+      "file": "gth/webui/model/PrestamoCpDropDowmItemRenderer.java",
+      "entity": "SecRight",
+      "columns_displayed": [
+        { "label": "Proceso", "field": "rigName", "format": "String" }
+      ],
+      "notes": "Dropdown renderer for selecting processes. Uses SecRight (not a Prestamo entity)."
+    }
+  },
+
+  "entity_relationship_graph": {
+    "AvPyRubrosPrestamo": {
+      "parent_of": ["AvPyRubrosPrestamoAbo (OneToMany)", "AvPyRubrosPrestamoCom (OneToMany)"],
+      "referenced_by": ["AvPyRubrosPrestamoAbonos", "AvPyRubrosPrestamoAcre", "AvPyRubrosPrestamoComTmp"],
+      "references": ["AvColaboradorese (composite FK)", "AvPyRubro", "AvCatalogos (motivo)", "AvPyCargacreditia", "AvPyColaboradoressolValdif"]
+    },
+    "AvPyRubrosPrestamoCom": {
+      "child_of": "AvPyRubrosPrestamo",
+      "referenced_by": ["AvPyRubrosPrestamoDetAbono", "AvPyRubrosPrestamoComTmp (indirectly)"],
+      "view_entity": "AvPyRubrosPrestamoComV"
+    },
+    "AvPyRubrosPrestamoAbonos": {
+      "child_of": "AvPyRubrosPrestamo",
+      "parent_of": ["AvPyRubrosPrestamoDetAbono"]
+    },
+    "AvPyRubrosPrestamoDetAbono": {
+      "child_of": ["AvPyRubrosPrestamoAbonos", "AvPyRubrosPrestamoCom"],
+      "referenced_by": ["AvPyRubrosPrestamoComTmp"]
+    },
+    "AvPyRubrosPrestamoComTmp": {
+      "references": ["AvPyRubrosPrestamo", "AvPyRubrosPrestamoDetAbono"],
+      "notes": "Temporary table for commitment processing"
+    },
+    "AvPyRubrosSobregiroHi": {
+      "pk_class": "AvPyRubrosSobregiroHiPK",
+      "standalone": true,
+      "notes": "History table for overdrafts, composite PK"
+    },
+    "AvPyRubrosPrestamodimension": {
+      "references": ["AvPyRubro", "AvDimensionesl", "AvEmpresa"],
+      "notes": "Approval dimension configuration per rubro"
+    }
+  },
+
+  "summary": {
+    "total_controllers": 10,
+    "total_entities": 10,
+    "total_renderers": 6,
+    "total_composite_pk_classes": 1,
+    "total_db_tables": 9,
+    "total_db_views": 1,
+    "entities_list": [
+      "AvPyRubrosPrestamo (av_py_rubros_prestamo) — 40 fields, main loan entity",
+      "AvPyRubrosPrestamoAbo (av_py_rubros_prestamo_abo) — 15 fields, historical loan deductions",
+      "AvPyRubrosPrestamoAbonos (av_py_rubros_prestamo_abonos) — 17 fields, loan payment transactions",
+      "AvPyRubrosPrestamoCom (av_py_rubros_prestamo_com) — 14 fields, loan commitment/installments",
+      "AvPyRubrosPrestamoComTmp (av_py_rubros_prestamo_com_tmp) — 14 fields, temporary commitments",
+      "AvPyRubrosPrestamoDetAbono (av_py_rubros_prestamo_det_abono) — 10 fields, payment detail per commitment",
+      "AvPyRubrosPrestamodimension (av_py_rubros_prestamodimension) — 11 fields, approval dimensions",
+      "AvPyRubrosPrestamoAcre (av_py_rubros_prestamo_acre) — 10 fields, loan accreditation",
+      "AvPyRubrosSobregiroHi (av_py_rubros_sobregiro_his) — 10 fields, overdraft history",
+      "AvPyRubrosPrestamoComV (av_py_rubros_prestamo_com_v) — 11 fields, view for commitments"
+    ]
+  }
+}

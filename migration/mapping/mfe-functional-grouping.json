@@ -1,0 +1,23 @@
+{
+  "projectName": "Migration Flow Analysis",
+  "version": "1.0.0",
+  "generatedAt": "2026-03-18T05:12:04.890Z",
+  "analysis": {
+    "totalModules": 1,
+    "functionalGroups": [
+      {
+        "id": "group-1",
+        "name": "Gestión de Datos",
+        "description": "Agrupación funcional para: Gestión de Datos",
+        "modules": [
+          null
+        ],
+        "functionalities": [],
+        "complexity": "Low",
+        "priority": "High",
+        "dependencies": []
+      }
+    ],
+    "moduleContext": "## 📦 CONTEXTO DE MÓDULOS DEL PROYECTO:\n\n**Avante**\n  - Descripción: Módulo Java: avante (22 clases)\n  - Tipo: java-package\n\n**Src**\n  - Descripción: Módulo Java: src\n  - Tipo: java-project\n"
+  }
+}

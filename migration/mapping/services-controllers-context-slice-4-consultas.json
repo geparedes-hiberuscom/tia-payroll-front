@@ -1,0 +1,685 @@
+{
+  "slice_id": "slice-4-consultas",
+  "slice_nombre": "👤 Consultas",
+  "slice_descripcion": "Nómina por colaborador, acumulados",
+  "projectName": "payrol",
+  "groupId": "com.tia",
+  "target": "springboot",
+  "modulo": "Roles de Pago / Nómina (AvPy)",
+  "generatedAt": "2026-03-24T22:40:02.105Z",
+  "funcionalidades_seleccionadas": [
+    "nominaxColabList",
+    "nominaxColabPreList_nominaxColabPreDialog",
+    "nominaresumenGeneral_ResumenGralNominaDialog",
+    "nominaresumenGralxRubro",
+    "nominaresumenGralCxRubro",
+    "comparativoNominas",
+    "conSueldo",
+    "acumulados",
+    "DTOscompartidossubrecursos"
+  ],
+  "funcionalidades_no_encontradas": [
+    "3_consulta_nomina_colaborador",
+    "6_acumulados"
+  ],
+  "source_context": [
+    {
+      "funcionalidad_id": "nominaxColabList",
+      "funcionalidad_nombre": "nominaxColabList.zul",
+      "entidades": [
+        {
+          "archivo": "NominaHistoricoColabPageResponseDTO",
+          "descripcion": "Lista paginada de totales de nómina histórica por colaborador"
+        },
+        {
+          "archivo": "NominaHistoricoColabResponseDTO",
+          "descripcion": "Totales de nómina histórica de un colaborador (vista av_py_rubroslhisttotales_v)"
+        },
+        {
+          "archivo": "RubroHistoricoListDTO",
+          "descripcion": "Lista de rubros históricos de un colaborador"
+        },
+        {
+          "archivo": "ExportarNominaHistoricoDTO",
+          "descripcion": "Filtros para la exportación de nómina histórica"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/historico",
+          "descripcion": "GET /api/v1/nomina-colaborador/historico — Listar nómina histórica por colaborador"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId}",
+          "descripcion": "GET /api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId} — Obtener nómina histórica de un colaborador"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId}/rubros",
+          "descripcion": "GET /api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId}/rubros — Listar rubros históricos de un colaborador"
+        },
+        {
+          "archivo": "POST /api/v1/nomina-colaborador/historico/exportar",
+          "descripcion": "POST /api/v1/nomina-colaborador/historico/exportar — Exportar nómina histórica por colaborador"
+        },
+        {
+          "archivo": "DELETE /api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId}",
+          "descripcion": "DELETE /api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId} — Eliminar nómina histórica de colaborador"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "nominaxColabList.zul",
+          "descripcion": "Pantalla fuente: nominaxColabList.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "nominaxColabPreList_nominaxColabPreDialog",
+      "funcionalidad_nombre": "nominaxColabPreList.zul / nominaxColabPreDialog.zul",
+      "entidades": [
+        {
+          "archivo": "NominaPreColabPageResponseDTO",
+          "descripcion": "Lista paginada de totales de nómina preliquidada por colaborador"
+        },
+        {
+          "archivo": "NominaPreColabResponseDTO",
+          "descripcion": "Totales de nómina preliquidada de un colaborador (vista av_py_rubroslpretotales_v)"
+        },
+        {
+          "archivo": "RubroPreLiquidadoListDTO",
+          "descripcion": "Lista de rubros preliquidados del colaborador"
+        },
+        {
+          "archivo": "DetallePreColabResponseDTO",
+          "descripcion": "Detalle completo del colaborador en preliquidación con comparación histórica"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/preliquidacion",
+          "descripcion": "GET /api/v1/nomina-colaborador/preliquidacion — Listar nómina preliquidada por colaborador"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}",
+          "descripcion": "GET /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId} — Obtener nómina preliquidada de un colaborador"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}/rubros",
+          "descripcion": "GET /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}/rubros — Listar rubros preliquidados de un colaborador"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}/detalle",
+          "descripcion": "GET /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}/detalle — Obtener detalle completo del colaborador en preliquidación"
+        },
+        {
+          "archivo": "DELETE /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}",
+          "descripcion": "DELETE /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId} — Eliminar nómina preliquidada de colaborador"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "nominaxColabPreList.zul",
+          "descripcion": "Pantalla fuente: nominaxColabPreList.zul"
+        },
+        {
+          "archivo": "nominaxColabPreDialog.zul",
+          "descripcion": "Pantalla fuente: nominaxColabPreDialog.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "nominaresumenGeneral_ResumenGralNominaDialog",
+      "funcionalidad_nombre": "nominaresumenGeneral.zul / ResumenGralNominaDialog.zul",
+      "entidades": [
+        {
+          "archivo": "ResumenGeneralNominaResponseDTO",
+          "descripcion": "Resumen general consolidado de nómina"
+        },
+        {
+          "archivo": "ResumenDetalladoNominaResponseDTO",
+          "descripcion": "Resumen detallado de nómina con configuración de clases de rubros"
+        },
+        {
+          "archivo": "GenerarResumenNominaDTO",
+          "descripcion": "Parámetros para generar el resumen de nómina"
+        },
+        {
+          "archivo": "ExportarResumenNominaDTO",
+          "descripcion": "Parámetros para la exportación del resumen"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/nomina-resumen",
+          "descripcion": "GET /api/v1/nomina-resumen — Obtener resumen general de nómina"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-resumen/{ejecucionId}",
+          "descripcion": "GET /api/v1/nomina-resumen/{ejecucionId} — Obtener resumen detallado de nómina"
+        },
+        {
+          "archivo": "POST /api/v1/nomina-resumen/generar",
+          "descripcion": "POST /api/v1/nomina-resumen/generar — Generar resumen de nómina"
+        },
+        {
+          "archivo": "POST /api/v1/nomina-resumen/exportar",
+          "descripcion": "POST /api/v1/nomina-resumen/exportar — Exportar resumen general de nómina"
+        },
+        {
+          "archivo": "DELETE /api/v1/nomina-resumen/{ejecucionId}",
+          "descripcion": "DELETE /api/v1/nomina-resumen/{ejecucionId} — Eliminar resumen de nómina"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "nominaresumenGeneral.zul",
+          "descripcion": "Pantalla fuente: nominaresumenGeneral.zul"
+        },
+        {
+          "archivo": "ResumenGralNominaDialog.zul",
+          "descripcion": "Pantalla fuente: ResumenGralNominaDialog.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "nominaresumenGralxRubro",
+      "funcionalidad_nombre": "nominaresumenGralxRubro.zul",
+      "entidades": [
+        {
+          "archivo": "ResumenPorRubroPageResponseDTO",
+          "descripcion": "Lista paginada del resumen de nómina por rubro"
+        },
+        {
+          "archivo": "ResumenPorRubroResponseDTO",
+          "descripcion": "Resumen detallado de un rubro en la nómina"
+        },
+        {
+          "archivo": "ColaboradorRubroPageResponseDTO",
+          "descripcion": "Lista paginada de colaboradores con un rubro específico"
+        },
+        {
+          "archivo": "ExportarResumenRubroDTO",
+          "descripcion": "Parámetros para la exportación del resumen por rubro"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/nomina-resumen/por-rubro",
+          "descripcion": "GET /api/v1/nomina-resumen/por-rubro — Listar resumen de nómina por rubro"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId}",
+          "descripcion": "GET /api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId} — Obtener resumen de un rubro específico"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId}/colaboradores",
+          "descripcion": "GET /api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId}/colaboradores — Listar colaboradores de un rubro"
+        },
+        {
+          "archivo": "POST /api/v1/nomina-resumen/por-rubro/exportar",
+          "descripcion": "POST /api/v1/nomina-resumen/por-rubro/exportar — Exportar resumen por rubro"
+        },
+        {
+          "archivo": "DELETE /api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId}",
+          "descripcion": "DELETE /api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId} — Eliminar resumen de rubro"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "nominaresumenGralxRubro.zul",
+          "descripcion": "Pantalla fuente: nominaresumenGralxRubro.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "nominaresumenGralCxRubro",
+      "funcionalidad_nombre": "nominaresumenGralCxRubro.zul",
+      "entidades": [
+        {
+          "archivo": "ResumenClasificacionPageResponseDTO",
+          "descripcion": "Lista paginada del resumen de nómina por clasificación de rubro"
+        },
+        {
+          "archivo": "ResumenClasificacionResponseDTO",
+          "descripcion": "Resumen detallado de una clasificación de rubro en la nómina"
+        },
+        {
+          "archivo": "RubrosClasificacionListDTO",
+          "descripcion": "Lista de rubros de una clasificación"
+        },
+        {
+          "archivo": "ExportarResumenClasificacionDTO",
+          "descripcion": "Parámetros para la exportación del resumen por clasificación"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/nomina-resumen/por-clasificacion",
+          "descripcion": "GET /api/v1/nomina-resumen/por-clasificacion — Listar resumen de nómina por clasificación de rubro"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId}",
+          "descripcion": "GET /api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId} — Obtener resumen de una clasificación específica"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId}/rubros",
+          "descripcion": "GET /api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId}/rubros — Listar rubros de una clasificación"
+        },
+        {
+          "archivo": "POST /api/v1/nomina-resumen/por-clasificacion/exportar",
+          "descripcion": "POST /api/v1/nomina-resumen/por-clasificacion/exportar — Exportar resumen por clasificación de rubro"
+        },
+        {
+          "archivo": "DELETE /api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId}",
+          "descripcion": "DELETE /api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId} — Eliminar resumen de clasificación"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "nominaresumenGralCxRubro.zul",
+          "descripcion": "Pantalla fuente: nominaresumenGralCxRubro.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "comparativoNominas",
+      "funcionalidad_nombre": "comparativoNominas.zul",
+      "entidades": [
+        {
+          "archivo": "ComparativoNominasPageResponseDTO",
+          "descripcion": "Lista paginada de comparativos de nóminas"
+        },
+        {
+          "archivo": "ComparativoNominasResponseDTO",
+          "descripcion": "Detalle de un registro comparativo de nómina"
+        },
+        {
+          "archivo": "ComparativoNominasCreateDTO",
+          "descripcion": "Datos para crear un comparativo de nóminas"
+        },
+        {
+          "archivo": "ComparativoNominasUpdateDTO",
+          "descripcion": "Datos para actualizar el comparativo"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/comparativo-nominas",
+          "descripcion": "GET /api/v1/comparativo-nominas — Listar comparativos de nóminas"
+        },
+        {
+          "archivo": "GET /api/v1/comparativo-nominas/{id}",
+          "descripcion": "GET /api/v1/comparativo-nominas/{id} — Obtener comparativo de nómina por ID"
+        },
+        {
+          "archivo": "POST /api/v1/comparativo-nominas",
+          "descripcion": "POST /api/v1/comparativo-nominas — Crear comparativo de nóminas"
+        },
+        {
+          "archivo": "PUT /api/v1/comparativo-nominas/{id}",
+          "descripcion": "PUT /api/v1/comparativo-nominas/{id} — Actualizar comparativo de nóminas"
+        },
+        {
+          "archivo": "DELETE /api/v1/comparativo-nominas/{id}",
+          "descripcion": "DELETE /api/v1/comparativo-nominas/{id} — Eliminar comparativo de nóminas"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "comparativoNominas.zul",
+          "descripcion": "Pantalla fuente: comparativoNominas.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "conSueldo",
+      "funcionalidad_nombre": "conSueldo.zul",
+      "entidades": [
+        {
+          "archivo": "ConsultaSueldoPageResponseDTO",
+          "descripcion": "Lista paginada de sueldos de colaboradores"
+        },
+        {
+          "archivo": "ConsultaSueldoResponseDTO",
+          "descripcion": "Detalle del sueldo de un colaborador"
+        },
+        {
+          "archivo": "EstructuraOrganizacionalListDTO",
+          "descripcion": "Lista de nodos de la estructura organizacional"
+        },
+        {
+          "archivo": "ExportarConsultaSueldoDTO",
+          "descripcion": "Filtros para la exportación de sueldos"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/consulta-sueldos",
+          "descripcion": "GET /api/v1/consulta-sueldos — Consultar sueldos de colaboradores"
+        },
+        {
+          "archivo": "GET /api/v1/consulta-sueldos/{empresaId}/{colaboradorId}",
+          "descripcion": "GET /api/v1/consulta-sueldos/{empresaId}/{colaboradorId} — Obtener sueldo de un colaborador"
+        },
+        {
+          "archivo": "GET /api/v1/consulta-sueldos/estructura-organizacional",
+          "descripcion": "GET /api/v1/consulta-sueldos/estructura-organizacional — Obtener estructura organizacional para filtro"
+        },
+        {
+          "archivo": "POST /api/v1/consulta-sueldos/exportar",
+          "descripcion": "POST /api/v1/consulta-sueldos/exportar — Exportar consulta de sueldos"
+        },
+        {
+          "archivo": "DELETE /api/v1/consulta-sueldos/{empresaId}/{colaboradorId}",
+          "descripcion": "DELETE /api/v1/consulta-sueldos/{empresaId}/{colaboradorId} — Eliminar registro de sueldo"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "conSueldo.zul",
+          "descripcion": "Pantalla fuente: conSueldo.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "acumulados",
+      "funcionalidad_nombre": "acumulados.zul",
+      "entidades": [
+        {
+          "archivo": "AcumuladoPageResponseDTO",
+          "descripcion": "Lista paginada de acumulados de nómina"
+        },
+        {
+          "archivo": "AcumuladoResponseDTO",
+          "descripcion": "Detalle de un acumulado de nómina (vista av_py_acumulados_v)"
+        },
+        {
+          "archivo": "AcumuladoCreateDTO",
+          "descripcion": "Datos para crear un acumulado de nómina"
+        },
+        {
+          "archivo": "AcumuladoUpdateDTO",
+          "descripcion": "Datos para actualizar el acumulado"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/acumulados",
+          "descripcion": "GET /api/v1/acumulados — Listar acumulados de nómina"
+        },
+        {
+          "archivo": "GET /api/v1/acumulados/{id}",
+          "descripcion": "GET /api/v1/acumulados/{id} — Obtener acumulado por ID"
+        },
+        {
+          "archivo": "POST /api/v1/acumulados",
+          "descripcion": "POST /api/v1/acumulados — Crear acumulado de nómina"
+        },
+        {
+          "archivo": "PUT /api/v1/acumulados/{id}",
+          "descripcion": "PUT /api/v1/acumulados/{id} — Actualizar acumulado de nómina"
+        },
+        {
+          "archivo": "DELETE /api/v1/acumulados/{id}",
+          "descripcion": "DELETE /api/v1/acumulados/{id} — Eliminar acumulado de nómina"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "acumulados.zul",
+          "descripcion": "Pantalla fuente: acumulados.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "DTOscompartidossubrecursos",
+      "funcionalidad_nombre": "DTOs compartidos (subrecursos)",
+      "entidades": [
+        {
+          "archivo": "RubroHistoricoDTO",
+          "descripcion": "Detalle de un rubro histórico de nómina (av_py_rubroslhis)"
+        },
+        {
+          "archivo": "RubroPreLiquidadoDTO",
+          "descripcion": "Detalle de un rubro preliquidado de nómina (av_py_rubroslpre)"
+        },
+        {
+          "archivo": "ClaseRubroListDTO",
+          "descripcion": "Lista de clases de rubros"
+        },
+        {
+          "archivo": "ClaseRubroResumenDTO",
+          "descripcion": "Detalle de una clase de rubro (av_py_clasesrubros)"
+        },
+        {
+          "archivo": "EstructuraOrganizacionalDTO",
+          "descripcion": "Detalle de un nodo de la estructura organizacional"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/rubros-historicos/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "descripcion": "GET /api/v1/nomina-colaborador/rubros-historicos/{ejecucionId}/{colaboradorId}/{rubroId} — Obtener rubro histórico individual"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/rubros-preliquidados/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "descripcion": "GET /api/v1/nomina-colaborador/rubros-preliquidados/{ejecucionId}/{colaboradorId}/{rubroId} — Obtener rubro preliquidado individual"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/clases-rubro",
+          "descripcion": "GET /api/v1/nomina-colaborador/clases-rubro — Listar clases de rubros"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/clases-rubro/{claseId}",
+          "descripcion": "GET /api/v1/nomina-colaborador/clases-rubro/{claseId} — Obtener clase de rubro por ID"
+        },
+        {
+          "archivo": "GET /api/v1/nomina-colaborador/estructura-organizacional/{areaId}",
+          "descripcion": "GET /api/v1/nomina-colaborador/estructura-organizacional/{areaId} — Obtener estructura organizacional por área"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "DTOs compartidos (subrecursos)",
+          "descripcion": "Pantalla fuente: DTOs compartidos (subrecursos)"
+        }
+      ],
+      "vistas_bd": []
+    }
+  ],
+  "resumen": {
+    "total_funcionalidades": 9,
+    "total_entidades": 50,
+    "total_controladores": 45,
+    "total_servicios": 0,
+    "total_daos": 0,
+    "total_renderers": 0,
+    "total_pantallas_zul": 11,
+    "total_vistas_bd": 0,
+    "total_archivos_origen": 95,
+    "archivos_origen_unicos": [
+      "AcumuladoCreateDTO",
+      "AcumuladoPageResponseDTO",
+      "AcumuladoResponseDTO",
+      "AcumuladoUpdateDTO",
+      "ClaseRubroListDTO",
+      "ClaseRubroResumenDTO",
+      "ColaboradorRubroPageResponseDTO",
+      "ComparativoNominasCreateDTO",
+      "ComparativoNominasPageResponseDTO",
+      "ComparativoNominasResponseDTO",
+      "ComparativoNominasUpdateDTO",
+      "ConsultaSueldoPageResponseDTO",
+      "ConsultaSueldoResponseDTO",
+      "DELETE /api/v1/acumulados/{id}",
+      "DELETE /api/v1/comparativo-nominas/{id}",
+      "DELETE /api/v1/consulta-sueldos/{empresaId}/{colaboradorId}",
+      "DELETE /api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId}",
+      "DELETE /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}",
+      "DELETE /api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId}",
+      "DELETE /api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId}",
+      "DELETE /api/v1/nomina-resumen/{ejecucionId}",
+      "DTOs compartidos (subrecursos)",
+      "DeleteResponseDTO",
+      "DetallePreColabResponseDTO",
+      "EstructuraOrganizacionalDTO",
+      "EstructuraOrganizacionalListDTO",
+      "ExportarConsultaSueldoDTO",
+      "ExportarNominaHistoricoDTO",
+      "ExportarResponseDTO",
+      "ExportarResumenClasificacionDTO",
+      "ExportarResumenNominaDTO",
+      "ExportarResumenRubroDTO",
+      "GET /api/v1/acumulados",
+      "GET /api/v1/acumulados/{id}",
+      "GET /api/v1/comparativo-nominas",
+      "GET /api/v1/comparativo-nominas/{id}",
+      "GET /api/v1/consulta-sueldos",
+      "GET /api/v1/consulta-sueldos/estructura-organizacional",
+      "GET /api/v1/consulta-sueldos/{empresaId}/{colaboradorId}",
+      "GET /api/v1/nomina-colaborador/clases-rubro",
+      "GET /api/v1/nomina-colaborador/clases-rubro/{claseId}",
+      "GET /api/v1/nomina-colaborador/estructura-organizacional/{areaId}",
+      "GET /api/v1/nomina-colaborador/historico",
+      "GET /api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId}",
+      "GET /api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId}/rubros",
+      "GET /api/v1/nomina-colaborador/preliquidacion",
+      "GET /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}",
+      "GET /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}/detalle",
+      "GET /api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}/rubros",
+      "GET /api/v1/nomina-colaborador/rubros-historicos/{ejecucionId}/{colaboradorId}/{rubroId}",
+      "GET /api/v1/nomina-colaborador/rubros-preliquidados/{ejecucionId}/{colaboradorId}/{rubroId}",
+      "GET /api/v1/nomina-resumen",
+      "GET /api/v1/nomina-resumen/por-clasificacion",
+      "GET /api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId}",
+      "GET /api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId}/rubros",
+      "GET /api/v1/nomina-resumen/por-rubro",
+      "GET /api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId}",
+      "GET /api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId}/colaboradores",
+      "GET /api/v1/nomina-resumen/{ejecucionId}",
+      "GenerarResumenNominaDTO",
+      "NominaHistoricoColabPageResponseDTO",
+      "NominaHistoricoColabResponseDTO",
+      "NominaPreColabPageResponseDTO",
+      "NominaPreColabResponseDTO",
+      "POST /api/v1/acumulados",
+      "POST /api/v1/comparativo-nominas",
+      "POST /api/v1/consulta-sueldos/exportar",
+      "POST /api/v1/nomina-colaborador/historico/exportar",
+      "POST /api/v1/nomina-resumen/exportar",
+      "POST /api/v1/nomina-resumen/generar",
+      "POST /api/v1/nomina-resumen/por-clasificacion/exportar",
+      "POST /api/v1/nomina-resumen/por-rubro/exportar",
+      "PUT /api/v1/acumulados/{id}",
+      "PUT /api/v1/comparativo-nominas/{id}",
+      "ResumenClasificacionPageResponseDTO",
+      "ResumenClasificacionResponseDTO",
+      "ResumenDetalladoNominaResponseDTO",
+      "ResumenGeneralNominaResponseDTO",
+      "ResumenGralNominaDialog.zul",
+      "ResumenPorRubroPageResponseDTO",
+      "ResumenPorRubroResponseDTO",
+      "RubroHistoricoDTO",
+      "RubroHistoricoListDTO",
+      "RubroPreLiquidadoDTO",
+      "RubroPreLiquidadoListDTO",
+      "RubrosClasificacionListDTO",
+      "acumulados.zul",
+      "comparativoNominas.zul",
+      "conSueldo.zul",
+      "nominaresumenGeneral.zul",
+      "nominaresumenGralCxRubro.zul",
+      "nominaresumenGralxRubro.zul",
+      "nominaxColabList.zul",
+      "nominaxColabPreDialog.zul",
+      "nominaxColabPreList.zul"
+    ]
+  }
+}

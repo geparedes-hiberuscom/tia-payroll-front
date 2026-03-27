@@ -1,0 +1,61 @@
+{
+  "slice_id": "slice-9-integraciones",
+  "slice_nombre": "🔗 Integraciones Externas",
+  "moduleName": "integraciones",
+  "fullPackage": "com.tia.integraciones",
+  "target": "springboot",
+  "generatedAt": "2026-03-26T14:34:35.520Z",
+  "inbound_ports": [
+    {
+      "interfaceName": "FuncIntegracionesExternasUseCase",
+      "sourceFunc": "Integraciones Externas",
+      "path": "target-springboot/integraciones/src/main/java/com/tia/integraciones/application/port/input/FuncIntegracionesExternasUseCase.java"
+    }
+  ],
+  "outbound_ports": [
+    {
+      "interfaceName": "FuncIntegracionesExternasPort",
+      "sourceFunc": "Integraciones Externas",
+      "path": "target-springboot/integraciones/src/main/java/com/tia/integraciones/application/port/output/FuncIntegracionesExternasPort.java"
+    }
+  ],
+  "outbound_adapters": [
+    {
+      "className": "FuncIntegracionesExternasPersistenceAdapter",
+      "implements": "FuncIntegracionesExternasPort",
+      "path": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/FuncIntegracionesExternasPersistenceAdapter.java"
+    }
+  ],
+  "mappers": [
+    "AvPyInterfasPersistenceMapper",
+    "AvPyInterfasarchivoPersistenceMapper",
+    "AvPyProcesosinstanciasPersistenceMapper",
+    "AvEnEmpresaspatronalPersistenceMapper",
+    "AvEmpresaPersistenceMapper",
+    "AvDimensioneslPersistenceMapper",
+    "AvCatalogosPersistenceMapper",
+    "AvPyRubrosIesslPersistenceMapper",
+    "AvPyRubrosIessPersistenceMapper",
+    "AvPyRubrosIdoPersistenceMapper",
+    "AvColaboradoresPersistenceMapper",
+    "AvColaboradoresePersistenceMapper",
+    "AvPyRubroPersistenceMapper",
+    "AvPyParametroPersistenceMapper",
+    "AvPyParametroPersistenceMapper",
+    "DominiosPersistenceMapper",
+    "AvPyRubroslhisPersistenceMapper",
+    "AvPyPlantillaContablePersistenceMapper",
+    "AvPyCtasubctaAsoPersistenceMapper",
+    "AvPyClasesrubroPersistenceMapper",
+    "AvPyCuadreprovcontablePersistenceMapper",
+    "AvPyRubroslprePersistenceMapper",
+    "AvPyCuadreprovcontableDetPersistenceMapper",
+    "FuncIntegracionesExternasRestMapper"
+  ],
+  "resumen": {
+    "total_inbound_ports": 1,
+    "total_outbound_ports": 1,
+    "total_outbound_adapters": 1,
+    "total_mappers": 24
+  }
+}

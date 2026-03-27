@@ -1,0 +1,99 @@
+{
+  "slice_id": "slice-4-consultas",
+  "slice_nombre": "👤 Consultas",
+  "moduleName": "consultas",
+  "target": "react",
+  "generatedAt": "2026-03-27T15:48:25.647Z",
+  "api_file": "vs-consultas-endpoints.json",
+  "api_endpoints_count": 45,
+  "api_schemas_count": 0,
+  "source_context": {
+    "funcionalidades": [
+      "nominaxColabList",
+      "nominaxColabPreList_nominaxColabPreDialog",
+      "nominaresumenGeneral_ResumenGralNominaDialog",
+      "nominaresumenGralxRubro",
+      "nominaresumenGralCxRubro",
+      "comparativoNominas",
+      "conSueldo",
+      "acumulados",
+      "DTOscompartidossubrecursos"
+    ],
+    "total_controladores": 45,
+    "total_entidades": 50
+  },
+  "generated": {
+    "dtos": [
+      "NominaxcolablistDto.ts",
+      "NominaxcolabprelistNominaxcolabpredialogDto.ts",
+      "NominaresumengeneralResumengralnominadialogDto.ts",
+      "NominaresumengralxrubroDto.ts",
+      "NominaresumengralcxrubroDto.ts",
+      "ComparativonominasDto.ts",
+      "ConsueldoDto.ts",
+      "AcumuladosDto.ts",
+      "DtoscompartidossubrecursosDto.ts"
+    ],
+    "gateway_ports": [
+      "NominaxcolablistGatewayPort.ts",
+      "NominaxcolabprelistNominaxcolabpredialogGatewayPort.ts",
+      "NominaresumengeneralResumengralnominadialogGatewayPort.ts",
+      "NominaresumengralxrubroGatewayPort.ts",
+      "NominaresumengralcxrubroGatewayPort.ts",
+      "ComparativonominasGatewayPort.ts",
+      "ConsueldoGatewayPort.ts",
+      "AcumuladosGatewayPort.ts",
+      "DtoscompartidossubrecursosGatewayPort.ts"
+    ],
+    "gateway_adapters": [
+      "NominaxcolablistGatewayAdapter.ts",
+      "NominaxcolabprelistNominaxcolabpredialogGatewayAdapter.ts",
+      "NominaresumengeneralResumengralnominadialogGatewayAdapter.ts",
+      "NominaresumengralxrubroGatewayAdapter.ts",
+      "NominaresumengralcxrubroGatewayAdapter.ts",
+      "ComparativonominasGatewayAdapter.ts",
+      "ConsueldoGatewayAdapter.ts",
+      "AcumuladosGatewayAdapter.ts",
+      "DtoscompartidossubrecursosGatewayAdapter.ts"
+    ],
+    "api_mappers": [
+      "NominaxcolablistApiMapper.ts",
+      "NominaxcolabprelistNominaxcolabpredialogApiMapper.ts",
+      "NominaresumengeneralResumengralnominadialogApiMapper.ts",
+      "NominaresumengralxrubroApiMapper.ts",
+      "NominaresumengralcxrubroApiMapper.ts",
+      "ComparativonominasApiMapper.ts",
+      "ConsueldoApiMapper.ts",
+      "AcumuladosApiMapper.ts",
+      "DtoscompartidossubrecursosApiMapper.ts"
+    ],
+    "services": [
+      "NominaxcolablistService.ts",
+      "NominaxcolabprelistNominaxcolabpredialogService.ts",
+      "NominaresumengeneralResumengralnominadialogService.ts",
+      "NominaresumengralxrubroService.ts",
+      "NominaresumengralcxrubroService.ts",
+      "ComparativonominasService.ts",
+      "ConsueldoService.ts",
+      "AcumuladosService.ts",
+      "DtoscompartidossubrecursosService.ts"
+    ],
+    "hooks": [
+      "useNominaxcolablist.ts",
+      "useNominaxcolabprelistNominaxcolabpredialog.ts",
+      "useNominaresumengeneralResumengralnominadialog.ts",
+      "useNominaresumengralxrubro.ts",
+      "useNominaresumengralcxrubro.ts",
+      "useComparativonominas.ts",
+      "useConsueldo.ts",
+      "useAcumulados.ts",
+      "useDtoscompartidossubrecursos.ts"
+    ]
+  },
+  "resumen": {
+    "total_dtos_generated": 9,
+    "total_services_generated": 9,
+    "total_gateways_generated": 9,
+    "total_api_endpoints": 45
+  }
+}

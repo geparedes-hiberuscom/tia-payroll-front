@@ -1,0 +1,1108 @@
+{
+  "verticalSlice": "Beneficios Especiales",
+  "generatedAt": "2026-03-19",
+  "source": "migration/plan/config.json",
+  "screens": [
+    {
+      "screen": "detallePrestSolValDif.zul",
+      "label": "Detalle préstamo/vale diferido",
+      "zulPath": "WEB-INF/avante/rolesdepago/detallePrestSolValDif.zul",
+      "controller": "detPrestSolValDifDialogCtrl",
+      "controllerFile": "avante/gth/webui/detPrestSolValDifDialogCtrl.java",
+      "parentController": "SolicitudValesDiferidosListCtrl",
+      "parentControllerFile": "avante/gth/webui/SolicitudValesDiferidosListCtrl.java",
+      "invokedFrom": "SolicitudValesDiferidosListCtrl (line 2042)",
+      "mainEntities": ["AvPyColaboradoressolValdif", "AvEmpresa"],
+      "renderer": {
+        "class": "DetPrestSolValDifListModelItemRenderer",
+        "file": "avante/gth/webui/model/DetPrestSolValDifListModelItemRenderer.java",
+        "dataSource": "Object[] from AvPyDistribValesdifDAOJpaImpl.getDetallePrestamosSolValDif()",
+        "columns": [
+          {"index": 0, "label": "Rubro/Concepto", "type": "String"},
+          {"index": 1, "label": "Monto", "type": "BigDecimal", "align": "right"},
+          {"index": 2, "label": "Saldo", "type": "BigDecimal", "align": "right"},
+          {"index": 3, "label": "Cuota", "type": "BigDecimal", "align": "right"},
+          {"index": 4, "label": "Num Cuotas Pendientes", "type": "String", "align": "right"},
+          {"index": 5, "label": "Fecha Descuento", "type": "String (Date)", "align": "right"}
+        ]
+      }
+    },
+    {
+      "screen": "rechazoSolValeDif.zul",
+      "label": "Rechazo de vale diferido",
+      "zulPath": "WEB-INF/avante/rolesdepago/rechazoSolValeDif.zul",
+      "controller": "rechazoSolValDifDialogCtrl",
+      "controllerFile": "avante/gth/webui/rechazoSolValDifDialogCtrl.java",
+      "parentController": "SolicitudValesDiferidosListCtrl",
+      "parentControllerFile": "avante/gth/webui/SolicitudValesDiferidosListCtrl.java",
+      "invokedFrom": "SolicitudValesDiferidosListCtrl (line 2090)",
+      "mainEntities": ["AvPyColaboradoressolValdif", "AvCatalogos", "AvEmpresa"],
+      "renderer": null,
+      "notes": "Dialog for selecting rejection reason (AvCatalogos CAT_TIPOS_RECH_VALEDIF) and text. Updates AvPyColaboradoressolValdif state to Rechazado."
+    },
+    {
+      "screen": "rechazoSolValeDifVistaLocal.zul",
+      "label": "Rechazo local de vale diferido (vista)",
+      "zulPath": "WEB-INF/avante/rolesdepago/rechazoSolValeDifVistaLocal.zul",
+      "controller": "rechazoSolValDifLocalDialogCtrl",
+      "controllerFile": "avante/gth/webui/rechazoSolValDifLocalDialogCtrl.java",
+      "parentController": "SolicitudValesDiferidosListCtrl",
+      "parentControllerFile": "avante/gth/webui/SolicitudValesDiferidosListCtrl.java",
+      "invokedFrom": "SolicitudValesDiferidosListCtrl (line 1610)",
+      "mainEntities": ["AvPyColaboradoressolValdif", "AvCatalogos"],
+      "renderer": null,
+      "notes": "Read-only view of rejection reason and text from AvPyColaboradoressolValdif.avCatalogosMotivoRec and mmontorechazo."
+    },
+    {
+      "screen": "provisionesxColaboradorList.zul",
+      "label": "Provisiones por colaborador (lista)",
+      "zulPath": "WEB-INF/avante/rolesdepago/provisionesxColaboradorList.zul",
+      "controller": "ProvisionesxColaboradorListCtrl",
+      "controllerFile": "avante/gth/webui/ProvisionesxColaboradorListCtrl.java",
+      "mainEntities": ["AvEmpresa"],
+      "dataSource": "AvPyRubroslHisDAOJpaImpl.getprovisionesxcolaborador() - native SQL returning Object[]",
+      "renderer": {
+        "class": "ProvisionesxColaboradoresListModelItemRenderer",
+        "file": "avante/gth/webui/model/ProvisionesxColaboradoresListModelItemRenderer.java",
+        "dataSource": "Object[] from native SQL query getprovisionesxcolaborador()",
+        "columns": [
+          {"index": 7, "label": "Cédula", "type": "String"},
+          {"index": 8, "label": "Nombres", "type": "String"},
+          {"index": 5, "label": "Total Prov. Acumulado", "type": "BigDecimal", "align": "right"},
+          {"index": 6, "label": "Base Prov. Acumulado", "type": "BigDecimal", "align": "right"},
+          {"index": 0, "label": "Total Prov. Mensual", "type": "BigDecimal", "align": "right"},
+          {"index": 1, "label": "Base Prov. Mensual", "type": "BigDecimal", "align": "right"}
+        ],
+        "doubleClickAction": "onProvisionColaboradorItemDoubleClicked → opens provisionesxColaboradorDialog.zul"
+      },
+      "opensDialog": "provisionesxColaboradorDialog.zul"
+    },
+    {
+      "screen": "provisionesxColaboradorDialog.zul",
+      "label": "Detalle de provisiones por colaborador",
+      "zulPath": "WEB-INF/avante/rolesdepago/provisionesxColaboradorDialog.zul",
+      "controller": "ProvisionesxColaboradorDialogCtrl",
+      "controllerFile": "avante/gth/webui/ProvisionesxColaboradorDialogCtrl.java",
+      "parentController": "ProvisionesxColaboradorListCtrl",
+      "mainEntities": ["AvColaboradorese", "AvEmpresa", "AvPyProcesosinstancias"],
+      "dataSource": "AvPyRubroslHisDAOJpaImpl.getprovisionesxcolaboradorxid() - native SQL returning Object[]",
+      "renderer": {
+        "class": "ProvisionesxColaboradoresDetallListModelItemRenderer",
+        "file": "avante/gth/webui/model/ProvisionesxColaboradoresDetallListModelItemRenderer.java",
+        "dataSource": "Object[] from native SQL query getprovisionesxcolaboradorxid()",
+        "columns": [
+          {"index": 7, "label": "Rubro", "type": "String"},
+          {"index": 5, "label": "Valor Acumulado", "type": "BigDecimal", "align": "right"},
+          {"index": 6, "label": "Base Acumulada", "type": "BigDecimal", "align": "right"},
+          {"index": 0, "label": "Valor Mensual", "type": "BigDecimal", "align": "right"},
+          {"index": 1, "label": "Base Mensual", "type": "BigDecimal", "align": "right"}
+        ]
+      },
+      "footerTotals": ["vrubro (Totales)", "totvalacum", "totbaseacum", "totvalmes", "totbasemes"]
+    },
+    {
+      "screen": "colaboradoresxProvision.zul",
+      "label": "Colaboradores por provisión",
+      "zulPath": "WEB-INF/avante/rolesdepago/colaboradoresxProvision.zul",
+      "controller": "ColaboradoresxProvisionListCtrl",
+      "controllerFile": "avante/gth/webui/ColaboradoresxProvisionListCtrl.java",
+      "parentController": "ConsultaProvisionesxRubroListCtrl",
+      "mainEntities": ["AvEmpresa", "AvPyProcesosinstancias"],
+      "dataSource": "AvPyRubroslHisDAOJpaImpl.getcolaboradoresxprovisiones() - native SQL returning Object[]",
+      "renderer": {
+        "class": "ColaboradoresxProvisionListModelItemRenderer",
+        "file": "avante/gth/webui/model/ColaboradoresxProvisionListModelItemRenderer.java",
+        "dataSource": "Object[] from native SQL query getcolaboradoresxprovisiones()",
+        "columns": [
+          {"index": 7, "label": "Cédula", "type": "String"},
+          {"index": 8, "label": "Nombres", "type": "String"},
+          {"index": 5, "label": "Total Prov. Acumulado", "type": "BigDecimal", "align": "right"},
+          {"index": 6, "label": "Base Prov. Acumulado", "type": "BigDecimal", "align": "right"},
+          {"index": 0, "label": "Total Prov. Mensual", "type": "BigDecimal", "align": "right"},
+          {"index": 1, "label": "Base Prov. Mensual", "type": "BigDecimal", "align": "right"}
+        ]
+      },
+      "footerTotals": ["totalcolab", "totales", "totprovacum", "totbaseprovacum", "totprovmes", "totbaseprovmes"]
+    },
+    {
+      "screen": "consultaProvisionesxRubroList.zul",
+      "label": "Provisiones por rubro (lista)",
+      "zulPath": "WEB-INF/avante/rolesdepago/consultaProvisionesxRubroList.zul",
+      "controller": "ConsultaProvisionesxRubroListCtrl",
+      "controllerFile": "avante/gth/webui/ConsultaProvisionesxRubroListCtrl.java",
+      "mainEntities": ["AvEmpresa"],
+      "dataSource": "AvPyRubroslHisDAOJpaImpl.getvalmesacumprovisionesxrubro() - native SQL returning Object[]",
+      "renderer": {
+        "class": "ProvisionesAcumListModelItemRenderer",
+        "file": "avante/gth/webui/model/ProvisionesAcumListModelItemRenderer.java",
+        "dataSource": "Object[] from native SQL query getvalmesacumprovisionesxrubro()",
+        "columns": [
+          {"index": 0, "label": "Rubro", "type": "String"},
+          {"index": 1, "label": "Num Colaboradores", "type": "String", "align": "right"},
+          {"index": 4, "label": "Acum. Valor", "type": "BigDecimal", "align": "right"},
+          {"index": 5, "label": "Acum. Base", "type": "BigDecimal", "align": "right"},
+          {"index": 2, "label": "Valor Mensual", "type": "BigDecimal", "align": "right"},
+          {"index": 3, "label": "Base Mensual", "type": "BigDecimal", "align": "right"}
+        ],
+        "doubleClickAction": "onProvisionesItemDoubleClicked → opens colaboradoresxProvision.zul"
+      },
+      "opensDialog": "colaboradoresxProvision.zul"
+    }
+  ],
+  "parentListController": {
+    "class": "SolicitudValesDiferidosListCtrl",
+    "file": "avante/gth/webui/SolicitudValesDiferidosListCtrl.java",
+    "description": "Main controller for vale diferido workflow. Lists AvPyColaboradoressolValdif records, provides approve/reject/accredit actions. Opens screens 1-3 as dialog windows.",
+    "mainEntities": [
+      "AvPyColaboradoressolValdif",
+      "AvPyDistribValesdif",
+      "AvPyDistribValesdifDet",
+      "AvPyRubrosPrestamo",
+      "AvPyRubrosPrestamoCom",
+      "AvEmpresa",
+      "AvColaboradores",
+      "AvCatalogos",
+      "AvDimensionesl",
+      "AvPyParametro",
+      "AvPyRubro"
+    ],
+    "renderer": {
+      "class": "AvPyColaboradoressolValdifListModelItemRenderer",
+      "file": "avante/gth/webui/model/AvPyColaboradoressolValdifListModelItemRenderer.java",
+      "dataType": "AvPyColaboradoressolValdif entity",
+      "columns": [
+        {"field": "avPyDistribValesdifsol.avCatalogomot.vdttxt01", "label": "Motivo"},
+        {"field": "avPyDistribValesdifsol.avDimensioneslloval.vidditem", "label": "Sucursal"},
+        {"field": "avColaboradoresesolvaldif.avColaboradores.vcedula", "label": "Cédula"},
+        {"field": "avColaboradoresesolvaldif.avColaboradores.vapellidosnombres", "label": "Colaborador"},
+        {"field": "mmonto", "label": "Monto"},
+        {"field": "mmontoutil", "label": "Monto Utilidad"},
+        {"field": "mmontod4", "label": "Monto D4"},
+        {"field": "mmontod3", "label": "Monto D3"},
+        {"field": "inummeses", "label": "Num Meses"},
+        {"field": "avCatalogoestado.vdttxt01", "label": "Estado"},
+        {"field": "calculated:montoPrestado", "label": "Monto Prestado"},
+        {"field": "avCatalogosMotivoRec.vdttxt01", "label": "Motivo Rechazo"},
+        {"field": "button:onClickViewRechazo", "label": "Acción (...)"}
+      ]
+    }
+  },
+  "entities": {
+    "AvPyColaboradoressolValdif": {
+      "file": "avante/backend/model/AvPyColaboradoressolValdif.java",
+      "table": "av_py_colaboradoressol_valdif",
+      "primaryKey": {
+        "field": "iidcolabsolvaldif",
+        "type": "int",
+        "strategy": "SEQUENCE",
+        "generator": "AV_PY_COLABORADORESSOL_VALDIF_IIDCOLABSOLVALDIF_GENERATOR",
+        "sequenceName": "COLABSOLVALDIF"
+      },
+      "fields": [
+        {
+          "name": "iidcolabsolvaldif",
+          "javaType": "int",
+          "annotations": ["@Id", "@SequenceGenerator(name='...', sequenceName='COLABSOLVALDIF')", "@GeneratedValue(strategy=SEQUENCE)"],
+          "column": "iidcolabsolvaldif"
+        },
+        {
+          "name": "cgenerocarta",
+          "javaType": "String",
+          "column": "cgenerocarta"
+        },
+        {
+          "name": "inummeses",
+          "javaType": "int",
+          "column": "inummeses"
+        },
+        {
+          "name": "mmonto",
+          "javaType": "BigDecimal",
+          "column": "mmonto"
+        },
+        {
+          "name": "mmontoutil",
+          "javaType": "BigDecimal",
+          "column": "mmontoutil"
+        },
+        {
+          "name": "mmontod4",
+          "javaType": "BigDecimal",
+          "column": "mmontod4"
+        },
+        {
+          "name": "mpromedioneto",
+          "javaType": "BigDecimal",
+          "column": "mpromedioneto"
+        },
+        {
+          "name": "mcuota",
+          "javaType": "BigDecimal",
+          "column": "mcuota"
+        },
+        {
+          "name": "vobservacion",
+          "javaType": "String",
+          "column": "vobservacion"
+        },
+        {
+          "name": "mmontod3",
+          "javaType": "BigDecimal",
+          "column": "mmontod3"
+        },
+        {
+          "name": "mmontorechazo",
+          "javaType": "String",
+          "column": "mmontorechazo"
+        },
+        {
+          "name": "dfregistro",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.TIMESTAMP)", "@Column(name='dfregistro')"],
+          "column": "dfregistro"
+        },
+        {
+          "name": "dfaprobacion",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.TIMESTAMP)", "@Column(name='dfaprobacion')"],
+          "column": "dfaprobacion"
+        },
+        {
+          "name": "dfacreditacion",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.TIMESTAMP)", "@Column(name='dfacreditacion')"],
+          "column": "dfacreditacion"
+        },
+        {
+          "name": "horaingreso_au",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.TIMESTAMP)", "@Column(name='horaingreso_au')"],
+          "column": "horaingreso_au"
+        },
+        {
+          "name": "usuarioingreso_au",
+          "javaType": "String",
+          "column": "usuarioingreso_au"
+        },
+        {
+          "name": "horamodificacion_au",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.TIMESTAMP)", "@Column(name='horamodificacion_au')"],
+          "column": "horamodificacion_au"
+        },
+        {
+          "name": "usuariomodificacion_au",
+          "javaType": "String",
+          "column": "usuariomodificacion_au"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "avCatalogoestado",
+          "type": "@ManyToOne",
+          "targetEntity": "AvCatalogos",
+          "joinColumn": "iidestado",
+          "description": "Estado de la solicitud"
+        },
+        {
+          "name": "avPyDistribValesdifsol",
+          "type": "@ManyToOne",
+          "targetEntity": "AvPyDistribValesdif",
+          "joinColumn": "iiddistribvalesdif",
+          "description": "Distribución de vales diferidos asociada"
+        },
+        {
+          "name": "avColaboradoressolval",
+          "type": "@ManyToOne",
+          "targetEntity": "AvColaboradores",
+          "joinColumn": "iidcolaborador",
+          "description": "Colaborador solicitante"
+        },
+        {
+          "name": "avEmpresacredsolval",
+          "type": "@ManyToOne",
+          "targetEntity": "AvEmpresa",
+          "joinColumn": "iidempresa",
+          "description": "Empresa"
+        },
+        {
+          "name": "avColaboradoresesolvaldif",
+          "type": "@ManyToOne",
+          "targetEntity": "AvColaboradorese",
+          "joinColumns": [
+            {"name": "iidcolaborador", "referencedColumn": "iidcolaborador", "insertable": false, "updatable": false},
+            {"name": "iidempresa", "referencedColumn": "iidempresa", "insertable": false, "updatable": false}
+          ],
+          "description": "Colaborador-Empresa (ficha compuesta)"
+        },
+        {
+          "name": "avCatalogosMotivoRec",
+          "type": "@ManyToOne (implicit)",
+          "targetEntity": "AvCatalogos",
+          "joinColumn": "imotivorech",
+          "description": "Motivo de rechazo"
+        },
+        {
+          "name": "avPyDistribValesdifDet",
+          "type": "@ManyToOne",
+          "targetEntity": "AvPyDistribValesdifDet",
+          "joinColumn": "iiddistribvalesdif_det",
+          "description": "Detalle de distribución de vales diferidos"
+        }
+      ]
+    },
+    "AvPyDistribValesdif": {
+      "file": "avante/backend/model/AvPyDistribValesdif.java",
+      "table": "av_py_distrib_valesdif",
+      "primaryKey": {
+        "field": "iiddistribvalesdif",
+        "type": "int",
+        "strategy": "SEQUENCE",
+        "generator": "AV_PY_DISTRIB_VALESDIF_IIDDISTRIBVALESDIF_GENERATOR",
+        "sequenceName": "SDISTRIBVALDIF",
+        "defaultValue": -1
+      },
+      "fields": [
+        {
+          "name": "iiddistribvalesdif",
+          "javaType": "int",
+          "annotations": ["@Id", "@SequenceGenerator(sequenceName='SDISTRIBVALDIF')", "@GeneratedValue(strategy=SEQUENCE)"],
+          "column": "iiddistribvalesdif"
+        },
+        {
+          "name": "dffin",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.DATE)"],
+          "column": "dffin"
+        },
+        {
+          "name": "dfinicio",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.DATE)"],
+          "column": "dfinicio"
+        },
+        {
+          "name": "dfdescuento",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.DATE)"],
+          "column": "dfdescuento"
+        },
+        {
+          "name": "vstts",
+          "javaType": "String",
+          "column": "vstts"
+        },
+        {
+          "name": "ctipocontrato",
+          "javaType": "String",
+          "column": "ctipocontrato"
+        },
+        {
+          "name": "ianio",
+          "javaType": "Integer",
+          "column": "ianio"
+        },
+        {
+          "name": "vobservacion",
+          "javaType": "String",
+          "column": "vobservacion"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "avDimensioneslloval",
+          "type": "@ManyToOne",
+          "targetEntity": "AvDimensionesl",
+          "joinColumn": "iiddmlocalidad",
+          "description": "Localidad"
+        },
+        {
+          "name": "avPyDistribValesempresa",
+          "type": "@ManyToOne",
+          "targetEntity": "AvEmpresa",
+          "joinColumn": "iidempresa",
+          "description": "Empresa"
+        },
+        {
+          "name": "avCatalogomot",
+          "type": "@ManyToOne",
+          "targetEntity": "AvCatalogos",
+          "joinColumn": "iidmotivo",
+          "description": "Motivo del vale"
+        },
+        {
+          "name": "avCatalogotcdv",
+          "type": "@ManyToOne",
+          "targetEntity": "AvCatalogos",
+          "joinColumn": "iidtipocontrato",
+          "description": "Tipo de contrato"
+        },
+        {
+          "name": "avPyDistribValesdifdetset",
+          "type": "@OneToMany",
+          "targetEntity": "AvPyDistribValesdifDet",
+          "mappedBy": "avPyDistribValesdif",
+          "cascade": "PERSIST",
+          "description": "Detalles de distribución"
+        },
+        {
+          "name": "avpyColaboradoressolValdifset",
+          "type": "@OneToMany",
+          "targetEntity": "AvPyColaboradoressolValdif",
+          "mappedBy": "avPyDistribValesdifsol",
+          "cascade": "PERSIST",
+          "description": "Solicitudes de vales diferidos"
+        }
+      ]
+    },
+    "AvPyDistribValesdifDet": {
+      "file": "avante/backend/model/AvPyDistribValesdifDet.java",
+      "table": "av_py_distrib_valesdif_det",
+      "primaryKey": {
+        "field": "iiddistribvalesdifdet",
+        "type": "int",
+        "strategy": "SEQUENCE",
+        "generator": "AV_PY_DISTRIB_VALESDIF_DET_IIDDISTRIBVALESDIFDET_GENERATOR",
+        "sequenceName": "SDISTRIBVALDIFDET"
+      },
+      "fields": [
+        {
+          "name": "iiddistribvalesdifdet",
+          "javaType": "int",
+          "annotations": ["@Id", "@SequenceGenerator(sequenceName='SDISTRIBVALDIFDET')", "@GeneratedValue(strategy=SEQUENCE)"],
+          "column": "iiddistribvalesdifdet"
+        },
+        {
+          "name": "ccompromutil",
+          "javaType": "String",
+          "column": "ccompromutil"
+        },
+        {
+          "name": "inummeses",
+          "javaType": "int",
+          "column": "inummeses"
+        },
+        {
+          "name": "inummesesdesct",
+          "javaType": "int",
+          "column": "inummesesdesct"
+        },
+        {
+          "name": "mmonto",
+          "javaType": "BigDecimal",
+          "column": "mmonto"
+        },
+        {
+          "name": "mporcentajeDsctoMeses",
+          "javaType": "BigDecimal",
+          "annotations": ["@Column(name='mporcentaje_dscto_meses')"],
+          "column": "mporcentaje_dscto_meses"
+        },
+        {
+          "name": "mporcentajeDsctoUtilidades",
+          "javaType": "BigDecimal",
+          "annotations": ["@Column(name='mporcentaje_dscto_utilidades')"],
+          "column": "mporcentaje_dscto_utilidades"
+        },
+        {
+          "name": "vstts",
+          "javaType": "String",
+          "column": "vstts"
+        },
+        {
+          "name": "caplicadesctcm",
+          "javaType": "String",
+          "column": "caplicadesctcm"
+        },
+        {
+          "name": "caplicadesctutil",
+          "javaType": "String",
+          "column": "caplicadesctutil"
+        },
+        {
+          "name": "caplicameses",
+          "javaType": "String",
+          "column": "caplicameses"
+        },
+        {
+          "name": "ccompromd4",
+          "javaType": "String",
+          "column": "ccompromd4"
+        },
+        {
+          "name": "caplicadesctd4",
+          "javaType": "String",
+          "column": "caplicadesctd4"
+        },
+        {
+          "name": "mporcentajeDsctoD4",
+          "javaType": "BigDecimal",
+          "annotations": ["@Column(name='mporcentaje_dscto_d4')"],
+          "column": "mporcentaje_dscto_d4"
+        },
+        {
+          "name": "mvalporcd4",
+          "javaType": "BigDecimal",
+          "annotations": ["@Column(name='mvalporc_d4')"],
+          "column": "mvalporc_d4"
+        },
+        {
+          "name": "ccompromd3",
+          "javaType": "String",
+          "column": "ccompromd3"
+        },
+        {
+          "name": "caplicadesctd3",
+          "javaType": "String",
+          "column": "caplicadesctd3"
+        },
+        {
+          "name": "mporcentajeDsctoD3",
+          "javaType": "BigDecimal",
+          "annotations": ["@Column(name='mporcentaje_dscto_d3')"],
+          "column": "mporcentaje_dscto_d3"
+        },
+        {
+          "name": "mvalporcd3",
+          "javaType": "BigDecimal",
+          "annotations": ["@Column(name='mvalporc_d3')"],
+          "column": "mvalporc_d3"
+        },
+        {
+          "name": "caplicaporcentvalord4",
+          "javaType": "String",
+          "annotations": ["@Column(name='caplicavalporcd4')"],
+          "column": "caplicavalporcd4"
+        },
+        {
+          "name": "caplicaporcentvalord3",
+          "javaType": "String",
+          "annotations": ["@Column(name='caplicavalporcd3')"],
+          "column": "caplicavalporcd3"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "avPyDistribValesdif",
+          "type": "@ManyToOne",
+          "targetEntity": "AvPyDistribValesdif",
+          "joinColumn": "iiddistribvalesdif",
+          "description": "Parent distribución"
+        },
+        {
+          "name": "avDimensioneslcust",
+          "type": "@ManyToOne",
+          "targetEntity": "AvDimensionesl",
+          "joinColumn": "iiddmcustom",
+          "description": "Dimensión custom (Rol)"
+        },
+        {
+          "name": "avpyColaboradoressolValdifsetDet",
+          "type": "@OneToMany",
+          "targetEntity": "AvPyColaboradoressolValdif",
+          "mappedBy": "avPyDistribValesdifDet",
+          "cascade": "PERSIST",
+          "description": "Solicitudes asociadas a este detalle"
+        }
+      ]
+    },
+    "AvPyCargacreditia": {
+      "file": "avante/backend/model/AvPyCargacreditia.java",
+      "table": "av_py_cargacreditia",
+      "primaryKey": {
+        "field": "iidcargacreditia",
+        "type": "int",
+        "strategy": "SEQUENCE",
+        "generator": "AV_PY_CARGACREDITIA_IIDCARGACREDITIA_GENERATOR",
+        "sequenceName": "CARGACREDITIA"
+      },
+      "fields": [
+        {
+          "name": "iidcargacreditia",
+          "javaType": "int",
+          "annotations": ["@Id", "@Column(name='iidcargacreditia')", "@SequenceGenerator(sequenceName='CARGACREDITIA')", "@GeneratedValue(strategy=SEQUENCE)"],
+          "column": "iidcargacreditia"
+        },
+        {
+          "name": "dfcarga",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.DATE)"],
+          "column": "dfcarga"
+        },
+        {
+          "name": "horaingresoAu",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.TIMESTAMP)", "@Column(name='horaingreso_au')"],
+          "column": "horaingreso_au"
+        },
+        {
+          "name": "usuarioingresoAu",
+          "javaType": "String",
+          "annotations": ["@Column(name='usuarioingreso_au')"],
+          "column": "usuarioingreso_au"
+        },
+        {
+          "name": "usuariomodificacionAu",
+          "javaType": "String",
+          "annotations": ["@Column(name='usuariomodificacion_au')"],
+          "column": "usuariomodificacion_au"
+        },
+        {
+          "name": "horamodificacionAu",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.TIMESTAMP)", "@Column(name='horamodificacion_au')"],
+          "column": "horamodificacion_au"
+        },
+        {
+          "name": "vstts",
+          "javaType": "String",
+          "annotations": ["@Column(name='vstts')"],
+          "column": "vstts"
+        },
+        {
+          "name": "vnombrearch",
+          "javaType": "String",
+          "column": "vnombrearch"
+        },
+        {
+          "name": "vobservacion",
+          "javaType": "String",
+          "annotations": ["@Column(name='vobservacion')"],
+          "column": "vobservacion"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "avEmpresaCargaCreditia",
+          "type": "@ManyToOne",
+          "targetEntity": "AvEmpresa",
+          "joinColumn": "iidempresa",
+          "description": "Empresa"
+        },
+        {
+          "name": "avPyCargacreditiaDets",
+          "type": "@OneToMany",
+          "targetEntity": "AvPyCargacreditiaDet",
+          "mappedBy": "avPyCargacreditia",
+          "description": "Detalles de carga CrediTIA"
+        },
+        {
+          "name": "avPyCargaCreditiaPrestamo",
+          "type": "@OneToMany",
+          "targetEntity": "AvPyRubrosPrestamo",
+          "mappedBy": "avPyCargaCreditia",
+          "description": "Préstamos generados desde CrediTIA"
+        }
+      ]
+    },
+    "AvPyCargacreditiaDet": {
+      "file": "avante/backend/model/AvPyCargacreditiaDet.java",
+      "table": "av_py_cargacreditia_det",
+      "primaryKey": {
+        "field": "iidcargacreditiadet",
+        "type": "int",
+        "strategy": "SEQUENCE",
+        "generator": "AV_PY_CARGACREDITIA_DET_IIDCARGACREDITIADET_GENERATOR",
+        "sequenceName": "CARGACREDITIADET"
+      },
+      "fields": [
+        {
+          "name": "iidcargacreditiadet",
+          "javaType": "int",
+          "annotations": ["@Id", "@Column(name='iidcargacreditiadet')", "@SequenceGenerator(sequenceName='CARGACREDITIADET')", "@GeneratedValue(strategy=SEQUENCE)"],
+          "column": "iidcargacreditiadet"
+        },
+        {
+          "name": "dfdescuento",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.DATE)"],
+          "column": "dfdescuento"
+        },
+        {
+          "name": "malicuota",
+          "javaType": "BigDecimal",
+          "column": "malicuota"
+        },
+        {
+          "name": "mtotal",
+          "javaType": "BigDecimal",
+          "column": "mtotal"
+        },
+        {
+          "name": "vidrubroh",
+          "javaType": "String",
+          "column": "vidrubroh"
+        },
+        {
+          "name": "horaingresoAu",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.TIMESTAMP)", "@Column(name='horaingreso_au')"],
+          "column": "horaingreso_au"
+        },
+        {
+          "name": "usuarioingresoAu",
+          "javaType": "String",
+          "annotations": ["@Column(name='usuarioingreso_au')"],
+          "column": "usuarioingreso_au"
+        },
+        {
+          "name": "usuariomodificacionAu",
+          "javaType": "String",
+          "annotations": ["@Column(name='usuariomodificacion_au')"],
+          "column": "usuariomodificacion_au"
+        },
+        {
+          "name": "horamodificacionAu",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.TIMESTAMP)", "@Column(name='horamodificacion_au')"],
+          "column": "horamodificacion_au"
+        },
+        {
+          "name": "vcedula",
+          "javaType": "String",
+          "annotations": ["@Column(name='vcedula')"],
+          "column": "vcedula"
+        },
+        {
+          "name": "vstss",
+          "javaType": "String",
+          "annotations": ["@Column(name='vstts')"],
+          "column": "vstts"
+        },
+        {
+          "name": "vobservacion",
+          "javaType": "String",
+          "annotations": ["@Column(name='vobservacion')"],
+          "column": "vobservacion"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "avColaboradorese",
+          "type": "@ManyToOne",
+          "targetEntity": "AvColaboradorese",
+          "joinColumns": [
+            {"name": "iidcolaborador", "referencedColumn": "iidcolaborador"},
+            {"name": "iidempresa", "referencedColumn": "iidempresa"}
+          ],
+          "description": "Colaborador-Empresa (FK compuesta)"
+        },
+        {
+          "name": "avPyCargacreditia",
+          "type": "@ManyToOne",
+          "targetEntity": "AvPyCargacreditia",
+          "joinColumn": "iidcargacreditia",
+          "description": "Parent carga CrediTIA"
+        }
+      ]
+    },
+    "AvPyRubrosPrestamo": {
+      "file": "avante/backend/model/AvPyRubrosPrestamo.java",
+      "table": "av_py_rubros_prestamo",
+      "primaryKey": {
+        "field": "iidrubroprestamo",
+        "type": "Integer",
+        "strategy": "SEQUENCE",
+        "generator": "savcolaboradores"
+      },
+      "fields": [
+        {
+          "name": "iidrubroprestamo",
+          "javaType": "Integer",
+          "annotations": ["@Id", "@GeneratedValue(strategy=SEQUENCE, generator='savcolaboradores')"],
+          "column": "iidrubroprestamo"
+        },
+        {
+          "name": "ictacte",
+          "javaType": "Integer",
+          "column": "ictacte"
+        },
+        {
+          "name": "iidabono",
+          "javaType": "int",
+          "column": "iidabono"
+        },
+        {
+          "name": "botar",
+          "javaType": "BigDecimal",
+          "column": "botar"
+        },
+        {
+          "name": "ccontrol",
+          "javaType": "String",
+          "column": "ccontrol"
+        },
+        {
+          "name": "dcancelacion",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.DATE)"],
+          "column": "dcancelacion"
+        },
+        {
+          "name": "dfiniciodsc",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.DATE)"],
+          "column": "dfiniciodsc"
+        },
+        {
+          "name": "dfprestamo",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.DATE)"],
+          "column": "dfprestamo"
+        },
+        {
+          "name": "horaingresoAu",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.DATE)", "@Column(name='horaingreso_au')"],
+          "column": "horaingreso_au"
+        },
+        {
+          "name": "horamodificacionAu",
+          "javaType": "Date",
+          "annotations": ["@Temporal(TemporalType.DATE)", "@Column(name='horamodificacion_au')"],
+          "column": "horamodificacion_au"
+        },
+        {
+          "name": "iidrubrosIdoUpl",
+          "javaType": "int",
+          "annotations": ["@Column(name='iidrubros_ido_upl')"],
+          "column": "iidrubros_ido_upl"
+        },
+        {
+          "name": "inroalicuotas",
+          "javaType": "int",
+          "column": "inroalicuotas"
+        },
+        {
+          "name": "itcomporta",
+          "javaType": "int",
+          "column": "itcomporta"
+        },
+        {
+          "name": "mabono",
+          "javaType": "BigDecimal",
+          "column": "mabono"
+        },
+        {
+          "name": "malicuota",
+          "javaType": "BigDecimal",
+          "column": "malicuota"
+        },
+        {
+          "name": "mmonto",
+          "javaType": "BigDecimal",
+          "column": "mmonto"
+        },
+        {
+          "name": "msaldo",
+          "javaType": "BigDecimal",
+          "column": "msaldo"
+        },
+        {
+          "name": "mmontocompromisos",
+          "javaType": "BigDecimal",
+          "column": "mmontocompromisos"
+        },
+        {
+          "name": "usuarioingresoAu",
+          "javaType": "String",
+          "annotations": ["@Column(name='usuarioingreso_au')"],
+          "column": "usuarioingreso_au"
+        },
+        {
+          "name": "usuariomodificacionAu",
+          "javaType": "String",
+          "annotations": ["@Column(name='usuariomodificacion_au')"],
+          "column": "usuariomodificacion_au"
+        },
+        {
+          "name": "vaccion",
+          "javaType": "String",
+          "column": "vaccion"
+        },
+        {
+          "name": "vdocreferencia",
+          "javaType": "String",
+          "column": "vdocreferencia"
+        },
+        {
+          "name": "vobservaciones",
+          "javaType": "String",
+          "column": "vobservaciones"
+        },
+        {
+          "name": "vstts",
+          "javaType": "String",
+          "column": "vstts"
+        },
+        {
+          "name": "icodigoprestamo",
+          "javaType": "int",
+          "column": "icodigoprestamo"
+        },
+        {
+          "name": "vmotivocancelacion",
+          "javaType": "String",
+          "column": "vmotivocancelacion"
+        },
+        {
+          "name": "cafectactatia",
+          "javaType": "String",
+          "column": "cafectactatia"
+        },
+        {
+          "name": "mvalorctatia",
+          "javaType": "BigDecimal",
+          "column": "mvalorctatia"
+        },
+        {
+          "name": "cafectactacia",
+          "javaType": "String",
+          "column": "cafectactacia"
+        },
+        {
+          "name": "mvalorctacia",
+          "javaType": "BigDecimal",
+          "column": "mvalorctacia"
+        },
+        {
+          "name": "cafectatransitoria",
+          "javaType": "String",
+          "column": "cafectatransitoria"
+        },
+        {
+          "name": "mvalortransitoria",
+          "javaType": "BigDecimal",
+          "column": "mvalortransitoria"
+        },
+        {
+          "name": "cxsobregiro",
+          "javaType": "String",
+          "column": "cxsobregiro"
+        },
+        {
+          "name": "cxrestructuracion",
+          "javaType": "String",
+          "column": "cxrestructuracion"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "avCatalogoMotivo",
+          "type": "@ManyToOne",
+          "targetEntity": "AvCatalogos",
+          "joinColumn": "imotivo_prestamo",
+          "description": "Motivo del préstamo"
+        },
+        {
+          "name": "avPyRubro",
+          "type": "@ManyToOne",
+          "targetEntity": "AvPyRubro",
+          "joinColumn": "vidrubro",
+          "description": "Rubro asociado"
+        },
+        {
+          "name": "avColaboradorese",
+          "type": "@ManyToOne",
+          "targetEntity": "AvColaboradorese",
+          "joinColumns": [
+            {"name": "iidcolaborador", "referencedColumn": "iidcolaborador"},
+            {"name": "iidempresa", "referencedColumn": "iidempresa"}
+          ],
+          "description": "Colaborador-Empresa (FK compuesta)"
+        },
+        {
+          "name": "avPyCargaCreditia",
+          "type": "@ManyToOne",
+          "targetEntity": "AvPyCargacreditia",
+          "joinColumn": "iidcargacreditia",
+          "description": "Carga CrediTIA origen"
+        },
+        {
+          "name": "avPyColaboradoresSolValDif",
+          "type": "@ManyToOne",
+          "targetEntity": "AvPyColaboradoressolValdif",
+          "joinColumn": "iidcolabsolvaldif",
+          "description": "Solicitud de vale diferido origen"
+        },
+        {
+          "name": "avPyRubrosPrestamoAbos",
+          "type": "@OneToMany",
+          "targetEntity": "AvPyRubrosPrestamoAbo",
+          "mappedBy": "avPyRubrosPrestamo",
+          "description": "Abonos del préstamo"
+        },
+        {
+          "name": "avPyRubrosPrestamoComs",
+          "type": "@OneToMany",
+          "targetEntity": "AvPyRubrosPrestamoCom",
+          "mappedBy": "avPyRubrosPrestamo",
+          "description": "Compromisos del préstamo"
+        }
+      ]
+    }
+  },
+  "compositePrimaryKeys": {
+    "AvColaboradorese": {
+      "note": "Used by AvPyRubrosPrestamo, AvPyCargacreditiaDet, and AvPyColaboradoressolValdif via @JoinColumns(iidcolaborador, iidempresa). AvColaboradorese has a composite PK (iidcolaborador + iidempresa) via @EmbeddedId or equivalent. This entity is in avante/backend/model/AvColaboradorese.java.",
+      "joinColumns": [
+        {"name": "iidcolaborador", "type": "int"},
+        {"name": "iidempresa", "type": "int"}
+      ]
+    }
+  },
+  "nativeSqlQueries": {
+    "getprovisionesxcolaborador": {
+      "dao": "AvPyRubroslHisDAOJpaImpl",
+      "file": "avante/backend/dao/impl/AvPyRubroslHisDAOJpaImpl.java",
+      "method": "getprovisionesxcolaborador(iidempresa, anio, mes, colaborador, rol)",
+      "usedBy": ["ProvisionesxColaboradorListCtrl"],
+      "description": "Returns Object[] with provisiones data per collaborator. Uses Av_F_AcumProvisiones DB function.",
+      "resultColumns": "[0]=valmes, [1]=basemes, [5]=acumval, [6]=acumbase, [7]=vcedula, [8]=vnombres, [9]=iidcolaborador"
+    },
+    "getprovisionesxcolaboradorxid": {
+      "dao": "AvPyRubroslHisDAOJpaImpl",
+      "method": "getprovisionesxcolaboradorxid(iidempresa, anio, mes, iidcolaborador)",
+      "usedBy": ["ProvisionesxColaboradorDialogCtrl"],
+      "description": "Detail provisiones for a single collaborator.",
+      "resultColumns": "[0]=valmes, [1]=basemes, [5]=acumval, [6]=acumbase, [7]=vrubro"
+    },
+    "getvalmesacumprovisionesxrubro": {
+      "dao": "AvPyRubroslHisDAOJpaImpl",
+      "method": "getvalmesacumprovisionesxrubro(anio, mes, iidempresa)",
+      "usedBy": ["ConsultaProvisionesxRubroListCtrl"],
+      "description": "Provisiones aggregated by rubro.",
+      "resultColumns": "[0]=rubro, [1]=numcolab, [2]=valmes, [3]=basemes, [4]=acumval, [5]=acumbase"
+    },
+    "getcolaboradoresxprovisiones": {
+      "dao": "AvPyRubroslHisDAOJpaImpl",
+      "method": "getcolaboradoresxprovisiones(anio, mes, rubro, localidad, rol, colaborador, iidempresa)",
+      "usedBy": ["ColaboradoresxProvisionListCtrl"],
+      "description": "Collaborators filtered by provisión/rubro.",
+      "resultColumns": "[0]=valmes, [1]=basemes, [5]=acumval, [6]=acumbase, [7]=vcedula, [8]=vnombres"
+    },
+    "getDetallePrestamosSolValDif": {
+      "dao": "AvPyDistribValesdifDAOJpaImpl",
+      "method": "getDetallePrestamosSolValDif(iidempresa, iidcolaborador)",
+      "usedBy": ["detPrestSolValDifDialogCtrl"],
+      "description": "Loan details for a vale diferido request",
+      "resultColumns": "[0]=rubro/concepto, [1]=monto, [2]=saldo, [3]=cuota, [4]=numcuotasPend, [5]=fechaDescuento"
+    }
+  },
+  "screenNavigationFlow": {
+    "valesDiferidos": {
+      "entry": "SolicitudValesDiferidosListCtrl (main list of AvPyColaboradoressolValdif)",
+      "actions": {
+        "viewLoans": "→ detallePrestSolValDif.zul (detPrestSolValDifDialogCtrl)",
+        "reject": "→ rechazoSolValeDif.zul (rechazoSolValDifDialogCtrl)",
+        "viewRejection": "→ rechazoSolValeDifVistaLocal.zul (rechazoSolValDifLocalDialogCtrl)"
+      }
+    },
+    "provisiones": {
+      "entry": "consultaProvisionesxRubroList.zul (ConsultaProvisionesxRubroListCtrl)",
+      "doubleClickRubro": "→ colaboradoresxProvision.zul (ColaboradoresxProvisionListCtrl)",
+      "altEntry": "provisionesxColaboradorList.zul (ProvisionesxColaboradorListCtrl)",
+      "doubleClickColaborador": "→ provisionesxColaboradorDialog.zul (ProvisionesxColaboradorDialogCtrl)"
+    }
+  }
+}

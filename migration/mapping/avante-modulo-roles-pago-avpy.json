@@ -1,0 +1,832 @@
+{
+  "modulo": "Roles de Pago / Nómina (AvPy)",
+  "prefijo_entidades": "AvPy*",
+  "descripcion_general": "Módulo de Nómina y Roles de Pago del sistema Avante. Gestiona todo el ciclo de procesamiento de nómina: definición de rubros, ejecución de procesos de pago, distribución de costos, generación de acreditaciones, control de préstamos y endeudamiento, interfases contables y con el IESS, gestión de tabla de Impuesto a la Renta, provisiones, vales diferidos, anticipos de sueldo, sobregiros y reportes financieros.",
+  "paquetes_relacionados": [
+    "avante.backend.model (entidades AvPy*)",
+    "avante.backend.dao (DAOs de nómina)",
+    "avante.gth.service (servicios de GTH que procesan nómina)",
+    "avante.gth.webui (controladores de UI de nómina)",
+    "avante.core.rest.api (endpoints REST de pagos y endeudamiento)"
+  ],
+  "paginas_zul": "WebContent/WEB-INF/avante/rolesdepago/",
+  "funcionalidades": {
+    "1_rubros_nomina": {
+      "nombre": "Gestión de Rubros de Nómina",
+      "descripcion": "Administración de los rubros (conceptos) que componen la nómina: ingresos, egresos, provisiones, aportes. Permite crear, editar, eliminar y consultar rubros con sus parámetros de cálculo.",
+      "entidades": [
+        {
+          "archivo": "AvPyRubro.java",
+          "descripcion": "Entidad principal que define un rubro de nómina (ingreso, egreso, aporte, provisión)"
+        },
+        {
+          "archivo": "AvPyRubrosl.java",
+          "descripcion": "Detalle/líneas del rubro de nómina por colaborador y periodo"
+        },
+        {
+          "archivo": "AvPyRubroslPK.java",
+          "descripcion": "Clave primaria compuesta de las líneas del rubro"
+        },
+        {
+          "archivo": "AvPyRubrose.java",
+          "descripcion": "Extensiones del rubro con configuraciones adicionales"
+        },
+        {
+          "archivo": "AvPyRubrosePK.java",
+          "descripcion": "Clave primaria compuesta de las extensiones del rubro"
+        },
+        {
+          "archivo": "AvPyRubroslhis.java",
+          "descripcion": "Histórico de rubros de nómina procesados"
+        },
+        {
+          "archivo": "AvPyRubroslhisPK.java",
+          "descripcion": "Clave primaria del histórico de rubros"
+        },
+        {
+          "archivo": "AvPyRubroslpre.java",
+          "descripcion": "Rubros pre-calculados/presupuestados"
+        },
+        {
+          "archivo": "AvPyRubroslprePK.java",
+          "descripcion": "Clave primaria de rubros pre-calculados"
+        },
+        {
+          "archivo": "AvPyRubroslpreColab.java",
+          "descripcion": "Rubros pre-calculados por colaborador"
+        },
+        {
+          "archivo": "AvPyRubroslpreColabPK.java",
+          "descripcion": "Clave primaria de rubros pre-calculados por colaborador"
+        },
+        {
+          "archivo": "AvPyClasesrubro.java",
+          "descripcion": "Clasificación de rubros (tipos/categorías)"
+        },
+        {
+          "archivo": "AvPyClasesrubrosl.java",
+          "descripcion": "Detalle de clases de rubros"
+        },
+        {
+          "archivo": "AvPyClasesrubroslPK.java",
+          "descripcion": "Clave primaria de clases de rubros"
+        }
+      ],
+      "vistas_bd": [
+        "AvPyRubroslhisttotalesV.java - Vista de totales históricos de rubros",
+        "AvPyRubroslpretotalesV.java - Vista de totales de rubros pre-calculados"
+      ],
+      "controladores": [
+        "RubrosListCtrl.java - Listado de rubros de nómina",
+        "RubrosDialogCtrl.java - Diálogo de creación/edición de rubros",
+        "RubrosxProcesoDialogCtrl.java - Asignación de rubros a procesos de nómina"
+      ],
+      "pantallas_zul": [
+        "rubros.zul - Listado principal de rubros",
+        "rubrosDialog.zul - Formulario de rubro",
+        "rubrosxprocesoDialog.zul - Asignación de rubros por proceso"
+      ]
+    },
+    "2_procesos_nomina": {
+      "nombre": "Ejecución de Procesos de Nómina",
+      "descripcion": "Definición y ejecución de los procesos de cálculo de nómina. Permite configurar procesos (quincena, mensual, décimos, etc.), ejecutarlos, revisarlos, revertirlos, y gestionar instancias de procesos con control de estados (abierto, ejecutado, cerrado, aprobado).",
+      "entidades": [
+        {
+          "archivo": "AvPyProcesos.java",
+          "descripcion": "Definición de procesos de nómina (quincena, mensual, décimos, utilidades, finiquito, etc.)"
+        },
+        {
+          "archivo": "AvPyProcesosl.java",
+          "descripcion": "Detalle/líneas del proceso de nómina (rubros asociados al proceso)"
+        },
+        {
+          "archivo": "AvPyProcesoslPK.java",
+          "descripcion": "Clave primaria de líneas del proceso"
+        },
+        {
+          "archivo": "AvPyProcesosinstancias.java",
+          "descripcion": "Instancias de ejecución de procesos con fecha, estado y datos de auditoría"
+        },
+        {
+          "archivo": "AvPyProcesoslegacolab.java",
+          "descripcion": "Relación de procesos legales con colaboradores"
+        },
+        {
+          "archivo": "AvPyLogRegistrosProceso.java",
+          "descripcion": "Log de registros y errores del procesamiento de nómina"
+        }
+      ],
+      "vistas_bd": [
+        "AvPyProcesosV.java - Vista de procesos con información consolidada",
+        "AvPyProcesoslV.java - Vista de líneas de procesos"
+      ],
+      "controladores": [
+        "ProcesosListCtrl.java - Listado de procesos de nómina",
+        "ProcesosDialogCtrl.java - Diálogo de definición de proceso",
+        "ProcesosEjecucionListCtrl.java - Listado de ejecuciones de procesos",
+        "ProcesosEjecucionDialogCtrl.java - Diálogo de ejecución del proceso de nómina",
+        "ProcesosEjecucionDialogCtrlThread.java - Hilo para ejecución asíncrona del proceso",
+        "ProcessStatusUpdateThread.java - Hilo para actualización de estado del proceso",
+        "ProcesosEjecucionRevDialogCtrl.java - Diálogo de reversión de proceso",
+        "ProcesosEjecucionRevListCtrl.java - Listado de reversiones de procesos",
+        "ProcesosEjecucionxColabListCtrl.java - Ejecución de proceso por colaborador específico",
+        "ProcesosEjecucionAbrirLQListCtrl.java - Apertura de liquidaciones",
+        "ProcesosEjecucionAprobarLQListCtrl.java - Aprobación de liquidaciones",
+        "EjecucionProcCierreDialogCtrl.java - Ejecución de proceso de cierre",
+        "EjecucionBotCtrl.java - Ejecución de bot de nómina",
+        "InstanciasProcesosListCtrl.java - Listado de instancias de procesos",
+        "InstanciasProcesosDialog.java - Diálogo de detalle de instancia"
+      ],
+      "pantallas_zul": [
+        "procesos.zul - Listado de definición de procesos",
+        "procesosDialog.zul - Formulario de proceso",
+        "procesosEjecucion.zul - Pantalla principal de ejecución",
+        "procesosEjecDialog.zul - Diálogo de parámetros de ejecución",
+        "procesosejeccolaboradores.zul - Ejecución por colaboradores",
+        "procesosEjecucionReversion.zul - Listado de reversiones",
+        "procesosEjecucionReversionDialog.zul - Diálogo de reversión",
+        "procesosEjecAbrirLQ.zul - Apertura de liquidaciones",
+        "procesosEjecAprobarLQ.zul - Aprobación de liquidaciones",
+        "EjecucionProcCierre.zul - Proceso de cierre",
+        "ejecucionbot.zul - Ejecución de bot",
+        "instanciasProcesos.zul - Instancias de procesos",
+        "instanciasProcesosDialog.zul - Detalle de instancia"
+      ]
+    },
+    "3_consulta_nomina_colaborador": {
+      "nombre": "Consulta de Nómina por Colaborador",
+      "descripcion": "Consulta detallada de la nómina procesada a nivel de cada colaborador, incluyendo roles de pago individuales, resúmenes generales, comparativos entre periodos y consultas pre-cálculo.",
+      "controladores": [
+        "NominaxColabListCtrl.java - Listado de nómina por colaborador",
+        "NominaxColabPreDialogCtrl.java - Diálogo de nómina pre-cálculo",
+        "NominaxColabPreListCtrl.java - Listado de nómina pre-cálculo",
+        "NominaResumenGeneralCtrl.java - Resumen general de nómina",
+        "NominaResumenGralCxRubroCtrl.java - Resumen general por clasificación de rubro",
+        "NominaResumenGralxRubroCtrl.java - Resumen general desglosado por rubro",
+        "ResumenGralNominaDialogCtrl.java - Diálogo de resumen general de nómina",
+        "ComparativoNominasListCtrl.java - Comparativo entre nóminas de diferentes periodos",
+        "ConSueldoListCtrl.java - Consulta de sueldos"
+      ],
+      "pantallas_zul": [
+        "nominaxColabList.zul - Nómina por colaborador",
+        "nominaxColabPreDialog.zul - Nómina pre-cálculo diálogo",
+        "nominaxColabPreList.zul - Nómina pre-cálculo listado",
+        "nominaresumenGeneral.zul - Resumen general",
+        "nominaresumenGralCxRubro.zul - Resumen por clasificación de rubro",
+        "nominaresumenGralxRubro.zul - Resumen por rubro",
+        "ResumenGralNominaDialog.zul - Diálogo de resumen",
+        "comparativoNominas.zul - Comparativo de nóminas",
+        "conSueldo.zul - Consulta de sueldos"
+      ]
+    },
+    "4_prestamos": {
+      "nombre": "Gestión de Préstamos",
+      "descripcion": "Administración completa de préstamos a colaboradores: registro, cuotas, abonos, cancelaciones, baja de préstamos, dimensiones de préstamos y seguimiento de comprobantes. Incluye préstamos quirografarios, préstamos de empresa y descuentos a terceros.",
+      "entidades": [
+        {
+          "archivo": "AvPyRubrosPrestamo.java",
+          "descripcion": "Cabecera del préstamo: monto, plazo, tasa, estado"
+        },
+        {
+          "archivo": "AvPyRubrosPrestamoAbo.java",
+          "descripcion": "Abonos programados del préstamo (tabla de amortización)"
+        },
+        {
+          "archivo": "AvPyRubrosPrestamoAbonos.java",
+          "descripcion": "Abonos efectivamente realizados"
+        },
+        {
+          "archivo": "AvPyRubrosPrestamoAcre.java",
+          "descripcion": "Acreditaciones de préstamos"
+        },
+        {
+          "archivo": "AvPyRubrosPrestamoCom.java",
+          "descripcion": "Comprobantes de préstamos"
+        },
+        {
+          "archivo": "AvPyRubrosPrestamoComTmp.java",
+          "descripcion": "Comprobantes temporales de préstamos"
+        },
+        {
+          "archivo": "AvPyRubrosPrestamoDetAbono.java",
+          "descripcion": "Detalle de abonos del préstamo"
+        },
+        {
+          "archivo": "AvPyRubrosPrestamodimension.java",
+          "descripcion": "Dimensiones asociadas al préstamo (centro de costo, localidad)"
+        },
+        {
+          "archivo": "AvPyRubrosSobregiroHi.java",
+          "descripcion": "Histórico de sobregiros de préstamos"
+        },
+        {
+          "archivo": "AvPyRubrosSobregiroHiPK.java",
+          "descripcion": "Clave primaria del histórico de sobregiros"
+        }
+      ],
+      "vistas_bd": [
+        "AvPyRubrosPrestamoComV.java - Vista consolidada de comprobantes de préstamos"
+      ],
+      "controladores": [
+        "RubrosPrestamoListCtrl.java - Listado de préstamos",
+        "RubrosPrestamoMainCtrl.java - Pantalla principal de préstamos",
+        "RubrosPrestamoDetailCtrl.java - Detalle del préstamo",
+        "RubrosPrestamoCoMainCtrl.java - Préstamos por colaborador",
+        "RubrosPrestamoAbonosCtrl.java - Gestión de abonos",
+        "RubrosPrestamoAbonosCancelCtrl.java - Cancelación de abonos",
+        "RubrosPrestamoBajaCtrl.java - Baja de préstamos",
+        "CuotasCompromDialogCtrl.java - Cuotas comprometidas"
+      ],
+      "pantallas_zul": [
+        "rubrosPrestamoList.zul - Listado de préstamos",
+        "rubrosPrestamoMain.zul - Pantalla principal",
+        "rubrosPrestamoDetail.zul - Detalle",
+        "rubrosPrestamoCoDialog.zul - Préstamos por colaborador",
+        "rubrosPrestamoAbonos.zul - Abonos",
+        "rubrosPrestamoAbonosCancel.zul - Cancelación",
+        "rubrosPrestamoBaja.zul - Baja",
+        "CuotasComprometDialog.zul - Cuotas comprometidas"
+      ]
+    },
+    "5_distribucion_costos": {
+      "nombre": "Distribución de Costos",
+      "descripcion": "Gestión de la distribución de costos de nómina por centros de costo, localidades y dimensiones organizacionales. Permite configurar perfiles de distribución por colaborador y por localidad.",
+      "entidades": [
+        {
+          "archivo": "AvPyDistribucion.java",
+          "descripcion": "Cabecera de distribución de costos"
+        },
+        {
+          "archivo": "AvPyDistribucionDet.java",
+          "descripcion": "Detalle de distribución (porcentajes por centro de costo)"
+        },
+        {
+          "archivo": "AvPyDistribucionDetPK.java",
+          "descripcion": "Clave primaria de detalle de distribución"
+        },
+        {
+          "archivo": "AvPyDistribucionPK.java",
+          "descripcion": "Clave primaria de distribución"
+        },
+        {
+          "archivo": "AvPyDistcosto.java",
+          "descripcion": "Distribución de costos calculada"
+        },
+        {
+          "archivo": "AvPyDistcostoscxpl.java",
+          "descripcion": "Distribución de costos por cuenta contable y localidad"
+        },
+        {
+          "archivo": "AvPyDistcostoslxpl.java",
+          "descripcion": "Distribución de costos por localidad y perfil"
+        }
+      ],
+      "vistas_bd": [
+        "AvPyDistcostoscxplV.java - Vista de distribución por cuenta contable",
+        "AvPyDistcostoslxplV.java - Vista de distribución por localidad"
+      ],
+      "controladores": [
+        "DistribucionCostosListCtrl.java - Listado de distribuciones de costo",
+        "DistribucionCostosDialogCtrl.java - Diálogo de configuración de distribución",
+        "DistribucionCostosColabxPerfilListCtrl.java - Distribución por colaborador y perfil",
+        "DistribucionCostosLocxPerfilListCtrl.java - Distribución por localidad y perfil",
+        "ColaboradoresDistribucionDialogCtrl.java - Asignación de distribución al colaborador"
+      ],
+      "pantallas_zul": [
+        "distribucionCostosList.zul - Listado",
+        "distribucionCostosDialog.zul - Diálogo de configuración",
+        "distribucionCostosColabxPerfil.zul - Por colaborador y perfil",
+        "distribucionCostosLocxPerfil.zul - Por localidad y perfil",
+        "ColaboradoresDistribucion.zul - Asignación al colaborador"
+      ]
+    },
+    "6_acumulados": {
+      "nombre": "Consulta de Acumulados",
+      "descripcion": "Consulta y gestión de valores acumulados de nómina por colaborador y periodo: totales de ingresos, egresos, aportes y provisiones acumulados en el año fiscal.",
+      "entidades": [
+        {
+          "archivo": "AvPyAcumulado.java",
+          "descripcion": "Valores acumulados de nómina por colaborador y periodo"
+        }
+      ],
+      "vistas_bd": [
+        "AvPyAcumuladosV.java - Vista de acumulados consolidados"
+      ],
+      "controladores": [
+        "AcumuladosMainCtrl.java - Pantalla principal de consulta de acumulados"
+      ],
+      "pantallas_zul": [
+        "acumulados.zul - Consulta de acumulados"
+      ]
+    },
+    "7_acreditaciones": {
+      "nombre": "Acreditaciones Bancarias",
+      "descripcion": "Generación de archivos de acreditación bancaria para el pago de nómina a los colaboradores. Incluye acreditaciones generales, por bonificaciones y por rubros IDO.",
+      "controladores": [
+        "AcreditacionDialogCtrl.java - Diálogo de generación de acreditación",
+        "AcreditacionBonificacionesCtrl.java - Acreditación de bonificaciones",
+        "AcreditacionRubrosIdoCtrl.java - Acreditación de rubros IDO",
+        "ConsultaAcreditacionesListCtrl.java - Consulta de acreditaciones generadas"
+      ],
+      "pantallas_zul": [
+        "acreditacion.zul - Acreditación general",
+        "acreditacionBonificaciones.zul - Acreditación bonificaciones",
+        "AcreditacionRubrosIdo.zul - Acreditación rubros IDO",
+        "consultaAcreditacionesList.zul - Consulta de acreditaciones"
+      ]
+    },
+    "8_rubros_ido": {
+      "nombre": "Rubros IDO (Ingresos Descuentos Otros)",
+      "descripcion": "Gestión de rubros de tipo IDO que representan ingresos, descuentos y otros conceptos especiales gestionados fuera del flujo normal de nómina. Permite carga masiva, consulta, interfases y acreditación.",
+      "entidades": [
+        {
+          "archivo": "AvPyRubrosIdo.java",
+          "descripcion": "Cabecera del rubro IDO"
+        },
+        {
+          "archivo": "AvPyRubrosIdoUp.java",
+          "descripcion": "Actualización/carga de rubros IDO"
+        },
+        {
+          "archivo": "AvPyRubrosIdoUpl.java",
+          "descripcion": "Líneas de carga de rubros IDO"
+        },
+        {
+          "archivo": "AvPyRubrosIdoUplIni.java",
+          "descripcion": "Inicialización de carga de rubros IDO"
+        }
+      ],
+      "vistas_bd": [
+        "AvPyRubrosIdoV.java - Vista consolidada de rubros IDO",
+        "AvPyRubrosIdoUpV.java - Vista de cargas de rubros IDO"
+      ],
+      "controladores": [
+        "RubrosIDOMainCtrl.java - Pantalla principal de rubros IDO",
+        "RubrosIDOListCtrl.java - Listado de rubros IDO",
+        "RubrosIDODetailCtrl.java - Detalle del rubro IDO",
+        "RubrosIDOCargaxProcesoDialogCtrl.java - Carga de rubros IDO por proceso",
+        "RubrosIDOInterfasesDialogCtrl.java - Interfases de rubros IDO",
+        "CargaRubrosIDOListCtrl.java - Carga masiva de rubros IDO",
+        "ConsultaRubrosIDOCtrl.java - Consulta de rubros IDO"
+      ],
+      "pantallas_zul": [
+        "rubrosIDOMain.zul - Pantalla principal",
+        "rubrosIDOList.zul - Listado",
+        "rubrosIDODetail.zul - Detalle",
+        "rubrosIDOcargaxProceso.zul - Carga por proceso",
+        "cargaRubrosIDO.zul - Carga masiva",
+        "consultaRubrosIdoList.zul - Consulta"
+      ]
+    },
+    "9_interfases_iess": {
+      "nombre": "Interfases IESS",
+      "descripcion": "Generación de archivos de interfaz con el Instituto Ecuatoriano de Seguridad Social (IESS): aportes patronales, personales, fondos de reserva, y carga/descarga de archivos IESS.",
+      "entidades": [
+        {
+          "archivo": "AvPyRubrosIess.java",
+          "descripcion": "Rubros relacionados con el IESS"
+        },
+        {
+          "archivo": "AvPyRubrosIessl.java",
+          "descripcion": "Detalle de rubros IESS"
+        }
+      ],
+      "controladores": [
+        "InterfasIESSListCtrl.java - Listado de interfases IESS",
+        "InterfasIESSBotCargaDescargaDialogCtrl.java - Carga/descarga de archivos IESS",
+        "cargaRubrosIESSListCtrl.java - Carga de rubros IESS"
+      ],
+      "pantallas_zul": [
+        "interfazIESS.zul - Pantalla de interfases IESS",
+        "cargaRubrosIESS.zul - Carga de rubros IESS"
+      ]
+    },
+    "10_interfases_contables": {
+      "nombre": "Interfases Contables",
+      "descripcion": "Generación de asientos contables a partir de la nómina procesada. Incluye contabilización automática, consulta contable, cuadre contable y reportes contable-financieros.",
+      "entidades": [
+        {
+          "archivo": "AvPyInterfas.java",
+          "descripcion": "Interfases contables generadas"
+        },
+        {
+          "archivo": "AvPyInterfasarchivo.java",
+          "descripcion": "Archivos generados por la interfaz contable"
+        },
+        {
+          "archivo": "AvPyInterfasearchivoPrestamos.java",
+          "descripcion": "Archivos de interfaz contable para préstamos"
+        }
+      ],
+      "controladores": [
+        "InterfasContableDialogCtrl.java - Diálogo de generación de interfaz contable",
+        "ContabilizacionDialogCtrl.java - Diálogo de contabilización",
+        "ConsultaContableListCtrl.java - Consulta contable",
+        "ConsultaContableFinancieraListCtrl.java - Consulta contable-financiera",
+        "ConsultaCuadreContableListCtrl.java - Cuadre contable general",
+        "ConsultaCuadreContablexColabListCtrl.java - Cuadre contable por colaborador"
+      ],
+      "pantallas_zul": [
+        "interfasContable.zul - Interfaz contable",
+        "contabilizacionDialogCtrl.zul - Contabilización",
+        "consultaContableList.zul - Consulta contable",
+        "reporteContableFinanciero.zul - Reporte contable-financiero",
+        "consultaCuadreContableList.zul - Cuadre contable",
+        "consultaCuadreContablexColabList.zul - Cuadre por colaborador"
+      ]
+    },
+    "11_plantilla_contable": {
+      "nombre": "Plantillas Contables",
+      "descripcion": "Definición de plantillas contables que mapean rubros de nómina a cuentas contables, subcuentas y centros de costo para la generación automática de asientos contables.",
+      "entidades": [
+        {
+          "archivo": "AvPyPlantillaContable.java",
+          "descripcion": "Definición de plantilla contable (rubro → cuenta contable)"
+        },
+        {
+          "archivo": "AvPyCtasubctaAso.java",
+          "descripcion": "Asociación de cuentas y subcuentas contables"
+        },
+        {
+          "archivo": "AvPyCtasubctaAsoPK.java",
+          "descripcion": "Clave primaria de asociación cuenta/subcuenta"
+        },
+        {
+          "archivo": "AvPyCuadreprovcontable.java",
+          "descripcion": "Cuadre de provisiones contables"
+        },
+        {
+          "archivo": "AvPyCuadreprovcontableDet.java",
+          "descripcion": "Detalle del cuadre de provisiones contables"
+        },
+        {
+          "archivo": "AvPyCuadreprovcontableDetPK.java",
+          "descripcion": "Clave primaria del detalle de cuadre"
+        }
+      ],
+      "vistas_bd": [
+        "AvPyPlantillaContableV.java - Vista de plantillas contables"
+      ],
+      "controladores": [
+        "PlantillaContableListCtrl.java - Listado de plantillas contables",
+        "PlantillaContableMainCtrl.java - Pantalla principal de plantillas",
+        "RubroPlantillaContableDialogCtrl.java - Asignación de rubro a plantilla contable",
+        "ContratoPlantillaListCtrl.java - Plantillas por tipo de contrato",
+        "ContratoPlantillaDialogCtrl.java - Diálogo de plantilla por contrato"
+      ],
+      "pantallas_zul": [
+        "plantillaContable.zul - Listado de plantillas",
+        "plantillaContableDialog.zul - Diálogo de plantilla",
+        "rubroplantillaContableDialog.zul - Rubro a plantilla",
+        "contratoPlantilla.zul - Plantillas por contrato",
+        "contratoPlantillaDialog.zul - Diálogo contrato-plantilla"
+      ]
+    },
+    "12_parametros_nomina": {
+      "nombre": "Parámetros de Nómina",
+      "descripcion": "Configuración de parámetros generales del sistema de nómina: salario mínimo, porcentajes de aportación IESS, topes, valores de deducción, entre otros parámetros configurables por empresa.",
+      "entidades": [
+        {
+          "archivo": "AvPyParametro.java",
+          "descripcion": "Parámetros configurables de nómina"
+        },
+        {
+          "archivo": "AvPyParametroPK.java",
+          "descripcion": "Clave primaria compuesta de parámetros"
+        }
+      ],
+      "controladores": [
+        "ParametrosListCtrl.java - Listado de parámetros",
+        "ParametrosDialogCtrl.java - Diálogo de edición de parámetros"
+      ],
+      "pantallas_zul": [
+        "parametros.zul - Listado de parámetros",
+        "parametrosDialog.zul - Formulario de parámetros"
+      ]
+    },
+    "13_tabla_impuesto_renta": {
+      "nombre": "Gestión de Tabla de Impuesto a la Renta (IR)",
+      "descripcion": "Administración de la tabla de Impuesto a la Renta usada para el cálculo de retenciones mensuales en nómina, según las tablas vigentes del SRI. Incluye proyección de gastos personales y reporte INEC.",
+      "entidades": [
+        {
+          "archivo": "AvPyTir.java",
+          "descripcion": "Tabla de Impuesto a la Renta con rangos y porcentajes"
+        }
+      ],
+      "controladores": [
+        "GestionTablaIRListCtrl.java - Listado de tablas IR",
+        "GestionTablaIRDialogCtrl.java - Diálogo de edición de tabla IR",
+        "GastosPersonalesDialogCtrl.java - Proyección de gastos personales deducibles",
+        "GenIngProyectadosDialogCtrl.java - Generación de ingresos proyectados",
+        "ConsultaDocumento107ListCtrl.java - Consulta del documento 107 (retenciones en la fuente)",
+        "ReporteIRINECDialogCtrl.java - Reporte IR para INEC"
+      ],
+      "pantallas_zul": [
+        "gestionTablaIR.zul - Listado de tablas IR",
+        "gestionTablaIRDialog.zul - Formulario tabla IR",
+        "GastosPersonalesDialog.zul - Gastos personales",
+        "genIngProyectados.zul - Ingresos proyectados",
+        "ReporteIRINECDialog.zul - Reporte INEC"
+      ]
+    },
+    "14_endeudamiento": {
+      "nombre": "Control de Endeudamiento",
+      "descripcion": "Consulta y control del nivel de endeudamiento de los colaboradores, considerando préstamos activos, descuentos programados y capacidad de pago.",
+      "entidades": [
+        {
+          "archivo": "AvPyEndeudamiento.java",
+          "descripcion": "Cabecera del control de endeudamiento por colaborador"
+        },
+        {
+          "archivo": "AvPyEndeudamientoDet.java",
+          "descripcion": "Detalle del endeudamiento (desglose por concepto)"
+        }
+      ],
+      "dao": [
+        "AvPyEndeudamientoDAO.java - DAO para consultas de endeudamiento"
+      ],
+      "endpoint_rest": [
+        "EndeudamientoRestAPI.java - API REST para consulta de endeudamiento desde sistemas externos"
+      ]
+    },
+    "15_anticipos_sueldo": {
+      "nombre": "Anticipos de Sueldo",
+      "descripcion": "Gestión de solicitudes de anticipos de sueldo por parte de los colaboradores: solicitud, autorización, aprobación masiva, acreditación del anticipo y reportes.",
+      "controladores": [
+        "SolicitudAnticipoSueldoListCtrl.java - Listado de solicitudes de anticipo",
+        "solicitudAnticipoDialogCtrl.java - Diálogo de solicitud de anticipo",
+        "ColaboradoresAutorizaAnticipoDialogCtrl.java - Autorización de anticipos",
+        "AprobacionMasivaAnticiposSueldoDialogCtrl.java - Aprobación masiva de anticipos",
+        "ActualizarPagoSugeridoAnticiposDialogCtrl.java - Actualización de pago sugerido",
+        "ArchivoAnticipoSueldoListCtrl.java - Listado de archivos de anticipo",
+        "ArchivoAnticipoSueldoDialogCtrl.java - Generación de archivo de acreditación",
+        "ReportesAnticiposSueldoCtrl.java - Reportes de anticipos",
+        "ReportesAnticipoDialogCtrl.java - Diálogo de reportes de anticipo"
+      ],
+      "pantallas_zul_gth": [
+        "anticipoSueldo.zul - Solicitudes de anticipo",
+        "actualizarPagoSugeridoAnticipos.zul - Pago sugerido"
+      ]
+    },
+    "16_sobregiros": {
+      "nombre": "Sobregiros",
+      "descripcion": "Gestión de sobregiros de colaboradores: registro, autorización y seguimiento de montos que exceden el sueldo disponible.",
+      "controladores": [
+        "SobregiroListCtrl.java - Listado de sobregiros",
+        "SobregiroDialogCtrl.java - Diálogo de registro de sobregiro"
+      ],
+      "pantallas_zul": [
+        "sobregiro.zul - Listado de sobregiros",
+        "sobregiroDialog.zul - Formulario de sobregiro"
+      ]
+    },
+    "17_vales_diferidos": {
+      "nombre": "Vales Diferidos",
+      "descripcion": "Gestión de vales de consumo diferido para colaboradores: solicitud, distribución, consulta, rechazo y detalle de préstamos por vales diferidos.",
+      "entidades": [
+        {
+          "archivo": "AvPyDistribValesdif.java",
+          "descripcion": "Distribución de vales diferidos"
+        },
+        {
+          "archivo": "AvPyDistribValesdifDet.java",
+          "descripcion": "Detalle de distribución de vales diferidos"
+        },
+        {
+          "archivo": "AvPyColaboradoressolValdif.java",
+          "descripcion": "Solicitudes de vales diferidos por colaborador"
+        }
+      ],
+      "controladores": [
+        "SolicitudValesDiferidosListCtrl.java - Listado de solicitudes de vales",
+        "SolictValesDiferidosDialogCtrl.java - Diálogo de solicitud de vale diferido",
+        "SolicitudValeDiferidoConsultaCtrl.java - Consulta de solicitudes de vales",
+        "DistribValesDifListCtrl.java - Listado de distribución de vales",
+        "DistribValesDiferidosDialogCtrl.java - Diálogo de distribución",
+        "detPrestSolValDifDialogCtrl.java - Detalle de préstamo por vale diferido",
+        "rechazoSolValDifDialogCtrl.java - Rechazo de solicitud de vale",
+        "rechazoSolValDifLocalDialogCtrl.java - Rechazo local de solicitud de vale"
+      ],
+      "pantallas_zul": [
+        "detallePrestSolValDif.zul - Detalle préstamo/vale",
+        "rechazoSolValeDif.zul - Rechazo de vale",
+        "rechazoSolValeDifVistaLocal.zul - Rechazo local"
+      ],
+      "pantallas_zul_gth": [
+        "distribValesDiferidos.zul - Distribución de vales",
+        "distribValesDiferidosDialog.zul - Diálogo distribución",
+        "SolicitudValeDiferidoConsulta.zul - Consulta de solicitudes"
+      ]
+    },
+    "18_carga_creditia": {
+      "nombre": "Carga CrediTIA",
+      "descripcion": "Gestión de cargas de crédito del programa CrediTIA (crédito de consumo interno para colaboradores): carga masiva, eliminación y seguimiento.",
+      "entidades": [
+        {
+          "archivo": "AvPyCargacreditia.java",
+          "descripcion": "Cabecera de carga CrediTIA"
+        },
+        {
+          "archivo": "AvPyCargacreditiaDet.java",
+          "descripcion": "Detalle de carga CrediTIA por colaborador"
+        }
+      ],
+      "controladores": [
+        "CargaCrediTiaCtrl.java - Carga de CrediTIA",
+        "EliminaCargaCreditiaDialogCtrl.java - Eliminación de cargas CrediTIA"
+      ]
+    },
+    "19_provisiones": {
+      "nombre": "Provisiones",
+      "descripcion": "Consulta y gestión de provisiones de nómina: décimos tercer y cuarto sueldo, vacaciones, fondos de reserva y otras provisiones laborales por colaborador.",
+      "controladores": [
+        "ProvisionesxColaboradorListCtrl.java - Listado de provisiones por colaborador",
+        "ProvisionesxColaboradorDialogCtrl.java - Diálogo de detalle de provisiones",
+        "ColaboradoresxProvisionListCtrl.java - Colaboradores por tipo de provisión",
+        "ConsultaProvisionesxRubroListCtrl.java - Consulta de provisiones por rubro"
+      ],
+      "pantallas_zul": [
+        "provisionesxColaboradorList.zul - Provisiones por colaborador",
+        "provisionesxColaboradorDialog.zul - Detalle de provisiones",
+        "colaboradoresxProvision.zul - Colaboradores por provisión",
+        "consultaProvisionesxRubroList.zul - Provisiones por rubro"
+      ]
+    },
+    "20_cuenta_corriente": {
+      "nombre": "Cuenta Corriente del Colaborador",
+      "descripcion": "Consulta de la cuenta corriente del colaborador que muestra el consolidado de todos los movimientos financieros: nómina, préstamos, anticipos, vales diferidos, etc.",
+      "controladores": [
+        "ConsultaCtaCteListCtrl.java - Listado de cuenta corriente",
+        "ConsultaCtaCteConsolidadoListCtrl.java - Cuenta corriente consolidada",
+        "ConsultaCtaCteConsolidadoDialogCtrl.java - Diálogo de detalle consolidado",
+        "ConsultaCtaCteConsolidadoPreDialogCtrl.java - Pre-diálogo de cuenta corriente"
+      ],
+      "pantallas_zul": [
+        "consultaCtaCteList.zul - Cuenta corriente",
+        "consultaCtaCteConsolidadoList.zul - Consolidado",
+        "consultaCtaCteConsolidadoDialog.zul - Detalle",
+        "consultaCtaCteConsolidadoPreDialog.zul - Pre-diálogo"
+      ]
+    },
+    "21_historicos": {
+      "nombre": "Consulta de Históricos",
+      "descripcion": "Consulta del histórico de rubros de nómina procesados en periodos anteriores, con posibilidad de ver detalle por colaborador.",
+      "controladores": [
+        "ConsultaHistoricosListCtrl.java - Listado de históricos de nómina",
+        "ConsultaHistoricosColabDialogCtrl.java - Detalle histórico por colaborador"
+      ],
+      "pantallas_zul": [
+        "consultaHistoricosList.zul - Listado de históricos",
+        "ConsultaHistoricosColabDialog.zul - Detalle por colaborador"
+      ]
+    },
+    "22_comparativo_nomina": {
+      "nombre": "Comparativo de Nóminas",
+      "descripcion": "Comparación entre dos periodos de nómina para identificar diferencias en montos por rubro y colaborador.",
+      "entidades": [
+        {
+          "archivo": "AvPyComparativoNomina.java",
+          "descripcion": "Datos del comparativo entre nóminas"
+        }
+      ],
+      "controladores": [
+        "ComparativoNominasListCtrl.java - Listado comparativo de nóminas"
+      ],
+      "pantallas_zul": [
+        "comparativoNominas.zul - Pantalla de comparativo"
+      ]
+    },
+    "23_generacion_finiquitos": {
+      "nombre": "Generación de Finiquitos",
+      "descripcion": "Proceso de generación de liquidaciones (finiquitos) para colaboradores desvinculados, calculando todos los haberes y descuentos pendientes.",
+      "controladores": [
+        "GeneracionFiniquitosCtrl.java - Generación de finiquitos"
+      ],
+      "pantallas_zul": [
+        "generacionFiniquitos.zul - Pantalla de generación de finiquitos"
+      ]
+    },
+    "24_generacion_xml_relacion_dependencia": {
+      "nombre": "Generación XML Relación de Dependencia",
+      "descripcion": "Generación del archivo XML de relación de dependencia requerido por el SRI (Servicio de Rentas Internas) para la declaración anual de retenciones.",
+      "controladores": [
+        "GeneracionXMLRelacionDependenciaCtrl.java - Generación XML para el SRI"
+      ],
+      "pantallas_zul": [
+        "GeneracionXMLRelacionDependencia.zul - Pantalla de generación XML"
+      ]
+    },
+    "25_estadisticas": {
+      "nombre": "Estadísticas de Personal y Nómina",
+      "descripcion": "Consultas estadísticas sobre personal, horas extras y rotación vinculadas a datos de nómina.",
+      "controladores": [
+        "ConsultaEstadisticasPersonalCtrl.java - Estadísticas de personal",
+        "ConsultaEstadisticasHECtrl.java - Estadísticas de horas extras",
+        "ConsultaEstadisticasRotacionCtrl.java - Estadísticas de rotación"
+      ],
+      "pantallas_zul": [
+        "consultaEstadisticasPersonal.zul - Estadísticas de personal",
+        "consultaEstadisticasHorasExtras.zul - Estadísticas de horas extras",
+        "ConsultaEstadisticasRotacion.zul - Estadísticas de rotación"
+      ]
+    },
+    "26_reportes_nomina": {
+      "nombre": "Reportes de Nómina",
+      "descripcion": "Generación de reportes financieros y de nómina: resumen general, reportes contable-financieros, documento 107, reportes INEC, y reportes de anticipos de sueldo.",
+      "controladores": [
+        "ResumenGralNominaDialogCtrl.java - Reporte resumen general de nómina",
+        "ConsultaContableFinancieraListCtrl.java - Reporte contable-financiero",
+        "ReporteIRINECDialogCtrl.java - Reporte IR para INEC",
+        "ConsultaDocumento107ListCtrl.java - Documento 107",
+        "ReportesAnticiposSueldoCtrl.java - Reportes de anticipos",
+        "ReportesAnticipoDialogCtrl.java - Diálogo de reporte de anticipo"
+      ]
+    }
+  },
+  "endpoints_rest_relacionados": {
+    "descripcion": "Endpoints REST que exponen funcionalidades del módulo de Roles de Pago para integración con sistemas externos y app móvil",
+    "endpoints": [
+      {
+        "api": "EndeudamientoRestAPI.java",
+        "descripcion": "Consulta de nivel de endeudamiento de un colaborador"
+      },
+      {
+        "api": "AnticipoSueldoRestAPI.java",
+        "descripcion": "Gestión de anticipos de sueldo desde la app"
+      },
+      {
+        "api": "AutorizacionSobregiroRestAPI.java",
+        "descripcion": "Autorización de sobregiros desde la app"
+      },
+      {
+        "api": "PagosPrestamosCajaRestAPI.java",
+        "descripcion": "Pagos de préstamos desde caja"
+      },
+      {
+        "api": "PagosProcesosCajaRestAPI.java",
+        "descripcion": "Pagos de procesos desde caja"
+      },
+      {
+        "api": "PagosRubrosIDOCajaRestAPI.java",
+        "descripcion": "Pagos de rubros IDO desde caja"
+      },
+      {
+        "api": "PagosRubrosIDOHorasCajaRestAPI.java",
+        "descripcion": "Pagos de rubros IDO horas desde caja"
+      },
+      {
+        "api": "AbonoPrestamoCajaRestAPI.java",
+        "descripcion": "Abonos a préstamos desde caja"
+      },
+      {
+        "api": "PagoComisionesBASRestAPI.java",
+        "descripcion": "Pago de comisiones del sistema BAS"
+      },
+      {
+        "api": "PresentarPrestamosCabeceryDetalleApi.java",
+        "descripcion": "Consulta de préstamos cabecera y detalle para app"
+      },
+      {
+        "api": "IRIntranetRestAPI.java",
+        "descripcion": "Consulta de Impuesto a la Renta desde intranet"
+      }
+    ]
+  },
+  "dao_relacionados": [
+    {
+      "archivo": "AvPyEndeudamientoDAO.java",
+      "descripcion": "DAO para consultas de endeudamiento de colaboradores"
+    }
+  ],
+  "total_entidades": 64,
+  "total_controladores_webui": "~80 (controladores + renderers)",
+  "total_pantallas_zul": 90,
+  "resumen_funcionalidades": [
+    "Definición y gestión de rubros de nómina (ingresos, egresos, aportes, provisiones)",
+    "Ejecución de procesos de nómina (quincena, mensual, décimos, utilidades, finiquitos)",
+    "Consulta de nómina por colaborador y resúmenes generales",
+    "Gestión integral de préstamos (registro, cuotas, abonos, cancelaciones, baja)",
+    "Distribución de costos por centros de costo y localidades",
+    "Consulta de acumulados anuales",
+    "Generación de acreditaciones bancarias",
+    "Gestión de rubros IDO (ingresos, descuentos, otros)",
+    "Interfases con el IESS (aportes, fondos de reserva)",
+    "Interfases contables (asientos automáticos)",
+    "Plantillas contables (mapeo rubros → cuentas)",
+    "Parámetros generales de nómina",
+    "Tabla de Impuesto a la Renta y retenciones",
+    "Control de endeudamiento de colaboradores",
+    "Anticipos de sueldo (solicitud, autorización, acreditación)",
+    "Sobregiros (registro y autorización)",
+    "Vales diferidos (solicitud, distribución, seguimiento)",
+    "Cargas CrediTIA (crédito de consumo interno)",
+    "Provisiones laborales (décimos, vacaciones, fondos de reserva)",
+    "Cuenta corriente del colaborador",
+    "Consulta de históricos de nómina",
+    "Comparativo entre nóminas de diferentes periodos",
+    "Generación de finiquitos/liquidaciones",
+    "Generación XML de relación de dependencia para el SRI",
+    "Estadísticas de personal, horas extras y rotación",
+    "Reportes financieros y de nómina (resúmenes, documento 107, INEC)"
+  ]
+}

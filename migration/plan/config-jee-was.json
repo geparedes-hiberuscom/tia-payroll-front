@@ -1,0 +1,7 @@
+{
+  "migration": {
+    "type": "JEE",
+    "sourceTechnology": "JEE_WAS",
+    "targetTechnology": "SPRING_BOOT"
+  }
+}

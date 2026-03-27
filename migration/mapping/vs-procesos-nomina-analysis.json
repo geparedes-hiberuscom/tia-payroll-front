@@ -1,0 +1,1219 @@
+{
+  "functionalities": [
+    {
+      "id": "func-procesos-nomina",
+      "name": "Procesos de Nómina",
+      "description": "Definición, ejecución, reversión y cierre de procesos de nómina (quincena, mensual, décimos, liquidaciones, etc.), incluyendo gestión de instancias de proceso, ejecución por colaborador, apertura y aprobación de liquidaciones, y ejecución de bots de automatización",
+      "screens": [
+        {
+          "name": "procesos.zul",
+          "description": "Listado principal paginado de definiciones de procesos de nómina con filtros de búsqueda por empresa, nombre de proceso y tipo de rol",
+          "actions": [
+            {
+              "name": "Listar procesos",
+              "description": "Muestra la lista paginada de procesos de nómina definidos en el sistema con ordenación por columnas",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista ZK que gestiona el listado de procesos de nómina (extiende GFCBaseListCtrl<AvPyProcesos>)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Interfaz de servicio GTH que provee operaciones CRUD genéricas y consultas de dominio"
+                },
+                {
+                  "className": "AvPyProcesosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO JPA para acceso a datos de la entidad AvPyProcesos"
+                },
+                {
+                  "className": "AvPyProcesos.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA que representa un proceso de nómina con campos de empresa, tipo, nombre, estado"
+                },
+                {
+                  "className": "ProcesosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de items de lista para la representación visual de procesos en el listbox"
+                }
+              ]
+            },
+            {
+              "name": "Buscar proceso por empresa",
+              "description": "Filtra la lista de procesos por identificador de empresa",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja el evento onClick$button_ProcesosList_SearchIdEmpresa para aplicar filtro JPASearchObject por empresa"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta filtrada de procesos"
+                },
+                {
+                  "className": "AvPyProcesosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada por empresa en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Buscar proceso por nombre",
+              "description": "Filtra la lista de procesos por nombre del proceso con búsqueda parcial ILIKE",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja el evento onClick$button_ProcesosList_SearchProceso para aplicar filtro por nombre"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee búsqueda por nombre de proceso"
+                },
+                {
+                  "className": "AvPyProcesosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada por nombre"
+                }
+              ]
+            },
+            {
+              "name": "Buscar proceso por tipo de rol",
+              "description": "Filtra la lista de procesos por tipo de rol de nómina",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja el evento onClick$button_ProcesosList_SearchRol para aplicar filtro por tipo de rol"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consulta filtrada por tipo de rol"
+                },
+                {
+                  "className": "AvPyProcesosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada por tipo de rol"
+                }
+              ]
+            },
+            {
+              "name": "Abrir diálogo de proceso (nuevo/editar)",
+              "description": "Abre el diálogo modal procesosDialog.zul para crear o editar un proceso (doble clic o botón nuevo)",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Invoca Executions.createComponents para abrir procesosDialog.zul con datos del proceso seleccionado"
+                },
+                {
+                  "className": "AvPyProcesos.java",
+                  "type": "Modelo",
+                  "description": "Entidad del proceso que se pasa como argumento al diálogo"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "procesosDialog.zul",
+          "description": "Formulario modal para crear, editar y eliminar definiciones de procesos de nómina con configuración de empresa, localidad, tipo de rol, procedimiento de cálculo, cuentas contables y secuenciales",
+          "actions": [
+            {
+              "name": "Crear proceso",
+              "description": "Permite crear un nuevo proceso de nómina con empresa, localidad, nombre, tipo de rol, procedimiento, cuentas y secuenciales",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de procesos que maneja la creación con doSave() y persist vía AvanteJPAPersistenceManager (extiende GFCBaseCtrl)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta saveObject() para persistir el nuevo proceso"
+                },
+                {
+                  "className": "AvanteGTHServiceImpl.java",
+                  "type": "Servicio",
+                  "description": "Implementación del servicio GTH con lógica de persistencia"
+                },
+                {
+                  "className": "AvPyProcesosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a datos de procesos de nómina"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener lista de empresas disponibles"
+                },
+                {
+                  "className": "AvDimensioneslDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener localidades/dimensiones"
+                },
+                {
+                  "className": "AvProcedimientoDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener procedimientos almacenados de cálculo"
+                },
+                {
+                  "className": "AvCatalogosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener catálogos de cuentas contables"
+                },
+                {
+                  "className": "AvSecuencialesDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para gestión de secuenciales de numeración"
+                },
+                {
+                  "className": "AvPyProcesos.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA del proceso de nómina a crear"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa asociada al proceso"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad/dimensión"
+                },
+                {
+                  "className": "AvProcedimiento.java",
+                  "type": "Modelo",
+                  "description": "Entidad del procedimiento almacenado de cálculo"
+                },
+                {
+                  "className": "Dominios.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dominio para tipos de rol y clasificaciones"
+                }
+              ]
+            },
+            {
+              "name": "Editar proceso",
+              "description": "Permite modificar los datos de un proceso de nómina existente",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnEdit y doSave() con merge del EntityManager para actualizar el proceso"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta updateObject() para actualizar el proceso existente"
+                },
+                {
+                  "className": "AvPyProcesosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Gestiona la actualización del proceso en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar proceso",
+              "description": "Permite eliminar un proceso de nómina existente con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete con diálogo de confirmación MultiLineMessageBox y doDelete()"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar el proceso"
+                },
+                {
+                  "className": "AvPyProcesosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Gestiona la eliminación del proceso de la base de datos"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "procesosEjecucion.zul",
+          "description": "Pantalla principal de ejecución de procesos de nómina con selección de empresa, listado de instancias de procesos pendientes/ejecutados, generación de reportes (cuadre, MRL, exportación Excel) y acceso a ejecución, cierre y liquidaciones",
+          "actions": [
+            {
+              "name": "Listar instancias de ejecución",
+              "description": "Muestra la lista de instancias de procesos de nómina organizadas por empresa con paginación y tabs para selección y reportes",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador principal de ejecución (extiende GFCBaseListCtrl<AvPyProcesosinstancias>) con tabs de selección de procesos y reportes"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de instancias de procesos y datos de dominio"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a instancias de procesos de nómina"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener empresas para el filtro de selección"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de instancia de proceso de nómina con estado, fecha, empresa"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de lista de instancias de procesos"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar empresa",
+              "description": "Filtra las instancias de procesos al seleccionar una empresa del dropdown",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Empresas para recargar localidades e instancias de procesos según la empresa seleccionada"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene datos de la empresa seleccionada"
+                },
+                {
+                  "className": "AvRhColaboradoresdvacpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene localidades del usuario para la empresa seleccionada"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                }
+              ]
+            },
+            {
+              "name": "Abrir diálogo de ejecución",
+              "description": "Abre el diálogo de ejecución de proceso (procesosEjecDialog.zul) para la instancia seleccionada",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Invoca showEjecucionProcesoDialog() con Executions.createComponents para abrir procesosEjecDialog.zul"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia de proceso pasada como argumento al diálogo de ejecución"
+                }
+              ]
+            },
+            {
+              "name": "Ejecutar proceso de cierre",
+              "description": "Abre el diálogo de cierre de proceso (EjecucionProcCierre.zul) para la instancia seleccionada",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_ejecprocesoscierre para abrir el diálogo de cierre con Executions.createComponents"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia de proceso a cerrar"
+                }
+              ]
+            },
+            {
+              "name": "Abrir liquidación",
+              "description": "Abre el diálogo de apertura de liquidación (procesosEjecAbrirLQ.zul) para la instancia seleccionada",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Invoca showAbrirLQ() con Executions.createComponents para abrir procesosEjecAbrirLQ.zul"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia de proceso para apertura de liquidación"
+                }
+              ]
+            },
+            {
+              "name": "Aprobar liquidación",
+              "description": "Abre el diálogo de aprobación de liquidación (procesosEjecAprobarLQ.zul) para la instancia seleccionada",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Invoca Executions.createComponents para abrir procesosEjecAprobarLQ.zul"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia de proceso para aprobación de liquidación"
+                }
+              ]
+            },
+            {
+              "name": "Generar reporte cuadre cabecera-detalle",
+              "description": "Genera un reporte Jasper de cuadre entre cabecera y detalle del proceso ejecutado",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_ReporteCuadreCabDeta y doEjecutarReporteCuadreCabDet() para generar el reporte Jasper"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee datos para la generación del reporte de cuadre"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene datos de la instancia de proceso para el reporte"
+                }
+              ]
+            },
+            {
+              "name": "Generar archivo MRL",
+              "description": "Genera el archivo MRL (Ministerio de Relaciones Laborales) para el proceso ejecutado",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_archivoMRL para generar el archivo de reporte al ministerio"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de generación del archivo MRL"
+                },
+                {
+                  "className": "AvPyInterfasarchivo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de archivo de interfaz generado para el MRL"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta los datos del proceso ejecutado a formato Excel",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_exportarexcel para generar la exportación de datos a Excel"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos para la exportación Excel"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar lista",
+              "description": "Recarga la lista de instancias de procesos con los filtros actuales",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnRefresh para recargar el listado de instancias"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta actualizada de instancias de procesos"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "procesosEjecDialog.zul",
+          "description": "Diálogo modal de ejecución de proceso de nómina que lanza el cálculo del proceso seleccionado con visualización de log de ejecución en tiempo real",
+          "actions": [
+            {
+              "name": "Ejecutar proceso de nómina",
+              "description": "Lanza la ejecución del cálculo del proceso de nómina invocando el procedimiento almacenado configurado, con log de progreso en tiempo real",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de ejecución (extiende GFCBaseCtrl) que maneja onClick$btnProcesar para lanzar la ejecución del proceso con hilo separado"
+                },
+                {
+                  "className": "ProcesosEjecucionDialogCtrlThread.java",
+                  "type": "Controlador",
+                  "description": "Thread que ejecuta el procedimiento almacenado de cálculo de nómina en un hilo separado para no bloquear la UI"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee operaciones de ejecución del proceso y consulta de log de registros"
+                },
+                {
+                  "className": "AvPyRubroslPreDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para gestión de rubros pre-liquidación generados por la ejecución del proceso"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia del proceso que se está ejecutando"
+                },
+                {
+                  "className": "AvPyLogRegistrosProceso.java",
+                  "type": "Modelo",
+                  "description": "Entidad de log de registros del proceso con mensajes de progreso y errores"
+                }
+              ]
+            },
+            {
+              "name": "Cerrar diálogo de ejecución",
+              "description": "Cierra el diálogo de ejecución y retorna a la pantalla principal",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnClose y doClose() para cerrar la ventana modal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "procesosejeccolaboradores.zul",
+          "description": "Pantalla de ejecución de procesos de nómina por colaborador individual, permitiendo seleccionar colaboradores específicos para ejecutar o revertir el cálculo",
+          "actions": [
+            {
+              "name": "Agregar colaborador a ejecución",
+              "description": "Permite buscar y agregar un colaborador específico para ejecutar el proceso de nómina individualmente",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionxColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de ejecución por colaborador (extiende GFCBaseCtrl) que maneja onClick$btnNew para agregar colaboradores con buscador avanzado"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee búsqueda de colaboradores y ejecución individual del proceso"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador seleccionado para la ejecución individual"
+                },
+                {
+                  "className": "ColaboradoresExtendedSearchListBox.java",
+                  "type": "Controlador",
+                  "description": "Componente de búsqueda avanzada de colaboradores para selección"
+                }
+              ]
+            },
+            {
+              "name": "Ejecutar proceso por colaborador",
+              "description": "Ejecuta el cálculo del proceso de nómina para los colaboradores seleccionados individualmente",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionxColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnProcesar para ejecutar el cálculo del proceso para los colaboradores seleccionados"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta el procedimiento almacenado de cálculo para cada colaborador"
+                },
+                {
+                  "className": "AvPyRubroslPreDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para gestión de rubros pre-liquidación por colaborador"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia del proceso asociada a la ejecución"
+                },
+                {
+                  "className": "AvPyLogRegistrosProceso.java",
+                  "type": "Modelo",
+                  "description": "Entidad de log con registros del proceso por colaborador"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar colaborador de ejecución",
+              "description": "Permite quitar un colaborador de la lista de ejecución individual",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionxColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete y doDelete() para remover un colaborador de la lista de ejecución"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Gestiona la eliminación de resultados del proceso para el colaborador"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "procesosEjecucionReversion.zul",
+          "description": "Listado de instancias de procesos de nómina ejecutados que pueden ser revertidos, con filtros por empresa, localidad y estado",
+          "actions": [
+            {
+              "name": "Listar procesos para reversión",
+              "description": "Muestra la lista de instancias de procesos ejecutados que pueden ser revertidos, filtrados por empresa y localidad",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionRevListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista de reversiones (extiende GFCBaseListCtrl) con filtros por empresa, localidad y tabs de selección/reportes"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de instancias de procesos para reversión"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener instancias de procesos ejecutados reversibles"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener empresas para el filtro"
+                },
+                {
+                  "className": "AvDimensioneslDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener localidades/dimensiones para filtros"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia de proceso con estado de ejecución"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de lista de instancias para reversión"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar empresa",
+              "description": "Filtra las instancias de procesos revertibles al seleccionar una empresa",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionRevListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$tab_SeleccionProcesos y filtros de empresa para recargar instancias"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene datos de la empresa seleccionada"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                }
+              ]
+            },
+            {
+              "name": "Abrir diálogo de reversión (doble clic)",
+              "description": "Al hacer doble clic en una instancia de proceso, abre el diálogo de reversión",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionRevListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onDoubleClick para abrir procesosEjecucionReversionDialog.zul con la instancia seleccionada"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia de proceso seleccionada para reversión"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar lista de reversiones",
+              "description": "Recarga el listado de instancias de procesos reversibles",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionRevListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnRefresh para recargar el listado"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta actualizada de instancias"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "procesosEjecucionReversionDialog.zul",
+          "description": "Diálogo modal para ejecutar la reversión de un proceso de nómina ya ejecutado, permitiendo revertir el cálculo y restaurar el estado anterior",
+          "actions": [
+            {
+              "name": "Revertir proceso",
+              "description": "Ejecuta la reversión del proceso de nómina seleccionado, eliminando los resultados del cálculo y restaurando el estado anterior",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionRevDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de reversión (extiende GFCBaseCtrl) que maneja doSave() para ejecutar la reversión del proceso"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de negocio de reversión del proceso (eliminar rubros calculados, actualizar estado)"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia de proceso cuyo estado se revierte"
+                },
+                {
+                  "className": "AvPyRubrosSobregiroHi.java",
+                  "type": "Modelo",
+                  "description": "Entidad de sobregiro histórico que puede verse afectada por la reversión"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para estados de reversión"
+                }
+              ]
+            },
+            {
+              "name": "Editar parámetros de reversión",
+              "description": "Permite editar los parámetros antes de ejecutar la reversión del proceso",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionRevDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnEdit y doEdit() para activar el modo edición de los parámetros de reversión"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee datos de dominio para la configuración de la reversión"
+                }
+              ]
+            },
+            {
+              "name": "Crear nueva reversión",
+              "description": "Inicia un nuevo registro de reversión para un proceso ejecutado",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionRevDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnNew y doNew() para iniciar un nuevo registro de reversión"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee lógica de creación de registro de reversión"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "procesosEjecAbrirLQ.zul",
+          "description": "Diálogo modal para apertura de liquidaciones individuales de colaboradores dentro de un proceso de nómina ejecutado, permitiendo abrir la liquidación cerrada de un colaborador específico",
+          "actions": [
+            {
+              "name": "Buscar colaborador para apertura",
+              "description": "Busca un colaborador cuya liquidación se desea abrir (desbloquear para edición)",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionAbrirLQListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de apertura de liquidaciones (extiende GFCBaseListCtrl<AvPyRubroslpreColab>) que maneja onClick$btn_searchAbrirLQ para buscar colaboradores"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee búsqueda de colaboradores con liquidación cerrada"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de la instancia del proceso"
+                },
+                {
+                  "className": "AvPyRubroslpreColab.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubros pre-liquidación por colaborador que se abre"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia del proceso asociada a la liquidación"
+                },
+                {
+                  "className": "AvColaboradoresAprobLQListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de lista de colaboradores para apertura de liquidación"
+                }
+              ]
+            },
+            {
+              "name": "Abrir liquidación del colaborador",
+              "description": "Ejecuta la apertura (desbloqueo) de la liquidación del colaborador seleccionado para permitir re-edición",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionAbrirLQListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta doAbrirLQ() que cambia el estado de la liquidación del colaborador a 'abierta' vía AvanteJPAPersistenceManager"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Gestiona el cambio de estado de la liquidación"
+                },
+                {
+                  "className": "AvPyRubroslpreColab.java",
+                  "type": "Modelo",
+                  "description": "Entidad de liquidación del colaborador cuyo estado se actualiza a 'abierta'"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "procesosEjecAprobarLQ.zul",
+          "description": "Diálogo modal para aprobación de liquidaciones de colaboradores dentro de un proceso de nómina, permitiendo aprobar o rechazar la liquidación individual generando interfaz de pago",
+          "actions": [
+            {
+              "name": "Aprobar liquidación del colaborador",
+              "description": "Aprueba la liquidación del colaborador seleccionado, generando la interfaz de pago y actualizando el estado de la acción personal",
+              "relatedClasses": [
+                {
+                  "className": "ProcesosEjecucionAprobarLQListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de aprobación de liquidaciones que ejecuta doSave() con persistencia de la aprobación y generación de interfaz de pago"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de aprobación: actualización de estado, generación de interfaz de pago"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos del colaborador y actualizar su estado de acción personal"
+                },
+                {
+                  "className": "AvPyRubroslpreColab.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubros pre-liquidación del colaborador aprobado"
+                },
+                {
+                  "className": "AvPyRubroslpreColabPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta de la liquidación del colaborador"
+                },
+                {
+                  "className": "AvPyInterfas.java",
+                  "type": "Modelo",
+                  "description": "Entidad de interfaz de pago generada tras la aprobación"
+                },
+                {
+                  "className": "AvPyInterfasarchivo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de archivo de interfaz de pago generado"
+                },
+                {
+                  "className": "AvColaboradoresap.java",
+                  "type": "Modelo",
+                  "description": "Entidad de acción personal del colaborador actualizada tras aprobación"
+                },
+                {
+                  "className": "AvPyProcesos.java",
+                  "type": "Modelo",
+                  "description": "Proceso de nómina asociado a la liquidación aprobada"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia del proceso asociada a la aprobación"
+                },
+                {
+                  "className": "AvColaboradoresAprobLQListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de lista de colaboradores para aprobación de liquidación"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "EjecucionProcCierre.zul",
+          "description": "Diálogo modal para ejecutar el cierre de un período de nómina, bloqueando modificaciones posteriores y generando alertas de bloqueo por empresa",
+          "actions": [
+            {
+              "name": "Ejecutar cierre de período",
+              "description": "Ejecuta el proceso de cierre del período de nómina seleccionado, bloqueando modificaciones y actualizando alertas de control",
+              "relatedClasses": [
+                {
+                  "className": "EjecucionProcCierreDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de cierre (extiende GFCBaseCtrl) que maneja onClick$btnEjecutar para ejecutar el cierre del período"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de cierre del período con actualización de estados y bloqueos"
+                },
+                {
+                  "className": "AvCaControlAlertaBloqueoDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para gestión de alertas y bloqueos de control tras el cierre"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de la empresa para el cierre"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa cuyo período se cierra"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Dimensión/localidad asociada al cierre"
+                },
+                {
+                  "className": "AvCaNovedades.java",
+                  "type": "Modelo",
+                  "description": "Entidad de novedades de control y asistencia afectadas por el cierre"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para el dropdown de empresas en el diálogo de cierre"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ejecucionbot.zul",
+          "description": "Pantalla de ejecución de bots de automatización de procesos de nómina con selección de tipo de bot, entidad, carga de archivo de colaboradores y ejecución del script",
+          "actions": [
+            {
+              "name": "Seleccionar tipo de bot y entidad",
+              "description": "Permite seleccionar el tipo de bot (entidad jurídica) y la entidad específica para la ejecución del bot",
+              "relatedClasses": [
+                {
+                  "className": "EjecucionBotCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de ejecución de bots (extiende GFCBaseListCtrl) que maneja onSelect$lbox_Bots y onSelect$lbox_Entidades para configurar el bot"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para tipos de bot y entidades"
+                },
+                {
+                  "className": "CatalogosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdowns de catálogos de bots y entidades"
+                }
+              ]
+            },
+            {
+              "name": "Cargar archivo de colaboradores",
+              "description": "Permite subir un archivo con la lista de colaboradores para los que se ejecutará el bot",
+              "relatedClasses": [
+                {
+                  "className": "EjecucionBotCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnFileUploadCargaColaboradores para subir archivo de colaboradores vía Fileupload"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para validar colaboradores del archivo cargado"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador validada desde el archivo"
+                }
+              ]
+            },
+            {
+              "name": "Ejecutar bot",
+              "description": "Lanza la ejecución del bot de automatización con los parámetros configurados (shell script) procesando los colaboradores seleccionados",
+              "relatedClasses": [
+                {
+                  "className": "EjecucionBotCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnBotEjecucion y doEjecutarBot() que ejecuta un shell script de automatización con Runtime.exec()"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee datos de configuración del bot y gestiona la traza de ejecución"
+                },
+                {
+                  "className": "AvPyProcesoslegacolab.java",
+                  "type": "Modelo",
+                  "description": "Entidad de relación proceso-legalización-colaborador para el seguimiento del bot"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "instanciasProcesos.zul",
+          "description": "Listado de instancias de procesos de nómina planificadas con filtros por empresa, búsqueda y acceso al diálogo de creación/edición de instancias",
+          "actions": [
+            {
+              "name": "Listar instancias de procesos",
+              "description": "Muestra la lista paginada de instancias de procesos de nómina con filtros por empresa y búsqueda por nombre",
+              "relatedClasses": [
+                {
+                  "className": "InstanciasProcesosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista de instancias (extiende GFCBaseListCtrl<AvPyProcesosinstancias>) con paginación y filtros por empresa"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de instancias de procesos"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener empresas para el filtro"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de instancia de proceso con fecha, estado, período, empresa"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa asociada a la instancia"
+                },
+                {
+                  "className": "InstanciasProcesosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de lista de instancias de procesos"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar empresa",
+              "description": "Filtra las instancias de procesos al seleccionar una empresa del dropdown",
+              "relatedClasses": [
+                {
+                  "className": "InstanciasProcesosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Empresas para recargar instancias según la empresa seleccionada"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene datos de la empresa seleccionada"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                }
+              ]
+            },
+            {
+              "name": "Buscar instancia",
+              "description": "Busca instancias de procesos por nombre o identificador",
+              "relatedClasses": [
+                {
+                  "className": "InstanciasProcesosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_instanciasProcesosList_SearchItem para aplicar filtro de búsqueda"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta filtrada de instancias"
+                }
+              ]
+            },
+            {
+              "name": "Abrir diálogo de instancia (nuevo/editar)",
+              "description": "Abre el diálogo modal instanciasProcesosDialog.zul para crear o editar una instancia (doble clic o botón nuevo)",
+              "relatedClasses": [
+                {
+                  "className": "InstanciasProcesosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Invoca Executions.createComponents para abrir instanciasProcesosDialog.zul con datos de la instancia seleccionada"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia que se pasa como argumento al diálogo"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "instanciasProcesosDialog.zul",
+          "description": "Formulario modal para crear, editar y eliminar instancias de procesos de nómina con configuración de proceso, período, fechas, localidades y estado de ejecución",
+          "actions": [
+            {
+              "name": "Crear instancia de proceso",
+              "description": "Permite crear una nueva instancia de proceso de nómina con proceso padre, período, fechas de inicio/fin, localidad y configuración",
+              "relatedClasses": [
+                {
+                  "className": "InstanciasProcesosDialog.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de instancias (extiende GFCBaseCtrl) que maneja onClick$btnNew y doSave() con persist vía AvanteJPAPersistenceManager"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta saveObject() para persistir la nueva instancia de proceso"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a datos de instancias de procesos"
+                },
+                {
+                  "className": "AvRhColaboradoresdvacpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener localidades/dimensiones del usuario"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de instancia de proceso a crear"
+                },
+                {
+                  "className": "AvPyProcesos.java",
+                  "type": "Modelo",
+                  "description": "Entidad del proceso padre asociado a la instancia"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad/dimensión asociada a la instancia"
+                },
+                {
+                  "className": "AvPyProcesosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de procesos padre"
+                },
+                {
+                  "className": "DimensioneslDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de localidades"
+                }
+              ]
+            },
+            {
+              "name": "Editar instancia de proceso",
+              "description": "Permite modificar los datos de una instancia de proceso existente (fechas, estado, localidad)",
+              "relatedClasses": [
+                {
+                  "className": "InstanciasProcesosDialog.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnEdit y doSave() con merge del EntityManager para actualizar la instancia"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta updateObject() para actualizar la instancia existente"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Gestiona la actualización de la instancia en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar instancia de proceso",
+              "description": "Permite eliminar una instancia de proceso existente con confirmación previa (solo si no ha sido ejecutada)",
+              "relatedClasses": [
+                {
+                  "className": "InstanciasProcesosDialog.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete con diálogo de confirmación y doDelete() con remove del EntityManager"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar la instancia"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Gestiona la eliminación de la instancia de la base de datos"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "relatedControllers": [
+        "ProcesosListCtrl.java",
+        "ProcesosDialogCtrl.java",
+        "ProcesosEjecucionListCtrl.java",
+        "ProcesosEjecucionDialogCtrl.java",
+        "ProcesosEjecucionDialogCtrlThread.java",
+        "ProcesosEjecucionxColabListCtrl.java",
+        "ProcesosEjecucionRevListCtrl.java",
+        "ProcesosEjecucionRevDialogCtrl.java",
+        "ProcesosEjecucionAbrirLQListCtrl.java",
+        "ProcesosEjecucionAprobarLQListCtrl.java",
+        "EjecucionProcCierreDialogCtrl.java",
+        "EjecucionBotCtrl.java",
+        "InstanciasProcesosListCtrl.java",
+        "InstanciasProcesosDialog.java"
+      ]
+    }
+  ]
+}

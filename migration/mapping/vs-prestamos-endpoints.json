@@ -1,0 +1,1158 @@
+{
+  "endpoints": [
+    {
+      "screenName": "rubrosPrestamoList.zul",
+      "baseUrl": "/api/v1/prestamos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos",
+          "summary": "Listar préstamos",
+          "description": "Obtiene la lista paginada de préstamos (av_py_rubros_prestamo) con datos del colaborador, rubro, estado, fecha, montos, alícuotas, saldo, abonos y referencia documental. Columnas del listado: dfprestamo, vrubro, vstts, vaccion, inroalicuotas, mmonto, mabono, msaldo, dfiniciodsc, vdocreferencia, usuarioingresoAu",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID de rubro (vidrubro)"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado del préstamo (vstts)"},
+            {"name": "accion", "type": "string", "required": false, "description": "Filtro por acción (vaccion)"},
+            {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Filtro por fecha del préstamo desde"},
+            {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Filtro por fecha del préstamo hasta"}
+          ],
+          "responseDTO": {
+            "name": "PrestamoPageResponseDTO",
+            "description": "Lista paginada de préstamos",
+            "fields": [
+              {"name": "content", "type": "array<PrestamoResponseDTO>", "required": true, "description": "Lista de préstamos"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{id}",
+          "summary": "Obtener préstamo por ID",
+          "description": "Obtiene el detalle completo de un préstamo con datos del colaborador, rubro, montos, alícuotas, saldo, compromisos, estado, motivo, observaciones, flags de cuentas TIA/CIA/transitoria y relaciones con sobregiro/reestructuración",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "PrestamoResponseDTO",
+            "description": "Detalle de un préstamo (av_py_rubros_prestamo)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del préstamo (iidrubroprestamo)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombres del colaborador (denormalizado)"},
+              {"name": "colaboradorCedula", "type": "string", "required": false, "description": "Cédula del colaborador (denormalizado)"},
+              {"name": "rubroId", "type": "string", "required": false, "description": "ID del rubro (vidrubro)"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "codigoPrestamo", "type": "integer", "required": false, "description": "Código del préstamo (icodigoprestamo)"},
+              {"name": "fechaPrestamo", "type": "datetime", "required": false, "description": "Fecha del préstamo (dfprestamo)"},
+              {"name": "fechaInicioDscto", "type": "datetime", "required": false, "description": "Fecha de inicio del descuento (dfiniciodsc)"},
+              {"name": "fechaCancelacion", "type": "datetime", "required": false, "description": "Fecha de cancelación (dcancelacion)"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto del préstamo (mmonto)"},
+              {"name": "alicuota", "type": "number", "required": false, "description": "Valor de la alícuota/cuota (malicuota)"},
+              {"name": "nroAlicuotas", "type": "integer", "required": false, "description": "Número de alícuotas/cuotas (inroalicuotas)"},
+              {"name": "abono", "type": "number", "required": false, "description": "Monto abonado (mabono)"},
+              {"name": "saldo", "type": "number", "required": false, "description": "Saldo pendiente (msaldo)"},
+              {"name": "montoCompromisos", "type": "number", "required": false, "description": "Monto de compromisos (mmontocompromisos)"},
+              {"name": "botar", "type": "number", "required": false, "description": "Monto a botar (botar)"},
+              {"name": "cuentaCorriente", "type": "integer", "required": false, "description": "Cuenta corriente (ictacte)"},
+              {"name": "motivoPrestamoId", "type": "integer", "required": false, "description": "ID del motivo del préstamo (imotivo_prestamo → catálogo)"},
+              {"name": "motivoPrestamoNombre", "type": "string", "required": false, "description": "Nombre del motivo del préstamo (denormalizado)"},
+              {"name": "tipoComportamiento", "type": "integer", "required": false, "description": "Tipo de comportamiento del rubro (itcomporta)"},
+              {"name": "documentoReferencia", "type": "string", "required": false, "description": "Documento de referencia (vdocreferencia)"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones (vobservaciones)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del préstamo (vstts)"},
+              {"name": "accion", "type": "string", "required": false, "description": "Acción del préstamo (vaccion)"},
+              {"name": "control", "type": "string", "required": false, "description": "Control (ccontrol)"},
+              {"name": "motivoCancelacion", "type": "string", "required": false, "description": "Motivo de cancelación (vmotivocancelacion)"},
+              {"name": "afectaCtaTia", "type": "string", "required": false, "description": "Flag si afecta cuenta TIA (cafectactatia)"},
+              {"name": "valorCtaTia", "type": "number", "required": false, "description": "Valor de cuenta TIA (mvalorctatia)"},
+              {"name": "afectaCtaCia", "type": "string", "required": false, "description": "Flag si afecta cuenta CIA (cafectactacia)"},
+              {"name": "valorCtaCia", "type": "number", "required": false, "description": "Valor de cuenta CIA (mvalorctacia)"},
+              {"name": "afectaTransitoria", "type": "string", "required": false, "description": "Flag si afecta cuenta transitoria (cafectatransitoria)"},
+              {"name": "valorTransitoria", "type": "number", "required": false, "description": "Valor de cuenta transitoria (mvalortransitoria)"},
+              {"name": "esSobregiro", "type": "string", "required": false, "description": "Flag si es sobregiro (cxsobregiro)"},
+              {"name": "esReestructuracion", "type": "string", "required": false, "description": "Flag si es reestructuración (cxrestructuracion)"},
+              {"name": "cargaCreditiaId", "type": "integer", "required": false, "description": "ID de carga de crédito TIA (iidcargacreditia)"},
+              {"name": "colabSolValDifId", "type": "integer", "required": false, "description": "ID de solicitud de validación diferida (iidcolabsolvaldif)"},
+              {"name": "rubrosIdoUpl", "type": "integer", "required": false, "description": "ID de rubro IDO upload (iidrubros_ido_upl)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso (usuarioingreso_au)"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación (usuariomodificacion_au)"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/prestamos",
+          "summary": "Crear préstamo",
+          "description": "Crea un nuevo préstamo para un colaborador con rubro, monto, alícuota, número de cuotas, fecha de inicio de descuento, documento de referencia, motivo y observaciones. Genera automáticamente los compromisos (cuotas mensuales) en av_py_rubros_prestamo_com",
+          "requestDTO": {
+            "name": "PrestamoCreateDTO",
+            "description": "Datos para crear un préstamo",
+            "fields": [
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro"},
+              {"name": "codigoPrestamo", "type": "integer", "required": false, "description": "Código del préstamo"},
+              {"name": "fechaPrestamo", "type": "datetime", "required": true, "description": "Fecha del préstamo"},
+              {"name": "fechaInicioDscto", "type": "datetime", "required": true, "description": "Fecha de inicio del descuento"},
+              {"name": "monto", "type": "number", "required": true, "description": "Monto total del préstamo"},
+              {"name": "alicuota", "type": "number", "required": true, "description": "Valor de la alícuota/cuota mensual"},
+              {"name": "nroAlicuotas", "type": "integer", "required": true, "description": "Número de alícuotas/cuotas"},
+              {"name": "tipoComportamiento", "type": "integer", "required": false, "description": "Tipo de comportamiento del rubro"},
+              {"name": "motivoPrestamoId", "type": "integer", "required": false, "description": "ID del motivo del préstamo (catálogo)"},
+              {"name": "documentoReferencia", "type": "string", "required": false, "description": "Documento de referencia"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones"},
+              {"name": "afectaCtaTia", "type": "string", "required": false, "description": "Flag si afecta cuenta TIA (S/N)"},
+              {"name": "valorCtaTia", "type": "number", "required": false, "description": "Valor de cuenta TIA"},
+              {"name": "afectaCtaCia", "type": "string", "required": false, "description": "Flag si afecta cuenta CIA (S/N)"},
+              {"name": "valorCtaCia", "type": "number", "required": false, "description": "Valor de cuenta CIA"},
+              {"name": "afectaTransitoria", "type": "string", "required": false, "description": "Flag si afecta cuenta transitoria (S/N)"},
+              {"name": "valorTransitoria", "type": "number", "required": false, "description": "Valor de cuenta transitoria"},
+              {"name": "esSobregiro", "type": "string", "required": false, "description": "Flag si es sobregiro (S/N)"},
+              {"name": "esReestructuracion", "type": "string", "required": false, "description": "Flag si es reestructuración (S/N)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PrestamoResponseDTO",
+            "description": "Préstamo creado con todos sus datos",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/prestamos/{id}",
+          "summary": "Actualizar préstamo",
+          "description": "Actualiza los datos de un préstamo existente. Permite modificar monto, alícuota, cuotas, fechas, observaciones, motivo y flags de cuentas. Recalcula compromisos si cambian las condiciones",
+          "requestDTO": {
+            "name": "PrestamoUpdateDTO",
+            "description": "Datos para actualizar un préstamo",
+            "fields": [
+              {"name": "codigoPrestamo", "type": "integer", "required": false, "description": "Código del préstamo"},
+              {"name": "fechaPrestamo", "type": "datetime", "required": false, "description": "Fecha del préstamo"},
+              {"name": "fechaInicioDscto", "type": "datetime", "required": false, "description": "Fecha de inicio del descuento"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto total del préstamo"},
+              {"name": "alicuota", "type": "number", "required": false, "description": "Valor de la alícuota/cuota"},
+              {"name": "nroAlicuotas", "type": "integer", "required": false, "description": "Número de alícuotas/cuotas"},
+              {"name": "tipoComportamiento", "type": "integer", "required": false, "description": "Tipo de comportamiento"},
+              {"name": "motivoPrestamoId", "type": "integer", "required": false, "description": "ID del motivo del préstamo"},
+              {"name": "documentoReferencia", "type": "string", "required": false, "description": "Documento de referencia"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones"},
+              {"name": "control", "type": "string", "required": false, "description": "Control"},
+              {"name": "afectaCtaTia", "type": "string", "required": false, "description": "Flag cuenta TIA"},
+              {"name": "valorCtaTia", "type": "number", "required": false, "description": "Valor cuenta TIA"},
+              {"name": "afectaCtaCia", "type": "string", "required": false, "description": "Flag cuenta CIA"},
+              {"name": "valorCtaCia", "type": "number", "required": false, "description": "Valor cuenta CIA"},
+              {"name": "afectaTransitoria", "type": "string", "required": false, "description": "Flag cuenta transitoria"},
+              {"name": "valorTransitoria", "type": "number", "required": false, "description": "Valor cuenta transitoria"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PrestamoResponseDTO",
+            "description": "Préstamo actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/prestamos/{id}",
+          "summary": "Eliminar préstamo",
+          "description": "Elimina un préstamo. Valida que no tenga abonos registrados ni cuotas descontadas antes de permitir la eliminación. Elimina en cascada los compromisos asociados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rubrosPrestamoMain.zul / rubrosPrestamoDetail.zul",
+      "baseUrl": "/api/v1/prestamos/{prestamoId}/compromisos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/compromisos",
+          "summary": "Listar compromisos (cuotas mensuales) de un préstamo",
+          "description": "Obtiene la lista de compromisos/cuotas mensuales del préstamo (av_py_rubros_prestamo_com) con fecha desde/hasta, monto, estado (vstts), flag de reintegro y si fue editado. Cada fila se colorea según estado (pagada, pendiente, reintegro)",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado de la cuota (vstts)"},
+            {"name": "reintegro", "type": "string", "required": false, "description": "Filtro por flag de reintegro (creintegro)"}
+          ],
+          "responseDTO": {
+            "name": "CompromisoListDTO",
+            "description": "Lista de compromisos/cuotas del préstamo",
+            "fields": [
+              {"name": "items", "type": "array<CompromisoResponseDTO>", "required": true, "description": "Lista de compromisos"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de compromisos"},
+              {"name": "montoTotalCompromisos", "type": "number", "required": false, "description": "Suma de todos los montos de compromisos"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/compromisos/{id}",
+          "summary": "Obtener compromiso por ID",
+          "description": "Obtiene el detalle de un compromiso/cuota mensual con datos de proceso, fecha desde/hasta, monto, estado, flag de reintegro (creintegro) y flag de autocontabilización de reintegro (careintegro)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CompromisoResponseDTO",
+            "description": "Detalle de un compromiso/cuota mensual (av_py_rubros_prestamo_com)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del compromiso (iidrubroprestamocol)"},
+              {"name": "prestamoId", "type": "integer", "required": true, "description": "ID del préstamo padre (iidrubroprestamo)"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina (iidproceso)"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso (denormalizado de la vista)"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha desde de la cuota (dfdesde)"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha hasta de la cuota (dfhasta)"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto de la cuota (mmonto)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la cuota (vstts)"},
+              {"name": "esReintegro", "type": "string", "required": false, "description": "Flag de reintegro (creintegro: S/N)"},
+              {"name": "autoReintegro", "type": "string", "required": false, "description": "Flag de autocontabilización de reintegro (careintegro)"},
+              {"name": "fueEditado", "type": "string", "required": false, "description": "Flag si la cuota fue editada manualmente (cflagedito)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/prestamos/{prestamoId}/compromisos",
+          "summary": "Crear compromiso/cuota mensual",
+          "description": "Crea un nuevo compromiso/cuota mensual para un préstamo. Permite agregar cuotas adicionales o regenerar la tabla de amortización",
+          "requestDTO": {
+            "name": "CompromisoCreateDTO",
+            "description": "Datos para crear un compromiso/cuota",
+            "fields": [
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina"},
+              {"name": "fechaDesde", "type": "datetime", "required": true, "description": "Fecha desde de la cuota"},
+              {"name": "fechaHasta", "type": "datetime", "required": true, "description": "Fecha hasta de la cuota"},
+              {"name": "monto", "type": "number", "required": true, "description": "Monto de la cuota"},
+              {"name": "esReintegro", "type": "string", "required": false, "description": "Flag de reintegro (S/N)"},
+              {"name": "autoReintegro", "type": "string", "required": false, "description": "Flag autocontabilización de reintegro (S/N)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CompromisoResponseDTO",
+            "description": "Compromiso creado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/prestamos/{prestamoId}/compromisos/{id}",
+          "summary": "Actualizar compromiso/cuota mensual",
+          "description": "Actualiza el monto, fechas, estado o flag de reintegro de un compromiso. Marca cflagedito='S' al ser editado manualmente",
+          "requestDTO": {
+            "name": "CompromisoUpdateDTO",
+            "description": "Datos para actualizar un compromiso",
+            "fields": [
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha desde"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha hasta"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto de la cuota"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la cuota"},
+              {"name": "esReintegro", "type": "string", "required": false, "description": "Flag de reintegro (S/N)"},
+              {"name": "autoReintegro", "type": "string", "required": false, "description": "Flag autocontabilización de reintegro (S/N)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CompromisoResponseDTO",
+            "description": "Compromiso actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/prestamos/{prestamoId}/compromisos/{id}",
+          "summary": "Eliminar compromiso/cuota mensual",
+          "description": "Elimina un compromiso/cuota mensual. Valida que la cuota no esté descontada (vstts distinto de pagado)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rubrosPrestamoCoDialog.zul",
+      "baseUrl": "/api/v1/prestamos/por-colaborador",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/por-colaborador",
+          "summary": "Listar préstamos por colaborador",
+          "description": "Obtiene todos los préstamos de un colaborador específico con sus compromisos (vista av_py_rubros_prestamo_com_v), permitiendo ver el estado de cada cuota con datos de proceso, fechas, montos y estado",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por rubro"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado del préstamo"}
+          ],
+          "responseDTO": {
+            "name": "PrestamosPorColaboradorResponseDTO",
+            "description": "Lista de préstamos del colaborador con desglose de compromisos",
+            "fields": [
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador"},
+              {"name": "prestamos", "type": "array<PrestamoConCompromisosDTO>", "required": true, "description": "Lista de préstamos con sus compromisos"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/por-colaborador/{prestamoId}/compromisos-vista",
+          "summary": "Obtener compromisos de un préstamo (vista)",
+          "description": "Obtiene la lista de compromisos de un préstamo desde la vista av_py_rubros_prestamo_com_v que incluye el nombre del proceso ya resuelto",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CompromisoVistaListDTO",
+            "description": "Lista de compromisos desde la vista con nombre de proceso",
+            "fields": [
+              {"name": "items", "type": "array<CompromisoVistaResponseDTO>", "required": true, "description": "Lista de compromisos desde la vista"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de compromisos"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/por-colaborador/{prestamoId}/compromisos-vista/{id}",
+          "summary": "Obtener compromiso (vista) por ID",
+          "description": "Obtiene el detalle de un compromiso desde la vista incluyendo el nombre del proceso resuelto, fechas desde/hasta y monto",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CompromisoVistaResponseDTO",
+            "description": "Detalle de un compromiso desde la vista (av_py_rubros_prestamo_com_v)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "ID del compromiso (iidrubroprestamocol)"},
+              {"name": "prestamoId", "type": "integer", "required": true, "description": "ID del préstamo padre (iidrubroprestamo)"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina (iidproceso)"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso (campo proceso de la vista)"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha desde de la cuota"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha hasta de la cuota"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto de la cuota"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/prestamos/por-colaborador/{prestamoId}/compromisos",
+          "summary": "Crear compromiso desde diálogo por colaborador",
+          "description": "Crea un nuevo compromiso/cuota desde la pantalla de préstamos por colaborador",
+          "requestDTO": {
+            "name": "CompromisoCreateDTO",
+            "description": "Datos para crear un compromiso/cuota",
+            "fields": [
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina"},
+              {"name": "fechaDesde", "type": "datetime", "required": true, "description": "Fecha desde de la cuota"},
+              {"name": "fechaHasta", "type": "datetime", "required": true, "description": "Fecha hasta de la cuota"},
+              {"name": "monto", "type": "number", "required": true, "description": "Monto de la cuota"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CompromisoVistaResponseDTO",
+            "description": "Compromiso creado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/prestamos/por-colaborador/{prestamoId}/compromisos/{id}",
+          "summary": "Eliminar compromiso desde diálogo por colaborador",
+          "description": "Elimina un compromiso/cuota de un préstamo del colaborador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rubrosPrestamoAbonos.zul",
+      "baseUrl": "/api/v1/prestamos/{prestamoId}/abonos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos",
+          "summary": "Listar abonos de un préstamo",
+          "description": "Obtiene la lista de abonos registrados para un préstamo (av_py_rubros_prestamo_abonos), con monto del abono, alícuota, monto de compromisos, saldo, forma de pago, número de cuotas, flag de abono, estado, fecha de inicio de descuento y datos de caja",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado del abono (vstts)"},
+            {"name": "flagAbono", "type": "integer", "required": false, "description": "Filtro por flag de abono (iflagabono)"}
+          ],
+          "responseDTO": {
+            "name": "AbonoListDTO",
+            "description": "Lista de abonos del préstamo",
+            "fields": [
+              {"name": "items", "type": "array<AbonoResponseDTO>", "required": true, "description": "Lista de abonos"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de abonos"},
+              {"name": "montoTotalAbonos", "type": "number", "required": false, "description": "Suma total de abonos"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos/{id}",
+          "summary": "Obtener abono por ID",
+          "description": "Obtiene el detalle de un abono con monto, alícuota recalculada, compromisos, saldo del préstamo, forma de pago, número de cuotas, flag de abono, fecha de inicio de descuento, estado y datos de caja",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "AbonoResponseDTO",
+            "description": "Detalle de un abono de préstamo (av_py_rubros_prestamo_abonos)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del abono (iidrubroprestamoabonos)"},
+              {"name": "prestamoId", "type": "integer", "required": true, "description": "ID del préstamo padre (iidrubroprestamo)"},
+              {"name": "montoAbono", "type": "number", "required": false, "description": "Monto del abono (mmontoabono)"},
+              {"name": "alicuota", "type": "number", "required": false, "description": "Nueva alícuota calculada (malicuota)"},
+              {"name": "montoCompromisos", "type": "number", "required": false, "description": "Monto de compromisos (mmontocompromisos)"},
+              {"name": "saldoPrestamo", "type": "number", "required": false, "description": "Saldo del préstamo después del abono (msaldoprestamo)"},
+              {"name": "formaPago", "type": "integer", "required": false, "description": "Forma de pago (iformapago)"},
+              {"name": "numeroCuotas", "type": "integer", "required": false, "description": "Número de cuotas restantes (inumerocuotas)"},
+              {"name": "flagAbono", "type": "integer", "required": false, "description": "Flag de abono (iflagabono)"},
+              {"name": "fechaInicioDsctoPrestamo", "type": "datetime", "required": false, "description": "Fecha de inicio de descuento del préstamo (dfechainiciodsctoprestamo)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del abono (vstts)"},
+              {"name": "usuarioCaja", "type": "string", "required": false, "description": "Usuario de caja (usuariocaja)"},
+              {"name": "fechaCaja", "type": "datetime", "required": false, "description": "Fecha de caja (dfechacaja)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos",
+          "summary": "Registrar abono a préstamo",
+          "description": "Registra un nuevo abono al préstamo, recalculando saldo, alícuota y compromisos. Genera detalle de abono (av_py_rubros_prestamo_det_abono) con tipo de abono y asociación a cuotas comprometidas. Actualiza el saldo y abono acumulado del préstamo padre",
+          "requestDTO": {
+            "name": "AbonoCreateDTO",
+            "description": "Datos para registrar un abono al préstamo",
+            "fields": [
+              {"name": "montoAbono", "type": "number", "required": true, "description": "Monto del abono"},
+              {"name": "formaPago", "type": "integer", "required": true, "description": "Forma de pago (1=efectivo, 2=transferencia, etc.)"},
+              {"name": "fechaInicioDsctoPrestamo", "type": "datetime", "required": false, "description": "Nueva fecha de inicio de descuento (si cambia)"},
+              {"name": "numeroCuotas", "type": "integer", "required": false, "description": "Nuevo número de cuotas (si se recalcula)"},
+              {"name": "alicuota", "type": "number", "required": false, "description": "Nueva alícuota (si se recalcula)"},
+              {"name": "flagAbono", "type": "integer", "required": false, "description": "Flag de abono"}
+            ]
+          },
+          "responseDTO": {
+            "name": "AbonoResponseDTO",
+            "description": "Abono registrado con saldo recalculado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos/{id}",
+          "summary": "Actualizar abono de préstamo",
+          "description": "Actualiza los datos de un abono existente. Recalcula saldo y compromisos si cambia el monto",
+          "requestDTO": {
+            "name": "AbonoUpdateDTO",
+            "description": "Datos para actualizar un abono",
+            "fields": [
+              {"name": "montoAbono", "type": "number", "required": false, "description": "Monto del abono"},
+              {"name": "formaPago", "type": "integer", "required": false, "description": "Forma de pago"},
+              {"name": "fechaInicioDsctoPrestamo", "type": "datetime", "required": false, "description": "Fecha de inicio de descuento"},
+              {"name": "numeroCuotas", "type": "integer", "required": false, "description": "Número de cuotas"},
+              {"name": "alicuota", "type": "number", "required": false, "description": "Nueva alícuota"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del abono"},
+              {"name": "usuarioCaja", "type": "string", "required": false, "description": "Usuario de caja"},
+              {"name": "fechaCaja", "type": "datetime", "required": false, "description": "Fecha de caja"}
+            ]
+          },
+          "responseDTO": {
+            "name": "AbonoResponseDTO",
+            "description": "Abono actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos/{id}",
+          "summary": "Eliminar abono de préstamo",
+          "description": "Elimina un abono del préstamo. Revierte el saldo y recalcula los compromisos. Elimina los detalles de abono asociados en av_py_rubros_prestamo_det_abono",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rubrosPrestamoAbonos.zul (detalle de abonos por cuota)",
+      "baseUrl": "/api/v1/prestamos/{prestamoId}/abonos/{abonoId}/detalle",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos/{abonoId}/detalle",
+          "summary": "Listar detalle de abonos por cuota",
+          "description": "Obtiene el detalle del abono distribuido por cuotas comprometidas (av_py_rubros_prestamo_det_abono), mostrando tipo (pago/abono), fecha de la cuota (obtenida de la cuota asociada) y monto abonado a cada cuota",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DetalleAbonoListDTO",
+            "description": "Lista de detalle de abono por cuota comprometida",
+            "fields": [
+              {"name": "items", "type": "array<DetalleAbonoResponseDTO>", "required": true, "description": "Lista de detalles por cuota"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de detalles"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos/{abonoId}/detalle/{id}",
+          "summary": "Obtener detalle de abono por ID",
+          "description": "Obtiene un registro de detalle de abono con el tipo de abono, la referencia a la cuota comprometida, el monto abonado y el estado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DetalleAbonoResponseDTO",
+            "description": "Detalle de un abono por cuota (av_py_rubros_prestamo_det_abono)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del detalle (iidrubroprestamodetabono)"},
+              {"name": "abonoId", "type": "integer", "required": true, "description": "ID del abono padre (iidrubroprestamoabonos)"},
+              {"name": "compromisoId", "type": "integer", "required": false, "description": "ID del compromiso/cuota (iidrubroprestamocol)"},
+              {"name": "tipoAbono", "type": "integer", "required": false, "description": "Tipo de abono (itipoabono: 1=pago normal, 2=abono extraordinario)"},
+              {"name": "tipoDescripcion", "type": "string", "required": false, "description": "Descripción del tipo de abono (calculado: Pago/Abono)"},
+              {"name": "montoAbono", "type": "number", "required": false, "description": "Monto abonado a la cuota (mmontoabono)"},
+              {"name": "fechaCuota", "type": "datetime", "required": false, "description": "Fecha de la cuota asociada (denormalizado de compromiso.dfdesde)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del detalle (vstts)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos/{abonoId}/detalle",
+          "summary": "Crear detalle de abono por cuota",
+          "description": "Crea un registro de detalle de abono asociando un monto a una cuota comprometida específica",
+          "requestDTO": {
+            "name": "DetalleAbonoCreateDTO",
+            "description": "Datos para crear un detalle de abono",
+            "fields": [
+              {"name": "compromisoId", "type": "integer", "required": true, "description": "ID de la cuota/compromiso al que se aplica el abono"},
+              {"name": "tipoAbono", "type": "integer", "required": true, "description": "Tipo de abono (1=pago, 2=abono extraordinario)"},
+              {"name": "montoAbono", "type": "number", "required": true, "description": "Monto a abonar a la cuota"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DetalleAbonoResponseDTO",
+            "description": "Detalle de abono creado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos/{abonoId}/detalle/{id}",
+          "summary": "Actualizar detalle de abono",
+          "description": "Actualiza el monto o tipo de abono de un detalle",
+          "requestDTO": {
+            "name": "DetalleAbonoUpdateDTO",
+            "description": "Datos para actualizar detalle de abono",
+            "fields": [
+              {"name": "tipoAbono", "type": "integer", "required": false, "description": "Tipo de abono"},
+              {"name": "montoAbono", "type": "number", "required": false, "description": "Monto del abono"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DetalleAbonoResponseDTO",
+            "description": "Detalle actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos/{abonoId}/detalle/{id}",
+          "summary": "Eliminar detalle de abono",
+          "description": "Elimina un registro de detalle de abono de una cuota comprometida",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rubrosPrestamoAbonosCancel.zul",
+      "baseUrl": "/api/v1/prestamos/{prestamoId}/abonos-historico",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos-historico",
+          "summary": "Listar histórico de abonos cancelados/registrados",
+          "description": "Obtiene la lista histórica de abonos del préstamo (av_py_rubros_prestamo_abo) con fecha/hora de registro, monto de abono y datos del proceso. Estos son los registros de abonos procesados por la nómina (descontados automáticamente)",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "Filtro por ID de ejecución del proceso"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID de rubro"}
+          ],
+          "responseDTO": {
+            "name": "AbonoHistoricoListDTO",
+            "description": "Lista de abonos históricos del préstamo",
+            "fields": [
+              {"name": "items", "type": "array<AbonoHistoricoResponseDTO>", "required": true, "description": "Lista de abonos históricos"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "montoTotalAbonos", "type": "number", "required": false, "description": "Suma total de abonos"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos-historico/{id}",
+          "summary": "Obtener abono histórico por ID",
+          "description": "Obtiene el detalle de un abono histórico con datos de ejecución del proceso, colaborador, rubro, montos (abono, abono en línea, alícuota, monto original, saldo) y observaciones",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "AbonoHistoricoResponseDTO",
+            "description": "Detalle de un abono histórico (av_py_rubros_prestamo_abo)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del abono histórico (iidabonoprestamol)"},
+              {"name": "prestamoId", "type": "integer", "required": true, "description": "ID del préstamo padre (iidrubroprestamo)"},
+              {"name": "ejecucionId", "type": "integer", "required": false, "description": "ID de la ejecución del proceso (iidejecproceso)"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "ID del colaborador (iidcolaborador)"},
+              {"name": "rubroId", "type": "string", "required": false, "description": "ID del rubro (vidrubro)"},
+              {"name": "montoAbono", "type": "number", "required": false, "description": "Monto del abono (mabono)"},
+              {"name": "abonoEnLinea", "type": "number", "required": false, "description": "Monto de abono en línea (mabonoline)"},
+              {"name": "alicuota", "type": "number", "required": false, "description": "Alícuota al momento del abono (malicuota)"},
+              {"name": "montoOriginal", "type": "number", "required": false, "description": "Monto original del préstamo al momento (mmonto)"},
+              {"name": "saldo", "type": "number", "required": false, "description": "Saldo después del abono (msaldo)"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones (vobservaciones)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos-historico",
+          "summary": "Registrar abono histórico",
+          "description": "Registra un abono histórico al préstamo (usado en cancelación manual o ajuste). Actualiza el saldo acumulado del préstamo padre",
+          "requestDTO": {
+            "name": "AbonoHistoricoCreateDTO",
+            "description": "Datos para crear un abono histórico",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": false, "description": "ID de la ejecución del proceso"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro"},
+              {"name": "montoAbono", "type": "number", "required": true, "description": "Monto del abono"},
+              {"name": "abonoEnLinea", "type": "number", "required": false, "description": "Monto de abono en línea"},
+              {"name": "alicuota", "type": "number", "required": false, "description": "Alícuota actual"},
+              {"name": "montoOriginal", "type": "number", "required": false, "description": "Monto original del préstamo"},
+              {"name": "saldo", "type": "number", "required": false, "description": "Saldo resultante"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "AbonoHistoricoResponseDTO",
+            "description": "Abono histórico registrado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos-historico/{id}",
+          "summary": "Actualizar abono histórico",
+          "description": "Actualiza los datos de un abono histórico (usado para correcciones)",
+          "requestDTO": {
+            "name": "AbonoHistoricoUpdateDTO",
+            "description": "Datos para actualizar un abono histórico",
+            "fields": [
+              {"name": "montoAbono", "type": "number", "required": false, "description": "Monto del abono"},
+              {"name": "abonoEnLinea", "type": "number", "required": false, "description": "Abono en línea"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "AbonoHistoricoResponseDTO",
+            "description": "Abono histórico actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/prestamos/{prestamoId}/abonos-historico/{id}",
+          "summary": "Eliminar abono histórico",
+          "description": "Elimina un abono histórico y revierte el saldo del préstamo",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rubrosPrestamoBaja.zul",
+      "baseUrl": "/api/v1/prestamos/{prestamoId}/baja",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/baja",
+          "summary": "Obtener estado de baja del préstamo",
+          "description": "Obtiene el estado actual de baja/cancelación del préstamo, con el motivo de cancelación, fecha de cancelación y estado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "PrestamoBajaResponseDTO",
+            "description": "Estado de baja del préstamo",
+            "fields": [
+              {"name": "prestamoId", "type": "integer", "required": true, "description": "ID del préstamo"},
+              {"name": "estado", "type": "string", "required": true, "description": "Estado actual del préstamo (vstts)"},
+              {"name": "accion", "type": "string", "required": false, "description": "Acción actual (vaccion)"},
+              {"name": "fechaCancelacion", "type": "datetime", "required": false, "description": "Fecha de cancelación (dcancelacion)"},
+              {"name": "motivoCancelacion", "type": "string", "required": false, "description": "Motivo de cancelación (vmotivocancelacion)"},
+              {"name": "saldoPendiente", "type": "number", "required": false, "description": "Saldo pendiente al momento de la baja"},
+              {"name": "montoAbonado", "type": "number", "required": false, "description": "Monto total abonado"},
+              {"name": "montoOriginal", "type": "number", "required": false, "description": "Monto original del préstamo"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/prestamos/{prestamoId}/baja",
+          "summary": "Dar de baja un préstamo",
+          "description": "Ejecuta la baja/cancelación del préstamo, cambiando el estado a cancelado, registrando la fecha y motivo de cancelación. Cancela los compromisos pendientes y marca las cuotas como canceladas",
+          "requestDTO": {
+            "name": "PrestamoBajaDTO",
+            "description": "Datos para dar de baja el préstamo",
+            "fields": [
+              {"name": "motivoCancelacion", "type": "string", "required": true, "description": "Motivo de la cancelación/baja"},
+              {"name": "fechaCancelacion", "type": "datetime", "required": false, "description": "Fecha de cancelación (default: fecha actual)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PrestamoBajaResponseDTO",
+            "description": "Resultado de la baja del préstamo",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/prestamos/{prestamoId}/baja/reactivar",
+          "summary": "Reactivar préstamo dado de baja",
+          "description": "Reactiva un préstamo que fue dado de baja, volviendo su estado a activo y restaurando los compromisos pendientes",
+          "requestDTO": {
+            "name": "PrestamoReactivarDTO",
+            "description": "Datos para reactivar el préstamo",
+            "fields": [
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones de la reactivación"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PrestamoBajaResponseDTO",
+            "description": "Resultado de la reactivación",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/prestamos/{prestamoId}/baja",
+          "summary": "Reversar baja de préstamo",
+          "description": "Revierte la operación de baja de un préstamo, restaurando su estado y compromisos",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de reversión de baja",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la reversión fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "CuotasComprometDialog.zul",
+      "baseUrl": "/api/v1/prestamos/cuotas-comprometidas",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/cuotas-comprometidas",
+          "summary": "Consultar cuotas comprometidas",
+          "description": "Obtiene un reporte de cuotas comprometidas por empresa y período, mostrando el consolidado de compromisos de préstamos por colaborador y rubro. Utiliza la tabla temporal av_py_rubros_prestamo_com_tmp para generar el reporte",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Filtro por fecha desde de los compromisos"},
+            {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Filtro por fecha hasta de los compromisos"},
+            {"name": "procesoId", "type": "integer", "required": false, "description": "Filtro por ID de proceso de nómina"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID de rubro"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"}
+          ],
+          "responseDTO": {
+            "name": "CuotasComprometidasListDTO",
+            "description": "Reporte de cuotas comprometidas",
+            "fields": [
+              {"name": "items", "type": "array<CuotaComprometidaDTO>", "required": true, "description": "Lista de cuotas comprometidas"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "montoTotalComprometido", "type": "number", "required": false, "description": "Monto total comprometido"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/cuotas-comprometidas/{id}",
+          "summary": "Obtener detalle de cuota comprometida",
+          "description": "Obtiene el detalle de una cuota comprometida desde la tabla temporal (av_py_rubros_prestamo_com_tmp) con datos de préstamo, proceso, fechas, monto, estado y flags de reintegro",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CuotaComprometidaDTO",
+            "description": "Detalle de una cuota comprometida (av_py_rubros_prestamo_com_tmp)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la cuota comprometida (iidrubroprestamocol)"},
+              {"name": "prestamoId", "type": "integer", "required": false, "description": "ID del préstamo (iidrubroprestamo)"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina (iidproceso)"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha desde de la cuota (dfdesde)"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha hasta de la cuota (dfhasta)"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto de la cuota (mmonto)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la cuota (vstts)"},
+              {"name": "esReintegro", "type": "string", "required": false, "description": "Flag de reintegro (creintegro)"},
+              {"name": "autoReintegro", "type": "string", "required": false, "description": "Flag autocontabilización de reintegro (careintegro)"},
+              {"name": "fueEditado", "type": "string", "required": false, "description": "Flag si fue editada (cflagedito)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/prestamos/cuotas-comprometidas/generar",
+          "summary": "Generar reporte de cuotas comprometidas",
+          "description": "Genera el reporte de cuotas comprometidas para una empresa y período, poblando la tabla temporal y devolviendo el resultado consolidado",
+          "requestDTO": {
+            "name": "GenerarCuotasComprometidasDTO",
+            "description": "Parámetros para generar el reporte",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha desde de los compromisos"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha hasta de los compromisos"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina"}
+            ]
+          },
+          "responseDTO": {
+            "name": "GenerarReporteResultDTO",
+            "description": "Resultado de la generación del reporte",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la generación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje del resultado"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros generados"},
+              {"name": "montoTotalComprometido", "type": "number", "required": false, "description": "Monto total comprometido"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/prestamos/cuotas-comprometidas/exportar",
+          "summary": "Exportar reporte de cuotas comprometidas",
+          "description": "Exporta el reporte de cuotas comprometidas a Excel/PDF",
+          "requestDTO": {
+            "name": "ExportarCuotasComprometidasDTO",
+            "description": "Parámetros de exportación",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha desde"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha hasta"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato de exportación (XLSX, PDF)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la exportación fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/prestamos/cuotas-comprometidas/{id}",
+          "summary": "Eliminar cuota comprometida temporal",
+          "description": "Elimina un registro de cuota comprometida de la tabla temporal",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "sobregiro.zul / sobregiroDialog.zul",
+      "baseUrl": "/api/v1/sobregiros",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/sobregiros",
+          "summary": "Listar sobregiros históricos",
+          "description": "Obtiene la lista paginada de sobregiros históricos (av_py_rubros_sobregiro_his) con datos compuestos de ejecución de proceso, colaborador, rubro y valores. Columnas del listado: iidejecproceso, iidcolaborador, vidrubro, mvlrout01",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "Filtro por ID de ejecución del proceso"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID de rubro"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por ID de localidad"}
+          ],
+          "responseDTO": {
+            "name": "SobregirosPageResponseDTO",
+            "description": "Lista paginada de sobregiros históricos",
+            "fields": [
+              {"name": "content", "type": "array<SobregirosResponseDTO>", "required": true, "description": "Lista de sobregiros"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/sobregiros/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "summary": "Obtener sobregiro por clave compuesta",
+          "description": "Obtiene el detalle de un sobregiro histórico por su clave compuesta (iidejecproceso + iidcolaborador + vidrubro). PK compuesto @EmbeddedId. Muestra valores de salida del cálculo (mvalor02, mvlrout01)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "SobregirosResponseDTO",
+            "description": "Detalle de un sobregiro histórico (av_py_rubros_sobregiro_his)",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la ejecución del proceso (iidejecproceso, parte del PK)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (iidcolaborador, parte del PK)"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro (vidrubro, parte del PK, max 100 chars)"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador (denormalizado)"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor de cálculo 02 (mvalor02, precision 10,2)"},
+              {"name": "valorSalida01", "type": "number", "required": false, "description": "Valor de salida 01 del sobregiro (mvlrout01, precision 10,2)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso (usuarioingreso_au, max 20 chars)"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación (usuariomodificacion_au, max 20 chars)"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/sobregiros",
+          "summary": "Crear sobregiro",
+          "description": "Registra un nuevo sobregiro histórico con clave compuesta de ejecución, colaborador y rubro. Registra los valores de cálculo y salida del sobregiro",
+          "requestDTO": {
+            "name": "SobregirosCreateDTO",
+            "description": "Datos para crear un sobregiro",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la ejecución del proceso"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro"},
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor de cálculo 02"},
+              {"name": "valorSalida01", "type": "number", "required": false, "description": "Valor de salida 01 del sobregiro"}
+            ]
+          },
+          "responseDTO": {
+            "name": "SobregirosResponseDTO",
+            "description": "Sobregiro creado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/sobregiros/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "summary": "Actualizar sobregiro",
+          "description": "Actualiza los valores de un sobregiro histórico existente identificado por su clave compuesta",
+          "requestDTO": {
+            "name": "SobregirosUpdateDTO",
+            "description": "Datos para actualizar un sobregiro",
+            "fields": [
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor de cálculo 02"},
+              {"name": "valorSalida01", "type": "number", "required": false, "description": "Valor de salida 01 del sobregiro"}
+            ]
+          },
+          "responseDTO": {
+            "name": "SobregirosResponseDTO",
+            "description": "Sobregiro actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/sobregiros/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "summary": "Eliminar sobregiro",
+          "description": "Elimina un sobregiro histórico por su clave compuesta",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Dimensiones de préstamo (subrecurso)",
+      "baseUrl": "/api/v1/prestamos/{prestamoId}/dimensiones",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/dimensiones",
+          "summary": "Listar dimensiones del préstamo",
+          "description": "Obtiene la lista de dimensiones asociadas al préstamo (av_py_rubros_prestamodimension) con datos de la empresa, dimensión, rubro, tipo de dimensión, orden de aprobación y oficina depósito",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "PrestamoDimensionListDTO",
+            "description": "Lista de dimensiones del préstamo",
+            "fields": [
+              {"name": "items", "type": "array<PrestamoDimensionResponseDTO>", "required": true, "description": "Lista de dimensiones"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de dimensiones"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/prestamos/{prestamoId}/dimensiones/{id}",
+          "summary": "Obtener dimensión del préstamo por ID",
+          "description": "Obtiene el detalle de una dimensión de préstamo con empresa, dimensión, tipo, rubro, orden de aprobación y oficina depósito",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "PrestamoDimensionResponseDTO",
+            "description": "Detalle de una dimensión del préstamo (av_py_rubros_prestamodimension)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador (iidprestamodimension)"},
+              {"name": "rubroId", "type": "string", "required": false, "description": "ID del rubro (vidrubro)"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa (denormalizado)"},
+              {"name": "dimensionId", "type": "integer", "required": false, "description": "ID de la dimensión (iiddimensionesl)"},
+              {"name": "dimensionNombre", "type": "string", "required": false, "description": "Nombre de la dimensión (denormalizado)"},
+              {"name": "tipoDimension", "type": "string", "required": false, "description": "Tipo de dimensión (ctipodimension)"},
+              {"name": "ordenAprobacion", "type": "integer", "required": false, "description": "Orden de aprobación (iordenaprobacion)"},
+              {"name": "oficinaDeposito", "type": "integer", "required": false, "description": "Oficina de depósito (ioficina_deposito)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/prestamos/{prestamoId}/dimensiones",
+          "summary": "Crear dimensión del préstamo",
+          "description": "Asocia una nueva dimensión al préstamo con empresa, dimensión, tipo, orden de aprobación y oficina de depósito",
+          "requestDTO": {
+            "name": "PrestamoDimensionCreateDTO",
+            "description": "Datos para crear una dimensión del préstamo",
+            "fields": [
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "dimensionId", "type": "integer", "required": true, "description": "ID de la dimensión"},
+              {"name": "tipoDimension", "type": "string", "required": true, "description": "Tipo de dimensión"},
+              {"name": "ordenAprobacion", "type": "integer", "required": false, "description": "Orden de aprobación"},
+              {"name": "oficinaDeposito", "type": "integer", "required": false, "description": "Oficina de depósito"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PrestamoDimensionResponseDTO",
+            "description": "Dimensión creada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/prestamos/{prestamoId}/dimensiones/{id}",
+          "summary": "Actualizar dimensión del préstamo",
+          "description": "Actualiza los datos de una dimensión del préstamo",
+          "requestDTO": {
+            "name": "PrestamoDimensionUpdateDTO",
+            "description": "Datos para actualizar la dimensión",
+            "fields": [
+              {"name": "tipoDimension", "type": "string", "required": false, "description": "Tipo de dimensión"},
+              {"name": "ordenAprobacion", "type": "integer", "required": false, "description": "Orden de aprobación"},
+              {"name": "oficinaDeposito", "type": "integer", "required": false, "description": "Oficina de depósito"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PrestamoDimensionResponseDTO",
+            "description": "Dimensión actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/prestamos/{prestamoId}/dimensiones/{id}",
+          "summary": "Eliminar dimensión del préstamo",
+          "description": "Elimina una dimensión asociada al préstamo",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1527 @@
+{
+  "endpoints": [
+    {
+      "screenName": "interfazIESS.zul",
+      "baseUrl": "/api/v1/interfaz-iess",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/interfaz-iess",
+          "summary": "Listar configuraciones de interfaz IESS",
+          "description": "Obtiene la lista de configuraciones de interfaz IESS (av_py_interfas) filtradas por ámbito IESS. Cada interfaz define el formato del archivo de aportes/planillas IESS (separador, tipo cuenta, línea)",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "ambito", "type": "string", "required": false, "description": "Filtro por ámbito de la interfaz (vambito)"}
+          ],
+          "responseDTO": {
+            "name": "InterfazIessListDTO",
+            "description": "Lista de configuraciones de interfaz IESS",
+            "fields": [
+              {"name": "items", "type": "array<InterfazIessResponseDTO>", "required": true, "description": "Lista de interfaces"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/interfaz-iess/{id}",
+          "summary": "Obtener configuración de interfaz IESS por ID",
+          "description": "Obtiene el detalle de una configuración de interfaz IESS con separador, ámbito, tipos de cuenta (corriente, ahorros, virtual), banco asociado, reporte y separador de línea",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "InterfazIessResponseDTO",
+            "description": "Detalle de configuración de interfaz IESS (av_py_interfas)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la interfaz (iidinterfas)"},
+              {"name": "nombre", "type": "string", "required": false, "description": "Nombre de la interfaz (vinterfas)"},
+              {"name": "separador", "type": "string", "required": false, "description": "Carácter separador (csepadador)"},
+              {"name": "separadorLinea", "type": "string", "required": false, "description": "Separador de línea (vseparadorlinea)"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito de la interfaz (vambito)"},
+              {"name": "bancoId", "type": "number", "required": false, "description": "ID del banco asociado (iidbanco)"},
+              {"name": "reporteId", "type": "number", "required": false, "description": "ID del reporte asociado (iidrpt)"},
+              {"name": "cuentaCorriente", "type": "string", "required": false, "description": "Código cuenta corriente (vcorriente)"},
+              {"name": "cuentaAhorros", "type": "string", "required": false, "description": "Código cuenta ahorros (vahorros)"},
+              {"name": "cuentaVirtual", "type": "string", "required": false, "description": "Código cuenta virtual (vvirtual)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/interfaz-iess/generar",
+          "summary": "Generar archivo de interfaz IESS",
+          "description": "Ejecuta el stored procedure PY_ArchivoInterfasIess para generar el archivo de interfaz IESS (aportes/planillas) con los parámetros de empresa, período, número patronal, localidad e interfaz. Almacena las líneas del archivo en av_py_interfasarchivo y retorna el archivo para descarga o lo transfiere al servidor IESS vía script pasainterfaznomina.sh",
+          "requestDTO": {
+            "name": "GenerarInterfazIessDTO",
+            "description": "Parámetros para generar el archivo de interfaz IESS",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "nroPatronalId", "type": "integer", "required": true, "description": "ID del número patronal (iidnropatronal)"},
+              {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz IESS (iidinterfas)"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad (si aplica)"},
+              {"name": "estadoColabId", "type": "integer", "required": false, "description": "ID del estado del colaborador (catálogo)"},
+              {"name": "fechaInicio", "type": "datetime", "required": true, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": true, "description": "Fecha de fin del período"},
+              {"name": "nombreArchivo", "type": "string", "required": false, "description": "Nombre del archivo a generar"},
+              {"name": "transferir", "type": "boolean", "required": false, "description": "Si true, transfiere al servidor IESS vía script; si false, sólo descarga"}
+            ]
+          },
+          "responseDTO": {
+            "name": "GenerarInterfazIessResponseDTO",
+            "description": "Resultado de la generación del archivo IESS",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la generación fue exitosa"},
+              {"name": "secuencial", "type": "integer", "required": false, "description": "Secuencial generado (iSecuencial)"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo generado"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros en el archivo"},
+              {"name": "message", "type": "string", "required": false, "description": "Mensaje de resultado"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/interfaz-iess/{id}",
+          "summary": "Actualizar configuración de interfaz IESS",
+          "description": "Actualiza los datos de una configuración de interfaz IESS (separador, ámbito, cuentas, banco)",
+          "requestDTO": {
+            "name": "InterfazIessUpdateDTO",
+            "description": "Datos para actualizar la configuración",
+            "fields": [
+              {"name": "nombre", "type": "string", "required": false, "description": "Nombre de la interfaz"},
+              {"name": "separador", "type": "string", "required": false, "description": "Carácter separador"},
+              {"name": "separadorLinea", "type": "string", "required": false, "description": "Separador de línea"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito"},
+              {"name": "bancoId", "type": "number", "required": false, "description": "ID del banco"},
+              {"name": "cuentaCorriente", "type": "string", "required": false, "description": "Código cuenta corriente"},
+              {"name": "cuentaAhorros", "type": "string", "required": false, "description": "Código cuenta ahorros"},
+              {"name": "cuentaVirtual", "type": "string", "required": false, "description": "Código cuenta virtual"}
+            ]
+          },
+          "responseDTO": {
+            "name": "InterfazIessResponseDTO",
+            "description": "Configuración actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/interfaz-iess/{id}",
+          "summary": "Eliminar configuración de interfaz IESS",
+          "description": "Elimina una configuración de interfaz IESS. Valida que no tenga archivos generados asociados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Archivos de interfaz generados (subrecurso IESS/Contable)",
+      "baseUrl": "/api/v1/interfaz-archivos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/interfaz-archivos",
+          "summary": "Listar archivos de interfaz generados",
+          "description": "Obtiene la lista de archivos de interfaz generados (av_py_interfasarchivo) filtrados por ejecución de proceso e interfaz. Cada registro contiene una línea del archivo generado con su secuencial y tipo (D=debe, C=crédito)",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "ejecucionProcesoId", "type": "integer", "required": true, "description": "ID de la ejecución de proceso (iidejecproceso)"},
+            {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz (iidinterfas)"},
+            {"name": "tipo", "type": "string", "required": false, "description": "Filtro por tipo de línea (vcd: D=debe, C=crédito)"}
+          ],
+          "responseDTO": {
+            "name": "InterfazArchivoListDTO",
+            "description": "Lista de líneas del archivo de interfaz",
+            "fields": [
+              {"name": "items", "type": "array<InterfazArchivoResponseDTO>", "required": true, "description": "Lista de líneas del archivo"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de líneas"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/interfaz-archivos/{id}",
+          "summary": "Obtener línea de archivo de interfaz por ID",
+          "description": "Obtiene una línea específica del archivo de interfaz generado con cadena de texto, secuencial, tipo y datos de auditoría",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "InterfazArchivoResponseDTO",
+            "description": "Línea de archivo de interfaz (av_py_interfasarchivo)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del registro (iidregistro)"},
+              {"name": "ejecucionProcesoId", "type": "integer", "required": true, "description": "ID de ejecución del proceso (iidejecproceso)"},
+              {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz (iidinterfas)"},
+              {"name": "secuencial", "type": "integer", "required": false, "description": "Número secuencial de la línea (isecuencial)"},
+              {"name": "cadena", "type": "string", "required": true, "description": "Contenido de la línea del archivo (vcadena, max 1200 chars)"},
+              {"name": "tipo", "type": "string", "required": false, "description": "Tipo de línea: D=debe, C=crédito (vcd)"},
+              {"name": "cadenaOrder", "type": "string", "required": false, "description": "Cadena de ordenamiento (vcadenaorder)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/interfaz-archivos/descargar",
+          "summary": "Descargar archivo de interfaz",
+          "description": "Genera y descarga el archivo de texto completo a partir de las líneas almacenadas en av_py_interfasarchivo para una ejecución e interfaz dadas",
+          "requestDTO": {
+            "name": "DescargarInterfazArchivoDTO",
+            "description": "Parámetros para descargar el archivo",
+            "fields": [
+              {"name": "ejecucionProcesoId", "type": "integer", "required": true, "description": "ID de la ejecución de proceso"},
+              {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz"},
+              {"name": "nombreArchivo", "type": "string", "required": false, "description": "Nombre del archivo de salida"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DescargarArchivoResponseDTO",
+            "description": "Resultado de la descarga",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "totalLineas", "type": "integer", "required": false, "description": "Total de líneas del archivo"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/interfaz-archivos/{id}",
+          "summary": "Actualizar línea de archivo de interfaz",
+          "description": "Actualiza el contenido de una línea del archivo de interfaz generado",
+          "requestDTO": {
+            "name": "InterfazArchivoUpdateDTO",
+            "description": "Datos para actualizar la línea",
+            "fields": [
+              {"name": "cadena", "type": "string", "required": false, "description": "Contenido actualizado de la línea"},
+              {"name": "tipo", "type": "string", "required": false, "description": "Tipo de línea (D/C)"},
+              {"name": "secuencial", "type": "integer", "required": false, "description": "Secuencial"}
+            ]
+          },
+          "responseDTO": {
+            "name": "InterfazArchivoResponseDTO",
+            "description": "Línea actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/interfaz-archivos/{id}",
+          "summary": "Eliminar línea de archivo de interfaz",
+          "description": "Elimina una línea del archivo de interfaz generado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Número patronal (catálogo de referencia para IESS)",
+      "baseUrl": "/api/v1/empresas-patronal",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/empresas-patronal",
+          "summary": "Listar números patronales",
+          "description": "Obtiene la lista de números patronales (av_en_empresaspatronal) por empresa. Cada número patronal representa una agencia/sucursal con su código patronal IESS",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"}
+          ],
+          "responseDTO": {
+            "name": "EmpresaPatronalListDTO",
+            "description": "Lista de números patronales",
+            "fields": [
+              {"name": "items", "type": "array<EmpresaPatronalResponseDTO>", "required": true, "description": "Lista de patronales"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/empresas-patronal/{id}",
+          "summary": "Obtener número patronal por ID",
+          "description": "Obtiene el detalle de un número patronal con agencia, código de agencia, número patronal IESS, empresa y datos de auditoría",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "EmpresaPatronalResponseDTO",
+            "description": "Detalle de número patronal (av_en_empresaspatronal)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador (iidnropatronal)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa (denormalizado)"},
+              {"name": "nroPatronal", "type": "string", "required": false, "description": "Número patronal IESS (vnropatronal)"},
+              {"name": "agencia", "type": "string", "required": false, "description": "Nombre de la agencia (vagencia)"},
+              {"name": "codigoAgencia", "type": "string", "required": false, "description": "Código de la agencia (vidagencia)"},
+              {"name": "usuarioEjecBot", "type": "string", "required": false, "description": "Usuario ejecución bot (usuarioejec_bot)"},
+              {"name": "fechaConsolidadoBot", "type": "datetime", "required": false, "description": "Fecha consolidado bot"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/empresas-patronal",
+          "summary": "Crear número patronal",
+          "description": "Crea un nuevo número patronal IESS para una empresa con agencia y código",
+          "requestDTO": {
+            "name": "EmpresaPatronalCreateDTO",
+            "description": "Datos para crear número patronal",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "nroPatronal", "type": "string", "required": true, "description": "Número patronal IESS"},
+              {"name": "agencia", "type": "string", "required": true, "description": "Nombre de la agencia"},
+              {"name": "codigoAgencia", "type": "string", "required": true, "description": "Código de la agencia"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EmpresaPatronalResponseDTO",
+            "description": "Número patronal creado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/empresas-patronal/{id}",
+          "summary": "Actualizar número patronal",
+          "description": "Actualiza los datos de un número patronal (agencia, código, número patronal)",
+          "requestDTO": {
+            "name": "EmpresaPatronalUpdateDTO",
+            "description": "Datos para actualizar",
+            "fields": [
+              {"name": "nroPatronal", "type": "string", "required": false, "description": "Número patronal"},
+              {"name": "agencia", "type": "string", "required": false, "description": "Agencia"},
+              {"name": "codigoAgencia", "type": "string", "required": false, "description": "Código de agencia"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EmpresaPatronalResponseDTO",
+            "description": "Patronal actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/empresas-patronal/{id}",
+          "summary": "Eliminar número patronal",
+          "description": "Elimina un número patronal. Valida que no tenga localidades asociadas",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "cargaRubrosIESS.zul",
+      "baseUrl": "/api/v1/rubros-iess",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-iess",
+          "summary": "Listar cargas de rubros IESS",
+          "description": "Obtiene la lista de cargas de rubros IESS (av_py_rubros_iess, cabeceras) por empresa. Cada carga representa un archivo de planilla IESS importado con año, mes, rubro, estado y novedades. Columnas del renderer: ID, Rubro, Archivo, Estado, Novedades",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID del rubro"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año (ianio)"},
+            {"name": "mes", "type": "integer", "required": false, "description": "Filtro por mes (imes)"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado (vstts)"}
+          ],
+          "responseDTO": {
+            "name": "RubrosIessListDTO",
+            "description": "Lista de cargas de rubros IESS",
+            "fields": [
+              {"name": "items", "type": "array<RubrosIessResponseDTO>", "required": true, "description": "Lista de cargas"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-iess/{id}",
+          "summary": "Obtener carga de rubros IESS por ID",
+          "description": "Obtiene el detalle de una carga de rubros IESS con empresa, rubro, año, mes, archivo, estado, novedades y datos de auditoría",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubrosIessResponseDTO",
+            "description": "Detalle de carga de rubros IESS (av_py_rubros_iess)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador (iidrubros_iess)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa (denormalizado)"},
+              {"name": "rubroId", "type": "string", "required": false, "description": "ID del rubro (vidrubro)"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año (ianio)"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes (imes)"},
+              {"name": "nombreArchivo", "type": "string", "required": false, "description": "Nombre del archivo cargado (vnombrearchivo)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado (vstts)"},
+              {"name": "existenNovedades", "type": "string", "required": false, "description": "Flag novedades existentes (vexistennovedades)"},
+              {"name": "novedades", "type": "string", "required": false, "description": "Detalle de novedades (vnovedades, LOB)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros-iess/cargar",
+          "summary": "Cargar archivo de planilla IESS",
+          "description": "Sube un archivo de planilla IESS, lo parsea y crea la cabecera (av_py_rubros_iess) con sus líneas de detalle (av_py_rubros_iessl). Compara automáticamente los datos IESS con los datos del sistema Avante (sueldos, aportes) y genera novedades/diferencias por colaborador. Soporta formato CSV del IESS",
+          "requestDTO": {
+            "name": "CargarRubrosIessDTO",
+            "description": "Datos para cargar archivo de planilla IESS (multipart)",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro IESS a comparar"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año de la planilla"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes de la planilla"},
+              {"name": "archivo", "type": "file", "required": true, "description": "Archivo de planilla IESS (CSV/TXT)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CargarRubrosIessResponseDTO",
+            "description": "Resultado de la carga y comparación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la carga fue exitosa"},
+              {"name": "cargaId", "type": "integer", "required": true, "description": "ID de la carga creada"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de líneas procesadas"},
+              {"name": "totalConDiferencia", "type": "integer", "required": false, "description": "Total de líneas con diferencias"},
+              {"name": "existenNovedades", "type": "boolean", "required": false, "description": "Si hay novedades/diferencias"},
+              {"name": "message", "type": "string", "required": false, "description": "Mensaje de resultado"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/rubros-iess/{id}/aprobar",
+          "summary": "Aprobar carga de rubros IESS",
+          "description": "Aprueba una carga de rubros IESS cambiando su estado. Aplica los ajustes necesarios a los rubros del sistema Avante según las diferencias detectadas",
+          "requestDTO": {
+            "name": "AprobarRubrosIessDTO",
+            "description": "Datos para aprobar la carga",
+            "fields": [
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones de aprobación"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubrosIessResponseDTO",
+            "description": "Carga aprobada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/rubros-iess/{id}/inactivar",
+          "summary": "Inactivar carga de rubros IESS",
+          "description": "Inactiva una carga de rubros IESS cambiando su estado a inactivo",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubrosIessResponseDTO",
+            "description": "Carga inactivada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/rubros-iess/{id}",
+          "summary": "Eliminar carga de rubros IESS",
+          "description": "Elimina una carga de rubros IESS con todas sus líneas de detalle. Solo permite eliminar cargas en estado pendiente",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Detalle líneas IESS (subrecurso carga rubros IESS)",
+      "baseUrl": "/api/v1/rubros-iess/{cargaId}/lineas",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-iess/{cargaId}/lineas",
+          "summary": "Listar líneas de detalle de carga IESS",
+          "description": "Obtiene la lista de líneas de detalle de una carga IESS (av_py_rubros_iessl) con comparación IESS vs Avante. Columnas del renderer: Sucursal, Cédula, Nombre, EstadoRegistro, SueldoTia, SueldoIESS, Diferencia, CréditoIESS, Observación, Valor, AgenciaIESS, AgenciaAvante, ExisteIESS, ExisteAvante, EstadoColaborador",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "agenciaIessId", "type": "integer", "required": false, "description": "Filtro por agencia IESS (nro patronal)"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado del registro"},
+            {"name": "cedula", "type": "string", "required": false, "description": "Filtro por cédula"},
+            {"name": "soloConDiferencia", "type": "boolean", "required": false, "description": "Si true, solo muestra registros con diferencia != 0"}
+          ],
+          "responseDTO": {
+            "name": "RubrosIesslPageResponseDTO",
+            "description": "Lista paginada de líneas de detalle IESS",
+            "fields": [
+              {"name": "content", "type": "array<RubrosIesslResponseDTO>", "required": true, "description": "Lista de líneas"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-iess/{cargaId}/lineas/{id}",
+          "summary": "Obtener línea de detalle IESS por ID",
+          "description": "Obtiene el detalle de una línea de comparación IESS vs Avante con cédula, nombre, sucursal, sueldos (TIA vs IESS), diferencia, crédito IESS, valor, agencias, flags de existencia, observaciones y estado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubrosIesslResponseDTO",
+            "description": "Línea de detalle IESS (av_py_rubros_iessl)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador (iidrubros_iessl)"},
+              {"name": "cargaId", "type": "integer", "required": true, "description": "ID de la carga padre (iidrubros_iess)"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "ID del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "cedulaIess", "type": "string", "required": false, "description": "Cédula según planilla IESS (vcedulaIESS)"},
+              {"name": "nombreIess", "type": "string", "required": false, "description": "Nombre según planilla IESS (vnombreIESS)"},
+              {"name": "nombreAvante", "type": "string", "required": false, "description": "Nombre en sistema Avante (denormalizado del colaborador)"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad/sucursal (iiddmlocalidad)"},
+              {"name": "localidadNombre", "type": "string", "required": false, "description": "Nombre de la sucursal (denormalizado)"},
+              {"name": "sueldoAvante", "type": "number", "required": false, "description": "Sueldo según sistema Avante (msueldoavante)"},
+              {"name": "sueldoIess", "type": "number", "required": false, "description": "Sueldo según planilla IESS (msueldoiess)"},
+              {"name": "diferencia", "type": "number", "required": false, "description": "Diferencia entre sueldos (mdiferencia)"},
+              {"name": "creditoIess", "type": "number", "required": false, "description": "Crédito IESS (mcreditoiess)"},
+              {"name": "valor", "type": "number", "required": false, "description": "Valor del aporte (mvalor)"},
+              {"name": "aporteConyuge", "type": "number", "required": false, "description": "Aporte cónyuge IESS (maporteconyuge)"},
+              {"name": "mora", "type": "number", "required": false, "description": "Mora (mmora)"},
+              {"name": "nroPatronalIess", "type": "integer", "required": false, "description": "Nro patronal IESS (iidnropatronaliess)"},
+              {"name": "nroPatronalAvante", "type": "integer", "required": false, "description": "Nro patronal Avante (iidnropatronalavante)"},
+              {"name": "agenciaIess", "type": "string", "required": false, "description": "Código agencia IESS (denormalizado)"},
+              {"name": "agenciaAvante", "type": "string", "required": false, "description": "Código agencia Avante (denormalizado)"},
+              {"name": "existeIess", "type": "string", "required": false, "description": "Existe en planilla IESS (cexisteiess: S/N)"},
+              {"name": "existeAvante", "type": "string", "required": false, "description": "Existe en sistema Avante (cexisteavante: S/N)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del registro (vstts)"},
+              {"name": "estadoColaborador", "type": "string", "required": false, "description": "Estado del colaborador (ACT=Activo, I=Inactivo)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones (vobservacion)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-iess/{cargaId}/resumen",
+          "summary": "Obtener resumen de planilla IESS por agencia",
+          "description": "Obtiene el resumen agrupado por número patronal/agencia con totales de sueldos Avante vs IESS, créditos IESS y desglose de aportes. Calculado via DAO retornaConsultaResumenPlanilla()",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ResumenPlanillaIessListDTO",
+            "description": "Resumen de planilla IESS por agencia",
+            "fields": [
+              {"name": "items", "type": "array<ResumenPlanillaIessDTO>", "required": true, "description": "Lista de resúmenes por agencia"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de agencias"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros-iess/{cargaId}/lineas",
+          "summary": "Agregar línea de detalle IESS",
+          "description": "Agrega manualmente una línea de detalle a la carga IESS con cédula, sueldo IESS, crédito y comparación automática con datos Avante",
+          "requestDTO": {
+            "name": "RubrosIesslCreateDTO",
+            "description": "Datos para crear una línea de detalle",
+            "fields": [
+              {"name": "cedulaIess", "type": "string", "required": true, "description": "Cédula según planilla IESS"},
+              {"name": "nombreIess", "type": "string", "required": false, "description": "Nombre según planilla IESS"},
+              {"name": "sueldoIess", "type": "number", "required": true, "description": "Sueldo según IESS"},
+              {"name": "creditoIess", "type": "number", "required": false, "description": "Crédito IESS"},
+              {"name": "valor", "type": "number", "required": false, "description": "Valor del aporte"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubrosIesslResponseDTO",
+            "description": "Línea creada con comparación aplicada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/rubros-iess/{cargaId}/lineas/{id}",
+          "summary": "Actualizar línea de detalle IESS",
+          "description": "Actualiza los datos de una línea de detalle IESS",
+          "requestDTO": {
+            "name": "RubrosIesslUpdateDTO",
+            "description": "Datos para actualizar la línea",
+            "fields": [
+              {"name": "sueldoIess", "type": "number", "required": false, "description": "Sueldo IESS"},
+              {"name": "creditoIess", "type": "number", "required": false, "description": "Crédito IESS"},
+              {"name": "valor", "type": "number", "required": false, "description": "Valor"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubrosIesslResponseDTO",
+            "description": "Línea actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/rubros-iess/{cargaId}/lineas/{id}",
+          "summary": "Eliminar línea de detalle IESS",
+          "description": "Elimina una línea de detalle de la carga IESS",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "cargaRubrosIESS.zul - Exportación",
+      "baseUrl": "/api/v1/rubros-iess/{cargaId}/exportar",
+      "operations": [
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros-iess/{cargaId}/exportar/excel",
+          "summary": "Exportar carga IESS a Excel",
+          "description": "Exporta las líneas de detalle de una carga IESS a archivo Excel (HSSFWorkbook) con las columnas: Sucursal, Cédula, Nombre, Estado, SueldoTia, SueldoIESS, Diferencia, CréditoIESS, Observación, Valor, AgenciaIESS, AgenciaAvante, ExisteIESS, ExisteAvante, EstadoColaborador",
+          "requestDTO": {
+            "name": "ExportarRubrosIessExcelDTO",
+            "description": "Filtros opcionales para la exportación",
+            "fields": [
+              {"name": "agenciaIessId", "type": "integer", "required": false, "description": "Filtro por agencia IESS"},
+              {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado"},
+              {"name": "soloConDiferencia", "type": "boolean", "required": false, "description": "Solo registros con diferencia"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total exportados"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros-iess/{cargaId}/exportar/jasper",
+          "summary": "Generar reporte Jasper de carga IESS",
+          "description": "Genera un reporte Jasper de la carga IESS en formato PDF, Excel, HTML o XML con desglose de diferencias por agencia y totales",
+          "requestDTO": {
+            "name": "ReporteJasperRubrosIessDTO",
+            "description": "Parámetros para el reporte",
+            "fields": [
+              {"name": "formato", "type": "string", "required": true, "description": "Formato del reporte (PDF, EXCEL, HTML, XML)"},
+              {"name": "agenciaIessId", "type": "integer", "required": false, "description": "Filtro por agencia"},
+              {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la generación del reporte",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "interfasContable.zul",
+      "baseUrl": "/api/v1/interfaz-contable",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/interfaz-contable/formatos",
+          "summary": "Listar formatos de interfaz contable",
+          "description": "Obtiene la lista de formatos de interfaz contable disponibles (filtrados de av_py_interfas por ámbito contable y tipo archivo CC). Los formatos definen la estructura del archivo de asientos contables a generar",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por empresa"},
+            {"name": "tipoArchivo", "type": "string", "required": false, "description": "Filtro por tipo de archivo contable"}
+          ],
+          "responseDTO": {
+            "name": "FormatoContableListDTO",
+            "description": "Lista de formatos de interfaz contable",
+            "fields": [
+              {"name": "items", "type": "array<FormatoContableResponseDTO>", "required": true, "description": "Lista de formatos"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de formatos"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/interfaz-contable/formatos/{id}",
+          "summary": "Obtener formato de interfaz contable por ID",
+          "description": "Obtiene el detalle de un formato de interfaz contable con configuración de separador, ámbito y tipo de cuentas",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "FormatoContableResponseDTO",
+            "description": "Detalle de formato contable",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "ID del formato (iidinterfas)"},
+              {"name": "nombre", "type": "string", "required": false, "description": "Nombre del formato (vinterfas)"},
+              {"name": "separador", "type": "string", "required": false, "description": "Carácter separador"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito contable"},
+              {"name": "tipoArchivo", "type": "string", "required": false, "description": "Tipo de archivo (P=Proceso, R=Provisiones, A=Reversa, E=Préstamos)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/interfaz-contable/generar",
+          "summary": "Generar archivo de interfaz contable",
+          "description": "Ejecuta el stored procedure PY_ArchivoInterfasCon para generar el archivo de interfaz contable (verificación y/o financiero). Parámetros: ejecución de proceso, interfaz, empresa, tipo de archivo contable (P=Proceso, R=Provisiones, A=Reversa, E=Préstamos). Modo verificación genera archivo para descarga; modo financiero ejecuta script pasainterfascontable.sh para transferir al servidor contable",
+          "requestDTO": {
+            "name": "GenerarInterfazContableDTO",
+            "description": "Parámetros para generar el archivo contable",
+            "fields": [
+              {"name": "ejecucionProcesoId", "type": "integer", "required": true, "description": "ID de la ejecución de proceso (P_iIdeEjecProceso)"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa (P_iIdEmpresa)"},
+              {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz/formato contable (P_iIdInterfas)"},
+              {"name": "tipoArchivoContable", "type": "string", "required": true, "description": "Tipo de archivo: P=Proceso, R=Provisiones, A=Reversa, E=Préstamos (P_TipoArcCon)"},
+              {"name": "modo", "type": "string", "required": true, "description": "Modo de generación: VERIFICACION (descarga) o FINANCIERO (transferencia al servidor contable)"},
+              {"name": "nombreArchivo", "type": "string", "required": false, "description": "Nombre del archivo de salida"},
+              {"name": "adicionar", "type": "boolean", "required": false, "description": "Si true, agrega al archivo existente (modo append)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "GenerarInterfazContableResponseDTO",
+            "description": "Resultado de la generación del archivo contable",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la generación fue exitosa"},
+              {"name": "tipo", "type": "string", "required": false, "description": "Tipo de resultado devuelto por el SP (vTipo)"},
+              {"name": "secuencial", "type": "integer", "required": false, "description": "Secuencial generado"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga (modo verificación)"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros en el archivo"},
+              {"name": "message", "type": "string", "required": false, "description": "Mensaje de resultado"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/interfaz-contable/formatos/{id}",
+          "summary": "Actualizar formato de interfaz contable",
+          "description": "Actualiza la configuración de un formato de interfaz contable",
+          "requestDTO": {
+            "name": "FormatoContableUpdateDTO",
+            "description": "Datos para actualizar el formato",
+            "fields": [
+              {"name": "nombre", "type": "string", "required": false, "description": "Nombre del formato"},
+              {"name": "separador", "type": "string", "required": false, "description": "Separador"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito"}
+            ]
+          },
+          "responseDTO": {
+            "name": "FormatoContableResponseDTO",
+            "description": "Formato actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/interfaz-contable/formatos/{id}",
+          "summary": "Eliminar formato de interfaz contable",
+          "description": "Elimina un formato de interfaz contable. Valida que no tenga archivos generados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "contabilizacionDialogCtrl.zul",
+      "baseUrl": "/api/v1/contabilizacion",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/contabilizacion/procesos",
+          "summary": "Listar procesos disponibles para contabilización",
+          "description": "Obtiene la lista de procesos de nómina disponibles para contabilizar, obtenidos de AvPyRubroslHisDAOJpaImpl.getprocesosejecucion(). Cada proceso incluye su ID, nombre y si tiene registros pendientes de contabilizar",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "ejecucionProcesoId", "type": "integer", "required": true, "description": "ID de la ejecución de proceso padre"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por empresa"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"}
+          ],
+          "responseDTO": {
+            "name": "ProcesoContabilizacionListDTO",
+            "description": "Lista de procesos para contabilizar",
+            "fields": [
+              {"name": "items", "type": "array<ProcesoContabilizacionDTO>", "required": true, "description": "Lista de procesos"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de procesos"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/contabilizacion/instancias",
+          "summary": "Listar instancias a contabilizar",
+          "description": "Obtiene la lista de instancias de procesos que están pendientes de contabilización para un conjunto de procesos seleccionados, obtenidas de AvPyContabilizacionpDAOJpaImpl.getinstanciascontabilizar(). Verifica rubros sin plantilla contable asignada",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "procesoIds", "type": "string", "required": true, "description": "Lista de IDs de procesos separados por coma"},
+            {"name": "anio", "type": "integer", "required": true, "description": "Año"},
+            {"name": "mes", "type": "integer", "required": true, "description": "Mes"},
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"}
+          ],
+          "responseDTO": {
+            "name": "InstanciaContabilizacionListDTO",
+            "description": "Lista de instancias a contabilizar",
+            "fields": [
+              {"name": "items", "type": "array<InstanciaContabilizacionDTO>", "required": true, "description": "Instancias pendientes"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de instancias"},
+              {"name": "rubrosSinPlantilla", "type": "array<string>", "required": false, "description": "Rubros que no tienen plantilla contable asignada (advertencia)"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/contabilizacion/instancias/{instanciaId}",
+          "summary": "Obtener instancia de contabilización por ID",
+          "description": "Obtiene el detalle de una instancia de proceso de nómina a contabilizar con datos de proceso, empresa, período, localidad y estado de contabilización",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "InstanciaContabilizacionDTO",
+            "description": "Detalle de instancia a contabilizar",
+            "fields": [
+              {"name": "instanciaId", "type": "integer", "required": true, "description": "ID de la instancia de proceso"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad"},
+              {"name": "ejecucionProcesoId", "type": "integer", "required": false, "description": "ID de ejecución de proceso"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de contabilización"},
+              {"name": "contabilizado", "type": "boolean", "required": false, "description": "Si ya fue contabilizado"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/contabilizacion/ejecutar",
+          "summary": "Ejecutar contabilización de procesos",
+          "description": "Ejecuta la contabilización de las instancias de procesos de nómina seleccionadas. Para cada instancia ejecuta el SP PY_ContabilizaProcesoTIA y luego PY_ContabilizaPrestNoDesembolso para préstamos no desembolsados. Genera los asientos contables en el sistema. Proceso batch que puede tomar varios segundos",
+          "requestDTO": {
+            "name": "EjecutarContabilizacionDTO",
+            "description": "Datos para ejecutar la contabilización",
+            "fields": [
+              {"name": "instanciaIds", "type": "array<integer>", "required": true, "description": "Lista de IDs de instancias de proceso a contabilizar"},
+              {"name": "ejecucionProcesoId", "type": "integer", "required": true, "description": "ID de la ejecución de proceso"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de localidad (0 si todas)"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "ID de colaborador (0 si todos)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EjecutarContabilizacionResponseDTO",
+            "description": "Resultado de la contabilización",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la contabilización fue exitosa"},
+              {"name": "totalInstancias", "type": "integer", "required": false, "description": "Total de instancias contabilizadas"},
+              {"name": "resultados", "type": "array<ResultadoContabilizacionDTO>", "required": false, "description": "Resultados por instancia"},
+              {"name": "message", "type": "string", "required": false, "description": "Mensaje de resultado"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/contabilizacion/instancias/{instanciaId}",
+          "summary": "Reversar contabilización de instancia",
+          "description": "Reversa la contabilización de una instancia de proceso, eliminando los asientos contables generados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de reversión",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la reversión fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "consultaContableList.zul",
+      "baseUrl": "/api/v1/consulta-contable",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/consulta-contable",
+          "summary": "Consultar detalle contable por rubro",
+          "description": "Obtiene el detalle de asientos contables agrupados por rubro para una empresa, año, mes y procesos seleccionados. Los datos provienen de AvPyRubroslHisDAOJpaImpl.getdetallecontablexrubro2() (native SQL con Object[]). Columnas: Rubro, CantidadDebe, Debe, CantidadHaber, Haber, Nómina, Diferencia. Incluye totales en footer: TotalDebe, TotalHaber, TotalNómina, TotalDiferencia",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "anio", "type": "integer", "required": true, "description": "Año de la consulta"},
+            {"name": "mes", "type": "integer", "required": true, "description": "Mes de la consulta"},
+            {"name": "procesoIds", "type": "string", "required": true, "description": "Lista de IDs de procesos separados por coma"},
+            {"name": "tipoEstructura", "type": "string", "required": false, "description": "Tipo de estructura contable (default: Asiento General)"}
+          ],
+          "responseDTO": {
+            "name": "ConsultaContableListDTO",
+            "description": "Lista de detalle contable por rubro con totales",
+            "fields": [
+              {"name": "items", "type": "array<DetalleContableRubroDTO>", "required": true, "description": "Lista de rubros con detalle contable"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de rubros"},
+              {"name": "totalDebe", "type": "number", "required": false, "description": "Sumatoria total columna Debe"},
+              {"name": "totalHaber", "type": "number", "required": false, "description": "Sumatoria total columna Haber"},
+              {"name": "totalNomina", "type": "number", "required": false, "description": "Sumatoria total columna Nómina"},
+              {"name": "totalDiferencia", "type": "number", "required": false, "description": "Sumatoria total columna Diferencia"},
+              {"name": "totalCantidadDebe", "type": "integer", "required": false, "description": "Sumatoria total cantidad Debe"},
+              {"name": "totalCantidadHaber", "type": "integer", "required": false, "description": "Sumatoria total cantidad Haber"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/consulta-contable/{rubroId}",
+          "summary": "Obtener detalle contable de un rubro",
+          "description": "Obtiene el detalle contable de un rubro específico con cantidades y montos Debe/Haber, valor de nómina y diferencia calculada",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "anio", "type": "integer", "required": true, "description": "Año"},
+            {"name": "mes", "type": "integer", "required": true, "description": "Mes"},
+            {"name": "procesoIds", "type": "string", "required": true, "description": "IDs de procesos"}
+          ],
+          "responseDTO": {
+            "name": "DetalleContableRubroDTO",
+            "description": "Detalle contable de un rubro (Object[] de native query)",
+            "fields": [
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "cantidadDebe", "type": "integer", "required": false, "description": "Cantidad de registros Debe"},
+              {"name": "montoDebe", "type": "number", "required": false, "description": "Monto total Debe"},
+              {"name": "cantidadHaber", "type": "integer", "required": false, "description": "Cantidad de registros Haber"},
+              {"name": "montoHaber", "type": "number", "required": false, "description": "Monto total Haber"},
+              {"name": "nomina", "type": "number", "required": false, "description": "Valor de nómina"},
+              {"name": "diferencia", "type": "number", "required": false, "description": "Diferencia (Nómina - Debe o Haber según tipo)"},
+              {"name": "tipo", "type": "string", "required": false, "description": "Tipo de asiento (D=Debe, H=Haber)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/consulta-contable/exportar/excel",
+          "summary": "Exportar consulta contable a Excel",
+          "description": "Exporta la consulta contable a archivo Excel (HSSFWorkbook) con 7 columnas: Rubro, CantidadDebe, Debe, CantidadHaber, Haber, Nómina, Diferencia",
+          "requestDTO": {
+            "name": "ExportarConsultaContableDTO",
+            "description": "Filtros para la exportación",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes"},
+              {"name": "procesoIds", "type": "string", "required": true, "description": "IDs de procesos"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total exportados"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/consulta-contable/{rubroId}",
+          "summary": "Actualizar asiento contable de un rubro",
+          "description": "Actualiza un ajuste al asiento contable de un rubro específico para el período seleccionado",
+          "requestDTO": {
+            "name": "ActualizarAsientoContableDTO",
+            "description": "Datos del ajuste contable",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes"},
+              {"name": "montoDebe", "type": "number", "required": false, "description": "Ajuste al monto Debe"},
+              {"name": "montoHaber", "type": "number", "required": false, "description": "Ajuste al monto Haber"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones del ajuste"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DetalleContableRubroDTO",
+            "description": "Asiento actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/consulta-contable/{rubroId}",
+          "summary": "Eliminar asiento contable de un rubro",
+          "description": "Elimina el asiento contable de un rubro para el período especificado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "reporteContableFinanciero.zul",
+      "baseUrl": "/api/v1/reportes-contable-financiero",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/reportes-contable-financiero/cuentas",
+          "summary": "Listar cuentas contables activas",
+          "description": "Obtiene la lista de cuentas contables activas (av_py_ctasubcta_aso) o desde catálogo, para usarlas como filtro en los reportes de nómina contable y cuenta/subcuenta",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado (vstts, default: activas)"}
+          ],
+          "responseDTO": {
+            "name": "CuentaContableListDTO",
+            "description": "Lista de cuentas contables",
+            "fields": [
+              {"name": "items", "type": "array<CuentaContableDTO>", "required": true, "description": "Lista de cuentas"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de cuentas"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/reportes-contable-financiero/subcuentas",
+          "summary": "Listar subcuentas contables",
+          "description": "Obtiene la lista de subcuentas contables activas, opcionalmente filtradas por una o más cuentas padre",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "cuentaIds", "type": "string", "required": false, "description": "IDs de cuentas padre separadas por coma"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado"}
+          ],
+          "responseDTO": {
+            "name": "SubcuentaContableListDTO",
+            "description": "Lista de subcuentas contables",
+            "fields": [
+              {"name": "items", "type": "array<SubcuentaContableDTO>", "required": true, "description": "Lista de subcuentas"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de subcuentas"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/reportes-contable-financiero/clases-rubro",
+          "summary": "Listar clases de rubro",
+          "description": "Obtiene la lista de clases de rubro (av_py_clasesrubros) para filtrar rubros en el reporte contable. Las clases agrupan rubros por categoría (ej: ingresos, egresos, provisiones)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ClaseRubroListDTO",
+            "description": "Lista de clases de rubro",
+            "fields": [
+              {"name": "items", "type": "array<ClaseRubroDTO>", "required": true, "description": "Lista de clases de rubro"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de clases"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/reportes-contable-financiero/clases-rubro/{claseId}",
+          "summary": "Obtener clase de rubro por ID",
+          "description": "Obtiene el detalle de una clase de rubro con nombre, nivel, clase padre, flags de reporte y asignación",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ClaseRubroDTO",
+            "description": "Detalle de clase de rubro (av_py_clasesrubros)",
+            "fields": [
+              {"name": "id", "type": "string", "required": true, "description": "ID de la clase (vidclase)"},
+              {"name": "nombre", "type": "string", "required": false, "description": "Nombre de la clase (vclase)"},
+              {"name": "nivel", "type": "string", "required": false, "description": "Nivel jerárquico (vnivel)"},
+              {"name": "clasePadreId", "type": "string", "required": false, "description": "ID de la clase padre (vidclasepadre)"},
+              {"name": "idExterno", "type": "string", "required": false, "description": "ID externo (videxterno)"},
+              {"name": "ocultar", "type": "string", "required": false, "description": "Flag ocultar (cocultar)"},
+              {"name": "reporteNomina", "type": "string", "required": false, "description": "Flag reporte nómina (creportenomina)"},
+              {"name": "asignaRubro", "type": "string", "required": false, "description": "Flag asigna rubro (casignarubro)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/reportes-contable-financiero/generar",
+          "summary": "Generar reporte contable-financiero",
+          "description": "Genera un reporte contable-financiero en formato CSV. Soporta dos tipos: 1) Nómina Contable (generarNominaContable.sh) con filtro por rubros y/o colaboradores, 2) Cuenta y SubCuenta (generarCuentaSubCuenta.sh) con filtro por cuentas y subcuentas. Período definido por fechaInicio y fechaFin en formato YYYY-MM",
+          "requestDTO": {
+            "name": "GenerarReporteContableDTO",
+            "description": "Parámetros para la generación del reporte",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "tipoReporte", "type": "string", "required": true, "description": "Tipo: NOMINA_CONTABLE o CUENTA_SUBCUENTA"},
+              {"name": "fechaInicio", "type": "string", "required": true, "description": "Fecha inicio del período (formato YYYY-MM)"},
+              {"name": "fechaFin", "type": "string", "required": true, "description": "Fecha fin del período (formato YYYY-MM)"},
+              {"name": "cuentaIds", "type": "array<string>", "required": false, "description": "IDs de cuentas (para tipo CUENTA_SUBCUENTA)"},
+              {"name": "subcuentaIds", "type": "array<string>", "required": false, "description": "IDs de subcuentas (para tipo CUENTA_SUBCUENTA)"},
+              {"name": "claseRubroId", "type": "string", "required": false, "description": "ID de la clase de rubro (para tipo NOMINA_CONTABLE)"},
+              {"name": "rubroIds", "type": "array<string>", "required": false, "description": "IDs de rubros (para tipo NOMINA_CONTABLE)"},
+              {"name": "colaboradorIds", "type": "array<integer>", "required": false, "description": "IDs de colaboradores (para tipo NOMINA_CONTABLE)"},
+              {"name": "filtrarPorRubro", "type": "boolean", "required": false, "description": "Activar filtro por rubro"},
+              {"name": "filtrarPorColaborador", "type": "boolean", "required": false, "description": "Activar filtro por colaborador"}
+            ]
+          },
+          "responseDTO": {
+            "name": "GenerarReporteContableResponseDTO",
+            "description": "Resultado de la generación del reporte",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del CSV generado"},
+              {"name": "nombreArchivo", "type": "string", "required": false, "description": "Nombre del archivo generado"},
+              {"name": "message", "type": "string", "required": false, "description": "Mensaje de resultado"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/reportes-contable-financiero/{reporteId}",
+          "summary": "Eliminar reporte contable generado",
+          "description": "Elimina un archivo de reporte contable-financiero generado previamente",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Cuenta/Subcuenta asociada (DTO compartido para reportes)",
+      "baseUrl": null,
+      "operations": [],
+      "sharedDTOs": [
+        {
+          "name": "CuentaContableDTO",
+          "description": "Cuenta contable (av_py_ctasubcta_aso agrupada por vidcuenta)",
+          "fields": [
+            {"name": "cuentaId", "type": "string", "required": true, "description": "ID de la cuenta (vidCuenta)"},
+            {"name": "descripcion", "type": "string", "required": false, "description": "Descripción de la cuenta"},
+            {"name": "estado", "type": "string", "required": false, "description": "Estado (vstts)"}
+          ]
+        },
+        {
+          "name": "SubcuentaContableDTO",
+          "description": "Subcuenta contable (av_py_ctasubcta_aso por vidSubCuenta)",
+          "fields": [
+            {"name": "subcuentaId", "type": "string", "required": true, "description": "ID de la subcuenta (vidSubCuenta)"},
+            {"name": "cuentaId", "type": "string", "required": true, "description": "ID de la cuenta padre (vidCuenta)"},
+            {"name": "itemId", "type": "integer", "required": true, "description": "ID del item (iiditemCtaSubCta)"},
+            {"name": "descripcion", "type": "string", "required": false, "description": "Descripción de la subcuenta"},
+            {"name": "estado", "type": "string", "required": false, "description": "Estado (vstts)"}
+          ]
+        },
+        {
+          "name": "ResultadoContabilizacionDTO",
+          "description": "Resultado de contabilización por instancia",
+          "fields": [
+            {"name": "instanciaId", "type": "integer", "required": true, "description": "ID de la instancia"},
+            {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+            {"name": "resultado", "type": "string", "required": true, "description": "Resultado del SP (vTipo)"},
+            {"name": "success", "type": "boolean", "required": true, "description": "Si fue exitoso"},
+            {"name": "message", "type": "string", "required": false, "description": "Mensaje de resultado"}
+          ]
+        },
+        {
+          "name": "ProcesoContabilizacionDTO",
+          "description": "Proceso disponible para contabilizar",
+          "fields": [
+            {"name": "procesoId", "type": "integer", "required": true, "description": "ID del proceso"},
+            {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+            {"name": "tienePendientes", "type": "boolean", "required": false, "description": "Si tiene registros pendientes de contabilizar"}
+          ]
+        },
+        {
+          "name": "ResumenPlanillaIessDTO",
+          "description": "Resumen de planilla IESS por agencia/patronal",
+          "fields": [
+            {"name": "nroPatronalId", "type": "integer", "required": true, "description": "ID del número patronal"},
+            {"name": "agencia", "type": "string", "required": false, "description": "Nombre de la agencia"},
+            {"name": "localidad", "type": "string", "required": false, "description": "Nombre de la localidad"},
+            {"name": "totalSueldoAvante", "type": "number", "required": false, "description": "Total sueldo Avante"},
+            {"name": "totalSueldoIess", "type": "number", "required": false, "description": "Total sueldo IESS"},
+            {"name": "totalCreditoIess", "type": "number", "required": false, "description": "Total crédito IESS"},
+            {"name": "totalValor", "type": "number", "required": false, "description": "Total valor aportes"},
+            {"name": "totalDiferencia", "type": "number", "required": false, "description": "Total diferencia"}
+          ]
+        }
+      ]
+    },
+    {
+      "screenName": "consultaCuadreContableList.zul",
+      "baseUrl": "/api/v1/cuadre-contable",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/cuadre-contable",
+          "summary": "Listar cuadre de provisiones contables",
+          "description": "Obtiene la lista paginada de cuadre de provisiones contables (av_py_cuadreprovcontable) por empresa, año y mes. Consolidado por rubro con columnas: Rubro, NumColaboradores, ProvAcumMesAnterior, ProvMesActual, ReintegroDiasNLD, Proporcional, Beneficio, BeneficioM, BeneficioMAcum, ProvAjusteMensual, AjusteAnual+, AjusteAnual-, ProvAcumuladoActual",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "anio", "type": "integer", "required": true, "description": "Año de la consulta"},
+            {"name": "mes", "type": "integer", "required": true, "description": "Mes de la consulta"},
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"}
+          ],
+          "responseDTO": {
+            "name": "CuadreContablePageResponseDTO",
+            "description": "Lista paginada de cuadre contable por rubro",
+            "fields": [
+              {"name": "content", "type": "array<CuadreContableResponseDTO>", "required": true, "description": "Lista de cuadre por rubro"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/cuadre-contable/{id}",
+          "summary": "Obtener cuadre contable por ID",
+          "description": "Obtiene el detalle de un cuadre de provisión contable con rubro, empresa, año, mes, número de colaboradores y todas las columnas monetarias (mes anterior, mes actual, reintegro, proporcional, beneficio, beneficio M, beneficio M acum, ajuste, ajuste anual +/-, acumulado actual)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CuadreContableResponseDTO",
+            "description": "Detalle de cuadre de provisión contable (av_py_cuadreprovcontable)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador (iidcuadrecontable)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa (denormalizado)"},
+              {"name": "rubroId", "type": "string", "required": false, "description": "ID del rubro"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año (ianio)"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes (imes)"},
+              {"name": "numColaboradores", "type": "integer", "required": false, "description": "Número de colaboradores (numcolab)"},
+              {"name": "provMesAnterior", "type": "number", "required": false, "description": "Provisión acumulada mes anterior (mmesanterior)"},
+              {"name": "provMesActual", "type": "number", "required": false, "description": "Provisión mes actual (mmesactual)"},
+              {"name": "reintegroDiasNld", "type": "number", "required": false, "description": "Reintegro días no laborados (mreintegrodiasnld)"},
+              {"name": "proporcional", "type": "number", "required": false, "description": "Proporcional (mproporcional)"},
+              {"name": "beneficio", "type": "number", "required": false, "description": "Beneficio (mbeneficio)"},
+              {"name": "beneficioM", "type": "number", "required": false, "description": "Beneficio M (mbeneficiom)"},
+              {"name": "beneficioMacum", "type": "number", "required": false, "description": "Beneficio M acumulado (mbeneficiomacum)"},
+              {"name": "ajusteMensual", "type": "number", "required": false, "description": "Provisión ajuste mensual (majuste)"},
+              {"name": "ajusteAnualMas", "type": "number", "required": false, "description": "Ajuste anual positivo (majusteanualmas)"},
+              {"name": "ajusteAnualMenos", "type": "number", "required": false, "description": "Ajuste anual negativo (majusteanualmenos)"},
+              {"name": "acumuladoActual", "type": "number", "required": false, "description": "Provisión acumulado actual (macumuladoactual)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/cuadre-contable",
+          "summary": "Crear cuadre de provisión contable",
+          "description": "Crea un nuevo registro de cuadre de provisión contable para un rubro, empresa y período",
+          "requestDTO": {
+            "name": "CuadreContableCreateDTO",
+            "description": "Datos para crear cuadre contable",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes"},
+              {"name": "provMesAnterior", "type": "number", "required": false, "description": "Provisión mes anterior"},
+              {"name": "provMesActual", "type": "number", "required": false, "description": "Provisión mes actual"},
+              {"name": "reintegroDiasNld", "type": "number", "required": false, "description": "Reintegro días NLD"},
+              {"name": "proporcional", "type": "number", "required": false, "description": "Proporcional"},
+              {"name": "beneficio", "type": "number", "required": false, "description": "Beneficio"},
+              {"name": "beneficioM", "type": "number", "required": false, "description": "Beneficio M"},
+              {"name": "beneficioMacum", "type": "number", "required": false, "description": "Beneficio M acumulado"},
+              {"name": "ajusteMensual", "type": "number", "required": false, "description": "Ajuste mensual"},
+              {"name": "ajusteAnualMas", "type": "number", "required": false, "description": "Ajuste anual +"},
+              {"name": "ajusteAnualMenos", "type": "number", "required": false, "description": "Ajuste anual -"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CuadreContableResponseDTO",
+            "description": "Cuadre creado",
+            "fields": []
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/cuadre-contable/exportar/excel",
+          "summary": "Exportar cuadre contable a Excel",
+          "description": "Exporta el cuadre de provisiones contables a archivo Excel (HSSFWorkbook) con 13 columnas: Rubro, NumColab, MesAnterior, MesActual, ReintegroDiasNLD, Proporcional, Beneficio, BeneficioM, BeneficioMAcum, Ajuste, AjusteAnual+, AjusteAnual-, AcumuladoActual",
+          "requestDTO": {
+            "name": "ExportarCuadreContableDTO",
+            "description": "Filtros para la exportación",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total exportados"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/cuadre-contable/{id}",
+          "summary": "Actualizar cuadre contable",
+          "description": "Actualiza los valores de un cuadre de provisión contable",
+          "requestDTO": {
+            "name": "CuadreContableUpdateDTO",
+            "description": "Datos para actualizar el cuadre",
+            "fields": [
+              {"name": "provMesAnterior", "type": "number", "required": false, "description": "Provisión mes anterior"},
+              {"name": "provMesActual", "type": "number", "required": false, "description": "Provisión mes actual"},
+              {"name": "reintegroDiasNld", "type": "number", "required": false, "description": "Reintegro días NLD"},
+              {"name": "proporcional", "type": "number", "required": false, "description": "Proporcional"},
+              {"name": "beneficio", "type": "number", "required": false, "description": "Beneficio"},
+              {"name": "beneficioM", "type": "number", "required": false, "description": "Beneficio M"},
+              {"name": "beneficioMacum", "type": "number", "required": false, "description": "Beneficio M acumulado"},
+              {"name": "ajusteMensual", "type": "number", "required": false, "description": "Ajuste mensual"},
+              {"name": "ajusteAnualMas", "type": "number", "required": false, "description": "Ajuste anual +"},
+              {"name": "ajusteAnualMenos", "type": "number", "required": false, "description": "Ajuste anual -"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CuadreContableResponseDTO",
+            "description": "Cuadre actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/cuadre-contable/{id}",
+          "summary": "Eliminar cuadre contable",
+          "description": "Elimina un registro de cuadre de provisión contable y sus detalles por colaborador asociados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "consultaCuadreContablexColabList.zul",
+      "baseUrl": "/api/v1/cuadre-contable/{cuadreId}/colaboradores",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/cuadre-contable/{cuadreId}/colaboradores",
+          "summary": "Listar detalle de cuadre contable por colaborador",
+          "description": "Obtiene la lista paginada de detalle de cuadre de provisiones contables por colaborador (av_py_cuadreprovcontable_det) para un cuadre específico. Soporta búsqueda por cédula o nombre del colaborador. Columnas: Cédula, Nombres, ProvAcumMesAnterior, ProvMesActual, ReintegroDiasNLD, Proporcional, Beneficio, BeneficioM, BeneficioMAcum, AjusteMensual, AjusteAnual+, AjusteAnual-, ProvAcumulado + Estado y Zona en Excel",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "busqueda", "type": "string", "required": false, "description": "Búsqueda por cédula o apellidos/nombres (ILIKE)"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado del colaborador"}
+          ],
+          "responseDTO": {
+            "name": "CuadreContableDetPageResponseDTO",
+            "description": "Lista paginada de cuadre contable por colaborador",
+            "fields": [
+              {"name": "content", "type": "array<CuadreContableDetResponseDTO>", "required": true, "description": "Lista de detalles por colaborador"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId}",
+          "summary": "Obtener detalle de cuadre contable de un colaborador",
+          "description": "Obtiene el detalle de provisiones contables de un colaborador dentro de un cuadre con cédula, nombres, estado, zona y todas las columnas monetarias (mes anterior, mes actual, reintegro, proporcional, beneficio, beneficio M, beneficio M acum, ajuste, ajuste anual +/-, acumulado)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CuadreContableDetResponseDTO",
+            "description": "Detalle de cuadre contable por colaborador (av_py_cuadreprovcontable_det, PK: @EmbeddedId iidcolaborador+iidcuadrecontable)",
+            "fields": [
+              {"name": "cuadreId", "type": "integer", "required": true, "description": "ID del cuadre padre (iidcuadrecontable)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (iidcolaborador)"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador (denormalizado de AvColaboradores)"},
+              {"name": "nombres", "type": "string", "required": false, "description": "Apellidos y nombres (denormalizado de AvColaboradores)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del detalle (vstts)"},
+              {"name": "zonaId", "type": "integer", "required": false, "description": "ID de la zona (iidzona)"},
+              {"name": "zonaNombre", "type": "string", "required": false, "description": "Nombre de la zona (denormalizado)"},
+              {"name": "provMesAnterior", "type": "number", "required": false, "description": "Provisión mes anterior (mmesanterior)"},
+              {"name": "provMesActual", "type": "number", "required": false, "description": "Provisión mes actual (mmesactual)"},
+              {"name": "reintegroDiasNld", "type": "number", "required": false, "description": "Reintegro días no laborados (mreintegrodiasnld)"},
+              {"name": "proporcional", "type": "number", "required": false, "description": "Proporcional (mproporcional)"},
+              {"name": "beneficio", "type": "number", "required": false, "description": "Beneficio (mbeneficio)"},
+              {"name": "beneficioM", "type": "number", "required": false, "description": "Beneficio M (mbeneficiom)"},
+              {"name": "beneficioMacum", "type": "number", "required": false, "description": "Beneficio M acumulado (mbeneficiomacum)"},
+              {"name": "ajusteMensual", "type": "number", "required": false, "description": "Ajuste mensual (majuste)"},
+              {"name": "ajusteAnualMas", "type": "number", "required": false, "description": "Ajuste anual positivo (majusteanualmas)"},
+              {"name": "ajusteAnualMenos", "type": "number", "required": false, "description": "Ajuste anual negativo (majusteanualmenos)"},
+              {"name": "acumulado", "type": "number", "required": false, "description": "Provisión acumulada (macumulado)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/cuadre-contable/{cuadreId}/colaboradores",
+          "summary": "Crear detalle de cuadre contable para colaborador",
+          "description": "Crea un registro de detalle de cuadre de provisión contable para un colaborador específico dentro de un cuadre",
+          "requestDTO": {
+            "name": "CuadreContableDetCreateDTO",
+            "description": "Datos para crear detalle de cuadre por colaborador",
+            "fields": [
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "zonaId", "type": "integer", "required": false, "description": "ID de la zona"},
+              {"name": "provMesAnterior", "type": "number", "required": false, "description": "Provisión mes anterior"},
+              {"name": "provMesActual", "type": "number", "required": false, "description": "Provisión mes actual"},
+              {"name": "reintegroDiasNld", "type": "number", "required": false, "description": "Reintegro días NLD"},
+              {"name": "proporcional", "type": "number", "required": false, "description": "Proporcional"},
+              {"name": "beneficio", "type": "number", "required": false, "description": "Beneficio"},
+              {"name": "beneficioM", "type": "number", "required": false, "description": "Beneficio M"},
+              {"name": "beneficioMacum", "type": "number", "required": false, "description": "Beneficio M acumulado"},
+              {"name": "ajusteMensual", "type": "number", "required": false, "description": "Ajuste mensual"},
+              {"name": "ajusteAnualMas", "type": "number", "required": false, "description": "Ajuste anual +"},
+              {"name": "ajusteAnualMenos", "type": "number", "required": false, "description": "Ajuste anual -"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CuadreContableDetResponseDTO",
+            "description": "Detalle creado",
+            "fields": []
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/cuadre-contable/{cuadreId}/colaboradores/exportar/excel",
+          "summary": "Exportar detalle de cuadre por colaborador a Excel",
+          "description": "Exporta el detalle de cuadre contable por colaborador a archivo Excel (HSSFWorkbook) con 15 columnas: Cédula, Nombres, Estado, Zona, MesAnterior, MesActual, ReintegroDiasNLD, Proporcional, Beneficio, BeneficioM, BeneficioMAcum, Ajuste, AjusteAnual+, AjusteAnual-, Acumulado",
+          "requestDTO": {
+            "name": "ExportarCuadreContableDetDTO",
+            "description": "Filtros para la exportación",
+            "fields": [
+              {"name": "busqueda", "type": "string", "required": false, "description": "Filtro por cédula o nombre"},
+              {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total exportados"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId}",
+          "summary": "Actualizar detalle de cuadre de un colaborador",
+          "description": "Actualiza los valores de provisión del detalle de cuadre contable de un colaborador",
+          "requestDTO": {
+            "name": "CuadreContableDetUpdateDTO",
+            "description": "Datos para actualizar el detalle",
+            "fields": [
+              {"name": "zonaId", "type": "integer", "required": false, "description": "ID de la zona"},
+              {"name": "provMesAnterior", "type": "number", "required": false, "description": "Provisión mes anterior"},
+              {"name": "provMesActual", "type": "number", "required": false, "description": "Provisión mes actual"},
+              {"name": "reintegroDiasNld", "type": "number", "required": false, "description": "Reintegro días NLD"},
+              {"name": "proporcional", "type": "number", "required": false, "description": "Proporcional"},
+              {"name": "beneficio", "type": "number", "required": false, "description": "Beneficio"},
+              {"name": "beneficioM", "type": "number", "required": false, "description": "Beneficio M"},
+              {"name": "beneficioMacum", "type": "number", "required": false, "description": "Beneficio M acumulado"},
+              {"name": "ajusteMensual", "type": "number", "required": false, "description": "Ajuste mensual"},
+              {"name": "ajusteAnualMas", "type": "number", "required": false, "description": "Ajuste anual +"},
+              {"name": "ajusteAnualMenos", "type": "number", "required": false, "description": "Ajuste anual -"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CuadreContableDetResponseDTO",
+            "description": "Detalle actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId}",
+          "summary": "Eliminar detalle de cuadre de un colaborador",
+          "description": "Elimina el registro de detalle de cuadre contable de un colaborador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "migration": {
+    "type": "IIB",
+    "sourceTechnology": "IIB",
+    "targetTechnology": "SPRING_BOOT"
+  }
+}

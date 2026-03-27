@@ -1,0 +1,1384 @@
+{
+  "functionalities": [
+    {
+      "id": "func-prestamos",
+      "name": "Préstamos",
+      "description": "Gestión integral de préstamos de nómina: creación, aprobación, ejecución, cuotas mensuales, bonificaciones, abonos, cancelaciones, bajas, cuotas comprometidas, y control de sobregiros históricos por colaborador",
+      "screens": [
+        {
+          "name": "rubrosPrestamoList.zul",
+          "description": "Listado paginado de préstamos de nómina con búsqueda por rubro, referencia de documento y selección de préstamo para ver detalle o editar",
+          "actions": [
+            {
+              "name": "Listar préstamos",
+              "description": "Muestra la lista paginada de préstamos de nómina con datos de colaborador, rubro, monto, estado y cuotas",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista de préstamos (extiende GFCBaseCtrl) con paginación y búsqueda, gestiona el listbox de préstamos"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de préstamos con filtros y búsqueda"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoDAOImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a datos de préstamos de nómina"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de colaboradores vinculados a los préstamos"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de préstamo de nómina con monto, cuotas, estado, rubro, colaborador"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador asociado al préstamo"
+                },
+                {
+                  "className": "AvColaboradoresV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista de colaboradores con datos básicos para la lista"
+                },
+                {
+                  "className": "RubrosPrestamosListBoxListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items del listado de préstamos"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar préstamo",
+              "description": "Selecciona un préstamo de la lista para cargar su detalle en la pestaña de detalle",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$listBoxRubrosPrestamo para cargar el préstamo seleccionado en la vista de detalle"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Abrir detalle del préstamo (doble clic)",
+              "description": "Al hacer doble clic en un préstamo, abre la pestaña de detalle con datos completos",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onDoubleClickedRubrosPrestamoItem para abrir la pestaña de detalle con el préstamo seleccionado"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo que se muestra en detalle"
+                }
+              ]
+            },
+            {
+              "name": "Reimprimir carta",
+              "description": "Reimprime la carta de préstamo para el préstamo seleccionado",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta doReImprimeCarta() para generar e imprimir la carta del préstamo seleccionado"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos del préstamo para la impresión de la carta"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosPrestamoMain.zul",
+          "description": "Pantalla principal contenedora con tabs de lista y detalle de préstamos, toolbar con acciones CRUD, búsqueda por rubro y documento de referencia, aprobación, completado, cierre y gestión de cuotas comprometidas",
+          "actions": [
+            {
+              "name": "Crear nuevo préstamo",
+              "description": "Inicia la creación de un nuevo préstamo de nómina limpiando el formulario de detalle",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador principal (extiende GFCBaseCtrl) que maneja onClick$button_Prestamo_New para iniciar un nuevo préstamo"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la lógica de inicialización de nuevo préstamo"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo nueva a crear"
+                }
+              ]
+            },
+            {
+              "name": "Guardar préstamo",
+              "description": "Persiste un nuevo préstamo o actualiza uno existente con validación de datos y generación de cuotas",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Prestamo_Save con validación, cálculo de cuotas y persistencia vía AvanteJPAPersistenceManager"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta saveObject()/updateObject() para persistir el préstamo"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoDAOImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para persistencia de préstamos de nómina"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos del rubro asociado al préstamo"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para validar datos del colaborador"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo a guardar"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuota mensual generada para el préstamo"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoAbo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de tabla de amortización/abonos del préstamo"
+                }
+              ]
+            },
+            {
+              "name": "Editar préstamo",
+              "description": "Activa el modo edición del préstamo seleccionado en la pestaña de detalle",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Prestamo_Edit para activar campos del formulario de detalle"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo en modo edición"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar préstamo",
+              "description": "Elimina el préstamo seleccionado con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Prestamo_Delete con confirmación para eliminar el préstamo"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar el préstamo y sus cuotas"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoDAOImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para eliminar el préstamo de la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Aprobar préstamo",
+              "description": "Aprueba el préstamo seleccionado cambiando su estado a aprobado y generando acreditación",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Prestamo_Approve para cambiar estado del préstamo a aprobado con generación de archivo de acreditación"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de aprobación: validación, cambio de estado, generación de acreditación"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoDAOImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para actualizar el estado de aprobación del préstamo"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener parámetros de configuración de aprobación"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo cuyo estado se actualiza"
+                },
+                {
+                  "className": "AvPyInterfasearchivoPrestamos.java",
+                  "type": "Modelo",
+                  "description": "Entidad del archivo de acreditación generado para el préstamo aprobado"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoAcre.java",
+                  "type": "Modelo",
+                  "description": "Entidad de acreditación del préstamo"
+                }
+              ]
+            },
+            {
+              "name": "Completar préstamo",
+              "description": "Marca el préstamo como completado (todas las cuotas pagadas)",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Prestamo_Complete para marcar el préstamo como completado y finalizar el ciclo de pagos"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de completado del préstamo"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo marcado como completado"
+                }
+              ]
+            },
+            {
+              "name": "Cerrar préstamo",
+              "description": "Cierra el préstamo finalizando completamente su ciclo de vida",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Prestamo_Close para cerrar el préstamo definitivamente"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de cierre del préstamo"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo cerrado"
+                }
+              ]
+            },
+            {
+              "name": "Cancelar edición",
+              "description": "Cancela la edición en curso y restaura los valores originales del préstamo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Prestamo_Cancel para cancelar edición y restaurar valores anteriores"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo con valores restaurados"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar lista",
+              "description": "Recarga el listado de préstamos desde la base de datos",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Prestamo_Refresh para recargar los datos del listado"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta actualizada de préstamos"
+                }
+              ]
+            },
+            {
+              "name": "Buscar por rubro",
+              "description": "Filtra la lista de préstamos por rubro de nómina",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_RubrosPrestamoList_Searchvrubro para filtrar préstamos por rubro"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consulta filtrada por rubro"
+                }
+              ]
+            },
+            {
+              "name": "Buscar por documento de referencia",
+              "description": "Filtra la lista de préstamos por número de documento de referencia",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_RubrosPrestamoList_Searchvdocref para filtrar préstamos por documento"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consulta filtrada por documento de referencia"
+                }
+              ]
+            },
+            {
+              "name": "Imprimir lista",
+              "description": "Imprime el listado de préstamos via reporte Jasper",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_RubrosPrestamoList_PrintList para generar reporte Jasper del listado"
+                },
+                {
+                  "className": "JasperReportWindowDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador genérico para la generación de reportes Jasper"
+                }
+              ]
+            },
+            {
+              "name": "Abrir cuotas comprometidas",
+              "description": "Abre el diálogo de cuotas comprometidas del colaborador asociado al préstamo seleccionado",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_RubrosPrestamoList_Compromisos para abrir CuotasComprometDialog.zul"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Préstamo con datos de cuotas comprometidas"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosPrestamoDetail.zul",
+          "description": "Formulario de detalle de préstamo con datos de colaborador, rubro, monto, plazo, cuotas, tipo de acreditación, desglose de cuotas mensuales, bonificaciones y acreditaciones, con edición de montos y solicitud de vales diferidos",
+          "actions": [
+            {
+              "name": "Registrar préstamo (guardar detalle)",
+              "description": "Guarda los datos del formulario de detalle del préstamo con cálculo de cuotas, tabla de amortización y asignación de rubro",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del detalle de préstamo (extiende GFCBaseCtrl) que maneja onClick$btn_ok para validar y guardar datos del formulario"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta persistencia del préstamo con cálculo de cuotas y tabla de amortización"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoDAOImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para persistir datos del préstamo"
+                },
+                {
+                  "className": "AvCatalogosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener catálogos de tipos de préstamo y motivos"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos del colaborador"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar rubros históricos del colaborador"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad principal del préstamo con datos de monto, plazo, cuotas"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuota mensual del préstamo"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoAbo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de tabla de amortización del préstamo"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro de nómina asociado al préstamo"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para tipos de préstamo y motivos"
+                },
+                {
+                  "className": "RubrosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de rubros"
+                },
+                {
+                  "className": "CatalogosDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdowns de catálogos (motivos, tipos)"
+                },
+                {
+                  "className": "PrestamoCpDropDowmItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de tipo de cálculo de préstamo"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar rubro",
+              "description": "Selecciona el rubro de nómina asociado al préstamo y recalcula parámetros según configuración del rubro",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Rubros y doSetRubro() para configurar el préstamo según el rubro seleccionado"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro seleccionado con configuración de préstamo"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar motivo de préstamo",
+              "description": "Selecciona el motivo del préstamo del catálogo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_motivo_prestamo para asociar un motivo al préstamo"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo con motivos de préstamo"
+                },
+                {
+                  "className": "CatalogosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de motivos"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar tipo de acreditación",
+              "description": "Selecciona el tipo de acreditación para el préstamo (banco, caja, etc.)",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_tipo_acreditacion para configurar el tipo de pago del préstamo"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoAcre.java",
+                  "type": "Modelo",
+                  "description": "Entidad de acreditación del préstamo"
+                }
+              ]
+            },
+            {
+              "name": "Guardar acreditación",
+              "description": "Guarda los datos de acreditación del préstamo (banco, cuenta, monto acreditado)",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_acreditacion_ok para persistir datos de acreditación del préstamo"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Persiste los datos de acreditación del préstamo"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoAcre.java",
+                  "type": "Modelo",
+                  "description": "Entidad de acreditación con banco, cuenta y monto"
+                },
+                {
+                  "className": "DetalleAcreditacionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para la tabla de detalle de acreditaciones"
+                }
+              ]
+            },
+            {
+              "name": "Editar monto de cuota",
+              "description": "Permite editar el monto de una cuota mensual individual del préstamo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_edita_monto para modificar el monto de una cuota específica"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuota mensual cuyo monto se edita"
+                },
+                {
+                  "className": "DetalleCuotaMensualListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para la tabla de cuotas mensuales"
+                }
+              ]
+            },
+            {
+              "name": "Editar bonificación",
+              "description": "Permite editar el monto de bonificación asociada a una cuota del préstamo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_edita_bonificacion para modificar la bonificación de una cuota"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuota con dato de bonificación"
+                },
+                {
+                  "className": "DetalleCuotaMensualBonificacionesListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para la tabla de bonificaciones por cuota"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar bonificación",
+              "description": "Elimina la bonificación asociada a una cuota del préstamo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_elimina_bonificacion para eliminar una bonificación de cuota"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la eliminación de la bonificación"
+                }
+              ]
+            },
+            {
+              "name": "Editar acreditación",
+              "description": "Permite editar los datos de una acreditación existente del préstamo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_edita_acreditacion para modificar datos de acreditación"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoAcre.java",
+                  "type": "Modelo",
+                  "description": "Entidad de acreditación a editar"
+                },
+                {
+                  "className": "DetalleAcreditacionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para la tabla de detalle de acreditaciones"
+                }
+              ]
+            },
+            {
+              "name": "Solicitar vale diferido",
+              "description": "Abre el diálogo de solicitud de vale diferido asociado al préstamo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_Solicitud_Vale_Diferido para abrir el diálogo de solicitud de vale diferido"
+                },
+                {
+                  "className": "AvPyColaboradoressolValdif.java",
+                  "type": "Modelo",
+                  "description": "Entidad de solicitud de vale diferido del colaborador"
+                }
+              ]
+            },
+            {
+              "name": "Ver detalle de cuota mensual (doble clic)",
+              "description": "Al hacer doble clic en una cuota mensual, muestra el detalle completo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoDetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onDoubleClickDetalleDescuentoMensual para mostrar el detalle de la cuota"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuota mensual con detalle"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosPrestamoCoDialog.zul",
+          "description": "Diálogo de consulta de préstamos comprometidos por colaborador con listado de cuotas comprometidas, operaciones CRUD sobre compromisos y vista de detalle de cada compromiso",
+          "actions": [
+            {
+              "name": "Listar compromisos del colaborador",
+              "description": "Muestra la lista de cuotas comprometidas del colaborador seleccionado con datos de rubro, monto, período y estado",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoCoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de compromisos por colaborador (extiende GFCBaseListCtrl<AvPyRubrosPrestamoComV>) con listado y CRUD de compromisos"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de compromisos del colaborador"
+                },
+                {
+                  "className": "AvCatalogosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener catálogos de estados de compromiso"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoComV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA de compromisos de préstamo por colaborador con datos consolidados"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de compromiso/cuota mensual del préstamo"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo padre del compromiso"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para estados de compromiso"
+                },
+                {
+                  "className": "CatalogosDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdowns de catálogos"
+                }
+              ]
+            },
+            {
+              "name": "Crear nuevo compromiso",
+              "description": "Permite crear un nuevo registro de compromiso/cuota para el colaborador",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoCoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnNew para iniciar un nuevo compromiso"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Gestiona la creación del compromiso"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de compromiso a crear"
+                }
+              ]
+            },
+            {
+              "name": "Guardar compromiso",
+              "description": "Persiste un compromiso nuevo o actualizado del colaborador",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoCoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSave para persistir el compromiso vía AvanteJPAPersistenceManager"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta saveObject()/updateObject() para persistir el compromiso"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de compromiso a guardar"
+                }
+              ]
+            },
+            {
+              "name": "Editar compromiso",
+              "description": "Activa la edición del compromiso seleccionado",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoCoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnEdit para activar modo edición del compromiso"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de compromiso en edición"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar compromiso",
+              "description": "Elimina el compromiso seleccionado con confirmación",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoCoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete con confirmación para eliminar el compromiso"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar el compromiso"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de compromiso a eliminar"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar compromiso de lista",
+              "description": "Al seleccionar un compromiso de la lista, carga sus datos en el formulario de detalle",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoCoMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Compromisos para cargar datos del compromiso seleccionado"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoComV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista del compromiso seleccionado"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosPrestamoAbonos.zul",
+          "description": "Pantalla de registro de abonos a préstamos con datos del colaborador, monto del abono, tipo de forma de pago, generación de comprobante y cancelación parcial del préstamo",
+          "actions": [
+            {
+              "name": "Registrar abono a préstamo",
+              "description": "Registra un abono (pago parcial) al préstamo seleccionado con monto, tipo de pago y fecha, recalculando saldo pendiente",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoAbonosCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de abonos (extiende GFCBaseCtrl) que maneja onClick$button_Abono_Save para registrar el abono con cálculo de saldo y generación de comprobante"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de registro del abono: validación, persistencia, recálculo de saldo y cuotas"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoDAOImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para actualizar el préstamo con el nuevo saldo tras el abono"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos del colaborador"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoAbonos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de registro de abono con monto, fecha y tipo de pago"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoDetAbono.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle del abono con desglose por cuota"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo cuyo saldo se actualiza tras el abono"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoAbo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de tabla de amortización actualizada"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuota mensual afectada por el abono"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoComTmp.java",
+                  "type": "Modelo",
+                  "description": "Entidad temporal de cuotas para recálculo"
+                },
+                {
+                  "className": "AvPyInterfasearchivoPrestamos.java",
+                  "type": "Modelo",
+                  "description": "Entidad del archivo de pago generado tras el abono"
+                },
+                {
+                  "className": "CatalogosDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de tipos de pago"
+                }
+              ]
+            },
+            {
+              "name": "Cancelar edición de abono",
+              "description": "Cancela la edición del abono en curso y restaura los valores originales",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoAbonosCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Abono_Cancel y doCancel() para restaurar valores"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosPrestamoAbonosCancel.zul",
+          "description": "Pantalla de cancelación de abonos registrados en préstamos con reversión del abono, recálculo de saldos, reimpresión de comprobantes y gestión de cuotas afectadas",
+          "actions": [
+            {
+              "name": "Eliminar abono",
+              "description": "Elimina/revierte un abono registrado previamente, recalculando el saldo del préstamo y las cuotas afectadas",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoAbonosCancelCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de cancelación de abonos (extiende GFCBaseCtrl) que maneja onClick$button_Abono_Delete para revertir el abono con recálculo de cuotas"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de reversión del abono: eliminación, recálculo de saldo y cuotas"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoDAOImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para actualizar el préstamo con saldo restaurado"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener parámetros de configuración del proceso de reversión"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos del rubro del préstamo"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoAbonos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de abono a revertir"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoDetAbono.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle del abono a revertir"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo cuyo saldo se restaura"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuota mensual afectada por la reversión"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoComTmp.java",
+                  "type": "Modelo",
+                  "description": "Entidad temporal de cuotas para recálculo"
+                },
+                {
+                  "className": "AvPyRubroslpreColab.java",
+                  "type": "Modelo",
+                  "description": "Entidad de liquidación pre-cálculo del colaborador afectada"
+                },
+                {
+                  "className": "AvPyRubroslpreColabPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta de la liquidación pre-cálculo"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia de proceso de nómina asociada a la reversión"
+                },
+                {
+                  "className": "DetalleAbonoListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items del listado de abonos"
+                },
+                {
+                  "className": "DetalleCuotaMensualListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de cuotas mensuales afectadas"
+                },
+                {
+                  "className": "DetalleDeudaPorBonificacionesListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para detalle de deuda por bonificaciones"
+                }
+              ]
+            },
+            {
+              "name": "Completar cancelación de abono",
+              "description": "Completa el proceso de cancelación del abono confirmando la reversión",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoAbonosCancelCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Abono_Complete para confirmar y completar la reversión del abono"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de completado de la cancelación"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo actualizado tras la cancelación"
+                }
+              ]
+            },
+            {
+              "name": "Reimprimir comprobante de abono",
+              "description": "Reimprime el comprobante de un abono registrado previamente",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoAbonosCancelCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_Abono_Reimprimir para generar e imprimir el comprobante del abono"
+                },
+                {
+                  "className": "JasperReportWindowDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador genérico para la generación de reportes Jasper"
+                },
+                {
+                  "className": "AvPyInterfasearchivoPrestamos.java",
+                  "type": "Modelo",
+                  "description": "Entidad del archivo/comprobante a reimprimir"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosPrestamoBaja.zul",
+          "description": "Diálogo de baja de préstamos de nómina que permite dar de baja un préstamo activo, congelando el saldo pendiente y cerrando cuotas futuras",
+          "actions": [
+            {
+              "name": "Dar de baja préstamo",
+              "description": "Ejecuta la baja del préstamo seleccionado, congelando el saldo pendiente, cerrando cuotas futuras y actualizando el estado del préstamo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosPrestamoBajaCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de baja de préstamos (extiende GFCBaseCtrl) que maneja onClick$btnSave para ejecutar la baja con cierre de cuotas"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de baja: congelación de saldo, cierre de cuotas pendientes, actualización de estado"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoDAOImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para actualizar el estado del préstamo a baja"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamo dado de baja con saldo congelado"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuotas mensuales cerradas por la baja"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "CuotasComprometDialog.zul",
+          "description": "Diálogo de consulta de cuotas comprometidas de un colaborador con resumen general de deuda y capacidad de endeudamiento, con exportación de datos",
+          "actions": [
+            {
+              "name": "Consultar cuotas comprometidas",
+              "description": "Muestra el resumen de cuotas comprometidas del colaborador con datos por empresa, total de deuda, capacidad de endeudamiento y desglose de préstamos activos",
+              "relatedClasses": [
+                {
+                  "className": "CuotasCompromDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de cuotas comprometidas (extiende GFCBaseCtrl) que carga datos de deuda y capacidad de endeudamiento"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de cuotas comprometidas y cálculo de capacidad de endeudamiento"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de empresas del colaborador"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros históricos para el cálculo de capacidad"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para contexto de cuotas comprometidas"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                }
+              ]
+            },
+            {
+              "name": "Exportar cuotas comprometidas",
+              "description": "Exporta los datos de cuotas comprometidas del colaborador",
+              "relatedClasses": [
+                {
+                  "className": "CuotasCompromDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnExportar para exportar datos de cuotas comprometidas"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos para la exportación"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "sobregiro.zul",
+          "description": "Listado paginado de sobregiros históricos de nómina con filtros por empresa, colaborador, instancia de proceso y estado, con acceso al formulario de detalle y reportes Jasper",
+          "actions": [
+            {
+              "name": "Listar sobregiros",
+              "description": "Muestra la lista paginada de sobregiros históricos con datos de colaborador, proceso, monto, estado y período",
+              "relatedClasses": [
+                {
+                  "className": "SobregiroListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista de sobregiros (extiende GFCBaseListCtrl<AvPyRubrosSobregiroHi>) con paginación y filtros"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de sobregiros históricos con filtros"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener empresas para el filtro"
+                },
+                {
+                  "className": "AvPyRubrosSobregiroHi.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de sobregiro histórico de nómina con monto, período, estado"
+                },
+                {
+                  "className": "AvPyRubrosSobregiroHiPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta del sobregiro histórico"
+                },
+                {
+                  "className": "AvColaboradores.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador asociado al sobregiro"
+                },
+                {
+                  "className": "AvColaboradoresV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista de colaboradores para búsqueda en el filtro"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad/dimensión para filtros"
+                },
+                {
+                  "className": "SobregiroListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items del listado de sobregiros"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de instancias de procesos"
+                },
+                {
+                  "className": "CatalogosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de estados de sobregiro"
+                }
+              ]
+            },
+            {
+              "name": "Buscar colaborador",
+              "description": "Abre el buscador avanzado de colaboradores para filtrar sobregiros por persona",
+              "relatedClasses": [
+                {
+                  "className": "SobregiroListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSearchColaboradorExtended para abrir el buscador avanzado de colaboradores"
+                },
+                {
+                  "className": "ColaboradoresExtendedSearchListBox.java",
+                  "type": "Controlador",
+                  "description": "Componente de búsqueda avanzada de colaboradores"
+                },
+                {
+                  "className": "AvColaboradoresV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista de colaboradores para la búsqueda"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar lista de sobregiros",
+              "description": "Recarga el listado de sobregiros con los filtros actuales",
+              "relatedClasses": [
+                {
+                  "className": "SobregiroListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnRefresh para recargar el listado de sobregiros"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta actualizada de sobregiros"
+                }
+              ]
+            },
+            {
+              "name": "Abrir detalle de sobregiro (doble clic)",
+              "description": "Al hacer doble clic en un sobregiro, abre el formulario de detalle en sobregiroDialog.zul",
+              "relatedClasses": [
+                {
+                  "className": "SobregiroListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onDoubleClick en el listbox para abrir sobregiroDialog.zul con el sobregiro seleccionado"
+                },
+                {
+                  "className": "AvPyRubrosSobregiroHi.java",
+                  "type": "Modelo",
+                  "description": "Entidad de sobregiro seleccionado para ver detalle"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "sobregiroDialog.zul",
+          "description": "Formulario de detalle de sobregiro con datos completos del sobregiro histórico, operaciones CRUD, y gestión del estado de autorización del sobregiro",
+          "actions": [
+            {
+              "name": "Crear nuevo sobregiro",
+              "description": "Permite crear un nuevo registro de sobregiro para un colaborador con datos de monto, período y proceso",
+              "relatedClasses": [
+                {
+                  "className": "SobregiroDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de sobregiro (extiende GFCBaseCtrl) que maneja onClick$btnNew para iniciar un nuevo sobregiro"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la lógica de inicialización de nuevo sobregiro"
+                },
+                {
+                  "className": "AvPyRubrosSobregiroHi.java",
+                  "type": "Modelo",
+                  "description": "Entidad de sobregiro nueva a crear"
+                }
+              ]
+            },
+            {
+              "name": "Guardar sobregiro",
+              "description": "Persiste un registro de sobregiro nuevo o actualizado con validación de datos",
+              "relatedClasses": [
+                {
+                  "className": "SobregiroDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSave y doSave() con persistencia vía AvanteGTHService"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta saveObject()/updateObject() para persistir el sobregiro"
+                },
+                {
+                  "className": "AvRhAutorizaSobregiroDAOImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para gestionar la autorización del sobregiro"
+                },
+                {
+                  "className": "AvPyRubrosSobregiroHi.java",
+                  "type": "Modelo",
+                  "description": "Entidad de sobregiro a guardar"
+                },
+                {
+                  "className": "AvPyRubrosSobregiroHiPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta del sobregiro"
+                },
+                {
+                  "className": "AvRhAutorizaSobregiro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de autorización del sobregiro"
+                }
+              ]
+            },
+            {
+              "name": "Editar sobregiro",
+              "description": "Activa el modo edición del sobregiro seleccionado",
+              "relatedClasses": [
+                {
+                  "className": "SobregiroDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnEdit para activar el modo edición de los campos del formulario"
+                },
+                {
+                  "className": "AvPyRubrosSobregiroHi.java",
+                  "type": "Modelo",
+                  "description": "Entidad de sobregiro en edición"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar sobregiro",
+              "description": "Elimina el registro de sobregiro con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "SobregiroDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete con confirmación para eliminar el sobregiro"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar el sobregiro"
+                },
+                {
+                  "className": "AvPyRubrosSobregiroHi.java",
+                  "type": "Modelo",
+                  "description": "Entidad de sobregiro a eliminar"
+                }
+              ]
+            },
+            {
+              "name": "Cancelar edición",
+              "description": "Cancela la edición en curso y restaura los valores originales del sobregiro",
+              "relatedClasses": [
+                {
+                  "className": "SobregiroDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnCancel y doClear() para restaurar valores originales"
+                },
+                {
+                  "className": "AvPyRubrosSobregiroHi.java",
+                  "type": "Modelo",
+                  "description": "Entidad de sobregiro con valores restaurados"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "relatedControllers": [
+        "RubrosPrestamoListCtrl.java",
+        "RubrosPrestamoMainCtrl.java",
+        "RubrosPrestamoDetailCtrl.java",
+        "RubrosPrestamoCoMainCtrl.java",
+        "RubrosPrestamoAbonosCtrl.java",
+        "RubrosPrestamoAbonosCancelCtrl.java",
+        "RubrosPrestamoBajaCtrl.java",
+        "CuotasCompromDialogCtrl.java",
+        "SobregiroListCtrl.java",
+        "SobregiroDialogCtrl.java"
+      ]
+    }
+  ]
+}

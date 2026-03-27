@@ -1,0 +1,951 @@
+{
+  "slice_id": "slice-9-integraciones",
+  "slice_nombre": "🔗 Integraciones Externas",
+  "slice_descripcion": "IESS y Contable",
+  "projectName": "payrol",
+  "groupId": "com.tia",
+  "target": "springboot",
+  "modulo": "Roles de Pago / Nómina (AvPy)",
+  "generatedAt": "2026-03-26T14:44:46.159Z",
+  "funcionalidades_seleccionadas": [
+    "interfazIESS",
+    "ArchivosdeinterfazgeneradossubrecursoIESS_Contable",
+    "NmeropatronalcatlogodereferenciaparaIESS",
+    "cargaRubrosIESS",
+    "DetallelneasIESSsubrecursocargarubrosIESS",
+    "cargaRubrosIESS-Exportacin",
+    "interfasContable",
+    "contabilizacionDialogCtrl",
+    "consultaContableList",
+    "reporteContableFinanciero",
+    "Cuenta_SubcuentaasociadaDTOcompartidoparareportes",
+    "consultaCuadreContableList",
+    "consultaCuadreContablexColabList"
+  ],
+  "funcionalidades_no_encontradas": [
+    "9_interfases_iess",
+    "10_interfases_contables"
+  ],
+  "source_context": [
+    {
+      "funcionalidad_id": "interfazIESS",
+      "funcionalidad_nombre": "interfazIESS.zul",
+      "entidades": [
+        {
+          "archivo": "InterfazIessListDTO",
+          "descripcion": "Lista de configuraciones de interfaz IESS"
+        },
+        {
+          "archivo": "InterfazIessResponseDTO",
+          "descripcion": "Detalle de configuración de interfaz IESS (av_py_interfas)"
+        },
+        {
+          "archivo": "GenerarInterfazIessDTO",
+          "descripcion": "Parámetros para generar el archivo de interfaz IESS"
+        },
+        {
+          "archivo": "GenerarInterfazIessResponseDTO",
+          "descripcion": "Resultado de la generación del archivo IESS"
+        },
+        {
+          "archivo": "InterfazIessUpdateDTO",
+          "descripcion": "Datos para actualizar la configuración"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/interfaz-iess",
+          "descripcion": "GET /api/v1/interfaz-iess — Listar configuraciones de interfaz IESS"
+        },
+        {
+          "archivo": "GET /api/v1/interfaz-iess/{id}",
+          "descripcion": "GET /api/v1/interfaz-iess/{id} — Obtener configuración de interfaz IESS por ID"
+        },
+        {
+          "archivo": "POST /api/v1/interfaz-iess/generar",
+          "descripcion": "POST /api/v1/interfaz-iess/generar — Generar archivo de interfaz IESS"
+        },
+        {
+          "archivo": "PUT /api/v1/interfaz-iess/{id}",
+          "descripcion": "PUT /api/v1/interfaz-iess/{id} — Actualizar configuración de interfaz IESS"
+        },
+        {
+          "archivo": "DELETE /api/v1/interfaz-iess/{id}",
+          "descripcion": "DELETE /api/v1/interfaz-iess/{id} — Eliminar configuración de interfaz IESS"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "interfazIESS.zul",
+          "descripcion": "Pantalla fuente: interfazIESS.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "ArchivosdeinterfazgeneradossubrecursoIESS_Contable",
+      "funcionalidad_nombre": "Archivos de interfaz generados (subrecurso IESS/Contable)",
+      "entidades": [
+        {
+          "archivo": "InterfazArchivoListDTO",
+          "descripcion": "Lista de líneas del archivo de interfaz"
+        },
+        {
+          "archivo": "InterfazArchivoResponseDTO",
+          "descripcion": "Línea de archivo de interfaz (av_py_interfasarchivo)"
+        },
+        {
+          "archivo": "DescargarInterfazArchivoDTO",
+          "descripcion": "Parámetros para descargar el archivo"
+        },
+        {
+          "archivo": "DescargarArchivoResponseDTO",
+          "descripcion": "Resultado de la descarga"
+        },
+        {
+          "archivo": "InterfazArchivoUpdateDTO",
+          "descripcion": "Datos para actualizar la línea"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/interfaz-archivos",
+          "descripcion": "GET /api/v1/interfaz-archivos — Listar archivos de interfaz generados"
+        },
+        {
+          "archivo": "GET /api/v1/interfaz-archivos/{id}",
+          "descripcion": "GET /api/v1/interfaz-archivos/{id} — Obtener línea de archivo de interfaz por ID"
+        },
+        {
+          "archivo": "POST /api/v1/interfaz-archivos/descargar",
+          "descripcion": "POST /api/v1/interfaz-archivos/descargar — Descargar archivo de interfaz"
+        },
+        {
+          "archivo": "PUT /api/v1/interfaz-archivos/{id}",
+          "descripcion": "PUT /api/v1/interfaz-archivos/{id} — Actualizar línea de archivo de interfaz"
+        },
+        {
+          "archivo": "DELETE /api/v1/interfaz-archivos/{id}",
+          "descripcion": "DELETE /api/v1/interfaz-archivos/{id} — Eliminar línea de archivo de interfaz"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "Archivos de interfaz generados (subrecurso IESS",
+          "descripcion": "Pantalla fuente: Archivos de interfaz generados (subrecurso IESS"
+        },
+        {
+          "archivo": "Contable)",
+          "descripcion": "Pantalla fuente: Contable)"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "NmeropatronalcatlogodereferenciaparaIESS",
+      "funcionalidad_nombre": "Número patronal (catálogo de referencia para IESS)",
+      "entidades": [
+        {
+          "archivo": "EmpresaPatronalListDTO",
+          "descripcion": "Lista de números patronales"
+        },
+        {
+          "archivo": "EmpresaPatronalResponseDTO",
+          "descripcion": "Detalle de número patronal (av_en_empresaspatronal)"
+        },
+        {
+          "archivo": "EmpresaPatronalCreateDTO",
+          "descripcion": "Datos para crear número patronal"
+        },
+        {
+          "archivo": "EmpresaPatronalUpdateDTO",
+          "descripcion": "Datos para actualizar"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/empresas-patronal",
+          "descripcion": "GET /api/v1/empresas-patronal — Listar números patronales"
+        },
+        {
+          "archivo": "GET /api/v1/empresas-patronal/{id}",
+          "descripcion": "GET /api/v1/empresas-patronal/{id} — Obtener número patronal por ID"
+        },
+        {
+          "archivo": "POST /api/v1/empresas-patronal",
+          "descripcion": "POST /api/v1/empresas-patronal — Crear número patronal"
+        },
+        {
+          "archivo": "PUT /api/v1/empresas-patronal/{id}",
+          "descripcion": "PUT /api/v1/empresas-patronal/{id} — Actualizar número patronal"
+        },
+        {
+          "archivo": "DELETE /api/v1/empresas-patronal/{id}",
+          "descripcion": "DELETE /api/v1/empresas-patronal/{id} — Eliminar número patronal"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "Número patronal (catálogo de referencia para IESS)",
+          "descripcion": "Pantalla fuente: Número patronal (catálogo de referencia para IESS)"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "cargaRubrosIESS",
+      "funcionalidad_nombre": "cargaRubrosIESS.zul",
+      "entidades": [
+        {
+          "archivo": "RubrosIessListDTO",
+          "descripcion": "Lista de cargas de rubros IESS"
+        },
+        {
+          "archivo": "RubrosIessResponseDTO",
+          "descripcion": "Detalle de carga de rubros IESS (av_py_rubros_iess)"
+        },
+        {
+          "archivo": "CargarRubrosIessDTO",
+          "descripcion": "Datos para cargar archivo de planilla IESS (multipart)"
+        },
+        {
+          "archivo": "CargarRubrosIessResponseDTO",
+          "descripcion": "Resultado de la carga y comparación"
+        },
+        {
+          "archivo": "AprobarRubrosIessDTO",
+          "descripcion": "Datos para aprobar la carga"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/rubros-iess",
+          "descripcion": "GET /api/v1/rubros-iess — Listar cargas de rubros IESS"
+        },
+        {
+          "archivo": "GET /api/v1/rubros-iess/{id}",
+          "descripcion": "GET /api/v1/rubros-iess/{id} — Obtener carga de rubros IESS por ID"
+        },
+        {
+          "archivo": "POST /api/v1/rubros-iess/cargar",
+          "descripcion": "POST /api/v1/rubros-iess/cargar — Cargar archivo de planilla IESS"
+        },
+        {
+          "archivo": "PUT /api/v1/rubros-iess/{id}/aprobar",
+          "descripcion": "PUT /api/v1/rubros-iess/{id}/aprobar — Aprobar carga de rubros IESS"
+        },
+        {
+          "archivo": "PUT /api/v1/rubros-iess/{id}/inactivar",
+          "descripcion": "PUT /api/v1/rubros-iess/{id}/inactivar — Inactivar carga de rubros IESS"
+        },
+        {
+          "archivo": "DELETE /api/v1/rubros-iess/{id}",
+          "descripcion": "DELETE /api/v1/rubros-iess/{id} — Eliminar carga de rubros IESS"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "cargaRubrosIESS.zul",
+          "descripcion": "Pantalla fuente: cargaRubrosIESS.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "DetallelneasIESSsubrecursocargarubrosIESS",
+      "funcionalidad_nombre": "Detalle líneas IESS (subrecurso carga rubros IESS)",
+      "entidades": [
+        {
+          "archivo": "RubrosIesslPageResponseDTO",
+          "descripcion": "Lista paginada de líneas de detalle IESS"
+        },
+        {
+          "archivo": "RubrosIesslResponseDTO",
+          "descripcion": "Línea de detalle IESS (av_py_rubros_iessl)"
+        },
+        {
+          "archivo": "ResumenPlanillaIessListDTO",
+          "descripcion": "Resumen de planilla IESS por agencia"
+        },
+        {
+          "archivo": "RubrosIesslCreateDTO",
+          "descripcion": "Datos para crear una línea de detalle"
+        },
+        {
+          "archivo": "RubrosIesslUpdateDTO",
+          "descripcion": "Datos para actualizar la línea"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/rubros-iess/{cargaId}/lineas",
+          "descripcion": "GET /api/v1/rubros-iess/{cargaId}/lineas — Listar líneas de detalle de carga IESS"
+        },
+        {
+          "archivo": "GET /api/v1/rubros-iess/{cargaId}/lineas/{id}",
+          "descripcion": "GET /api/v1/rubros-iess/{cargaId}/lineas/{id} — Obtener línea de detalle IESS por ID"
+        },
+        {
+          "archivo": "GET /api/v1/rubros-iess/{cargaId}/resumen",
+          "descripcion": "GET /api/v1/rubros-iess/{cargaId}/resumen — Obtener resumen de planilla IESS por agencia"
+        },
+        {
+          "archivo": "POST /api/v1/rubros-iess/{cargaId}/lineas",
+          "descripcion": "POST /api/v1/rubros-iess/{cargaId}/lineas — Agregar línea de detalle IESS"
+        },
+        {
+          "archivo": "PUT /api/v1/rubros-iess/{cargaId}/lineas/{id}",
+          "descripcion": "PUT /api/v1/rubros-iess/{cargaId}/lineas/{id} — Actualizar línea de detalle IESS"
+        },
+        {
+          "archivo": "DELETE /api/v1/rubros-iess/{cargaId}/lineas/{id}",
+          "descripcion": "DELETE /api/v1/rubros-iess/{cargaId}/lineas/{id} — Eliminar línea de detalle IESS"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "Detalle líneas IESS (subrecurso carga rubros IESS)",
+          "descripcion": "Pantalla fuente: Detalle líneas IESS (subrecurso carga rubros IESS)"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "cargaRubrosIESS-Exportacin",
+      "funcionalidad_nombre": "cargaRubrosIESS.zul - Exportación",
+      "entidades": [
+        {
+          "archivo": "ExportarRubrosIessExcelDTO",
+          "descripcion": "Filtros opcionales para la exportación"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "ReporteJasperRubrosIessDTO",
+          "descripcion": "Parámetros para el reporte"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "POST /api/v1/rubros-iess/{cargaId}/exportar/excel",
+          "descripcion": "POST /api/v1/rubros-iess/{cargaId}/exportar/excel — Exportar carga IESS a Excel"
+        },
+        {
+          "archivo": "POST /api/v1/rubros-iess/{cargaId}/exportar/jasper",
+          "descripcion": "POST /api/v1/rubros-iess/{cargaId}/exportar/jasper — Generar reporte Jasper de carga IESS"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "cargaRubrosIESS.zul - Exportación",
+          "descripcion": "Pantalla fuente: cargaRubrosIESS.zul - Exportación"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "interfasContable",
+      "funcionalidad_nombre": "interfasContable.zul",
+      "entidades": [
+        {
+          "archivo": "FormatoContableListDTO",
+          "descripcion": "Lista de formatos de interfaz contable"
+        },
+        {
+          "archivo": "FormatoContableResponseDTO",
+          "descripcion": "Detalle de formato contable"
+        },
+        {
+          "archivo": "GenerarInterfazContableDTO",
+          "descripcion": "Parámetros para generar el archivo contable"
+        },
+        {
+          "archivo": "GenerarInterfazContableResponseDTO",
+          "descripcion": "Resultado de la generación del archivo contable"
+        },
+        {
+          "archivo": "FormatoContableUpdateDTO",
+          "descripcion": "Datos para actualizar el formato"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/interfaz-contable/formatos",
+          "descripcion": "GET /api/v1/interfaz-contable/formatos — Listar formatos de interfaz contable"
+        },
+        {
+          "archivo": "GET /api/v1/interfaz-contable/formatos/{id}",
+          "descripcion": "GET /api/v1/interfaz-contable/formatos/{id} — Obtener formato de interfaz contable por ID"
+        },
+        {
+          "archivo": "POST /api/v1/interfaz-contable/generar",
+          "descripcion": "POST /api/v1/interfaz-contable/generar — Generar archivo de interfaz contable"
+        },
+        {
+          "archivo": "PUT /api/v1/interfaz-contable/formatos/{id}",
+          "descripcion": "PUT /api/v1/interfaz-contable/formatos/{id} — Actualizar formato de interfaz contable"
+        },
+        {
+          "archivo": "DELETE /api/v1/interfaz-contable/formatos/{id}",
+          "descripcion": "DELETE /api/v1/interfaz-contable/formatos/{id} — Eliminar formato de interfaz contable"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "interfasContable.zul",
+          "descripcion": "Pantalla fuente: interfasContable.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "contabilizacionDialogCtrl",
+      "funcionalidad_nombre": "contabilizacionDialogCtrl.zul",
+      "entidades": [
+        {
+          "archivo": "ProcesoContabilizacionListDTO",
+          "descripcion": "Lista de procesos para contabilizar"
+        },
+        {
+          "archivo": "InstanciaContabilizacionListDTO",
+          "descripcion": "Lista de instancias a contabilizar"
+        },
+        {
+          "archivo": "InstanciaContabilizacionDTO",
+          "descripcion": "Detalle de instancia a contabilizar"
+        },
+        {
+          "archivo": "EjecutarContabilizacionDTO",
+          "descripcion": "Datos para ejecutar la contabilización"
+        },
+        {
+          "archivo": "EjecutarContabilizacionResponseDTO",
+          "descripcion": "Resultado de la contabilización"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de reversión"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/contabilizacion/procesos",
+          "descripcion": "GET /api/v1/contabilizacion/procesos — Listar procesos disponibles para contabilización"
+        },
+        {
+          "archivo": "GET /api/v1/contabilizacion/instancias",
+          "descripcion": "GET /api/v1/contabilizacion/instancias — Listar instancias a contabilizar"
+        },
+        {
+          "archivo": "GET /api/v1/contabilizacion/instancias/{instanciaId}",
+          "descripcion": "GET /api/v1/contabilizacion/instancias/{instanciaId} — Obtener instancia de contabilización por ID"
+        },
+        {
+          "archivo": "POST /api/v1/contabilizacion/ejecutar",
+          "descripcion": "POST /api/v1/contabilizacion/ejecutar — Ejecutar contabilización de procesos"
+        },
+        {
+          "archivo": "DELETE /api/v1/contabilizacion/instancias/{instanciaId}",
+          "descripcion": "DELETE /api/v1/contabilizacion/instancias/{instanciaId} — Reversar contabilización de instancia"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "contabilizacionDialogCtrl.zul",
+          "descripcion": "Pantalla fuente: contabilizacionDialogCtrl.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "consultaContableList",
+      "funcionalidad_nombre": "consultaContableList.zul",
+      "entidades": [
+        {
+          "archivo": "ConsultaContableListDTO",
+          "descripcion": "Lista de detalle contable por rubro con totales"
+        },
+        {
+          "archivo": "DetalleContableRubroDTO",
+          "descripcion": "Detalle contable de un rubro (Object[] de native query)"
+        },
+        {
+          "archivo": "ExportarConsultaContableDTO",
+          "descripcion": "Filtros para la exportación"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "ActualizarAsientoContableDTO",
+          "descripcion": "Datos del ajuste contable"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/consulta-contable",
+          "descripcion": "GET /api/v1/consulta-contable — Consultar detalle contable por rubro"
+        },
+        {
+          "archivo": "GET /api/v1/consulta-contable/{rubroId}",
+          "descripcion": "GET /api/v1/consulta-contable/{rubroId} — Obtener detalle contable de un rubro"
+        },
+        {
+          "archivo": "POST /api/v1/consulta-contable/exportar/excel",
+          "descripcion": "POST /api/v1/consulta-contable/exportar/excel — Exportar consulta contable a Excel"
+        },
+        {
+          "archivo": "PUT /api/v1/consulta-contable/{rubroId}",
+          "descripcion": "PUT /api/v1/consulta-contable/{rubroId} — Actualizar asiento contable de un rubro"
+        },
+        {
+          "archivo": "DELETE /api/v1/consulta-contable/{rubroId}",
+          "descripcion": "DELETE /api/v1/consulta-contable/{rubroId} — Eliminar asiento contable de un rubro"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "consultaContableList.zul",
+          "descripcion": "Pantalla fuente: consultaContableList.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "reporteContableFinanciero",
+      "funcionalidad_nombre": "reporteContableFinanciero.zul",
+      "entidades": [
+        {
+          "archivo": "CuentaContableListDTO",
+          "descripcion": "Lista de cuentas contables"
+        },
+        {
+          "archivo": "SubcuentaContableListDTO",
+          "descripcion": "Lista de subcuentas contables"
+        },
+        {
+          "archivo": "ClaseRubroListDTO",
+          "descripcion": "Lista de clases de rubro"
+        },
+        {
+          "archivo": "ClaseRubroDTO",
+          "descripcion": "Detalle de clase de rubro (av_py_clasesrubros)"
+        },
+        {
+          "archivo": "GenerarReporteContableDTO",
+          "descripcion": "Parámetros para la generación del reporte"
+        },
+        {
+          "archivo": "GenerarReporteContableResponseDTO",
+          "descripcion": "Resultado de la generación del reporte"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/reportes-contable-financiero/cuentas",
+          "descripcion": "GET /api/v1/reportes-contable-financiero/cuentas — Listar cuentas contables activas"
+        },
+        {
+          "archivo": "GET /api/v1/reportes-contable-financiero/subcuentas",
+          "descripcion": "GET /api/v1/reportes-contable-financiero/subcuentas — Listar subcuentas contables"
+        },
+        {
+          "archivo": "GET /api/v1/reportes-contable-financiero/clases-rubro",
+          "descripcion": "GET /api/v1/reportes-contable-financiero/clases-rubro — Listar clases de rubro"
+        },
+        {
+          "archivo": "GET /api/v1/reportes-contable-financiero/clases-rubro/{claseId}",
+          "descripcion": "GET /api/v1/reportes-contable-financiero/clases-rubro/{claseId} — Obtener clase de rubro por ID"
+        },
+        {
+          "archivo": "POST /api/v1/reportes-contable-financiero/generar",
+          "descripcion": "POST /api/v1/reportes-contable-financiero/generar — Generar reporte contable-financiero"
+        },
+        {
+          "archivo": "DELETE /api/v1/reportes-contable-financiero/{reporteId}",
+          "descripcion": "DELETE /api/v1/reportes-contable-financiero/{reporteId} — Eliminar reporte contable generado"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "reporteContableFinanciero.zul",
+          "descripcion": "Pantalla fuente: reporteContableFinanciero.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "Cuenta_SubcuentaasociadaDTOcompartidoparareportes",
+      "funcionalidad_nombre": "Cuenta/Subcuenta asociada (DTO compartido para reportes)",
+      "entidades": [],
+      "controladores": [],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "Cuenta",
+          "descripcion": "Pantalla fuente: Cuenta"
+        },
+        {
+          "archivo": "Subcuenta asociada (DTO compartido para reportes)",
+          "descripcion": "Pantalla fuente: Subcuenta asociada (DTO compartido para reportes)"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "consultaCuadreContableList",
+      "funcionalidad_nombre": "consultaCuadreContableList.zul",
+      "entidades": [
+        {
+          "archivo": "CuadreContablePageResponseDTO",
+          "descripcion": "Lista paginada de cuadre contable por rubro"
+        },
+        {
+          "archivo": "CuadreContableResponseDTO",
+          "descripcion": "Detalle de cuadre de provisión contable (av_py_cuadreprovcontable)"
+        },
+        {
+          "archivo": "CuadreContableCreateDTO",
+          "descripcion": "Datos para crear cuadre contable"
+        },
+        {
+          "archivo": "ExportarCuadreContableDTO",
+          "descripcion": "Filtros para la exportación"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "CuadreContableUpdateDTO",
+          "descripcion": "Datos para actualizar el cuadre"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/cuadre-contable",
+          "descripcion": "GET /api/v1/cuadre-contable — Listar cuadre de provisiones contables"
+        },
+        {
+          "archivo": "GET /api/v1/cuadre-contable/{id}",
+          "descripcion": "GET /api/v1/cuadre-contable/{id} — Obtener cuadre contable por ID"
+        },
+        {
+          "archivo": "POST /api/v1/cuadre-contable",
+          "descripcion": "POST /api/v1/cuadre-contable — Crear cuadre de provisión contable"
+        },
+        {
+          "archivo": "POST /api/v1/cuadre-contable/exportar/excel",
+          "descripcion": "POST /api/v1/cuadre-contable/exportar/excel — Exportar cuadre contable a Excel"
+        },
+        {
+          "archivo": "PUT /api/v1/cuadre-contable/{id}",
+          "descripcion": "PUT /api/v1/cuadre-contable/{id} — Actualizar cuadre contable"
+        },
+        {
+          "archivo": "DELETE /api/v1/cuadre-contable/{id}",
+          "descripcion": "DELETE /api/v1/cuadre-contable/{id} — Eliminar cuadre contable"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "consultaCuadreContableList.zul",
+          "descripcion": "Pantalla fuente: consultaCuadreContableList.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "consultaCuadreContablexColabList",
+      "funcionalidad_nombre": "consultaCuadreContablexColabList.zul",
+      "entidades": [
+        {
+          "archivo": "CuadreContableDetPageResponseDTO",
+          "descripcion": "Lista paginada de cuadre contable por colaborador"
+        },
+        {
+          "archivo": "CuadreContableDetResponseDTO",
+          "descripcion": "Detalle de cuadre contable por colaborador (av_py_cuadreprovcontable_det, PK: @EmbeddedId iidcolaborador+iidcuadrecontable)"
+        },
+        {
+          "archivo": "CuadreContableDetCreateDTO",
+          "descripcion": "Datos para crear detalle de cuadre por colaborador"
+        },
+        {
+          "archivo": "ExportarCuadreContableDetDTO",
+          "descripcion": "Filtros para la exportación"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "CuadreContableDetUpdateDTO",
+          "descripcion": "Datos para actualizar el detalle"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/cuadre-contable/{cuadreId}/colaboradores",
+          "descripcion": "GET /api/v1/cuadre-contable/{cuadreId}/colaboradores — Listar detalle de cuadre contable por colaborador"
+        },
+        {
+          "archivo": "GET /api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId}",
+          "descripcion": "GET /api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId} — Obtener detalle de cuadre contable de un colaborador"
+        },
+        {
+          "archivo": "POST /api/v1/cuadre-contable/{cuadreId}/colaboradores",
+          "descripcion": "POST /api/v1/cuadre-contable/{cuadreId}/colaboradores — Crear detalle de cuadre contable para colaborador"
+        },
+        {
+          "archivo": "POST /api/v1/cuadre-contable/{cuadreId}/colaboradores/exportar/excel",
+          "descripcion": "POST /api/v1/cuadre-contable/{cuadreId}/colaboradores/exportar/excel — Exportar detalle de cuadre por colaborador a Excel"
+        },
+        {
+          "archivo": "PUT /api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId}",
+          "descripcion": "PUT /api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId} — Actualizar detalle de cuadre de un colaborador"
+        },
+        {
+          "archivo": "DELETE /api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId}",
+          "descripcion": "DELETE /api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId} — Eliminar detalle de cuadre de un colaborador"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "consultaCuadreContablexColabList.zul",
+          "descripcion": "Pantalla fuente: consultaCuadreContablexColabList.zul"
+        }
+      ],
+      "vistas_bd": []
+    }
+  ],
+  "resumen": {
+    "total_funcionalidades": 13,
+    "total_entidades": 71,
+    "total_controladores": 62,
+    "total_servicios": 0,
+    "total_daos": 0,
+    "total_renderers": 0,
+    "total_pantallas_zul": 15,
+    "total_vistas_bd": 0,
+    "total_archivos_origen": 135,
+    "archivos_origen_unicos": [
+      "ActualizarAsientoContableDTO",
+      "AprobarRubrosIessDTO",
+      "Archivos de interfaz generados (subrecurso IESS",
+      "CargarRubrosIessDTO",
+      "CargarRubrosIessResponseDTO",
+      "ClaseRubroDTO",
+      "ClaseRubroListDTO",
+      "ConsultaContableListDTO",
+      "Contable)",
+      "CuadreContableCreateDTO",
+      "CuadreContableDetCreateDTO",
+      "CuadreContableDetPageResponseDTO",
+      "CuadreContableDetResponseDTO",
+      "CuadreContableDetUpdateDTO",
+      "CuadreContablePageResponseDTO",
+      "CuadreContableResponseDTO",
+      "CuadreContableUpdateDTO",
+      "Cuenta",
+      "CuentaContableListDTO",
+      "DELETE /api/v1/consulta-contable/{rubroId}",
+      "DELETE /api/v1/contabilizacion/instancias/{instanciaId}",
+      "DELETE /api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId}",
+      "DELETE /api/v1/cuadre-contable/{id}",
+      "DELETE /api/v1/empresas-patronal/{id}",
+      "DELETE /api/v1/interfaz-archivos/{id}",
+      "DELETE /api/v1/interfaz-contable/formatos/{id}",
+      "DELETE /api/v1/interfaz-iess/{id}",
+      "DELETE /api/v1/reportes-contable-financiero/{reporteId}",
+      "DELETE /api/v1/rubros-iess/{cargaId}/lineas/{id}",
+      "DELETE /api/v1/rubros-iess/{id}",
+      "DeleteResponseDTO",
+      "DescargarArchivoResponseDTO",
+      "DescargarInterfazArchivoDTO",
+      "Detalle líneas IESS (subrecurso carga rubros IESS)",
+      "DetalleContableRubroDTO",
+      "EjecutarContabilizacionDTO",
+      "EjecutarContabilizacionResponseDTO",
+      "EmpresaPatronalCreateDTO",
+      "EmpresaPatronalListDTO",
+      "EmpresaPatronalResponseDTO",
+      "EmpresaPatronalUpdateDTO",
+      "ExportarConsultaContableDTO",
+      "ExportarCuadreContableDTO",
+      "ExportarCuadreContableDetDTO",
+      "ExportarResponseDTO",
+      "ExportarRubrosIessExcelDTO",
+      "FormatoContableListDTO",
+      "FormatoContableResponseDTO",
+      "FormatoContableUpdateDTO",
+      "GET /api/v1/consulta-contable",
+      "GET /api/v1/consulta-contable/{rubroId}",
+      "GET /api/v1/contabilizacion/instancias",
+      "GET /api/v1/contabilizacion/instancias/{instanciaId}",
+      "GET /api/v1/contabilizacion/procesos",
+      "GET /api/v1/cuadre-contable",
+      "GET /api/v1/cuadre-contable/{cuadreId}/colaboradores",
+      "GET /api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId}",
+      "GET /api/v1/cuadre-contable/{id}",
+      "GET /api/v1/empresas-patronal",
+      "GET /api/v1/empresas-patronal/{id}",
+      "GET /api/v1/interfaz-archivos",
+      "GET /api/v1/interfaz-archivos/{id}",
+      "GET /api/v1/interfaz-contable/formatos",
+      "GET /api/v1/interfaz-contable/formatos/{id}",
+      "GET /api/v1/interfaz-iess",
+      "GET /api/v1/interfaz-iess/{id}",
+      "GET /api/v1/reportes-contable-financiero/clases-rubro",
+      "GET /api/v1/reportes-contable-financiero/clases-rubro/{claseId}",
+      "GET /api/v1/reportes-contable-financiero/cuentas",
+      "GET /api/v1/reportes-contable-financiero/subcuentas",
+      "GET /api/v1/rubros-iess",
+      "GET /api/v1/rubros-iess/{cargaId}/lineas",
+      "GET /api/v1/rubros-iess/{cargaId}/lineas/{id}",
+      "GET /api/v1/rubros-iess/{cargaId}/resumen",
+      "GET /api/v1/rubros-iess/{id}",
+      "GenerarInterfazContableDTO",
+      "GenerarInterfazContableResponseDTO",
+      "GenerarInterfazIessDTO",
+      "GenerarInterfazIessResponseDTO",
+      "GenerarReporteContableDTO",
+      "GenerarReporteContableResponseDTO",
+      "InstanciaContabilizacionDTO",
+      "InstanciaContabilizacionListDTO",
+      "InterfazArchivoListDTO",
+      "InterfazArchivoResponseDTO",
+      "InterfazArchivoUpdateDTO",
+      "InterfazIessListDTO",
+      "InterfazIessResponseDTO",
+      "InterfazIessUpdateDTO",
+      "Número patronal (catálogo de referencia para IESS)",
+      "POST /api/v1/consulta-contable/exportar/excel",
+      "POST /api/v1/contabilizacion/ejecutar",
+      "POST /api/v1/cuadre-contable",
+      "POST /api/v1/cuadre-contable/exportar/excel",
+      "POST /api/v1/cuadre-contable/{cuadreId}/colaboradores",
+      "POST /api/v1/cuadre-contable/{cuadreId}/colaboradores/exportar/excel",
+      "POST /api/v1/empresas-patronal",
+      "POST /api/v1/interfaz-archivos/descargar",
+      "POST /api/v1/interfaz-contable/generar",
+      "POST /api/v1/interfaz-iess/generar",
+      "POST /api/v1/reportes-contable-financiero/generar",
+      "POST /api/v1/rubros-iess/cargar",
+      "POST /api/v1/rubros-iess/{cargaId}/exportar/excel",
+      "POST /api/v1/rubros-iess/{cargaId}/exportar/jasper",
+      "POST /api/v1/rubros-iess/{cargaId}/lineas",
+      "PUT /api/v1/consulta-contable/{rubroId}",
+      "PUT /api/v1/cuadre-contable/{cuadreId}/colaboradores/{colaboradorId}",
+      "PUT /api/v1/cuadre-contable/{id}",
+      "PUT /api/v1/empresas-patronal/{id}",
+      "PUT /api/v1/interfaz-archivos/{id}",
+      "PUT /api/v1/interfaz-contable/formatos/{id}",
+      "PUT /api/v1/interfaz-iess/{id}",
+      "PUT /api/v1/rubros-iess/{cargaId}/lineas/{id}",
+      "PUT /api/v1/rubros-iess/{id}/aprobar",
+      "PUT /api/v1/rubros-iess/{id}/inactivar",
+      "ProcesoContabilizacionListDTO",
+      "ReporteJasperRubrosIessDTO",
+      "ResumenPlanillaIessListDTO",
+      "RubrosIessListDTO",
+      "RubrosIessResponseDTO",
+      "RubrosIesslCreateDTO",
+      "RubrosIesslPageResponseDTO",
+      "RubrosIesslResponseDTO",
+      "RubrosIesslUpdateDTO",
+      "Subcuenta asociada (DTO compartido para reportes)",
+      "SubcuentaContableListDTO",
+      "cargaRubrosIESS.zul",
+      "cargaRubrosIESS.zul - Exportación",
+      "consultaContableList.zul",
+      "consultaCuadreContableList.zul",
+      "consultaCuadreContablexColabList.zul",
+      "contabilizacionDialogCtrl.zul",
+      "interfasContable.zul",
+      "interfazIESS.zul",
+      "reporteContableFinanciero.zul"
+    ]
+  }
+}

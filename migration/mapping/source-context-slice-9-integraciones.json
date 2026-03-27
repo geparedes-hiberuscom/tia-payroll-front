@@ -1,0 +1,515 @@
+{
+  "slice_id": "slice-9-integraciones",
+  "slice_nombre": "🔗 Integraciones Externas",
+  "slice_descripcion": "IESS y Contable",
+  "projectName": "payrol",
+  "groupId": "com.tia",
+  "target": "springboot",
+  "modulo": "Roles de Pago / Nómina (AvPy)",
+  "generatedAt": "2026-03-26T14:23:07.064Z",
+  "funcionalidades_seleccionadas": [
+    "func-integraciones-externas"
+  ],
+  "funcionalidades_no_encontradas": [
+    "9_interfases_iess",
+    "10_interfases_contables"
+  ],
+  "source_context": [
+    {
+      "funcionalidad_id": "func-integraciones-externas",
+      "funcionalidad_nombre": "Integraciones Externas",
+      "entidades": [
+        {
+          "archivo": "AvPyInterfas.java",
+          "descripcion": "Entidad JPA de interfaz (tipo IESS) con configuración del proceso",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyInterfasarchivo.java",
+          "descripcion": "Entidad JPA de archivo generado por la interfaz IESS",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyProcesosinstancias.java",
+          "descripcion": "Entidad de instancia de proceso de nómina vinculada a la interfaz",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvEnEmpresaspatronal.java",
+          "descripcion": "Entidad de número patronal de la empresa ante el IESS",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvEmpresa.java",
+          "descripcion": "Entidad de empresa para contexto de la interfaz",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvDimensionesl.java",
+          "descripcion": "Entidad de dimensión/localidad para filtro de interfaz",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvCatalogos.java",
+          "descripcion": "Entidad de catálogos utilizada en la configuración de archivos",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyRubrosIessl.java",
+          "descripcion": "Entidad JPA de línea de rubro IESS cargado",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyRubrosIess.java",
+          "descripcion": "Entidad JPA de cabecera de rubros IESS",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyRubrosIdo.java",
+          "descripcion": "Entidad de rubros IDO vinculados al IESS",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvColaboradores.java",
+          "descripcion": "Entidad de colaborador para filtro de búsqueda",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvColaboradorese.java",
+          "descripcion": "Entidad de datos extendidos del colaborador",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyRubro.java",
+          "descripcion": "Entidad de rubro de nómina vinculado al rubro IESS",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyParametro.java",
+          "descripcion": "Entidad de parámetros de nómina",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyParametroPK.java",
+          "descripcion": "Clave primaria compuesta de parámetros",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "Dominios.java",
+          "descripcion": "Entidad de dominios del sistema para categorización de datos",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyRubroslhis.java",
+          "descripcion": "Entidad de historial de rubros con datos contables",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyPlantillaContable.java",
+          "descripcion": "Entidad de plantilla contable para la configuración de asientos",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyCtasubctaAso.java",
+          "descripcion": "Entidad de cuenta/subcuenta contable asociada",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyClasesrubro.java",
+          "descripcion": "Entidad de clases de rubro para filtro por clasificación",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyCuadreprovcontable.java",
+          "descripcion": "Entidad JPA de cuadre de provisiones contables con valores contabilizados vs calculados",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyRubroslpre.java",
+          "descripcion": "Entidad de rubro de préstamo vinculado al cuadre",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyCuadreprovcontableDet.java",
+          "descripcion": "Entidad JPA de detalle de cuadre contable por colaborador y rubro",
+          "tipo": "Modelo"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "InterfasIESSListCtrl.java",
+          "descripcion": "Controlador principal de interfases IESS (extiende GFCBaseListCtrl<InterfasIESSListCtrl>) con gestión de procesos, empresas, patronales y archivos de interfaz",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "AvanteJPAPersistenceManager.java",
+          "descripcion": "Gestor de persistencia JPA con queries nativos y control transaccional",
+          "tipo": "Persistencia"
+        },
+        {
+          "archivo": "InterfasIESSBotCargaDescargaDialogCtrl.java",
+          "descripcion": "Controlador del diálogo del bot de carga/descarga IESS (extiende GFCBaseCtrl) con procesamiento automatizado y eventos de carga",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "cargaRubrosIESSListCtrl.java",
+          "descripcion": "Controlador de carga de rubros IESS (extiende GFCBaseListCtrl<AvPyRubrosIessl>) con paginación, filtros múltiples, cuadre y aprobación",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "SenderAWS.java",
+          "descripcion": "Clase de envío de mensajes a AWS para notificación de aprobación",
+          "tipo": "Integración"
+        },
+        {
+          "archivo": "PreviewJasperReport.java",
+          "descripcion": "Clase utilitaria para previsualización de reportes Jasper",
+          "tipo": "Utilidad"
+        },
+        {
+          "archivo": "RubrosExtendedSearchListBox.java",
+          "descripcion": "Diálogo de búsqueda extendida de rubros",
+          "tipo": "Componente"
+        },
+        {
+          "archivo": "InterfasContableDialogCtrl.java",
+          "descripcion": "Controlador del diálogo de interfaz contable (extiende GFCBaseCtrl) con carga de archivos, formatos y dominios",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "ContabilizacionDialogCtrl.java",
+          "descripcion": "Controlador del diálogo de contabilización (extiende GFCBaseCtrl) con inicialización de empresa, proceso e instancia",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "ConsultaContableListCtrl.java",
+          "descripcion": "Controlador de consulta contable (extiende GFCBaseListCtrl) con paginación, filtros por empresa/período y generación de reportes",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "ConsultaContableFinancieraListCtrl.java",
+          "descripcion": "Controlador de consulta contable-financiera (extiende GFCBaseCtrl) con filtros avanzados y exportación",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "ConsultaCuadreContableListCtrl.java",
+          "descripcion": "Controlador de cuadre contable (extiende GFCBaseListCtrl<AvPyCuadreprovcontable>) con paginación, filtros por empresa y cálculo de diferencias",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "AvColaboradoresV.java",
+          "descripcion": "Vista de colaboradores para datos básicos",
+          "tipo": "Modelo (Vista)"
+        },
+        {
+          "archivo": "ConsultaCuadreContablexColabListCtrl.java",
+          "descripcion": "Controlador de cuadre contable por colaborador (extiende GFCBaseListCtrl<AvPyCuadreprovcontableDet>) con detalle de rubros y totales",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "AvPyRubroslhisttotalesV.java",
+          "descripcion": "Vista JPA con totales de rubros del historial de nómina para el cuadre",
+          "tipo": "Modelo (Vista)"
+        }
+      ],
+      "servicios": [
+        {
+          "archivo": "AvanteGTHService.java",
+          "descripcion": "Servicio para consultar interfases, procesos e instancias de nómina",
+          "tipo": "Servicio"
+        }
+      ],
+      "daos": [
+        {
+          "archivo": "AvEmpresasDAOJpaImpl.java",
+          "descripcion": "DAO para cargar el combo de empresas",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvDimensioneslDAOJpaImpl.java",
+          "descripcion": "DAO para obtener dimensiones/localidades asociadas a la interfaz",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvPyRubrosIessDAOJpaImpl.java",
+          "descripcion": "DAO para acceso directo a rubros IESS",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvPyRubroslHisDAOJpaImpl.java",
+          "descripcion": "DAO para consultar historial de rubros de nómina",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvPyParametroDAOJpaImpl.java",
+          "descripcion": "DAO para actualizar parámetros de nómina tras guardar",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvPyInterfasDAOJpaImpl.java",
+          "descripcion": "DAO para acceso a interfases contables",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvCatalogosDAOJpaImpl.java",
+          "descripcion": "DAO para obtener catálogos de formatos y tipos",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvRhColaboradoresdvacpDAOJpaImpl.java",
+          "descripcion": "DAO para consultar datos de colaboradores asociados a la interfaz",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvPyContabilizacionpDAOJpaImpl.java",
+          "descripcion": "DAO para acceso a datos de parametrización de contabilización",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvPyCtasubctaAsoDAOJpaImpl.java",
+          "descripcion": "DAO para consultar cuentas y subcuentas contables asociadas",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvPyRubroDAOJpaImpl.java",
+          "descripcion": "DAO para consultar rubros asociados a la consulta financiera",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvColaboradoresDAOJpaImpl.java",
+          "descripcion": "DAO para obtener datos de colaboradores del cuadre",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvDimensionesluserDAOJpaImpl.java",
+          "descripcion": "DAO para obtener dimensiones/localidades del usuario para filtros de acceso",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvPyCuadreprovcontableDAOJpaImpl.java",
+          "descripcion": "DAO para acceso directo a datos de cuadre de provisiones contables",
+          "tipo": "DAO"
+        }
+      ],
+      "renderers": [
+        {
+          "archivo": "AvEmpresasListModelItemRenderer.java",
+          "descripcion": "Renderizador del combo de empresas",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvDimensioneslListModelItemRenderer.java",
+          "descripcion": "Renderizador del combo de dimensiones/localidades",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "CatalogosListModelItemRenderer.java",
+          "descripcion": "Renderizador de opciones del bot desde catálogos",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvPyRubrosIesslListModelItemRenderer.java",
+          "descripcion": "Renderizador de filas del listado de líneas de rubros IESS",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvPyRubroCuadreIessListModelItemRenderer.java",
+          "descripcion": "Renderizador de filas del resultado de cuadre IESS",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "JaspersByUserListModelItemRenderer.java",
+          "descripcion": "Renderizador de lista de reportes Jasper disponibles",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvPyRubrosIessListModelItemRenderer.java",
+          "descripcion": "Renderizador del listado principal de rubros IESS",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvPyInterfasListModelItemRenderer.java",
+          "descripcion": "Renderizador de la lista de archivos de interfaz",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "DominiosListModelItemRenderer.java",
+          "descripcion": "Renderizador del listbox de dominios",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "DetalleAsientoContableListModelItemRenderer.java",
+          "descripcion": "Renderizador de filas del detalle de asientos contables",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "CatalogosDropDownListModelItemRenderer.java",
+          "descripcion": "Renderizador de combos dropdown de catálogos",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "ClasesRubrosListModelItemRenderer.java",
+          "descripcion": "Renderizador del combo de clases de rubro",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvColaboradoresCIListModelItemRenderer.java",
+          "descripcion": "Renderizador de la lista de búsqueda de colaboradores por CI",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvPyCuadreprovcontableListModelItemRenderer.java",
+          "descripcion": "Renderizador de filas del listado de cuadre contable",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "ProvisionesAcumListModelItemRenderer.java",
+          "descripcion": "Renderizador de provisiones acumuladas en el cuadre",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvColaboradoresModificadoListModelItemRenderer.java",
+          "descripcion": "Renderizador de colaboradores modificados en el cuadre",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvPyCuadreprovcontableDetListModelItemRenderer.java",
+          "descripcion": "Renderizador de filas del detalle de cuadre por colaborador",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvPyRubroslhisvListModelItemRenderer.java",
+          "descripcion": "Renderizador de filas del listado de totales de historial de rubros",
+          "tipo": "Renderer"
+        }
+      ],
+      "pantallas_zul": [
+        {
+          "archivo": "interfazIESS.zul",
+          "descripcion": "Pantalla principal de interfases IESS con selección de procesos, empresa, número patronal, generación y descarga de archivos de interfaz IESS, y acceso al bot de carga/descarga automatizada"
+        },
+        {
+          "archivo": "cargaRubrosIESS.zul",
+          "descripcion": "Pantalla de carga, cuadre y aprobación de rubros IESS con búsqueda por agencia/estado/colaborador, carga de archivos, enceramiento, cuadre de valores, generación de reportes Jasper y envío a AWS"
+        },
+        {
+          "archivo": "interfasContable.zul",
+          "descripcion": "Diálogo de interfaz contable para configurar y generar archivos de interfaz contable y financiera, con selección de formato, tipo de archivo y modo de operación"
+        },
+        {
+          "archivo": "contabilizacionDialogCtrl.zul",
+          "descripcion": "Diálogo para ejecutar el proceso de contabilización de nómina con confirmación y monitoreo del progreso"
+        },
+        {
+          "archivo": "consultaContableList.zul",
+          "descripcion": "Listado de consulta contable con filtros por empresa y período, visualización de asientos contables por rubro, generación de reportes IR e INEC, y exportación a Excel"
+        },
+        {
+          "archivo": "reporteContableFinanciero.zul",
+          "descripcion": "Pantalla de consulta y reporte contable-financiero con filtros avanzados por empresa, cuenta contable, rango de fechas, clase de rubro y colaborador, con exportación a Excel"
+        },
+        {
+          "archivo": "consultaCuadreContableList.zul",
+          "descripcion": "Listado de cuadre contable de provisiones con filtros por empresa, visualización de diferencias entre provisiones contabilizadas y calculadas, navegación a detalle por colaborador y exportación a Excel"
+        },
+        {
+          "archivo": "consultaCuadreContablexColabList.zul",
+          "descripcion": "Listado de detalle de cuadre contable por colaborador con búsqueda, visualización de diferencias de rubros y totales de historial, y exportación a Excel"
+        }
+      ],
+      "vistas_bd": []
+    }
+  ],
+  "resumen": {
+    "total_funcionalidades": 1,
+    "total_entidades": 23,
+    "total_controladores": 15,
+    "total_servicios": 1,
+    "total_daos": 14,
+    "total_renderers": 18,
+    "total_pantallas_zul": 8,
+    "total_vistas_bd": 0,
+    "total_archivos_origen": 79,
+    "archivos_origen_unicos": [
+      "AvCatalogos.java",
+      "AvCatalogosDAOJpaImpl.java",
+      "AvColaboradores.java",
+      "AvColaboradoresCIListModelItemRenderer.java",
+      "AvColaboradoresDAOJpaImpl.java",
+      "AvColaboradoresModificadoListModelItemRenderer.java",
+      "AvColaboradoresV.java",
+      "AvColaboradorese.java",
+      "AvDimensionesl.java",
+      "AvDimensioneslDAOJpaImpl.java",
+      "AvDimensioneslListModelItemRenderer.java",
+      "AvDimensionesluserDAOJpaImpl.java",
+      "AvEmpresa.java",
+      "AvEmpresasDAOJpaImpl.java",
+      "AvEmpresasListModelItemRenderer.java",
+      "AvEnEmpresaspatronal.java",
+      "AvPyClasesrubro.java",
+      "AvPyContabilizacionpDAOJpaImpl.java",
+      "AvPyCtasubctaAso.java",
+      "AvPyCtasubctaAsoDAOJpaImpl.java",
+      "AvPyCuadreprovcontable.java",
+      "AvPyCuadreprovcontableDAOJpaImpl.java",
+      "AvPyCuadreprovcontableDet.java",
+      "AvPyCuadreprovcontableDetListModelItemRenderer.java",
+      "AvPyCuadreprovcontableListModelItemRenderer.java",
+      "AvPyInterfas.java",
+      "AvPyInterfasDAOJpaImpl.java",
+      "AvPyInterfasListModelItemRenderer.java",
+      "AvPyInterfasarchivo.java",
+      "AvPyParametro.java",
+      "AvPyParametroDAOJpaImpl.java",
+      "AvPyParametroPK.java",
+      "AvPyPlantillaContable.java",
+      "AvPyProcesosinstancias.java",
+      "AvPyRubro.java",
+      "AvPyRubroCuadreIessListModelItemRenderer.java",
+      "AvPyRubroDAOJpaImpl.java",
+      "AvPyRubrosIdo.java",
+      "AvPyRubrosIess.java",
+      "AvPyRubrosIessDAOJpaImpl.java",
+      "AvPyRubrosIessListModelItemRenderer.java",
+      "AvPyRubrosIessl.java",
+      "AvPyRubrosIesslListModelItemRenderer.java",
+      "AvPyRubroslHisDAOJpaImpl.java",
+      "AvPyRubroslhis.java",
+      "AvPyRubroslhisttotalesV.java",
+      "AvPyRubroslhisvListModelItemRenderer.java",
+      "AvPyRubroslpre.java",
+      "AvRhColaboradoresdvacpDAOJpaImpl.java",
+      "AvanteGTHService.java",
+      "AvanteJPAPersistenceManager.java",
+      "CatalogosDropDownListModelItemRenderer.java",
+      "CatalogosListModelItemRenderer.java",
+      "ClasesRubrosListModelItemRenderer.java",
+      "ConsultaContableFinancieraListCtrl.java",
+      "ConsultaContableListCtrl.java",
+      "ConsultaCuadreContableListCtrl.java",
+      "ConsultaCuadreContablexColabListCtrl.java",
+      "ContabilizacionDialogCtrl.java",
+      "DetalleAsientoContableListModelItemRenderer.java",
+      "Dominios.java",
+      "DominiosListModelItemRenderer.java",
+      "InterfasContableDialogCtrl.java",
+      "InterfasIESSBotCargaDescargaDialogCtrl.java",
+      "InterfasIESSListCtrl.java",
+      "JaspersByUserListModelItemRenderer.java",
+      "PreviewJasperReport.java",
+      "ProvisionesAcumListModelItemRenderer.java",
+      "RubrosExtendedSearchListBox.java",
+      "SenderAWS.java",
+      "cargaRubrosIESS.zul",
+      "cargaRubrosIESSListCtrl.java",
+      "consultaContableList.zul",
+      "consultaCuadreContableList.zul",
+      "consultaCuadreContablexColabList.zul",
+      "contabilizacionDialogCtrl.zul",
+      "interfasContable.zul",
+      "interfazIESS.zul",
+      "reporteContableFinanciero.zul"
+    ]
+  }
+}

@@ -1,0 +1,864 @@
+{
+  "verticalSlice": "vs-reportes",
+  "description": "Entity field data for the Reportes (Statistics/Reports) vertical slice - ZK to Spring Boot migration",
+  "generatedAt": "2026-03-19",
+  "screens": [
+    {
+      "screenId": "consultaEstadisticasPersonal",
+      "screenName": "Estadísticas de Personal",
+      "zulFile": "source/zk/WebContent/WEB-INF/avante/rolesdepago/consultaEstadisticasPersonal.zul",
+      "controllerClass": "avante.gth.webui.ConsultaEstadisticasPersonalCtrl",
+      "controllerFile": "source/zk/src/avante/gth/webui/ConsultaEstadisticasPersonalCtrl.java",
+      "controllerLines": 798,
+      "extendsClass": "GFCBaseCtrl",
+      "windowId": "WindowConsultaEstadisticasPersonal",
+      "applyExpression": "${ConsultaEstadisticasPersonalCtrl}",
+      "chartTypes": "NONE",
+      "exportCapabilities": {
+        "excel": true,
+        "excelFileName": "reporteEstadisticasPersonal.xls",
+        "excelSheetName": "Estadisticas Personal",
+        "excelLibrary": "Apache POI (HSSF)"
+      },
+      "filterFields": [
+        {
+          "fieldId": "lbox_Empresas",
+          "label": "Empresa",
+          "type": "listbox (select)",
+          "dataSource": "AvEmpresasDAOJpaImpl.getEmpresasUsuario(loggedInUser)",
+          "renderer": "AvEmpresasListModelItemRenderer",
+          "model": "AvEmpresa"
+        },
+        {
+          "fieldId": "lbox_Localidades",
+          "label": "Local",
+          "type": "listbox (select)",
+          "dataSource": "JPAQuerys.getListItemsDimensionEUser(idEmpresa, DM_Localidades, user, true)",
+          "renderer": "AvDimensioneslloccontratacionListModelItemRenderer",
+          "model": "AvDimensionesl"
+        },
+        {
+          "fieldId": "dbox_fecha",
+          "label": "Fecha",
+          "type": "datebox",
+          "format": "yyyy-MM",
+          "defaultValue": "DateUtil.getFechaServidor()"
+        }
+      ],
+      "listboxColumns": [
+        { "headerId": "listheader_Estadistica_Local", "label": "Local", "width": "10%", "dataIndex": 0, "sourceField": "dl.vidditem" },
+        { "headerId": "listheader_Estadistica_Nombre", "label": "Nombre", "width": "30%", "dataIndex": 1, "sourceField": "dl.vditem" },
+        { "headerId": "listheader_Estadistica_Ingresos", "label": "Ingresos", "width": "20%", "dataIndex": 2, "sourceField": "COUNT_correlated_subquery" },
+        { "headerId": "listheader_Estadistica_Retirados", "label": "Retirados", "width": "20%", "dataIndex": 3, "sourceField": "COUNT_correlated_subquery" },
+        { "headerId": "listheader_Estadistica_Activos", "label": "Activos", "width": "20%", "dataIndex": 4, "sourceField": "COUNT_correlated_subquery" }
+      ],
+      "footerTotals": [
+        { "footerId": "listfooter_totalIngresos", "label": "TOTALES:", "width": "20%", "aggregation": "SUM(Ingresos)" },
+        { "footerId": "listfooter_totalRetirados", "width": "20%", "aggregation": "SUM(Retirados)" },
+        { "footerId": "listfooter_totalActivos", "width": "20%", "aggregation": "SUM(Activos)" }
+      ],
+      "renderer": {
+        "className": "EstadisticasPersonalItemRenderer (inner class)",
+        "rendersType": "Object[] from native SQL",
+        "columnMapping": [
+          { "index": 0, "description": "Local (vidditem)", "displayType": "text" },
+          { "index": 1, "description": "Nombre (vditem)", "displayType": "text" },
+          { "index": 2, "description": "Ingresos (COUNT)", "displayType": "text" },
+          { "index": 3, "description": "Retirados (COUNT)", "displayType": "text" },
+          { "index": 4, "description": "Activos (COUNT)", "displayType": "text" }
+        ]
+      },
+      "nativeQueries": [
+        {
+          "methodName": "setSql",
+          "queryType": "NATIVE_SQL",
+          "description": "Complex correlated subquery counting employees per location: ingresados (hired in month), retirados (terminated in month), activos (active as of date)",
+          "mainTable": "av_dimensionesl dl",
+          "joinTables": [
+            "av_dimensionese de ON de.iiddimensionesl = dl.iiddimensionesl"
+          ],
+          "correlatedSubqueries": [
+            {
+              "alias": "Ingresos",
+              "operation": "COUNT(cea.iidcolaborador)",
+              "tables": ["av_colaboradorese cea", "av_dimensionesl da (localidadbase)", "av_dimensionesl dc (custom)"],
+              "filters": ["cea.iidempresa = :empresaId", "YEAR(cea.dfingreso) = YEAR(:fecha)", "MONTH(cea.dfingreso) = MONTH(:fecha)", "dc.iiddmcustom = 1"],
+              "groupBy": "da.iiddimensionesl"
+            },
+            {
+              "alias": "Retirados",
+              "operation": "COUNT(cer.iidcolaborador)",
+              "tables": ["av_colaboradorese cer", "av_dimensionesl dr (localidadbase)", "av_dimensionesl dc (custom)"],
+              "filters": ["cer.vstts = 'EEP'", "YEAR(cer.dfsalida) = YEAR(:fecha)", "MONTH(cer.dfsalida) = MONTH(:fecha)", "dc.iiddmcustom = 1"],
+              "groupBy": "dr.iiddimensionesl"
+            },
+            {
+              "alias": "Activos",
+              "operation": "COUNT(ceac.iidcolaborador)",
+              "tables": ["av_colaboradorese ceac", "av_dimensionesl da (localidadbase)", "av_dimensionesl dc (custom)"],
+              "filters": ["ceac.iidempresa = :empresaId", "ceac.vstts = 'ACT'", "ceac.dfingreso <= :fecha", "dc.iiddmcustom = 1"],
+              "groupBy": "da.iiddimensionesl"
+            }
+          ],
+          "whereConditions": ["dl.viddimension = 'DMLO'", "de.iidempresa = :empresaId (optional)", "dl.iiddimensionesl = :dimensionId (optional)"],
+          "orderBy": "dl.vidditem",
+          "returnType": "List<Object[]>"
+        }
+      ],
+      "entitiesUsed": ["AvColaboradorese", "AvDimensionesl", "AvDimensionese", "AvEmpresa"],
+      "daosUsed": ["AvEmpresasDAOJpaImpl"]
+    },
+    {
+      "screenId": "consultaEstadisticasHorasExtras",
+      "screenName": "Estadísticas de Horas Extras",
+      "zulFile": "source/zk/WebContent/WEB-INF/avante/rolesdepago/consultaEstadisticasHorasExtras.zul",
+      "controllerClass": "avante.gth.webui.ConsultaEstadisticasHECtrl",
+      "controllerFile": "source/zk/src/avante/gth/webui/ConsultaEstadisticasHECtrl.java",
+      "controllerLines": 992,
+      "extendsClass": "GFCBaseListCtrl<AvPyRubroslhisttotalesV>",
+      "windowId": "WindowConsultaEstadisticasHE",
+      "applyExpression": "${ConsultaEstadisticasHECtrl}",
+      "chartTypes": "NONE",
+      "exportCapabilities": {
+        "excel": true,
+        "excelFileName": "reporteEstadisticasHE.xls",
+        "excelSheetName": "Estadisticas Horas Extras",
+        "excelLibrary": "Apache POI (HSSF)"
+      },
+      "filterFields": [
+        {
+          "fieldId": "lbox_Empresas",
+          "label": "Empresa",
+          "type": "listbox (select)",
+          "dataSource": "AvEmpresasDAOJpaImpl.getEmpresasUsuario(loggedInUser)",
+          "renderer": "AvEmpresasListModelItemRenderer",
+          "model": "AvEmpresa"
+        },
+        {
+          "fieldId": "lbox_Localidades",
+          "label": "Local",
+          "type": "listbox (select)",
+          "dataSource": "JPAQuerys.getListItemsDimensionEUser(idEmpresa, DM_Localidades, user, true)",
+          "renderer": "AvDimensioneslloccontratacionListModelItemRenderer",
+          "model": "AvDimensionesl"
+        },
+        {
+          "fieldId": "dbox_fecha",
+          "label": "Fecha",
+          "type": "datebox",
+          "format": "yyyy-MM",
+          "defaultValue": "DateUtil.getFechaServidor()"
+        },
+        {
+          "fieldId": "txt_colaborador",
+          "label": "Colaborador",
+          "type": "textbox",
+          "description": "Search by cedula or name (LIKE filter)",
+          "onEnterEvent": "triggers refresh"
+        }
+      ],
+      "listboxColumns": [
+        { "headerId": "listheader_EstadisticaHE_Local", "label": "# Local", "width": "5%", "dataIndex": 0, "sourceField": "dm.vidditem" },
+        { "headerId": "listheader_EstadisticaHE_NombreLocal", "label": "Local", "width": "15%", "dataIndex": 1, "sourceField": "dm.vditem" },
+        { "headerId": "listheader_EstadisticaHE_Cedula", "label": "Cédula", "width": "7%", "dataIndex": 2, "sourceField": "c.vcedula" },
+        { "headerId": "listheader_EstadisticaHE_Nombres", "label": "Nombres", "width": "22%", "dataIndex": 3, "sourceField": "c.vapellidosnombres", "maxLength": 30 },
+        { "headerId": "listheader_EstadisticaHE_Rol", "label": "Rol", "width": "5%", "dataIndex": 4, "sourceField": "lr.vidditem" },
+        { "headerId": "listheader_EstadisticaHE_Concepto", "label": "Concepto", "width": "12%", "dataIndex": 5, "sourceField": "lp.vidrubro / lh.vidrubro" },
+        { "headerId": "listheader_EstadisticaHE_Descripcion", "label": "Descripción", "width": "12%", "dataIndex": 6, "sourceField": "r.vrubro" },
+        { "headerId": "listheader_EstadisticaHE_Importe", "label": "Importe", "width": "10%", "dataIndex": 7, "sourceField": "IFNULL(lp.mvlrout01,0) / IFNULL(lh.mvlrout01,0)", "align": "right" },
+        { "headerId": "listheader_EstadisticaHE_Cantidad", "label": "Cantidad", "width": "10%", "dataIndex": 8, "sourceField": "IFNULL(lp.mvlrout02,0) / IFNULL(lh.mvlrout02,0)", "align": "right" },
+        { "headerId": "listheader_EstadisticaHE_Estado", "label": "Estado", "width": "10%", "dataIndex": 9, "sourceField": "CASE ce.vstts WHEN 'ACT' THEN 'A' WHEN 'EEP' THEN 'I' ELSE ce.vstts END" }
+      ],
+      "footerTotals": [
+        { "footerId": "listfooter_totalImporte", "width": "10%", "aggregation": "SUM(Importe)", "format": "DecimalFormat ###,###.##" },
+        { "footerId": "listfooter_totalCantidad", "width": "10%", "aggregation": "SUM(Cantidad)", "format": "DecimalFormat ###,###.##" }
+      ],
+      "renderer": {
+        "className": "EstadisticasHoraExtrasItemRenderer (inner class)",
+        "rendersType": "Object[] from native SQL",
+        "columnMapping": [
+          { "index": 0, "description": "# Local (vidditem)", "displayType": "text" },
+          { "index": 1, "description": "Local name (vditem)", "displayType": "text" },
+          { "index": 2, "description": "Cédula", "displayType": "text" },
+          { "index": 3, "description": "Nombres (truncated to 30 chars)", "displayType": "text" },
+          { "index": 4, "description": "Rol (vidditem custom dimension)", "displayType": "text" },
+          { "index": 5, "description": "Concepto (vidrubro)", "displayType": "text" },
+          { "index": 6, "description": "Descripción (vrubro)", "displayType": "text" },
+          { "index": 7, "description": "Importe (mvlrout01)", "displayType": "right-aligned number" },
+          { "index": 8, "description": "Cantidad (mvlrout02)", "displayType": "right-aligned number" },
+          { "index": 9, "description": "Estado (ACT→A, EEP→I)", "displayType": "text" }
+        ]
+      },
+      "nativeQueries": [
+        {
+          "methodName": "setSql(anio, mes)",
+          "queryType": "NATIVE_SQL_UNION",
+          "description": "UNION of two queries: pre-liquidation (av_py_rubroslpre) and historical (av_py_rubroslhis) data for overtime hours (RUBHORAS50, RUBHORAS100, RUBHORAS25). Filtered by year/month, empresa, optional localidad and colaborador search.",
+          "query_pre": {
+            "selectColumns": "dm.vidditem, dm.vditem, c.vcedula, c.vapellidosnombres, lr.vidditem, lp.vidrubro, r.vrubro, IFNULL(lp.mvlrout01,0), IFNULL(lp.mvlrout02,0), CASE ce.vstts...",
+            "mainTable": "av_colaboradorese ce",
+            "joinTables": [
+              "av_colaboradores c ON c.iidcolaborador = ce.iidcolaborador",
+              "av_py_rubroslpre lp ON lp.iidcolaborador = ce.iidcolaborador",
+              "av_dimensionesl dm ON dm.iiddimensionesl = ce.iiddmlocalidad",
+              "av_dimensionesl lr ON lr.iiddimensionesl = ce.iiddmcustom",
+              "av_dimensionese de ON de.iiddimensionesl = dm.iiddimensionesl AND de.iidempresa = ce.iidempresa",
+              "av_py_procesosinstancias pins ON pins.iidejecproceso = lp.iidejecproceso",
+              "av_py_procesos pr ON pr.iidpyproceso = pins.iidpyproceso",
+              "av_py_rubros r ON r.vidrubro = lp.vidrubro"
+            ],
+            "whereConditions": [
+              "ce.iidempresa = :empresaId",
+              "lp.iidejecproceso IN (subquery for process instances by year/month, ctipoproceso='NO')",
+              "lp.vidrubro IN ('RUBHORAS50','RUBHORAS100','RUBHORAS25')",
+              "ce.iiddmlocalidad = :dimensionId (optional)",
+              "c.vcedula LIKE ':colaborador%' OR c.vapellidosnombres LIKE ':colaborador%' (optional)"
+            ]
+          },
+          "query_his": {
+            "selectColumns": "Same as query_pre but from av_py_rubroslhis lh instead of av_py_rubroslpre lp",
+            "mainTable": "av_colaboradorese ce",
+            "joinTables": [
+              "av_colaboradores c ON c.iidcolaborador = ce.iidcolaborador",
+              "av_py_rubroslhis lh ON lh.iidcolaborador = ce.iidcolaborador",
+              "av_dimensionesl dm ON dm.iiddimensionesl = ce.iiddmlocalidad",
+              "av_dimensionesl lr ON lr.iiddimensionesl = ce.iiddmcustom",
+              "av_dimensionese de ON de.iiddimensionesl = dm.iiddimensionesl AND de.iidempresa = ce.iidempresa",
+              "av_py_procesosinstancias pins ON pins.iidejecproceso = lh.iidejecproceso",
+              "av_py_procesos pr ON pr.iidpyproceso = pins.iidpyproceso",
+              "av_py_rubros r ON r.vidrubro = lh.vidrubro"
+            ]
+          },
+          "orderBy": "Nombres",
+          "returnType": "List<Object[]>",
+          "rubroFilter": "RUBHORAS50, RUBHORAS100, RUBHORAS25"
+        }
+      ],
+      "helperQueries": [
+        {
+          "methodName": "generaIdProcesoEjecucion(anio, mes)",
+          "queryType": "JPQL",
+          "description": "Gets process execution IDs for a given year/month/empresa with ctipoproceso='NO'",
+          "jpql": "Select pins.iidejecproceso FROM AvPyProcesosinstancias pins, AvPyProcesos pr WHERE pins.avPyProceso.iidpyproceso = pr.iidpyproceso AND pr.avPyProcesosempresa.iidempresa = :empresaId AND pins.ianio = :anio AND pins.imes = :mes AND pr.ctipoproceso = 'NO'"
+        }
+      ],
+      "entitiesUsed": ["AvColaboradorese", "AvColaboradores", "AvDimensionesl", "AvDimensionese", "AvEmpresa", "AvPyRubroslpre", "AvPyRubroslhis", "AvPyProcesosinstancias", "AvPyProcesos", "AvPyRubro", "AvPyRubroslhisttotalesV"],
+      "daosUsed": ["AvEmpresasDAOJpaImpl"]
+    },
+    {
+      "screenId": "ConsultaEstadisticasRotacion",
+      "screenName": "Estadísticas de Rotación",
+      "zulFile": "source/zk/WebContent/WEB-INF/avante/rolesdepago/ConsultaEstadisticasRotacion.zul",
+      "controllerClass": "avante.gth.webui.ConsultaEstadisticasRotacionCtrl",
+      "controllerFile": "source/zk/src/avante/gth/webui/ConsultaEstadisticasRotacionCtrl.java",
+      "controllerLines": 1907,
+      "extendsClass": "GFCBaseCtrl",
+      "windowId": "WindowConsultaEstadisticasRotacion",
+      "applyExpression": "${ConsultaEstadisticasRotacionCtrl}",
+      "chartTypes": "NONE",
+      "exportCapabilities": {
+        "excel": true,
+        "excelFileName": "reporteEstadisticasRotacion.xls",
+        "excelSheetName": "Estadisticas de Rotacion",
+        "excelLibrary": "Apache POI (HSSF)"
+      },
+      "filterFields": [
+        {
+          "fieldId": "lbox_Empresas",
+          "label": "Empresa",
+          "type": "listbox (select)",
+          "dataSource": "AvEmpresasDAOJpaImpl.getEmpresasUsuario(loggedInUser)",
+          "renderer": "AvEmpresasListModelItemRenderer",
+          "model": "AvEmpresa"
+        },
+        {
+          "fieldId": "lbox_Localidades",
+          "label": "Local",
+          "type": "listbox (select)",
+          "dataSource": "JPAQuerys.getListItemsDimensionEUser(idEmpresa, DM_Localidades, user, true)",
+          "renderer": "AvDimensioneslloccontratacionListModelItemRenderer",
+          "model": "AvDimensionesl"
+        },
+        {
+          "fieldId": "dbox_fechaI",
+          "label": "Fecha Inicio",
+          "type": "datebox",
+          "format": "yyyy-MM",
+          "defaultValue": "first day of previous month"
+        },
+        {
+          "fieldId": "dbox_fechaF",
+          "label": "Fecha Fin",
+          "type": "datebox",
+          "format": "yyyy-MM",
+          "defaultValue": "DateUtil.getFechaServidor() (last day of month)"
+        },
+        {
+          "fieldId": "lbox_Tipo",
+          "label": "Tipo",
+          "type": "listbox (select)",
+          "options": [
+            { "label": "Mensual", "value": "M", "selected": true },
+            { "label": "Acumulado", "value": "A" },
+            { "label": "Personalizado", "value": "P" }
+          ],
+          "description": "Controls date range behavior and which SQL method is invoked"
+        }
+      ],
+      "listboxColumns": [
+        { "headerId": "listheader_Rotacion_Local", "label": "Local", "width": "10%", "dataIndex": 0, "sourceField": "dl.vidditem" },
+        { "headerId": "listheader_Rotacion_Nombre", "label": "Nombre", "width": "15%", "dataIndex": 1, "sourceField": "dl.vditem" },
+        { "headerId": "listheader_Rotacion_Inicial", "label": "Inicial", "width": "15%", "dataIndex": 2, "sourceField": "COUNT_subquery_initial" },
+        { "headerId": "listheader_Rotacion_Ingresos", "label": "Ingresos", "width": "15%", "dataIndex": 3, "sourceField": "COUNT_subquery_new_hires" },
+        { "headerId": "listheader_Rotacion_Retirados", "label": "Retirados", "width": "15%", "dataIndex": 4, "sourceField": "COUNT_subquery_terminations" },
+        { "headerId": "listheader_Rotacion_Final", "label": "Final", "width": "15%", "dataIndex": 5, "sourceField": "Inicial + Ingresos - Retirados" },
+        { "headerId": "listheader_Rotacion_Rotacion", "label": "Rotacion", "width": "15%", "dataIndex": 6, "sourceField": "ROUND(((Ingresos+Retirados)/SUM(Inicial+Final))*100,2)" }
+      ],
+      "footerTotals": [
+        { "footerId": "listfooter_totalInicial", "width": "15%", "aggregation": "SUM(Inicial)", "dataType": "int" },
+        { "footerId": "listfooter_totalIngresos", "width": "15%", "aggregation": "SUM(Ingresos)", "dataType": "int" },
+        { "footerId": "listfooter_totalRetirados", "width": "15%", "aggregation": "SUM(Retirados)", "dataType": "int" },
+        { "footerId": "listfooter_totalFinal", "width": "15%", "aggregation": "SUM(Final)", "dataType": "int" },
+        { "footerId": "listfooter_totalRotacion", "width": "15%", "aggregation": "(SUM(Ingresos)+SUM(Retirados))/(SUM(Inicial)+SUM(Final))*100", "dataType": "double" }
+      ],
+      "renderer": {
+        "className": "EstadisticasRotacionItemRenderer (inner class)",
+        "rendersType": "Object[] from native SQL",
+        "columnMapping": [
+          { "index": 0, "description": "Local (vidditem)", "displayType": "text" },
+          { "index": 1, "description": "Nombre (vditem)", "displayType": "text" },
+          { "index": 2, "description": "Inicial (COUNT)", "displayType": "text" },
+          { "index": 3, "description": "Ingresos (COUNT)", "displayType": "text" },
+          { "index": 4, "description": "Retirados (COUNT)", "displayType": "text" },
+          { "index": 5, "description": "Final (computed)", "displayType": "text" },
+          { "index": 6, "description": "Rotacion (percentage)", "displayType": "text" }
+        ]
+      },
+      "nativeQueries": [
+        {
+          "methodName": "setSqlMensual2 (active method for Mensual type)",
+          "queryType": "NATIVE_SQL",
+          "description": "Monthly rotation calculation using av_colaboradores_mensual snapshot table. Joins colaboradore data with monthly snapshot for initial/ingresados/retirados counts, calculates Final=Inicial+Ingresos-Retirados, Rotacion=((Ingresos+Retirados)/SUM(Inicial+Final))*100",
+          "mainTable": "av_dimensionesl dl",
+          "joinTables": ["av_dimensionese de ON de.iiddimensionesl = dl.iiddimensionesl"],
+          "correlatedSubqueries": [
+            {
+              "alias": "Inicial",
+              "operation": "COUNT(DISTINCT ce.iidcolaborador)",
+              "tables": [
+                "av_colaboradorese ce",
+                "av_colaboradores c ON c.iidcolaborador=ce.iidcolaborador",
+                "av_colaboradores_mensual colm ON colm.vcedula=c.vcedula",
+                "av_dimensionesl d ON d.vidditem = colm.sucursal_base",
+                "av_dimensionesl dc ON dc.vidditem = colm.c_rol"
+              ],
+              "filters": [
+                "d.viddimension = 'DMLO'",
+                "dc.VIDDIMENSION = 'DMCU'",
+                "ce.iidempresa = :empresaId",
+                "(colm.estado='A' AND colm.fingreso < :fechaInicio) OR (colm.estado='I' AND colm.fingreso < :fechaInicio AND colm.fsalida >= :fechaInicio)",
+                "colm.c_rol IN ('A','B','C','D','G','P')",
+                "colm.periodo = CONCAT(YEAR(:fechaInicio), LPAD(MONTH(:fechaInicio),2,'0'))"
+              ]
+            },
+            {
+              "alias": "Ingresos",
+              "operation": "COUNT(DISTINCT cea.iidcolaborador)",
+              "filters": ["YEAR(colmi.fingreso) = YEAR(:fechaInicio)", "MONTH(colmi.fingreso) = MONTH(:fechaInicio)", "colmi.c_rol IN ('A','B','C','D','G','P')"]
+            },
+            {
+              "alias": "Retirados",
+              "operation": "COUNT(DISTINCT cer.iidcolaborador)",
+              "filters": ["colmr.estado = 'I'", "YEAR(colmr.fsalida) = YEAR(:fechaInicio)", "MONTH(colmr.fsalida) = MONTH(:fechaInicio)", "colmr.c_rol IN ('A','B','C','D','G','P')"]
+            }
+          ],
+          "computedColumns": [
+            { "alias": "Final", "formula": "Inicial + Ingresos - Retirados" },
+            { "alias": "Rotacion", "formula": "ROUND(((Ingresos + Retirados) / SUM(Inicial + Final)) * 100, 2)" }
+          ],
+          "whereConditions": ["dl.viddimension = 'DMLO'", "de.iidempresa = :empresaId", "dl.iiddimensionesl = :dimensionId (optional)"],
+          "orderBy": "dl.vidditem"
+        },
+        {
+          "methodName": "setSqlAcumulado_4 (active method for Acumulado/Personalizado)",
+          "queryType": "NATIVE_SQL",
+          "description": "Accumulated rotation over date range using av_colaboradores_mensual. Same structure as monthly but uses BETWEEN for ingreso/salida dates.",
+          "differenceFromMonthly": "Ingresos filter uses 'colmi.fingreso BETWEEN :fechaInicio AND :fechaFin'; Retirados uses 'colmr.fsalida BETWEEN :fechaInicio AND :fechaFin'"
+        }
+      ],
+      "reportTypeLogic": {
+        "Mensual": "Auto-adjusts fechaI to first day and fechaF to last day of selected month. Calls setSqlMensual2().",
+        "Acumulado": "Auto-adjusts fechaI to Jan 1 of year. Calls setSqlAcumulado_4().",
+        "Personalizado": "Free date range. Calls setSqlAcumulado_4()."
+      },
+      "entitiesUsed": ["AvColaboradorese", "AvColaboradores", "AvDimensionesl", "AvDimensionese", "AvEmpresa"],
+      "nativeTablesUsed": ["av_colaboradores_mensual (no JPA entity - snapshot table)"],
+      "daosUsed": ["AvEmpresasDAOJpaImpl"]
+    }
+  ],
+  "entities": [
+    {
+      "entityClass": "avante.backend.model.AvColaboradorese",
+      "tableName": "av_colaboradorese",
+      "sourceFile": "source/zk/src/avante/backend/model/AvColaboradorese.java",
+      "primaryKey": {
+        "type": "@EmbeddedId",
+        "pkClass": "AvColaboradoresePK",
+        "fields": [
+          { "name": "iidempresa", "type": "Integer", "column": "iidempresa" },
+          { "name": "iidcolaborador", "type": "Integer", "column": "iidcolaborador" }
+        ]
+      },
+      "fields": [
+        { "name": "dfcoorporativa", "type": "Date", "column": "dfcoorporativa", "annotation": "@Temporal(DATE)" },
+        { "name": "dffcontrato", "type": "Date", "column": "dffcontrato", "annotation": "@Temporal(DATE)" },
+        { "name": "dfingreso", "type": "Date", "column": "dfingreso", "annotation": "@Temporal(DATE)", "usedInQueries": "filter new hires by month/year" },
+        { "name": "dfsalida", "type": "Date", "column": "dfsalida", "annotation": "@Temporal(DATE)", "usedInQueries": "filter terminated employees by month/year" },
+        { "name": "horaingresoAu", "type": "Date", "column": "horaingreso_au", "annotation": "@Temporal(DATE)" },
+        { "name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au", "annotation": "@Temporal(DATE)" },
+        { "name": "iidbanco", "type": "Integer", "column": "iidbanco" },
+        { "name": "iidcontrato", "type": "int", "column": "iidcontrato" },
+        { "name": "iiddmnerol", "type": "int", "column": "iiddmnerol" },
+        { "name": "msueldo", "type": "BigDecimal", "column": "msueldo" },
+        { "name": "msueldoanterior", "type": "BigDecimal", "column": "msueldoanterior", "annotation": "@Column(precision=8, scale=2)" },
+        { "name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au" },
+        { "name": "vcuentabanco", "type": "String", "column": "vcuentabanco" },
+        { "name": "vidtacreditacion", "type": "String", "column": "vidtacreditacion" },
+        { "name": "vidtctabanco", "type": "String", "column": "vidtctabanco" },
+        { "name": "vobservaciones", "type": "String", "column": "vobservaciones" },
+        { "name": "vstts", "type": "String", "column": "vstts", "usedInQueries": "ACT=Active, EEP=Ex-employee, filter field" },
+        { "name": "ccontrolmar", "type": "String", "column": "ccontrolmar" },
+        { "name": "ccontrolhe", "type": "String", "column": "ccontrolhe" },
+        { "name": "ccontrolphe", "type": "String", "column": "ccontrolphe" },
+        { "name": "cingnolaboral", "type": "String", "column": "cingnolaboral" },
+        { "name": "cpp", "type": "String", "column": "cpp" },
+        { "name": "csacafranco", "type": "String", "column": "csacafranco" },
+        { "name": "cgeneradocsv", "type": "String", "column": "cgeneradocsv" },
+        { "name": "cexcepciongencsv", "type": "String", "column": "cexcepciongencsv" },
+        { "name": "cconsignamrl", "type": "String", "column": "cconsignamrl" },
+        { "name": "cexcepvalecompra", "type": "String", "column": "cexcepvalecompra" },
+        { "name": "cestafisicsuc", "type": "String", "column": "cestafisicsuc" },
+        { "name": "cbonificaciond3", "type": "String", "column": "cbonificaciond3" },
+        { "name": "cbonificaciond4", "type": "String", "column": "cbonificaciond4" },
+        { "name": "cdeclara_imp_renta", "type": "String", "column": "cdeclara_imp_renta" },
+        { "name": "carchivo_acreditacion", "type": "String", "column": "carchivo_acreditacion" },
+        { "name": "iidmotivoac", "type": "int", "column": "iidmotivoac" },
+        { "name": "dffusion", "type": "Date", "column": "dffusion", "annotation": "@Temporal(DATE)" },
+        { "name": "cexiste_sgt", "type": "String", "column": "cexiste_sgt" },
+        { "name": "iid_hr_employee", "type": "int", "column": "iid_hr_employee" },
+        { "name": "centrada_IESS", "type": "String", "column": "centrada_IESS" },
+        { "name": "csalida_IESS", "type": "String", "column": "csalida_IESS" },
+        { "name": "cempleojuv", "type": "String", "column": "cempleojuv" },
+        { "name": "ccatalogo", "type": "String", "column": "ccatalogo" },
+        { "name": "ctoencargado", "type": "String", "column": "ctoencargado" },
+        { "name": "caportaiess_conyuge", "type": "String", "column": "caportaiess_conyuge" },
+        { "name": "csustituto", "type": "String", "column": "csustituto" }
+      ],
+      "relationships": [
+        { "name": "avColaboradores", "type": "@ManyToOne", "targetEntity": "AvColaboradores", "joinColumn": "iidcolaborador" },
+        { "name": "avColaboradoreseempresa", "type": "@ManyToOne", "targetEntity": "AvEmpresa", "joinColumn": "iidempresa" },
+        { "name": "avDimensionesleo", "type": "@ManyToOne", "targetEntity": "AvDimensionesl", "joinColumn": "iiddmeo" },
+        { "name": "avDimensioneslcc", "type": "@ManyToOne", "targetEntity": "AvDimensionesl", "joinColumn": "iiddmccosto" },
+        { "name": "avDimensioneslcg", "type": "@ManyToOne", "targetEntity": "AvDimensionesl", "joinColumn": "iiddmcargo" },
+        { "name": "avDimensionesllo", "type": "@ManyToOne", "targetEntity": "AvDimensionesl", "joinColumn": "iiddmlocalidad", "usedInQueries": "locality dimension for HE screen" },
+        { "name": "avDimensionesllb", "type": "@ManyToOne", "targetEntity": "AvDimensionesl", "joinColumn": "iiddmlocalidadbase", "usedInQueries": "base locality for Personal & Rotacion screens" },
+        { "name": "avDimensioneslro", "type": "@ManyToOne", "targetEntity": "AvDimensionesl", "joinColumn": "iiddmrol" },
+        { "name": "avDimensioneslct", "type": "@ManyToOne", "targetEntity": "AvDimensionesl", "joinColumn": "iiddmcustom", "usedInQueries": "custom dimension (iiddmcustom=1 filter, role categories)" },
+        { "name": "avDimensioneslcgreal", "type": "@ManyToOne", "targetEntity": "AvDimensionesl", "joinColumn": "iiddmcgreal" },
+        { "name": "avCatalogohorcont", "type": "@ManyToOne", "targetEntity": "AvCatalogos", "joinColumn": "iidhorariocontrato" },
+        { "name": "avCatalogoEmpresaSeg", "type": "@ManyToOne", "targetEntity": "AvCatalogos", "joinColumn": "iidempresaseg" },
+        { "name": "avCatalogohorarioparcial", "type": "@ManyToOne", "targetEntity": "AvCatalogos", "joinColumn": "iidhorarioparcial" },
+        { "name": "avCatalogoiidbancopagosterceroficha", "type": "@ManyToOne", "targetEntity": "AvCatalogos", "joinColumn": "iidbancopagostercero" },
+        { "name": "avRhCupoReff", "type": "@ManyToOne", "targetEntity": "AvRhCupo", "joinColumn": "iidcupo" },
+        { "name": "avPyRubrosPrestamos", "type": "@OneToMany", "targetEntity": "AvPyRubrosPrestamo", "mappedBy": "avColaboradorese" }
+      ]
+    },
+    {
+      "entityClass": "avante.backend.model.AvColaboradores",
+      "tableName": "av_colaboradores",
+      "sourceFile": "source/zk/src/avante/backend/model/AvColaboradores.java",
+      "primaryKey": {
+        "type": "@Id + @GeneratedValue(SEQUENCE)",
+        "field": "iidcolaborador",
+        "fieldType": "Integer",
+        "column": "iidcolaborador",
+        "sequenceGenerator": "savcolaboradores",
+        "sequenceName": "s_av_colaboradores",
+        "allocationSize": 20
+      },
+      "relevantFields": [
+        { "name": "iidcolaborador", "type": "Integer", "column": "iidcolaborador", "pk": true },
+        { "name": "vcedula", "type": "String", "column": "vcedula", "usedInQueries": "displayed in HE screen, search filter, join to colaboradores_mensual" },
+        { "name": "vapellidosnombres", "type": "String", "column": "vapellidosnombres", "usedInQueries": "displayed in HE screen, search filter" },
+        { "name": "vnombres", "type": "String", "column": "vnombres" },
+        { "name": "vapellidopaterno", "type": "String", "column": "vapellidopaterno" },
+        { "name": "vapellidomaterno", "type": "String", "column": "vapellidomaterno" },
+        { "name": "vemail", "type": "String", "column": "vemail" },
+        { "name": "csexo", "type": "String", "column": "csexo" },
+        { "name": "dfnacimiento", "type": "Date", "column": "dfnacimiento" },
+        { "name": "vidcolaboradorca", "type": "String", "column": "vidcolaboradorca" }
+      ],
+      "note": "Full entity has 1565 lines with 80+ fields. Only fields relevant to this vertical slice listed."
+    },
+    {
+      "entityClass": "avante.backend.model.AvDimensionesl",
+      "tableName": "av_dimensionesl",
+      "sourceFile": "source/zk/src/avante/backend/model/AvDimensionesl.java",
+      "primaryKey": {
+        "type": "@Id + @GeneratedValue(SEQUENCE)",
+        "field": "iiddimensionesl",
+        "fieldType": "Integer",
+        "column": "iiddimensionesl",
+        "sequenceGenerator": "savdimensionesl",
+        "sequenceName": "s_av_dimensionesl",
+        "allocationSize": 20
+      },
+      "relevantFields": [
+        { "name": "iiddimensionesl", "type": "Integer", "column": "iiddimensionesl", "pk": true, "usedInQueries": "join key for locality dimension filtering" },
+        { "name": "vidditem", "type": "String", "column": "vidditem", "maxLength": 20, "usedInQueries": "displayed as Local code (Sucursal)" },
+        { "name": "vditem", "type": "String", "column": "vditem", "maxLength": 60, "usedInQueries": "displayed as Local name (Nombre)" },
+        { "name": "vidditemco", "type": "String", "column": "vidditemco", "maxLength": 20 },
+        { "name": "vditem2", "type": "String", "column": "vditem2", "maxLength": 60 },
+        { "name": "viddimension", "type": "String (FK to AvDimensiones)", "usedInQueries": "filter DMLO=Localidades, DMCU=Custom" },
+        { "name": "iiddmcustom", "type": "Integer", "column": "iiddmcustom", "usedInQueries": "iiddmcustom=1 filter in subqueries" },
+        { "name": "vdireccion", "type": "String", "column": "vdireccion", "maxLength": 255 },
+        { "name": "vtelefonos", "type": "String", "column": "vtelefonos", "maxLength": 255 },
+        { "name": "vruclocalidad", "type": "String", "column": "vruclocalidad", "maxLength": 15 },
+        { "name": "vidarea", "type": "String", "column": "vidarea", "maxLength": 20 },
+        { "name": "vidcgsuper", "type": "String", "column": "vidcgsuper", "maxLength": 10 },
+        { "name": "iidcanton", "type": "int", "column": "iidcanton" },
+        { "name": "iidentornoejecucion", "type": "int", "column": "iidentornoejecucion" },
+        { "name": "iidzonaec", "type": "Integer", "column": "iidzonaec" },
+        { "name": "vstts", "type": "String", "column": "vstts" },
+        { "name": "icodsgt", "type": "int", "column": "icodsgt" }
+      ],
+      "relevantRelationships": [
+        { "name": "avDimensiones", "type": "@ManyToOne", "targetEntity": "AvDimensiones", "joinColumn": "viddimension" },
+        { "name": "avEnEmpresaspatronal", "type": "@ManyToOne", "targetEntity": "AvEnEmpresaspatronal", "joinColumn": "iidnropatronal" },
+        { "name": "avDimensioneses", "type": "@OneToMany", "targetEntity": "AvDimensionese", "mappedBy": "avDimensionesl" },
+        { "name": "ccostoAsociado", "type": "@ManyToOne", "targetEntity": "AvDimensionesl (self-reference)", "joinColumn": "iidccosto" }
+      ],
+      "note": "Full entity has 1524 lines with many @OneToMany relations. Only fields relevant to this vertical slice listed."
+    },
+    {
+      "entityClass": "avante.backend.model.AvDimensionese",
+      "tableName": "av_dimensionese",
+      "sourceFile": "source/zk/src/avante/backend/model/AvDimensionese.java",
+      "primaryKey": {
+        "type": "@EmbeddedId",
+        "pkClass": "AvDimensionesePK",
+        "fields": [
+          { "name": "iiddimensionesl", "type": "Integer", "column": "iiddimensionesl" },
+          { "name": "iidempresa", "type": "Integer", "column": "iidempresa" }
+        ]
+      },
+      "fields": [
+        { "name": "horaingresoAu", "type": "Date", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au" },
+        { "name": "iTipoDiasPago", "type": "int", "column": "iTipoDiasPago" },
+        { "name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au" }
+      ],
+      "relationships": [
+        { "name": "avDimensionesl", "type": "@ManyToOne", "targetEntity": "AvDimensionesl", "joinColumn": "iiddimensionesl", "usedInQueries": "JOIN de.iiddimensionesl = dl.iiddimensionesl" },
+        { "name": "avEmpresa", "type": "@ManyToOne", "targetEntity": "AvEmpresa", "joinColumn": "iidempresa", "usedInQueries": "filter de.iidempresa = :empresaId" }
+      ]
+    },
+    {
+      "entityClass": "avante.backend.model.AvEmpresa",
+      "tableName": "av_empresas",
+      "sourceFile": "source/zk/src/avante/backend/model/AvEmpresa.java",
+      "primaryKey": {
+        "type": "@Id",
+        "field": "iidempresa",
+        "fieldType": "Integer",
+        "column": "iidempresa"
+      },
+      "fields": [
+        { "name": "iidempresa", "type": "Integer", "column": "iidempresa", "pk": true },
+        { "name": "cliId", "type": "int", "column": "cli_id" },
+        { "name": "vempresanc", "type": "String", "column": "vempresanc" },
+        { "name": "vempresanl", "type": "String", "column": "vempresanl" },
+        { "name": "vruc", "type": "String", "column": "vruc" },
+        { "name": "horaingresoAu", "type": "Date", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au" },
+        { "name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au" }
+      ],
+      "relationships": [
+        { "name": "avColaboradorese", "type": "@OneToMany", "targetEntity": "AvColaboradorese", "mappedBy": "avColaboradoreseempresa" },
+        { "name": "avDimensioneses", "type": "@OneToMany", "targetEntity": "AvDimensionese", "mappedBy": "avEmpresa" },
+        { "name": "avPyProcesos", "type": "@OneToMany", "targetEntity": "AvPyProcesos", "mappedBy": "avPyProcesosempresa" },
+        { "name": "SUseres", "type": "@OneToMany", "targetEntity": "SUsere", "mappedBy": "avEmpresa" }
+      ]
+    },
+    {
+      "entityClass": "avante.backend.model.AvPyRubroslpre",
+      "tableName": "av_py_rubroslpre",
+      "sourceFile": "source/zk/src/avante/backend/model/AvPyRubroslpre.java",
+      "primaryKey": {
+        "type": "@EmbeddedId",
+        "pkClass": "AvPyRubroslprePK",
+        "fields": [
+          { "name": "iidejecproceso", "type": "Integer", "column": "iidejecproceso" },
+          { "name": "iidcolaborador", "type": "int", "column": "iidcolaborador" },
+          { "name": "vidrubro", "type": "String", "column": "vidrubro", "maxLength": 100 }
+        ]
+      },
+      "fields": [
+        { "name": "dffinout", "type": "Date", "column": "dffinout" },
+        { "name": "dfiniout", "type": "Date", "column": "dfiniout" },
+        { "name": "iidrubrosIdoUpl", "type": "BigDecimal", "column": "iidrubros_ido_upl" },
+        { "name": "mvlrout01", "type": "BigDecimal", "column": "mvlrout01", "annotation": "@Column(precision=10, scale=2)", "usedInQueries": "Importe in HorasExtras screen" },
+        { "name": "mvlrout02", "type": "BigDecimal", "column": "mvlrout02", "annotation": "@Column(precision=10, scale=2)", "usedInQueries": "Cantidad in HorasExtras screen" },
+        { "name": "mvlrout03", "type": "BigDecimal", "column": "mvlrout03", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "mvlrout04", "type": "BigDecimal", "column": "mvlrout04", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "mvlrout05", "type": "BigDecimal", "column": "mvlrout05", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "iflagenvio", "type": "int", "column": "iflagenvio" },
+        { "name": "horaingresoAu", "type": "Date", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au" },
+        { "name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au" }
+      ],
+      "relationships": [
+        { "name": "avColaboradorespyrublpre", "type": "@ManyToOne", "targetEntity": "AvColaboradores", "joinColumn": "iidcolaborador", "insertable": false },
+        { "name": "avPyProcesosinstanciapyrublpre", "type": "@ManyToOne", "targetEntity": "AvPyProcesosinstancias", "joinColumn": "iidejecproceso", "insertable": false },
+        { "name": "avPyRubropyrublpre", "type": "@ManyToOne", "targetEntity": "AvPyRubro", "joinColumn": "vidrubro", "insertable": false }
+      ]
+    },
+    {
+      "entityClass": "avante.backend.model.AvPyRubroslhis",
+      "tableName": "av_py_rubroslhis",
+      "sourceFile": "source/zk/src/avante/backend/model/AvPyRubroslhis.java",
+      "primaryKey": {
+        "type": "@EmbeddedId",
+        "pkClass": "AvPyRubroslhisPK",
+        "fields": [
+          { "name": "iidejecproceso", "type": "Integer", "column": "iidejecproceso" },
+          { "name": "iidcolaborador", "type": "int", "column": "iidcolaborador" },
+          { "name": "vidrubro", "type": "String", "column": "vidrubro", "maxLength": 100 }
+        ]
+      },
+      "fields": [
+        { "name": "dffinout", "type": "Date", "column": "dffinout" },
+        { "name": "dfiniout", "type": "Date", "column": "dfiniout" },
+        { "name": "iidrubrosIdoUpl", "type": "BigDecimal", "column": "iidrubros_ido_upl" },
+        { "name": "mvlrout01", "type": "BigDecimal", "column": "mvlrout01", "annotation": "@Column(precision=10, scale=2)", "usedInQueries": "Importe in HorasExtras screen" },
+        { "name": "mvlrout02", "type": "BigDecimal", "column": "mvlrout02", "annotation": "@Column(precision=10, scale=2)", "usedInQueries": "Cantidad in HorasExtras screen" },
+        { "name": "mvlrout03", "type": "BigDecimal", "column": "mvlrout03", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "mvlrout04", "type": "BigDecimal", "column": "mvlrout04", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "mvlrout05", "type": "BigDecimal", "column": "mvlrout05", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "horaingresoAu", "type": "Date", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au" },
+        { "name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au" }
+      ],
+      "relationships": [
+        { "name": "avColaboradores", "type": "@ManyToOne", "targetEntity": "AvColaboradores", "joinColumn": "iidcolaborador", "insertable": false },
+        { "name": "avPyProcesosinstancia", "type": "@ManyToOne", "targetEntity": "AvPyProcesosinstancias", "joinColumn": "iidejecproceso", "insertable": false },
+        { "name": "avPyRubro", "type": "@ManyToOne", "targetEntity": "AvPyRubro", "joinColumn": "vidrubro", "insertable": false }
+      ]
+    },
+    {
+      "entityClass": "avante.backend.model.AvPyProcesosinstancias",
+      "tableName": "av_py_procesosinstancias",
+      "sourceFile": "source/zk/src/avante/backend/model/AvPyProcesosinstancias.java",
+      "primaryKey": {
+        "type": "@Id + @GeneratedValue(SEQUENCE)",
+        "field": "iidejecproceso",
+        "fieldType": "Integer",
+        "column": "iidejecproceso",
+        "sequenceGenerator": "savProcesosInstancias",
+        "sequenceName": "s_av_ProcesosInstancias",
+        "allocationSize": 20
+      },
+      "fields": [
+        { "name": "iidejecproceso", "type": "Integer", "column": "iidejecproceso", "pk": true, "usedInQueries": "FK to rubroslpre/rubroslhis" },
+        { "name": "dffin", "type": "Date", "column": "dffin" },
+        { "name": "dfinicio", "type": "Date", "column": "dfinicio" },
+        { "name": "icerrado", "type": "Integer", "column": "icerrado" },
+        { "name": "ifinal", "type": "Integer", "column": "ifinal" },
+        { "name": "iidentornoejecucion", "type": "Integer", "column": "iidentornoejecucion" },
+        { "name": "ianio", "type": "Integer", "column": "ianio", "usedInQueries": "filter by year" },
+        { "name": "imes", "type": "Integer", "column": "imes", "usedInQueries": "filter by month" },
+        { "name": "ianioco", "type": "Integer", "column": "ianioco" },
+        { "name": "imesco", "type": "Integer", "column": "imesco" },
+        { "name": "ireversar", "type": "Integer", "column": "ireversar" },
+        { "name": "iultimaejecucion", "type": "Integer", "column": "iultimaejecucion" },
+        { "name": "igenerainstancia", "type": "Integer", "column": "igenerainstancia" },
+        { "name": "vinstancia", "type": "String", "column": "vinstancia" },
+        { "name": "horaingresoAu", "type": "Date", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au" },
+        { "name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au" }
+      ],
+      "relationships": [
+        { "name": "avPyProceso", "type": "@ManyToOne", "targetEntity": "AvPyProcesos", "joinColumn": "iidpyproceso", "usedInQueries": "join to get process type" },
+        { "name": "avPyRubroslhis", "type": "@OneToMany", "targetEntity": "AvPyRubroslhis", "mappedBy": "avPyProcesosinstancia" },
+        { "name": "avPyRubroslpre", "type": "@OneToMany", "targetEntity": "AvPyRubroslpre", "mappedBy": "avPyProcesosinstanciapyrublpre" }
+      ]
+    },
+    {
+      "entityClass": "avante.backend.model.AvPyProcesos",
+      "tableName": "av_py_procesos",
+      "sourceFile": "source/zk/src/avante/backend/model/AvPyProcesos.java",
+      "primaryKey": {
+        "type": "@Id",
+        "field": "iidpyproceso",
+        "fieldType": "Integer",
+        "column": "iidpyproceso"
+      },
+      "fields": [
+        { "name": "iidpyproceso", "type": "Integer", "column": "iidpyproceso", "pk": true },
+        { "name": "ctipoproceso", "type": "String", "column": "ctipoproceso", "usedInQueries": "filter ctipoproceso='NO' (nómina)" },
+        { "name": "vidfrecuencia", "type": "String", "column": "vidfrecuencia" },
+        { "name": "vspcontabilizacion", "type": "String", "column": "vspcontabilizacion" },
+        { "name": "vspejecucion", "type": "String", "column": "vspejecucion" },
+        { "name": "vspreversion", "type": "String", "column": "vspreversion" },
+        { "name": "vspsalvarhistoricos", "type": "String", "column": "vspsalvarhistoricos" },
+        { "name": "vbusquedacpr", "type": "String", "column": "vbusquedacpr" },
+        { "name": "horaingresoAu", "type": "Date", "column": "horaingreso_au" },
+        { "name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au" },
+        { "name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au" },
+        { "name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au" }
+      ],
+      "relationships": [
+        { "name": "avPyProcesosempresa", "type": "@ManyToOne", "targetEntity": "AvEmpresa", "joinColumn": "iidempresa", "usedInQueries": "filter by empresa" },
+        { "name": "avDimensionesl", "type": "@ManyToOne", "targetEntity": "AvDimensionesl", "joinColumn": "iiddmrol" },
+        { "name": "SRight", "type": "@ManyToOne", "targetEntity": "SecRight", "joinColumn": "iidproceso" },
+        { "name": "avPyProcesosinstancias", "type": "@OneToMany", "targetEntity": "AvPyProcesosinstancias", "mappedBy": "avPyProceso" },
+        { "name": "avPyPlantillaContables", "type": "@OneToMany", "targetEntity": "AvPyPlantillaContable", "mappedBy": "avPyProceso" },
+        { "name": "avPyProcesosl", "type": "@OneToMany", "targetEntity": "AvPyProcesosl", "mappedBy": "avPyProceso" }
+      ]
+    },
+    {
+      "entityClass": "avante.backend.model.AvPyRubro",
+      "tableName": "av_py_rubros",
+      "sourceFile": "source/zk/src/avante/backend/model/AvPyRubro.java",
+      "primaryKey": {
+        "type": "@Id",
+        "field": "vidrubro",
+        "fieldType": "String",
+        "column": "vidrubro"
+      },
+      "fields": [
+        { "name": "vidrubro", "type": "String", "column": "vidrubro", "pk": true, "usedInQueries": "join key, filter IN('RUBHORAS50','RUBHORAS100','RUBHORAS25')" },
+        { "name": "vidambito", "type": "String", "column": "vidambito" },
+        { "name": "vrubro", "type": "String", "column": "vrubro", "usedInQueries": "Descripción column in HE screen" },
+        { "name": "vefecto", "type": "String", "column": "vefecto" },
+        { "name": "vobservaciones", "type": "String", "column": "vobservaciones" },
+        { "name": "vsprocedure", "type": "String", "column": "vsprocedure" },
+        { "name": "vidrubroh", "type": "String", "column": "vidrubroh" },
+        { "name": "isecimpresion", "type": "Integer", "column": "isecimpresion" },
+        { "name": "isecsobregiro", "type": "Integer", "column": "isecsobregiro" },
+        { "name": "iaplicainterfas", "type": "boolean", "column": "iaplicainterfas" },
+        { "name": "iinsertlote", "type": "boolean", "column": "iinsertlote" },
+        { "name": "ihabilitado", "type": "Integer", "column": "ihabilitado" },
+        { "name": "iantiguedadmin", "type": "Integer", "column": "iantiguedadmin" },
+        { "name": "inumaprobaciones", "type": "int", "column": "inumaprobaciones" },
+        { "name": "iplazomax", "type": "int", "column": "iplazomax" },
+        { "name": "iplazomin", "type": "int", "column": "iplazomin" },
+        { "name": "dmontomaximo", "type": "BigDecimal", "column": "dmontomaximo" },
+        { "name": "vnomenclatura", "type": "String", "column": "vnomenclatura" },
+        { "name": "ictacte", "type": "Integer", "column": "ictacte" },
+        { "name": "icarta", "type": "int", "column": "icarta" }
+      ]
+    },
+    {
+      "entityClass": "avante.backend.model.views.AvPyRubroslhisttotalesV",
+      "tableName": "av_py_rubroslhisttotales_v",
+      "sourceFile": "source/zk/src/avante/backend/model/views/AvPyRubroslhisttotalesV.java",
+      "description": "DATABASE VIEW entity - used as generic type parameter in ConsultaEstadisticasHECtrl (extends GFCBaseListCtrl<AvPyRubroslhisttotalesV>). Not used in active queries (controller uses native SQL instead).",
+      "primaryKey": {
+        "type": "@EmbeddedId",
+        "pkClass": "AvPyRubroslhisPK",
+        "fields": [
+          { "name": "iidejecproceso", "type": "Integer" },
+          { "name": "iidcolaborador", "type": "int" },
+          { "name": "vidrubro", "type": "String" }
+        ]
+      },
+      "fields": [
+        { "name": "totalegresos", "type": "BigDecimal", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "totalingreso", "type": "BigDecimal", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "vapellidosnombres", "type": "String", "annotation": "@Column(length=150)" },
+        { "name": "vcedula", "type": "String", "annotation": "@Column(length=20)" },
+        { "name": "totalrb", "type": "BigDecimal", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "totnodeduc", "type": "BigDecimal", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "totalneto", "type": "BigDecimal", "annotation": "@Column(precision=10, scale=2)" },
+        { "name": "iidempresa", "type": "Integer" }
+      ],
+      "relationships": [
+        { "name": "avPyProcesosinstanciashist", "type": "@ManyToOne", "targetEntity": "AvPyProcesosinstancias", "joinColumn": "iidejecproceso" },
+        { "name": "avColaborador", "type": "@ManyToOne", "targetEntity": "AvColaboradores", "joinColumn": "iidcolaborador" }
+      ]
+    }
+  ],
+  "nativeTableWithoutEntity": {
+    "tableName": "av_colaboradores_mensual",
+    "description": "Monthly employee snapshot table used in Rotación screen native queries. No JPA entity found in source code. Used via native SQL JOIN through vcedula field.",
+    "knownColumns": [
+      { "name": "vcedula", "description": "Employee ID number, joins to av_colaboradores.vcedula" },
+      { "name": "sucursal_base", "description": "Base branch code, joins to av_dimensionesl.vidditem" },
+      { "name": "c_rol", "description": "Role code, joins to av_dimensionesl.vidditem (dimension DMCU)", "knownValues": "A, B, C, D, G, P" },
+      { "name": "estado", "description": "Employee status: A=Active, I=Inactive" },
+      { "name": "fingreso", "description": "Hire date in this snapshot" },
+      { "name": "fsalida", "description": "Termination date in this snapshot" },
+      { "name": "periodo", "description": "Period in YYYYMM format, e.g. '202603'" }
+    ]
+  },
+  "daos": [
+    {
+      "className": "avante.backend.dao.impl.AvEmpresasDAOJpaImpl",
+      "usedMethods": [
+        {
+          "method": "getEmpresasUsuario(SecUser user)",
+          "description": "Returns list of empresas accessible by the logged-in user",
+          "returnType": "List<AvEmpresa>",
+          "usedBy": ["All 3 screens - empresa filter dropdown"]
+        }
+      ]
+    }
+  ],
+  "utilityClasses": [
+    {
+      "className": "avante.core.jpa.JPAQuerys",
+      "usedMethods": [
+        {
+          "method": "getListItemsDimensionEUser(int idEmpresa, String dimensionType, SecUser user, boolean includeAll)",
+          "description": "Returns dimension items (localidades) filtered by empresa and user permissions",
+          "returnType": "List<AvDimensionesl>",
+          "usedBy": ["All 3 screens - localidades filter dropdown"]
+        }
+      ]
+    },
+    {
+      "className": "avante.core.AvUtil",
+      "constants": [
+        { "name": "DM_Localidades", "description": "Dimension code for Localidades" },
+        { "name": "EMP_ACTIVO", "value": "ACT", "description": "Active employee status" },
+        { "name": "EMP_EXEMPLEADO", "value": "EEP", "description": "Ex-employee status" }
+      ]
+    },
+    {
+      "className": "avante.core.DateUtil",
+      "usedMethods": [
+        "getFechaServidor() - returns current server date",
+        "diasDelMes(int mes, int anio) - returns days in month",
+        "OUT_DATE_FORMAT_MYSQL - DateFormat for MySQL dates",
+        "getDateMesLetras(Date) - returns date with month in letters",
+        "sumarFechasDias(Date, int) - adds days to date"
+      ]
+    }
+  ],
+  "commonPatterns": {
+    "dataRetrieval": "All 3 screens use EntityManager.createNativeQuery() with raw SQL strings built via StringBuilder/String concatenation. No Spring Data repositories or named queries. SQL parameters are concatenated directly (SQL injection risk).",
+    "rendering": "All use inner ListitemRenderer classes that cast result to Object[] and create Listcell elements sequentially by index.",
+    "excelExport": "All export via Apache POI HSSF (old .xls format) with manual cell creation, styling, and Filedownload.save(AMedia).",
+    "filtering": "All share the same empresa/localidad filter pattern with AvEmpresasDAOJpaImpl and JPAQuerys.getListItemsDimensionEUser.",
+    "noCharts": "None of the 3 screens use ZK Charts (no CategoryModel, PieModel, etc.). They are pure tabular reports with footer totals.",
+    "statusConstants": "ACT = Active employee, EEP = Ex-employee (terminated)",
+    "roleFilter": "iiddmcustom = 1 (Personal/Rotacion) or c_rol IN ('A','B','C','D','G','P') (Rotacion mensual via av_colaboradores_mensual)"
+  }
+}

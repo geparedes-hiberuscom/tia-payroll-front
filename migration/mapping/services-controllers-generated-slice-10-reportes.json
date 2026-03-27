@@ -1,0 +1,42 @@
+{
+  "slice_id": "slice-10-reportes",
+  "slice_nombre": "📊 Reportes",
+  "moduleName": "reportes",
+  "fullPackage": "com.tia.reportes",
+  "target": "springboot",
+  "generatedAt": "2026-03-25T21:14:08.136Z",
+  "api_file": "vs-reportes-endpoints.json",
+  "api_endpoints_count": 15,
+  "api_schemas_count": 0,
+  "source_context": {
+    "funcionalidades": [
+      "consultaEstadisticasPersonal",
+      "consultaEstadisticasHorasExtras",
+      "ConsultaEstadisticasRotacion",
+      "Tablasnapshotmensualreferenciatcnica"
+    ],
+    "total_controladores": 15,
+    "total_servicios": 0,
+    "total_entidades": 14,
+    "total_daos": 0
+  },
+  "generated": {
+    "application_services": [
+      "ConsultaestadisticaspersonalApplicationService",
+      "ConsultaestadisticashorasextrasApplicationService",
+      "ConsultaestadisticasrotacionApplicationService",
+      "TablasnapshotmensualreferenciatcnicaApplicationService"
+    ],
+    "rest_controllers": [
+      "ConsultaestadisticaspersonalController",
+      "ConsultaestadisticashorasextrasController",
+      "ConsultaestadisticasrotacionController",
+      "TablasnapshotmensualreferenciatcnicaController"
+    ]
+  },
+  "resumen": {
+    "total_services_generated": 4,
+    "total_controllers_generated": 4,
+    "total_api_endpoints": 15
+  }
+}

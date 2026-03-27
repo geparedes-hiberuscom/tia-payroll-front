@@ -1,0 +1,773 @@
+{
+  "endpoints": [
+    {
+      "screenName": "acreditacion.zul",
+      "baseUrl": "/api/v1/acreditaciones",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/acreditaciones",
+          "summary": "Listar acreditaciones bancarias",
+          "description": "Obtiene la lista paginada de archivos de acreditación bancaria generados (av_py_interfasarchivo), con datos de la interfaz bancaria, instancia de ejecución del proceso y contenido de líneas del archivo",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "Filtro por ID de instancia de ejecución del proceso"},
+            {"name": "interfazId", "type": "integer", "required": false, "description": "Filtro por ID de interfaz bancaria"},
+            {"name": "bancoId", "type": "integer", "required": false, "description": "Filtro por ID de banco"},
+            {"name": "tipoMovimiento", "type": "string", "required": false, "description": "Filtro por tipo de movimiento: D=débito, C=crédito (vcd)"}
+          ],
+          "responseDTO": {
+            "name": "AcreditacionPageResponseDTO",
+            "description": "Lista paginada de registros de acreditación bancaria",
+            "fields": [
+              {"name": "content", "type": "array<AcreditacionResponseDTO>", "required": true, "description": "Lista de registros de acreditación"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/acreditaciones/{id}",
+          "summary": "Obtener registro de acreditación por ID",
+          "description": "Obtiene un registro de acreditación bancaria con el contenido de la línea del archivo, secuencial, tipo de movimiento (D/C) y referencia a la interfaz bancaria y proceso",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "AcreditacionResponseDTO",
+            "description": "Detalle de un registro de acreditación bancaria (av_py_interfasarchivo)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del registro (iidregistro)"},
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución del proceso"},
+              {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz bancaria (iidinterfas)"},
+              {"name": "interfazNombre", "type": "string", "required": false, "description": "Nombre de la interfaz bancaria (denormalizado)"},
+              {"name": "bancoId", "type": "integer", "required": false, "description": "ID del banco (denormalizado de interfaz)"},
+              {"name": "secuencial", "type": "integer", "required": false, "description": "Número secuencial del registro (isecuencial)"},
+              {"name": "cadena", "type": "string", "required": false, "description": "Contenido de la línea del archivo de acreditación (vcadena, max 1200 chars)"},
+              {"name": "cadenaOrden", "type": "string", "required": false, "description": "Cadena de ordenamiento (vcadenaorder)"},
+              {"name": "tipoMovimiento", "type": "string", "required": false, "description": "Tipo de movimiento: D=débito, C=crédito (vcd)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/acreditaciones/generar",
+          "summary": "Generar archivo de acreditación bancaria",
+          "description": "Genera el archivo de acreditación bancaria para una instancia de ejecución de proceso y una interfaz bancaria específica, creando las líneas del archivo en av_py_interfasarchivo con formato del banco configurado (separadores, tipos de cuenta, etc.)",
+          "requestDTO": {
+            "name": "GenerarAcreditacionDTO",
+            "description": "Parámetros para generar la acreditación bancaria",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución del proceso"},
+              {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz bancaria a utilizar"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa (para filtrar colaboradores)"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de localidad (para filtrar por localidad)"},
+              {"name": "tipoAcreditacion", "type": "string", "required": false, "description": "Tipo de acreditación: A=ahorro, C=corriente, E=efectivo, V=virtual"}
+            ]
+          },
+          "responseDTO": {
+            "name": "GenerarAcreditacionResultDTO",
+            "description": "Resultado de la generación del archivo de acreditación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la generación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "registrosGenerados", "type": "integer", "required": false, "description": "Cantidad de líneas generadas en el archivo"},
+              {"name": "montoTotal", "type": "number", "required": false, "description": "Monto total de la acreditación"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo generado"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/acreditaciones/{id}",
+          "summary": "Actualizar registro de acreditación",
+          "description": "Actualiza un registro de acreditación bancaria existente, permitiendo modificar el contenido de la línea, secuencial y tipo de movimiento",
+          "requestDTO": {
+            "name": "AcreditacionUpdateDTO",
+            "description": "Datos para actualizar un registro de acreditación",
+            "fields": [
+              {"name": "secuencial", "type": "integer", "required": false, "description": "Número secuencial del registro"},
+              {"name": "cadena", "type": "string", "required": false, "description": "Contenido de la línea del archivo"},
+              {"name": "cadenaOrden", "type": "string", "required": false, "description": "Cadena de ordenamiento"},
+              {"name": "tipoMovimiento", "type": "string", "required": false, "description": "Tipo de movimiento: D=débito, C=crédito"}
+            ]
+          },
+          "responseDTO": {
+            "name": "AcreditacionResponseDTO",
+            "description": "Registro de acreditación actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/acreditaciones/{id}",
+          "summary": "Eliminar registro de acreditación",
+          "description": "Elimina un registro de acreditación bancaria del archivo generado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/acreditaciones/descargar",
+          "summary": "Descargar archivo de acreditación",
+          "description": "Genera y descarga el archivo plano de acreditación bancaria con el formato configurado en la interfaz (separadores, estructura de líneas) para envío al banco",
+          "requestDTO": {
+            "name": "DescargarAcreditacionDTO",
+            "description": "Parámetros para descargar el archivo de acreditación",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz bancaria"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DescargarResponseDTO",
+            "description": "Resultado de la descarga",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la descarga fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "nombreArchivo", "type": "string", "required": false, "description": "Nombre del archivo generado"},
+              {"name": "totalLineas", "type": "integer", "required": false, "description": "Total de líneas en el archivo"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "acreditacionBonificaciones.zul",
+      "baseUrl": "/api/v1/acreditaciones-bonificaciones",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/acreditaciones-bonificaciones",
+          "summary": "Listar acreditaciones de bonificaciones",
+          "description": "Obtiene la lista paginada de archivos de acreditación de bonificaciones generados, con datos de la interfaz bancaria, instancia de ejecución y líneas del archivo",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "Filtro por ID de instancia de ejecución del proceso"},
+            {"name": "interfazId", "type": "integer", "required": false, "description": "Filtro por ID de interfaz bancaria"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por ID de localidad"}
+          ],
+          "responseDTO": {
+            "name": "AcreditacionBonificacionPageResponseDTO",
+            "description": "Lista paginada de acreditaciones de bonificaciones",
+            "fields": [
+              {"name": "content", "type": "array<AcreditacionBonificacionResponseDTO>", "required": true, "description": "Lista de registros de acreditación de bonificaciones"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/acreditaciones-bonificaciones/{id}",
+          "summary": "Obtener acreditación de bonificación por ID",
+          "description": "Obtiene un registro de acreditación de bonificación con contenido de línea, secuencial, tipo de movimiento y referencia a interfaz bancaria",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "AcreditacionBonificacionResponseDTO",
+            "description": "Detalle de un registro de acreditación de bonificación",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del registro (iidregistro)"},
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución del proceso"},
+              {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz bancaria"},
+              {"name": "interfazNombre", "type": "string", "required": false, "description": "Nombre de la interfaz bancaria"},
+              {"name": "bancoId", "type": "integer", "required": false, "description": "ID del banco"},
+              {"name": "secuencial", "type": "integer", "required": false, "description": "Número secuencial del registro"},
+              {"name": "cadena", "type": "string", "required": false, "description": "Contenido de la línea del archivo"},
+              {"name": "cadenaOrden", "type": "string", "required": false, "description": "Cadena de ordenamiento"},
+              {"name": "tipoMovimiento", "type": "string", "required": false, "description": "Tipo de movimiento: D=débito, C=crédito"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/acreditaciones-bonificaciones/generar",
+          "summary": "Generar acreditación de bonificaciones",
+          "description": "Genera el archivo de acreditación bancaria para bonificaciones de una instancia de ejecución, filtrando colaboradores por empresa, localidad y tipo de acreditación. Usa la configuración de la interfaz bancaria y parámetros del sistema (AvPyParametro)",
+          "requestDTO": {
+            "name": "GenerarAcreditacionBonificacionDTO",
+            "description": "Parámetros para generar la acreditación de bonificaciones",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución del proceso"},
+              {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz bancaria"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de localidad para filtrar colaboradores"},
+              {"name": "tipoAcreditacion", "type": "string", "required": false, "description": "Tipo de acreditación: A=ahorro, C=corriente, V=virtual"},
+              {"name": "tipoBonificacion", "type": "string", "required": false, "description": "Tipo de bonificación a acreditar (D3, D4, etc.)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "GenerarAcreditacionResultDTO",
+            "description": "Resultado de la generación de acreditación de bonificaciones",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la generación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "registrosGenerados", "type": "integer", "required": false, "description": "Cantidad de líneas generadas"},
+              {"name": "montoTotal", "type": "number", "required": false, "description": "Monto total de la acreditación"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/acreditaciones-bonificaciones/{id}",
+          "summary": "Actualizar registro de acreditación de bonificación",
+          "description": "Actualiza un registro de acreditación de bonificación existente",
+          "requestDTO": {
+            "name": "AcreditacionBonificacionUpdateDTO",
+            "description": "Datos para actualizar un registro de acreditación de bonificación",
+            "fields": [
+              {"name": "secuencial", "type": "integer", "required": false, "description": "Número secuencial"},
+              {"name": "cadena", "type": "string", "required": false, "description": "Contenido de la línea del archivo"},
+              {"name": "cadenaOrden", "type": "string", "required": false, "description": "Cadena de ordenamiento"},
+              {"name": "tipoMovimiento", "type": "string", "required": false, "description": "Tipo de movimiento: D/C"}
+            ]
+          },
+          "responseDTO": {
+            "name": "AcreditacionBonificacionResponseDTO",
+            "description": "Registro de acreditación de bonificación actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/acreditaciones-bonificaciones/{id}",
+          "summary": "Eliminar registro de acreditación de bonificación",
+          "description": "Elimina un registro de acreditación de bonificación del archivo generado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "AcreditacionRubrosIdo.zul",
+      "baseUrl": "/api/v1/acreditaciones-rubros-ido",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/acreditaciones-rubros-ido",
+          "summary": "Listar rubros IDO para acreditación",
+          "description": "Obtiene la lista paginada de rubros IDO (ingreso directo por operador) pendientes de acreditación bancaria, con datos del colaborador, rubro, valores, tipo de acreditación, banco, cuenta y flag de envío",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID de rubro"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"},
+            {"name": "flagEnvio", "type": "integer", "required": false, "description": "Filtro por flag de envío (0=pendiente, 1=enviado)"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado del rubro IDO (vstts)"}
+          ],
+          "responseDTO": {
+            "name": "AcreditacionRubroIDOPageResponseDTO",
+            "description": "Lista paginada de rubros IDO para acreditación",
+            "fields": [
+              {"name": "content", "type": "array<AcreditacionRubroIDOResponseDTO>", "required": true, "description": "Lista de rubros IDO para acreditación"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/acreditaciones-rubros-ido/{id}",
+          "summary": "Obtener rubro IDO para acreditación por ID",
+          "description": "Obtiene el detalle de un rubro IDO para acreditación con datos del colaborador (cédula, nombres, localidad), rubro, valores, tipo de acreditación, banco, cuenta bancaria, flag de envío y estado de caja",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "AcreditacionRubroIDOResponseDTO",
+            "description": "Detalle de un rubro IDO para acreditación bancaria (av_py_rubros_ido)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del rubro IDO (iidrubroidol)"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "ID del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador (denormalizado)"},
+              {"name": "apellidosNombres", "type": "string", "required": false, "description": "Nombres del colaborador (denormalizado)"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID localidad del colaborador"},
+              {"name": "localidadNombre", "type": "string", "required": false, "description": "Nombre de la localidad"},
+              {"name": "rubroId", "type": "string", "required": false, "description": "ID del rubro"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "valor01", "type": "number", "required": false, "description": "Valor 1 del rubro IDO (mvalor01)"},
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor 2 / monto a acreditar (mvalor02)"},
+              {"name": "tipoComportamiento", "type": "integer", "required": false, "description": "Tipo de comportamiento (itcomporta)"},
+              {"name": "tipoAcreditacion", "type": "string", "required": false, "description": "Tipo de acreditación del colaborador (A=ahorro, C=corriente, E=efectivo)"},
+              {"name": "bancoId", "type": "integer", "required": false, "description": "ID del banco del colaborador"},
+              {"name": "tipoCuenta", "type": "string", "required": false, "description": "Tipo de cuenta bancaria (vidtctabanco)"},
+              {"name": "numeroCuenta", "type": "string", "required": false, "description": "Número de cuenta bancaria (vcuentabanco)"},
+              {"name": "flagEnvio", "type": "integer", "required": false, "description": "Flag de envío (0=pendiente, 1=enviado)"},
+              {"name": "cartaImpresa", "type": "integer", "required": false, "description": "Indicador de carta impresa (icartaimpresa)"},
+              {"name": "generaCarta", "type": "integer", "required": false, "description": "Indicador de generación de carta (igeneracarta)"},
+              {"name": "estadoCaja", "type": "string", "required": false, "description": "Estado de caja (cestadocaja)"},
+              {"name": "fechaPagoCaja", "type": "datetime", "required": false, "description": "Fecha de pago en caja"},
+              {"name": "usuarioCaja", "type": "string", "required": false, "description": "Usuario de caja"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha desde de aplicación"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha hasta de aplicación"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del rubro IDO (vstts)"},
+              {"name": "codigoSgt", "type": "integer", "required": false, "description": "Código SGT (idcodsgt)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/acreditaciones-rubros-ido/generar",
+          "summary": "Generar acreditación de rubros IDO",
+          "description": "Genera el archivo de acreditación bancaria para rubros IDO seleccionados, creando líneas en av_py_interfasarchivo con formato del banco. Filtra por empresa, rubro, localidad y tipo de acreditación. Usa la configuración de AvPyParametro y AvPyRubrosIessl",
+          "requestDTO": {
+            "name": "GenerarAcreditacionRubroIDODTO",
+            "description": "Parámetros para generar acreditación de rubros IDO",
+            "fields": [
+              {"name": "interfazId", "type": "integer", "required": true, "description": "ID de la interfaz bancaria"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro a acreditar"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de localidad para filtrar"},
+              {"name": "tipoAcreditacion", "type": "string", "required": false, "description": "Tipo de acreditación: A=ahorro, C=corriente, V=virtual"},
+              {"name": "rubrosIdoIds", "type": "array<integer>", "required": false, "description": "Lista de IDs de rubros IDO específicos a acreditar (si no se especifica, todos los pendientes)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "GenerarAcreditacionResultDTO",
+            "description": "Resultado de la generación de acreditación de rubros IDO",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la generación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "registrosGenerados", "type": "integer", "required": false, "description": "Cantidad de líneas generadas"},
+              {"name": "montoTotal", "type": "number", "required": false, "description": "Monto total acreditado"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/acreditaciones-rubros-ido/{id}",
+          "summary": "Actualizar rubro IDO para acreditación",
+          "description": "Actualiza el flag de envío, estado de caja y datos de pago de un rubro IDO para acreditación",
+          "requestDTO": {
+            "name": "AcreditacionRubroIDOUpdateDTO",
+            "description": "Datos para actualizar un rubro IDO de acreditación",
+            "fields": [
+              {"name": "flagEnvio", "type": "integer", "required": false, "description": "Flag de envío (0=pendiente, 1=enviado)"},
+              {"name": "estadoCaja", "type": "string", "required": false, "description": "Estado de caja"},
+              {"name": "fechaPagoCaja", "type": "datetime", "required": false, "description": "Fecha de pago en caja"},
+              {"name": "usuarioCaja", "type": "string", "required": false, "description": "Usuario de caja"},
+              {"name": "cartaImpresa", "type": "integer", "required": false, "description": "Indicador de carta impresa"},
+              {"name": "generaCarta", "type": "integer", "required": false, "description": "Indicador de generación de carta"}
+            ]
+          },
+          "responseDTO": {
+            "name": "AcreditacionRubroIDOResponseDTO",
+            "description": "Rubro IDO actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/acreditaciones-rubros-ido/{id}",
+          "summary": "Eliminar rubro IDO de acreditación",
+          "description": "Elimina un rubro IDO del proceso de acreditación (no elimina el rubro IDO de la tabla base, solo lo quita de la acreditación)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "consultaAcreditacionesList.zul",
+      "baseUrl": "/api/v1/consulta-acreditaciones",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/consulta-acreditaciones",
+          "summary": "Consultar acreditaciones por colaborador",
+          "description": "Obtiene la lista paginada de acreditaciones realizadas por colaborador con datos de cédula, nombre, localidad, rol, cargo, tipo de acreditación, banco, tipo de cuenta, número de cuenta, ingresos, egresos y neto. Cruza datos de av_colaboradorese con dimensiones y nómina histórica",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "Filtro por ID de instancia de ejecución"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"},
+            {"name": "rolId", "type": "integer", "required": false, "description": "Filtro por rol"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID de rubro"},
+            {"name": "tipoAcreditacion", "type": "string", "required": false, "description": "Filtro por tipo de acreditación (A/C/E/V)"},
+            {"name": "bancoId", "type": "integer", "required": false, "description": "Filtro por banco"},
+            {"name": "cedula", "type": "string", "required": false, "description": "Filtro por cédula del colaborador"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado del colaborador"}
+          ],
+          "responseDTO": {
+            "name": "ConsultaAcreditacionPageResponseDTO",
+            "description": "Lista paginada de acreditaciones por colaborador",
+            "fields": [
+              {"name": "content", "type": "array<ConsultaAcreditacionResponseDTO>", "required": true, "description": "Lista de acreditaciones por colaborador"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/consulta-acreditaciones/{empresaId}/{colaboradorId}",
+          "summary": "Obtener acreditación de un colaborador",
+          "description": "Obtiene el detalle de acreditación de un colaborador específico con datos de banco, cuenta, tipo de acreditación, ingresos, egresos, neto y detalle de rubros acreditados incluyendo préstamos con monto y beneficiario de cheque",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ConsultaAcreditacionResponseDTO",
+            "description": "Detalle de acreditación de un colaborador",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "apellidosNombres", "type": "string", "required": false, "description": "Apellidos y nombres"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad"},
+              {"name": "localidadNombre", "type": "string", "required": false, "description": "Nombre de la localidad"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "ID del rol"},
+              {"name": "rolNombre", "type": "string", "required": false, "description": "Nombre del rol"},
+              {"name": "cargoId", "type": "integer", "required": false, "description": "ID del cargo"},
+              {"name": "cargoNombre", "type": "string", "required": false, "description": "Nombre del cargo"},
+              {"name": "tipoAcreditacion", "type": "string", "required": false, "description": "Tipo de acreditación (A=ahorro, C=corriente, E=efectivo, V=virtual)"},
+              {"name": "bancoId", "type": "integer", "required": false, "description": "ID del banco"},
+              {"name": "bancoNombre", "type": "string", "required": false, "description": "Nombre del banco (denormalizado)"},
+              {"name": "tipoCuenta", "type": "string", "required": false, "description": "Tipo de cuenta bancaria (vidtctabanco)"},
+              {"name": "numeroCuenta", "type": "string", "required": false, "description": "Número de cuenta bancaria"},
+              {"name": "totalIngresos", "type": "number", "required": false, "description": "Total de ingresos"},
+              {"name": "totalEgresos", "type": "number", "required": false, "description": "Total de egresos"},
+              {"name": "totalNeto", "type": "number", "required": false, "description": "Total neto a acreditar"},
+              {"name": "archivoAcreditacion", "type": "string", "required": false, "description": "Flag de archivo de acreditación (carchivo_acreditacion)"},
+              {"name": "detalleAcreditaciones", "type": "array<DetalleAcreditacionDTO>", "required": false, "description": "Detalle de acreditaciones por préstamo/rubro"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/consulta-acreditaciones/{empresaId}/{colaboradorId}/detalle",
+          "summary": "Obtener detalle de acreditaciones de préstamos",
+          "description": "Obtiene la lista de acreditaciones de préstamos de un colaborador con nombre de acreditación o beneficiario de cheque y monto (av_py_rubros_prestamo_acre)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DetalleAcreditacionListDTO",
+            "description": "Lista de detalle de acreditaciones por préstamo",
+            "fields": [
+              {"name": "items", "type": "array<DetalleAcreditacionDTO>", "required": true, "description": "Lista de acreditaciones de préstamos"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/consulta-acreditaciones/exportar",
+          "summary": "Exportar consulta de acreditaciones",
+          "description": "Exporta la consulta de acreditaciones por colaborador a archivo Excel/CSV con datos de banco, cuentas, ingresos, egresos y neto",
+          "requestDTO": {
+            "name": "ExportarConsultaAcreditacionDTO",
+            "description": "Filtros para la exportación de la consulta de acreditaciones",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "ejecucionId", "type": "integer", "required": false, "description": "Filtro por instancia de ejecución"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "Filtro por rol"},
+              {"name": "tipoAcreditacion", "type": "string", "required": false, "description": "Filtro por tipo de acreditación"},
+              {"name": "bancoId", "type": "integer", "required": false, "description": "Filtro por banco"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato de exportación (XLSX, CSV)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la exportación fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/consulta-acreditaciones/{empresaId}/{colaboradorId}",
+          "summary": "Eliminar acreditación de colaborador",
+          "description": "Elimina los registros de acreditación asociados a un colaborador en una empresa",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Interfaces bancarias (catálogo de referencia)",
+      "baseUrl": "/api/v1/interfaces-bancarias",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/interfaces-bancarias",
+          "summary": "Listar interfaces bancarias",
+          "description": "Obtiene la lista de interfaces bancarias configuradas (av_py_interfas) con datos de banco, separadores, tipos de cuenta y ámbito",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "bancoId", "type": "integer", "required": false, "description": "Filtro por ID de banco"},
+            {"name": "ambito", "type": "string", "required": false, "description": "Filtro por ámbito de la interfaz"}
+          ],
+          "responseDTO": {
+            "name": "InterfazBancariaListDTO",
+            "description": "Lista de interfaces bancarias configuradas",
+            "fields": [
+              {"name": "items", "type": "array<InterfazBancariaResponseDTO>", "required": true, "description": "Lista de interfaces bancarias"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de interfaces"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/interfaces-bancarias/{id}",
+          "summary": "Obtener interfaz bancaria por ID",
+          "description": "Obtiene una interfaz bancaria con su configuración de separadores, tipos de cuenta y formato de archivo",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "InterfazBancariaResponseDTO",
+            "description": "Detalle de una interfaz bancaria (av_py_interfas)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la interfaz (iidinterfas)"},
+              {"name": "nombre", "type": "string", "required": true, "description": "Nombre de la interfaz (vinterfas)"},
+              {"name": "bancoId", "type": "integer", "required": true, "description": "ID del banco asociado (iidbanco)"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito de la interfaz (vambito)"},
+              {"name": "separador", "type": "string", "required": false, "description": "Carácter separador de campos (csepadador)"},
+              {"name": "separadorLinea", "type": "string", "required": false, "description": "Separador de líneas (vseparadorlinea)"},
+              {"name": "codigoAhorros", "type": "string", "required": false, "description": "Código de cuenta de ahorros en formato del banco (vahorros)"},
+              {"name": "codigoCorriente", "type": "string", "required": false, "description": "Código de cuenta corriente en formato del banco (vcorriente)"},
+              {"name": "codigoVirtual", "type": "string", "required": false, "description": "Código de cuenta virtual en formato del banco (vvirtual)"},
+              {"name": "reporteId", "type": "integer", "required": false, "description": "ID del reporte asociado (iidrpt)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/interfaces-bancarias",
+          "summary": "Crear interfaz bancaria",
+          "description": "Crea una nueva interfaz bancaria con configuración de separadores, tipos de cuenta y formato de archivo para generación de acreditaciones",
+          "requestDTO": {
+            "name": "InterfazBancariaCreateDTO",
+            "description": "Datos para crear una interfaz bancaria",
+            "fields": [
+              {"name": "nombre", "type": "string", "required": true, "description": "Nombre de la interfaz"},
+              {"name": "bancoId", "type": "integer", "required": true, "description": "ID del banco"},
+              {"name": "ambito", "type": "string", "required": true, "description": "Ámbito de la interfaz"},
+              {"name": "separador", "type": "string", "required": false, "description": "Carácter separador de campos"},
+              {"name": "separadorLinea", "type": "string", "required": false, "description": "Separador de líneas"},
+              {"name": "codigoAhorros", "type": "string", "required": true, "description": "Código de cuenta de ahorros"},
+              {"name": "codigoCorriente", "type": "string", "required": true, "description": "Código de cuenta corriente"},
+              {"name": "codigoVirtual", "type": "string", "required": false, "description": "Código de cuenta virtual"},
+              {"name": "reporteId", "type": "integer", "required": false, "description": "ID del reporte asociado"}
+            ]
+          },
+          "responseDTO": {
+            "name": "InterfazBancariaResponseDTO",
+            "description": "Interfaz bancaria creada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/interfaces-bancarias/{id}",
+          "summary": "Actualizar interfaz bancaria",
+          "description": "Actualiza la configuración de una interfaz bancaria existente",
+          "requestDTO": {
+            "name": "InterfazBancariaUpdateDTO",
+            "description": "Datos para actualizar la interfaz bancaria",
+            "fields": [
+              {"name": "nombre", "type": "string", "required": false, "description": "Nombre de la interfaz"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito"},
+              {"name": "separador", "type": "string", "required": false, "description": "Carácter separador"},
+              {"name": "separadorLinea", "type": "string", "required": false, "description": "Separador de líneas"},
+              {"name": "codigoAhorros", "type": "string", "required": false, "description": "Código de ahorros"},
+              {"name": "codigoCorriente", "type": "string", "required": false, "description": "Código de corriente"},
+              {"name": "codigoVirtual", "type": "string", "required": false, "description": "Código virtual"},
+              {"name": "reporteId", "type": "integer", "required": false, "description": "ID del reporte"}
+            ]
+          },
+          "responseDTO": {
+            "name": "InterfazBancariaResponseDTO",
+            "description": "Interfaz bancaria actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/interfaces-bancarias/{id}",
+          "summary": "Eliminar interfaz bancaria",
+          "description": "Elimina una interfaz bancaria. Valida que no existan archivos de acreditación generados con esta interfaz",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Detalle de acreditación por préstamo (subrecurso)",
+      "baseUrl": "/api/v1/acreditaciones-prestamos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/acreditaciones-prestamos",
+          "summary": "Listar acreditaciones de préstamos",
+          "description": "Obtiene la lista de acreditaciones de préstamos (av_py_rubros_prestamo_acre) con nombre de acreditación, beneficiario de cheque, monto, fecha y estado de caja",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "prestamoId", "type": "integer", "required": false, "description": "Filtro por ID de préstamo"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"}
+          ],
+          "responseDTO": {
+            "name": "AcreditacionPrestamoListDTO",
+            "description": "Lista de acreditaciones de préstamos",
+            "fields": [
+              {"name": "items", "type": "array<DetalleAcreditacionDTO>", "required": true, "description": "Lista de acreditaciones de préstamos"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/acreditaciones-prestamos/{id}",
+          "summary": "Obtener acreditación de préstamo por ID",
+          "description": "Obtiene el detalle de una acreditación de préstamo con datos del préstamo padre, tipo de acreditación, monto, beneficiario de cheque y estado de caja",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DetalleAcreditacionDTO",
+            "description": "Detalle de una acreditación de préstamo (av_py_rubros_prestamo_acre)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la acreditación de préstamo (iidrubroprestamoacre)"},
+              {"name": "prestamoId", "type": "integer", "required": false, "description": "ID del préstamo padre (iidrubroprestamo)"},
+              {"name": "acreditacionTipoId", "type": "integer", "required": false, "description": "ID del tipo de acreditación (iidacreditacion → AvCatalogos)"},
+              {"name": "acreditacionNombre", "type": "string", "required": false, "description": "Nombre de la acreditación (denormalizado del catálogo)"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto de la acreditación (acremonto)"},
+              {"name": "fecha", "type": "datetime", "required": false, "description": "Fecha de la acreditación (acrefecha)"},
+              {"name": "beneficiarioCheque", "type": "string", "required": false, "description": "Beneficiario del cheque (acrebeneficiariocheque)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro (acreusuarioingreso)"},
+              {"name": "estadoCaja", "type": "string", "required": false, "description": "Estado de caja (cestadocaja)"},
+              {"name": "fechaPagoCaja", "type": "datetime", "required": false, "description": "Fecha de pago en caja (fechapagocaja)"},
+              {"name": "usuarioCaja", "type": "string", "required": false, "description": "Usuario de caja (usuariocaja)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/acreditaciones-prestamos",
+          "summary": "Crear acreditación de préstamo",
+          "description": "Crea una nueva acreditación de préstamo con monto, tipo de acreditación, beneficiario de cheque y fecha",
+          "requestDTO": {
+            "name": "AcreditacionPrestamoCreateDTO",
+            "description": "Datos para crear una acreditación de préstamo",
+            "fields": [
+              {"name": "prestamoId", "type": "integer", "required": true, "description": "ID del préstamo padre"},
+              {"name": "acreditacionTipoId", "type": "integer", "required": true, "description": "ID del tipo de acreditación (catálogo)"},
+              {"name": "monto", "type": "number", "required": true, "description": "Monto de la acreditación"},
+              {"name": "fecha", "type": "datetime", "required": true, "description": "Fecha de la acreditación"},
+              {"name": "beneficiarioCheque", "type": "string", "required": false, "description": "Beneficiario del cheque (si aplica)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DetalleAcreditacionDTO",
+            "description": "Acreditación de préstamo creada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/acreditaciones-prestamos/{id}",
+          "summary": "Actualizar acreditación de préstamo",
+          "description": "Actualiza los datos de una acreditación de préstamo existente",
+          "requestDTO": {
+            "name": "AcreditacionPrestamoUpdateDTO",
+            "description": "Datos para actualizar la acreditación de préstamo",
+            "fields": [
+              {"name": "monto", "type": "number", "required": false, "description": "Monto de la acreditación"},
+              {"name": "fecha", "type": "datetime", "required": false, "description": "Fecha de la acreditación"},
+              {"name": "beneficiarioCheque", "type": "string", "required": false, "description": "Beneficiario del cheque"},
+              {"name": "estadoCaja", "type": "string", "required": false, "description": "Estado de caja"},
+              {"name": "fechaPagoCaja", "type": "datetime", "required": false, "description": "Fecha de pago en caja"},
+              {"name": "usuarioCaja", "type": "string", "required": false, "description": "Usuario de caja"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DetalleAcreditacionDTO",
+            "description": "Acreditación de préstamo actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/acreditaciones-prestamos/{id}",
+          "summary": "Eliminar acreditación de préstamo",
+          "description": "Elimina una acreditación de préstamo por su identificador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

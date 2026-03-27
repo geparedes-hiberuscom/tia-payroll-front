@@ -1,0 +1,929 @@
+{
+  "functionalities": [
+    {
+      "id": "func-setup-configuracion",
+      "name": "Setup y Configuración",
+      "description": "Gestión de parámetros del sistema de nómina, tabla de Impuesto a la Renta (IR), gastos personales, ingresos proyectados, reportes INEC y plantillas contables con mapeo de rubros y contratos",
+      "screens": [
+        {
+          "name": "parametros.zul",
+          "description": "Listado paginado de parámetros del sistema de nómina con filtros de búsqueda por ID, nombre y observaciones",
+          "actions": [
+            {
+              "name": "Listar parámetros",
+              "description": "Muestra la lista paginada de parámetros del sistema con ordenación por columnas",
+              "relatedClasses": [
+                {
+                  "className": "ParametrosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista ZK que gestiona la pantalla de listado de parámetros (extiende GFCBaseListCtrl<AvPyParametro>)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Interfaz de servicio GTH que provee operaciones CRUD genéricas y consultas de dominio"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO JPA para acceso a datos de la entidad AvPyParametro (tabla av_py_parametro)"
+                },
+                {
+                  "className": "AvPyParametro.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA que representa un parámetro del sistema de nómina (tabla av_py_parametro)"
+                },
+                {
+                  "className": "AvPyParametroPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta de la entidad AvPyParametro"
+                },
+                {
+                  "className": "ParametrosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de items de lista para la representación visual de parámetros en el listbox"
+                }
+              ]
+            },
+            {
+              "name": "Buscar parámetro por ID",
+              "description": "Filtra la lista de parámetros por identificador de parámetro",
+              "relatedClasses": [
+                {
+                  "className": "ParametrosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja el evento onClick$button_ParametrosList_SearchIdParametro para aplicar filtro por ID"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta filtrada de parámetros"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada por ID en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Buscar parámetro por nombre",
+              "description": "Filtra la lista de parámetros por nombre del parámetro",
+              "relatedClasses": [
+                {
+                  "className": "ParametrosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja el evento onClick$button_ParametrosList_SearchParametro para aplicar filtro por nombre"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee búsqueda por nombre de parámetro con ILIKE"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada por nombre en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Abrir diálogo de parámetro",
+              "description": "Abre el diálogo modal para crear o editar un parámetro seleccionado (doble clic o botón nuevo)",
+              "relatedClasses": [
+                {
+                  "className": "ParametrosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Invoca Executions.createComponents para abrir parametrosDialog.zul con los datos del parámetro seleccionado"
+                },
+                {
+                  "className": "AvPyParametro.java",
+                  "type": "Modelo",
+                  "description": "Entidad del parámetro que se pasa como argumento al diálogo"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "parametrosDialog.zul",
+          "description": "Formulario modal para crear, editar y eliminar parámetros del sistema de nómina",
+          "actions": [
+            {
+              "name": "Crear parámetro",
+              "description": "Permite crear un nuevo registro de parámetro con sus campos (ID, nombre, valor, observaciones)",
+              "relatedClasses": [
+                {
+                  "className": "ParametrosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de parámetros que maneja la creación (extiende GFCBaseCtrl)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta saveObject() para persistir el nuevo parámetro"
+                },
+                {
+                  "className": "AvanteGTHServiceImpl.java",
+                  "type": "Servicio",
+                  "description": "Implementación del servicio GTH con lógica de persistencia"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Gestiona la inserción del parámetro en la base de datos"
+                },
+                {
+                  "className": "AvPyParametro.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA del parámetro con clave compuesta AvPyParametroPK"
+                }
+              ]
+            },
+            {
+              "name": "Editar parámetro",
+              "description": "Permite modificar los datos de un parámetro existente",
+              "relatedClasses": [
+                {
+                  "className": "ParametrosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnEdit y doSave() para actualizar el parámetro"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta updateObject() para actualizar el parámetro existente"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Gestiona la actualización (merge) del parámetro en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar parámetro",
+              "description": "Permite eliminar un parámetro existente con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "ParametrosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete con diálogo de confirmación para eliminar"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar el parámetro"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Gestiona la eliminación (remove) del parámetro en la base de datos"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "gestionTablaIR.zul",
+          "description": "Listado paginado de registros de la Tabla de Impuesto a la Renta (IR) con búsqueda por tipo y año",
+          "actions": [
+            {
+              "name": "Listar tablas IR",
+              "description": "Muestra la lista paginada de registros de la tabla IR con columnas: tipo, año, nivel, monto mínimo, monto máximo, fracción básica, porcentaje excedente",
+              "relatedClasses": [
+                {
+                  "className": "GestionTablaIRListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista ZK que gestiona el listado de registros IR (extiende GFCBaseListCtrl<AvPyTir>)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee operaciones de consulta para los registros de la tabla IR"
+                },
+                {
+                  "className": "AvPyTir.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA que representa un registro de la tabla IR (tabla av_py_tir) con campos iAnio, iNivel, mvminimo, mvmaximo, mfbasica, mpexcedente, vTipo"
+                },
+                {
+                  "className": "AvPyTirListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador que formatea cada fila de la tabla IR con tipo, año, nivel y montos"
+                }
+              ]
+            },
+            {
+              "name": "Buscar tabla IR",
+              "description": "Filtra los registros de la tabla IR por tipo (IMP/GPE) y/o año",
+              "relatedClasses": [
+                {
+                  "className": "GestionTablaIRListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Aplica filtros JPASearchObject con Filter.OP_ILIKE para buscar registros IR"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la consulta filtrada de registros IR"
+                }
+              ]
+            },
+            {
+              "name": "Abrir diálogo de tabla IR",
+              "description": "Abre el diálogo modal para crear o editar un registro de la tabla IR",
+              "relatedClasses": [
+                {
+                  "className": "GestionTablaIRListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Invoca Executions.createComponents para abrir gestionTablaIRDialog.zul pasando el registro seleccionado"
+                },
+                {
+                  "className": "AvPyTir.java",
+                  "type": "Modelo",
+                  "description": "Entidad del registro IR que se pasa como argumento al diálogo"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "gestionTablaIRDialog.zul",
+          "description": "Formulario modal para crear, editar y eliminar registros de la Tabla de Impuesto a la Renta con campos: tipo, año, nivel, montos",
+          "actions": [
+            {
+              "name": "Crear registro IR",
+              "description": "Permite crear un nuevo registro de la tabla IR con tipo (IMP/GPE), año, nivel, monto mínimo, máximo, fracción básica y porcentaje excedente",
+              "relatedClasses": [
+                {
+                  "className": "GestionTablaIRDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo que maneja creación con persist vía AvanteJPAPersistenceManager (extiende GFCBaseCtrl)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio que puede proveer validaciones y operaciones de negocio para IR"
+                },
+                {
+                  "className": "AvanteGTHServiceImpl.java",
+                  "type": "Servicio",
+                  "description": "Implementación del servicio con getNewAvPyTir() y saveObject()"
+                },
+                {
+                  "className": "AvPyTir.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA para la tabla av_py_tir con generador de secuencia s_av_gestionIm"
+                }
+              ]
+            },
+            {
+              "name": "Editar registro IR",
+              "description": "Permite modificar los datos de un registro IR existente",
+              "relatedClasses": [
+                {
+                  "className": "GestionTablaIRDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doSave() con merge del EntityManager para actualizar registros IR"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de actualización del registro IR"
+                },
+                {
+                  "className": "AvPyTir.java",
+                  "type": "Modelo",
+                  "description": "Entidad IR actualizada con los valores del formulario"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar registro IR",
+              "description": "Permite eliminar un registro de la tabla IR con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "GestionTablaIRDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doDelete() con confirmación via MultiLineMessageBox y remove del EntityManager"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar el registro IR de la BD"
+                },
+                {
+                  "className": "AvPyTir.java",
+                  "type": "Modelo",
+                  "description": "Entidad IR a eliminar, localizada por iidtir"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "GastosPersonalesDialog.zul",
+          "description": "Diálogo modal para la gestión y registro de gastos personales deducibles del Impuesto a la Renta",
+          "actions": [
+            {
+              "name": "Registrar gastos personales",
+              "description": "Permite registrar los gastos personales deducibles de un colaborador para el cálculo del IR (vivienda, educación, salud, alimentación, vestimenta)",
+              "relatedClasses": [
+                {
+                  "className": "GastosPersonalesDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de gastos personales que maneja el formulario de registro (extiende GFCBaseCtrl)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de negocio para persistir los gastos personales"
+                },
+                {
+                  "className": "AvanteGTHServiceImpl.java",
+                  "type": "Servicio",
+                  "description": "Implementación del servicio con operaciones de guardado de gastos personales"
+                },
+                {
+                  "className": "AvPyTir.java",
+                  "type": "Modelo",
+                  "description": "Entidad de la tabla IR referenciada para el cálculo de deducciones de gastos personales"
+                }
+              ]
+            },
+            {
+              "name": "Guardar gastos personales",
+              "description": "Persiste los gastos personales ingresados validando montos máximos permitidos según la tabla IR",
+              "relatedClasses": [
+                {
+                  "className": "GastosPersonalesDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta doSave() con validación de montos y persistencia vía EntityManager"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Valida y persiste los gastos personales del colaborador"
+                }
+              ]
+            },
+            {
+              "name": "Cerrar diálogo",
+              "description": "Cierra el diálogo de gastos personales sin guardar cambios pendientes",
+              "relatedClasses": [
+                {
+                  "className": "GastosPersonalesDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnClose para cerrar la ventana modal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "genIngProyectados.zul",
+          "description": "Diálogo para la generación masiva de ingresos proyectados del periodo fiscal, necesarios para el registro de gastos personales del IR",
+          "actions": [
+            {
+              "name": "Seleccionar empresa",
+              "description": "Permite seleccionar la empresa para la cual se generarán los ingresos proyectados del periodo",
+              "relatedClasses": [
+                {
+                  "className": "GenIngProyectadosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo que carga la lista de empresas del usuario logueado (extiende GFCBaseCtrl)"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO que obtiene las empresas disponibles para el usuario con getEmpresasUsuario()"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA que representa una empresa del sistema"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de items de lista para mostrar empresas en el listbox"
+                }
+              ]
+            },
+            {
+              "name": "Generar ingresos proyectados",
+              "description": "Ejecuta el proceso batch de generación de ingresos proyectados para el periodo fiscal seleccionado",
+              "relatedClasses": [
+                {
+                  "className": "GenIngProyectadosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnGenIngProy para ejecutar el proceso de generación con validación de filtros"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de negocio para generar los ingresos proyectados del periodo"
+                },
+                {
+                  "className": "AvanteGTHServiceImpl.java",
+                  "type": "Servicio",
+                  "description": "Implementación con procedimiento almacenado o lógica batch de generación"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Provee datos de empresa para el filtro del proceso de generación"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ReporteIRINECDialog.zul",
+          "description": "Diálogo para la generación del reporte de Impuesto a la Renta según formato INEC (Instituto Nacional de Estadísticas y Censos)",
+          "actions": [
+            {
+              "name": "Configurar filtros del reporte",
+              "description": "Permite seleccionar empresa, periodo y parámetros para la generación del reporte INEC",
+              "relatedClasses": [
+                {
+                  "className": "ReporteIRINECDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de reporte INEC que carga filtros y parámetros (extiende GFCBaseCtrl)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos de dominio necesarios para los filtros del reporte"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene la lista de empresas disponibles para el reporte"
+                }
+              ]
+            },
+            {
+              "name": "Generar reporte INEC",
+              "description": "Genera y descarga el reporte de IR en formato INEC con los filtros seleccionados",
+              "relatedClasses": [
+                {
+                  "className": "ReporteIRINECDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la generación del reporte con los parámetros configurados y maneja la descarga del archivo"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de generación del reporte INEC (consultas, cálculos y formato)"
+                },
+                {
+                  "className": "AvanteGTHServiceImpl.java",
+                  "type": "Servicio",
+                  "description": "Implementación con lógica de consulta a registros de nómina y formato INEC"
+                },
+                {
+                  "className": "AvPyTir.java",
+                  "type": "Modelo",
+                  "description": "Entidad de la tabla IR utilizada como referencia para los cálculos del reporte"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "plantillaContable.zul",
+          "description": "Listado principal de plantillas contables asociadas a procesos de nómina, con CRUD inline y filtros por rubro y cuenta",
+          "actions": [
+            {
+              "name": "Listar plantillas contables",
+              "description": "Muestra la lista paginada de plantillas contables del proceso de nómina seleccionado con columnas: rubro, cuenta, subcuenta, débito/haber, localidad, centro de costo",
+              "relatedClasses": [
+                {
+                  "className": "PlantillaContableMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador principal que gestiona el listado y CRUD de plantillas contables (extiende GFCBaseListCtrl<AvPyPlantillaContable>)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee operaciones CRUD y consultas de dominio (getListDefinicionDH, getListDefinicionPL, getListTiposdeArcCont)"
+                },
+                {
+                  "className": "AvPyPlantillaContable.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de plantilla contable (tabla av_py_plantilla_contable) con relaciones a AvPyRubro, AvPyProcesos y AvDimensionesl"
+                },
+                {
+                  "className": "AvPyPlantillaContableV.java",
+                  "type": "Modelo",
+                  "description": "Vista JPA (av_py_plantilla_contable_v) para el listado optimizado de plantillas contables"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros por ID (getRubroById)"
+                },
+                {
+                  "className": "AvPyRubroseDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros por empresa (getRubrosEmpresa)"
+                },
+                {
+                  "className": "AvCatalogosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener cuentas y subcuentas del catálogo (getItemsCatalogo, getItemByCatalogoAndIdDato)"
+                },
+                {
+                  "className": "AvDimensioneslDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener dimensiones (custom) con getListDimensioneslcnvacio"
+                }
+              ]
+            },
+            {
+              "name": "Crear plantilla contable",
+              "description": "Permite crear una nueva plantilla contable seleccionando rubro, cuenta, subcuenta, débito/haber, localidad, centro de costo y custom",
+              "relatedClasses": [
+                {
+                  "className": "PlantillaContableMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doNew() y doSave() para crear una plantilla contable inline con saveObject()"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta saveObject() para persistir la nueva plantilla contable"
+                },
+                {
+                  "className": "AvPyPlantillaContable.java",
+                  "type": "Modelo",
+                  "description": "Entidad de plantilla contable a persistir"
+                },
+                {
+                  "className": "AvPyProcesos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de proceso de nómina a la cual se asocia la plantilla"
+                }
+              ]
+            },
+            {
+              "name": "Editar plantilla contable",
+              "description": "Permite modificar una plantilla contable existente cambiando rubro, cuenta, subcuenta y demás campos",
+              "relatedClasses": [
+                {
+                  "className": "PlantillaContableMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doEdit() y doSave() con updateObject() para actualizar la plantilla contable"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta updateObject() para actualizar la plantilla en la base de datos"
+                },
+                {
+                  "className": "AvPyPlantillaContableV.java",
+                  "type": "Modelo",
+                  "description": "Vista de la plantilla seleccionada para obtener datos actuales"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar plantilla contable",
+              "description": "Permite eliminar una plantilla contable existente con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "PlantillaContableMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doDelete() con confirmación via MultiLineMessageBox y deleteObject()"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject(AvPyPlantillaContableV.class, id) para eliminar la plantilla"
+                }
+              ]
+            },
+            {
+              "name": "Buscar por rubro",
+              "description": "Filtra las plantillas contables por nombre de rubro",
+              "relatedClasses": [
+                {
+                  "className": "PlantillaContableMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doPlantillaContableListSearch_vrubro() con filtro ILIKE por rubro"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la consulta filtrada de plantillas contables"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "plantillaContableDialog.zul",
+          "description": "Sub-listado de rubros asignados a una plantilla contable con funcionalidad de apertura del diálogo de asignación de rubros",
+          "actions": [
+            {
+              "name": "Listar rubros de plantilla",
+              "description": "Muestra los rubros asignados a la plantilla contable del proceso seleccionado",
+              "relatedClasses": [
+                {
+                  "className": "PlantillaContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de sub-lista que muestra los rubros asociados a una plantilla contable (extiende GFCBaseListCtrl<AvPyPlantillaContable>)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee las consultas de rubros de plantilla por proceso"
+                },
+                {
+                  "className": "AvPyPlantillaContable.java",
+                  "type": "Modelo",
+                  "description": "Entidad de plantilla contable con relación a rubros"
+                },
+                {
+                  "className": "AvPyPlantillaContableListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador que muestra rubro, grupo, cuenta, subcuenta, débito/haber y demás campos de cada registro"
+                }
+              ]
+            },
+            {
+              "name": "Abrir diálogo de rubro-plantilla",
+              "description": "Abre el diálogo modal para asignar un nuevo rubro a la plantilla contable",
+              "relatedClasses": [
+                {
+                  "className": "PlantillaContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Invoca Executions.createComponents para abrir rubroplantillaContableDialog.zul"
+                },
+                {
+                  "className": "AvPyProcesos.java",
+                  "type": "Modelo",
+                  "description": "Proceso de nómina usado como contexto para la asignación"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubroplantillaContableDialog.zul",
+          "description": "Formulario modal para asignar, editar y eliminar un rubro específico dentro de una plantilla contable, configurando cuenta, subcuenta, débito/haber, localidad, centro de costo y custom",
+          "actions": [
+            {
+              "name": "Asignar rubro a plantilla",
+              "description": "Permite asignar un rubro a la plantilla contable con su configuración contable (cuenta, subcuenta, D/H, localidad, centro costo, custom, tipo archivo)",
+              "relatedClasses": [
+                {
+                  "className": "RubroPlantillaContableDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo que maneja la asignación con doSave() y persist/merge vía AvanteJPAPersistenceManager (extiende GFCBaseCtrl)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee listas de dominio: getListDefinicionDH(), getListDefinicionPL(), getListTiposdeArcCont()"
+                },
+                {
+                  "className": "AvPyPlantillaContable.java",
+                  "type": "Modelo",
+                  "description": "Entidad de plantilla contable con relaciones a AvPyRubro, AvPyProcesos, AvDimensionesl"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro que se asigna a la plantilla contable"
+                },
+                {
+                  "className": "AvCatalogosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene cuentas (CAT_CUENTAS) y subcuentas (CAT_SUBCUENTAS) del catálogo"
+                },
+                {
+                  "className": "AvDimensioneslDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene dimensiones custom para el listbox de selección"
+                }
+              ]
+            },
+            {
+              "name": "Editar configuración de rubro",
+              "description": "Permite modificar la configuración contable de un rubro ya asignado a la plantilla",
+              "relatedClasses": [
+                {
+                  "className": "RubroPlantillaContableDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doEdit() y doSave() con merge del EntityManager para actualizar la configuración"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee datos de dominio y validaciones para la actualización"
+                },
+                {
+                  "className": "AvPyPlantillaContable.java",
+                  "type": "Modelo",
+                  "description": "Entidad actualizada con los nuevos valores de cuenta, D/H, localidad, centro costo"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar rubro de plantilla",
+              "description": "Permite eliminar un rubro de la plantilla contable con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "RubroPlantillaContableDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doDelete() con confirmación y remove del EntityManager, luego refresca el listado del PlantillaContableListCtrl"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee soporte transaccional para la eliminación"
+                },
+                {
+                  "className": "AvPyPlantillaContable.java",
+                  "type": "Modelo",
+                  "description": "Entidad localizada por iidplatillacontablel y eliminada de la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Buscar rubro extendido",
+              "description": "Abre un buscador avanzado de rubros para seleccionar el rubro a asignar a la plantilla",
+              "relatedClasses": [
+                {
+                  "className": "RubroPlantillaContableDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSearchRubroExtended abriendo rubrosExtendedSearchListBoxAdvance.zul para búsqueda avanzada de rubros"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro retornada por el buscador avanzado"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "contratoPlantilla.zul",
+          "description": "Listado de plantillas asignadas a contratos de colaboradores, con búsqueda y apertura de diálogo de asignación",
+          "actions": [
+            {
+              "name": "Listar plantillas por contrato",
+              "description": "Muestra la lista paginada de plantillas asociadas a contratos de colaboradores",
+              "relatedClasses": [
+                {
+                  "className": "ContratoPlantillaListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista ZK que gestiona el listado de plantillas por contrato (extiende GFCBaseListCtrl<AvEnPlantilla>)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee operaciones de consulta de plantillas por contrato"
+                },
+                {
+                  "className": "AvEnPlantilla.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA que representa la asignación de una plantilla a un contrato de colaborador"
+                }
+              ]
+            },
+            {
+              "name": "Buscar plantilla por contrato",
+              "description": "Filtra las plantillas asignadas a un contrato específico",
+              "relatedClasses": [
+                {
+                  "className": "ContratoPlantillaListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Aplica filtros JPASearchObject para buscar plantillas por contrato"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la consulta filtrada de plantillas por contrato"
+                }
+              ]
+            },
+            {
+              "name": "Abrir diálogo contrato-plantilla",
+              "description": "Abre el diálogo modal para asignar o editar una plantilla en un contrato",
+              "relatedClasses": [
+                {
+                  "className": "ContratoPlantillaListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Invoca Executions.createComponents para abrir contratoPlantillaDialog.zul con la asignación seleccionada"
+                },
+                {
+                  "className": "AvEnPlantilla.java",
+                  "type": "Modelo",
+                  "description": "Entidad de asignación contrato-plantilla pasada como argumento al diálogo"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "contratoPlantillaDialog.zul",
+          "description": "Formulario modal para crear, editar y eliminar la asignación de plantillas contables a contratos de colaboradores",
+          "actions": [
+            {
+              "name": "Asignar plantilla a contrato",
+              "description": "Permite crear una nueva asignación de plantilla contable a un contrato de colaborador",
+              "relatedClasses": [
+                {
+                  "className": "ContratoPlantillaDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo que maneja la asignación con doSave() y persist vía AvanteJPAPersistenceManager (extiende GFCBaseCtrl)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de negocio para crear la asignación contrato-plantilla"
+                },
+                {
+                  "className": "AvanteGTHServiceImpl.java",
+                  "type": "Servicio",
+                  "description": "Implementación del servicio con operaciones de persistencia"
+                },
+                {
+                  "className": "AvEnPlantilla.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA que representa la asignación contrato-plantilla a persistir"
+                },
+                {
+                  "className": "AvPyProcesos.java",
+                  "type": "Modelo",
+                  "description": "Proceso de nómina relacionado para la asignación de plantilla"
+                }
+              ]
+            },
+            {
+              "name": "Editar asignación contrato-plantilla",
+              "description": "Permite modificar una asignación existente de plantilla a contrato",
+              "relatedClasses": [
+                {
+                  "className": "ContratoPlantillaDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doEdit() y doSave() con merge del EntityManager para actualizar la asignación"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de actualización de la asignación contrato-plantilla"
+                },
+                {
+                  "className": "AvEnPlantilla.java",
+                  "type": "Modelo",
+                  "description": "Entidad de asignación actualizada con los nuevos valores"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar asignación contrato-plantilla",
+              "description": "Permite eliminar una asignación de plantilla a contrato con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "ContratoPlantillaDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doDelete() con confirmación via MultiLineMessageBox y remove del EntityManager"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar la asignación de la BD"
+                },
+                {
+                  "className": "AvEnPlantilla.java",
+                  "type": "Modelo",
+                  "description": "Entidad de asignación localizada y eliminada de la base de datos"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "relatedControllers": [
+        "ParametrosListCtrl.java",
+        "ParametrosDialogCtrl.java",
+        "GestionTablaIRListCtrl.java",
+        "GestionTablaIRDialogCtrl.java",
+        "GastosPersonalesDialogCtrl.java",
+        "GenIngProyectadosDialogCtrl.java",
+        "ReporteIRINECDialogCtrl.java",
+        "PlantillaContableMainCtrl.java",
+        "PlantillaContableListCtrl.java",
+        "RubroPlantillaContableDialogCtrl.java",
+        "ContratoPlantillaListCtrl.java",
+        "ContratoPlantillaDialogCtrl.java"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "slice_id": "slice-4-consultas",
+  "slice_nombre": "👤 Consultas",
+  "moduleName": "consultas",
+  "fullPackage": "com.tia.consultas",
+  "target": "springboot",
+  "generatedAt": "2026-03-24T21:55:33.064Z",
+  "inbound_ports": [
+    {
+      "interfaceName": "FuncConsultasUseCase",
+      "sourceFunc": "Consultas",
+      "path": "target-springboot/consultas/src/main/java/com/tia/consultas/application/port/input/FuncConsultasUseCase.java"
+    }
+  ],
+  "outbound_ports": [
+    {
+      "interfaceName": "FuncConsultasPort",
+      "sourceFunc": "Consultas",
+      "path": "target-springboot/consultas/src/main/java/com/tia/consultas/application/port/output/FuncConsultasPort.java"
+    }
+  ],
+  "outbound_adapters": [
+    {
+      "className": "FuncConsultasPersistenceAdapter",
+      "implements": "FuncConsultasPort",
+      "path": "target-springboot/consultas/src/main/java/com/tia/consultas/infrastructure/output/adapter/persistence/FuncConsultasPersistenceAdapter.java"
+    }
+  ],
+  "mappers": [
+    "AvPyProcesosinstanciasPersistenceMapper",
+    "AvPyRubroslprePersistenceMapper",
+    "AvPyRubroslhisPersistenceMapper",
+    "AvColaboradoresePersistenceMapper",
+    "AvColaboradoresePersistenceMapper",
+    "AvEmpresaPersistenceMapper",
+    "AvPyRubroPersistenceMapper",
+    "AvPyClasesrubroPersistenceMapper",
+    "AvPyComparativoNominaPersistenceMapper",
+    "AvDimensioneslPersistenceMapper",
+    "AvRegionPersistenceMapper",
+    "AvZonaPersistenceMapper",
+    "AvCatalogosPersistenceMapper",
+    "AvCaPeriodostaPersistenceMapper",
+    "AvCatalogoslPersistenceMapper",
+    "AvEnEmpresaspatronalPersistenceMapper",
+    "AvPyAcumuladoPersistenceMapper",
+    "FuncConsultasRestMapper"
+  ],
+  "resumen": {
+    "total_inbound_ports": 1,
+    "total_outbound_ports": 1,
+    "total_outbound_adapters": 1,
+    "total_mappers": 18
+  }
+}

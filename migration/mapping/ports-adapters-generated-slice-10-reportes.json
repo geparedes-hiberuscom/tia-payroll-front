@@ -1,0 +1,44 @@
+{
+  "slice_id": "slice-10-reportes",
+  "slice_nombre": "📊 Reportes",
+  "moduleName": "reportes",
+  "fullPackage": "com.tia.reportes",
+  "target": "springboot",
+  "generatedAt": "2026-03-25T21:05:53.556Z",
+  "inbound_ports": [
+    {
+      "interfaceName": "FuncReportesUseCase",
+      "sourceFunc": "Reportes",
+      "path": "target-springboot/reportes/src/main/java/com/tia/reportes/application/port/input/FuncReportesUseCase.java"
+    }
+  ],
+  "outbound_ports": [
+    {
+      "interfaceName": "FuncReportesPort",
+      "sourceFunc": "Reportes",
+      "path": "target-springboot/reportes/src/main/java/com/tia/reportes/application/port/output/FuncReportesPort.java"
+    }
+  ],
+  "outbound_adapters": [
+    {
+      "className": "FuncReportesPersistenceAdapter",
+      "implements": "FuncReportesPort",
+      "path": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/FuncReportesPersistenceAdapter.java"
+    }
+  ],
+  "mappers": [
+    "AvEmpresaPersistenceMapper",
+    "AvDimensioneslPersistenceMapper",
+    "AvColaboradoresePersistenceMapper",
+    "AvPyRubroPersistenceMapper",
+    "AvPyRubrosPrestamoPersistenceMapper",
+    "AvPyRubrosPrestamoComPersistenceMapper",
+    "FuncReportesRestMapper"
+  ],
+  "resumen": {
+    "total_inbound_ports": 1,
+    "total_outbound_ports": 1,
+    "total_outbound_adapters": 1,
+    "total_mappers": 7
+  }
+}

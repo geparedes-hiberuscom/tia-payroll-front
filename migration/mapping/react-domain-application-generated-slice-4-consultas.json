@@ -1,0 +1,138 @@
+{
+  "slice_id": "slice-4-consultas",
+  "slice_nombre": "👤 Consultas",
+  "moduleName": "consultas",
+  "target": "react",
+  "generatedAt": "2026-03-27T16:07:06.223Z",
+  "api_file": "vs-consultas-endpoints.json",
+  "api_endpoints_count": 45,
+  "api_schemas_count": 0,
+  "existing_infrastructure": {
+    "dtos": [
+      "AcumuladosDto.ts",
+      "ComparativonominasDto.ts",
+      "ConsueldoDto.ts",
+      "ConsultasDto.ts",
+      "DtoscompartidossubrecursosDto.ts",
+      "NominaresumengeneralResumengralnominadialogDto.ts",
+      "NominaresumengralcxrubroDto.ts",
+      "NominaresumengralcxrubroDto2.ts",
+      "NominaresumengralxrubroDto.ts",
+      "NominaxcolablistDto.ts",
+      "NominaxcolabprelistNominaxcolabpredialogDto.ts"
+    ],
+    "gateway_ports": [
+      "AcumuladosGatewayPort.ts",
+      "ComparativonominasGatewayPort.ts",
+      "ConsueldoGatewayPort.ts",
+      "ConsultasOutputPort.ts",
+      "DtoscompartidossubrecursosGatewayPort.ts",
+      "NominaresumengeneralResumengralnominadialogGatewayPort.ts",
+      "NominaresumengralcxrubroGatewayPort.ts",
+      "NominaresumengralxrubroGatewayPort.ts",
+      "NominaxcolablistGatewayPort.ts",
+      "NominaxcolabprelistNominaxcolabpredialogGatewayPort.ts"
+    ],
+    "gateway_adapters": [
+      "AcumuladosGatewayAdapter.ts",
+      "ComparativonominasGatewayAdapter.ts",
+      "ConsueldoGatewayAdapter.ts",
+      "ConsultasApiAdapter.ts",
+      "DtoscompartidossubrecursosGatewayAdapter.ts",
+      "NominaresumengeneralResumengralnominadialogGatewayAdapter.ts",
+      "NominaresumengralcxrubroGatewayAdapter.ts",
+      "NominaresumengralxrubroGatewayAdapter.ts",
+      "NominaxcolablistGatewayAdapter.ts",
+      "NominaxcolabprelistNominaxcolabpredialogGatewayAdapter.ts"
+    ],
+    "api_mappers": [
+      "AcumuladosApiMapper.ts",
+      "ComparativonominasApiMapper.ts",
+      "ConsueldoApiMapper.ts",
+      "ConsultasApiMapper.ts",
+      "DtoscompartidossubrecursosApiMapper.ts",
+      "NominaresumengeneralResumengralnominadialogApiMapper.ts",
+      "NominaresumengralcxrubroApiMapper.ts",
+      "NominaresumengralxrubroApiMapper.ts",
+      "NominaxcolablistApiMapper.ts",
+      "NominaxcolabprelistNominaxcolabpredialogApiMapper.ts"
+    ],
+    "hooks": [
+      "useAcumulados.ts",
+      "useComparativonominas.ts",
+      "useConsueldo.ts",
+      "useConsultas.ts",
+      "useDtoscompartidossubrecursos.ts",
+      "useNominaresumengeneralResumengralnominadialog.ts",
+      "useNominaresumengralcxrubro.ts",
+      "useNominaresumengralxrubro.ts",
+      "useNominaxcolablist.ts",
+      "useNominaxcolabprelistNominaxcolabpredialog.ts"
+    ]
+  },
+  "generated": {
+    "domain_models": [
+      "Nominaxcolablist.ts",
+      "NominaxcolabprelistNominaxcolabpredialog.ts",
+      "NominaresumengeneralResumengralnominadialog.ts",
+      "Nominaresumengralxrubro.ts",
+      "Nominaresumengralcxrubro.ts",
+      "Comparativonominas.ts",
+      "Consueldo.ts",
+      "Acumulados.ts",
+      "Dtoscompartidossubrecursos.ts"
+    ],
+    "domain_exceptions": [
+      "NominaxcolablistError.ts",
+      "NominaxcolabprelistNominaxcolabpredialogError.ts",
+      "NominaresumengeneralResumengralnominadialogError.ts",
+      "NominaresumengralxrubroError.ts",
+      "NominaresumengralcxrubroError.ts",
+      "ComparativonominasError.ts",
+      "ConsueldoError.ts",
+      "AcumuladosError.ts",
+      "DtoscompartidossubrecursosError.ts"
+    ],
+    "input_ports": [
+      "NominaxcolablistUseCase.ts",
+      "NominaxcolabprelistNominaxcolabpredialogUseCase.ts",
+      "NominaresumengeneralResumengralnominadialogUseCase.ts",
+      "NominaresumengralxrubroUseCase.ts",
+      "NominaresumengralcxrubroUseCase.ts",
+      "ComparativonominasUseCase.ts",
+      "ConsueldoUseCase.ts",
+      "AcumuladosUseCase.ts",
+      "DtoscompartidossubrecursosUseCase.ts"
+    ],
+    "application_services": [
+      "NominaxcolablistApplicationService.ts",
+      "NominaxcolabprelistNominaxcolabpredialogApplicationService.ts",
+      "NominaresumengeneralResumengralnominadialogApplicationService.ts",
+      "NominaresumengralxrubroApplicationService.ts",
+      "NominaresumengralcxrubroApplicationService.ts",
+      "ComparativonominasApplicationService.ts",
+      "ConsueldoApplicationService.ts",
+      "AcumuladosApplicationService.ts",
+      "DtoscompartidossubrecursosApplicationService.ts"
+    ],
+    "view_mappers": [
+      "NominaxcolablistViewMapper.ts",
+      "NominaxcolabprelistNominaxcolabpredialogViewMapper.ts",
+      "NominaresumengeneralResumengralnominadialogViewMapper.ts",
+      "NominaresumengralxrubroViewMapper.ts",
+      "NominaresumengralcxrubroViewMapper.ts",
+      "ComparativonominasViewMapper.ts",
+      "ConsueldoViewMapper.ts",
+      "AcumuladosViewMapper.ts",
+      "DtoscompartidossubrecursosViewMapper.ts"
+    ]
+  },
+  "resumen": {
+    "total_models_generated": 9,
+    "total_exceptions_generated": 9,
+    "total_input_ports_generated": 9,
+    "total_app_services_generated": 9,
+    "total_view_mappers_generated": 9,
+    "total_api_endpoints": 45
+  }
+}

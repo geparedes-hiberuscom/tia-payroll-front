@@ -1,0 +1,977 @@
+{
+  "_metadata": {
+    "generated_by": "migration-flow",
+    "source": "migration/plan/config.json",
+    "generated_at": "2026-03-19",
+    "vertical_slice": "vs-integraciones-externas",
+    "description": "Complete entity field data for the Integraciones Externas vertical slice (IESS + Contable)"
+  },
+
+  "screens": [
+    {
+      "screen_number": 1,
+      "zul_file": "source/zk/WebContent/WEB-INF/avante/rolesdepago/interfazIESS.zul",
+      "window_id": "interfasIESSListWindow",
+      "controller_bean": "${interfasIESSListCtrl}",
+      "controller_class": "avante.gth.webui.InterfasIESSListCtrl",
+      "controller_file": "source/zk/src/avante/gth/webui/InterfasIESSListCtrl.java",
+      "description": "Interfaz IESS - Genera archivos de interfaz con el IESS (aportes, planillas)",
+      "entities_used": [
+        "AvEmpresa", "AvDimensionesl", "AvEnEmpresaspatronal", "AvPyInterfas",
+        "AvPyInterfasarchivo", "AvPyProcesosinstancias", "AvCatalogos"
+      ],
+      "form_fields": [
+        {"id": "lbox_Empresas", "type": "listbox/select", "label": "Empresa"},
+        {"id": "lbox_Estadocolab", "type": "listbox/select", "label": "Estado"},
+        {"id": "lbox_NroPatronal", "type": "listbox/select", "label": "Nro Patronal"},
+        {"id": "lbox_Localidades", "type": "listbox/select", "label": "Localidad"},
+        {"id": "lbxInterfas", "type": "listbox/select", "label": "Interfaz"},
+        {"id": "dtbFInicio", "type": "datebox", "label": "Período Inicio"},
+        {"id": "dtbFFin", "type": "datebox", "label": "Período Fin"},
+        {"id": "txtvArchivo", "type": "textbox", "label": "Archivo"}
+      ],
+      "operations": [
+        "Executes stored procedure PY_ArchivoInterfasIess",
+        "Generates text file from AvPyInterfasarchivo records",
+        "File download (descargaArchivo) or remote transfer via shell script (pasainterfaznomina.sh)",
+        "Opens BotIESSCargaDescDialog for automated IESS bot"
+      ],
+      "stored_procedures": ["PY_ArchivoInterfasIess"],
+      "shell_scripts": ["pasainterfaznomina.sh"],
+      "renderers": [
+        "AvEmpresasListModelItemRenderer",
+        "AvEnEmpresasPatronalListModelItemRenderer",
+        "AvDimensioneslListModelItemRenderer",
+        "AvPyInterfasListModelItemRenderer",
+        "CatalogosListModelItemRenderer"
+      ]
+    },
+    {
+      "screen_number": 2,
+      "zul_file": "source/zk/WebContent/WEB-INF/avante/rolesdepago/cargaRubrosIESS.zul",
+      "window_id": "CargaRubrosIESSListWindow",
+      "controller_bean": "${cargaRubrosIESSListCtrl}",
+      "controller_class": "avante.gth.webui.cargaRubrosIESSListCtrl",
+      "controller_file": "source/zk/src/avante/gth/webui/cargaRubrosIESSListCtrl.java",
+      "description": "Carga Rubros IESS - Upload/compare planillas IESS vs sistema Avante, validación y aprobación",
+      "entities_used": [
+        "AvEmpresa", "AvColaboradores", "AvColaboradorese", "AvDimensionesl",
+        "AvEnEmpresaspatronal", "AvPyParametro", "AvPyParametroPK", "AvPyRubro",
+        "AvPyRubrosIdo", "AvPyRubrosIess", "AvPyRubrosIessl"
+      ],
+      "form_fields": [
+        {"id": "lbox_Empresacp", "type": "listbox/select", "label": "Empresa"},
+        {"id": "lbox_RubrosIESS", "type": "listbox/select", "label": "Rubro"},
+        {"id": "txtvArchivo", "type": "textbox", "label": "Archivo"},
+        {"id": "tbox_anio", "type": "textbox", "label": "Año"},
+        {"id": "tbox_mes", "type": "textbox", "label": "Mes"}
+      ],
+      "listbox_columns_cabecera": [
+        {"id": "listheader_ColNombreArchivo", "label": "ID"},
+        {"id": "listheader_ColRubro", "label": "Rubro"},
+        {"id": "listheader_ColArchivo", "label": "Archivo"},
+        {"id": "listheader_ColEstado", "label": "Estado"},
+        {"id": "listheader_ColNovedades", "label": "Novedades"}
+      ],
+      "listbox_columns_registros": [
+        {"id": "listheader_ColSucursal", "label": "Sucursal"},
+        {"id": "listheader_ColCedula", "label": "Cédula"},
+        {"id": "listheader_ColNombre", "label": "Nombre"},
+        {"id": "listheader_ColEstadoRegistro", "label": "Estado Registro"},
+        {"id": "listheader_ColSueldoTia", "label": "Sueldo Tia"},
+        {"id": "listheader_ColSueldoIESS", "label": "Sueldo IESS"},
+        {"id": "listheader_ColDiferencia", "label": "Diferencia"},
+        {"id": "listheader_ColCreditoIESS", "label": "Crédito IESS"},
+        {"id": "listheader_ColObservacion", "label": "Observación"},
+        {"id": "listheader_ColValor", "label": "Valor"},
+        {"id": "listheader_ColAgenciaIESS", "label": "Agencia IESS"},
+        {"id": "listheader_ColAgenciaAvante", "label": "Agencia Avante"},
+        {"id": "listheader_ColIESS", "label": "Existe IESS"},
+        {"id": "listheader_ColAvante", "label": "Existe Avante"},
+        {"id": "listheader_EstadoColaborador", "label": "Estado Colaborador"}
+      ],
+      "operations": [
+        "File upload (Fileupload) of IESS planilla files",
+        "Parse uploaded file to create AvPyRubrosIess (header) and AvPyRubrosIessl (detail lines)",
+        "Compare IESS data vs Avante data (sueldos, aportes)",
+        "Approve/Inactivate records via context menu (mniAprobar, mniInactivar)",
+        "Export to Excel (HSSFWorkbook)",
+        "Jasper report generation",
+        "Search/filter by Agencia, Estado, Colaborador",
+        "BOT planillas IESS integration (AWS SenderAWS)"
+      ],
+      "special_patterns": ["file_upload", "excel_export", "jasper_report", "context_menu_actions", "aws_bot_integration"],
+      "renderers": [
+        "AvEmpresasListModelItemRenderer",
+        "AvPyRubroCuadreIessListModelItemRenderer",
+        "AvPyRubrosIesslListModelItemRenderer",
+        "AvPyRubrosIessListModelItemRenderer",
+        "JaspersByUserListModelItemRenderer"
+      ],
+      "dao_classes": ["AvPyRubrosIessDAOJpaImpl", "AvPyRubroslHisDAOJpaImpl", "AvPyParametroDAOJpaImpl"]
+    },
+    {
+      "screen_number": 3,
+      "zul_file": "source/zk/WebContent/WEB-INF/avante/rolesdepago/interfasContable.zul",
+      "window_id": "interfasContableDialogWindow",
+      "controller_bean": "avante.gth.webui.InterfasContableDialogCtrl (hardcoded apply)",
+      "controller_class": "avante.gth.webui.InterfasContableDialogCtrl",
+      "controller_file": "source/zk/src/avante/gth/webui/InterfasContableDialogCtrl.java",
+      "description": "Interfaz Contable - Genera archivos de interfaz contable (nominales y financieros)",
+      "entities_used": [
+        "AvCatalogos", "AvPyInterfas", "AvPyInterfasarchivo", "AvPyProcesosinstancias", "Dominios"
+      ],
+      "form_fields": [
+        {"id": "lbox_Archivo", "type": "listbox/select", "label": "Archivo (Tipo: P=Proceso, R=Provisiones, A=Reversa, E=Préstamos)"},
+        {"id": "lbox_Formato", "type": "listbox/select", "label": "Formato (Interfaz Contable)"},
+        {"id": "txtvArchivo", "type": "textbox", "label": "Archivo"}
+      ],
+      "buttons": [
+        {"id": "btnArchivo", "label": "Generar Archivo", "action": "generarArchivo (verification format)"},
+        {"id": "btnArchivoFinancial", "label": "Generar ArchivoF", "action": "generarArchivoFinancial (financial format + shell script)"},
+        {"id": "btnArchivoAdd", "label": "Adicionar Archivo", "action": "generarArchivo (append mode)"},
+        {"id": "btnClose", "label": "Cerrar Ventana"}
+      ],
+      "operations": [
+        "Receives P_iIdeEjecProceso and P_iIdEmpresa as creation params",
+        "Executes stored procedure PY_ArchivoInterfasCon with output param vTipo",
+        "Generates text files from AvPyInterfasarchivo records",
+        "Two modes: download file (verification) or write to server path + execute shell (financial)",
+        "Shell script: pasainterfascontable.sh for financial file transfer",
+        "Rights check: button_GenInterfasContableFinancial, button_GenInterfasContableVerificacion"
+      ],
+      "stored_procedures": ["PY_ArchivoInterfasCon"],
+      "shell_scripts": ["pasainterfascontable.sh"],
+      "dao_classes": ["AvCatalogosDAOJpaImpl", "AvPyInterfasDAOJpaImpl", "AvRhColaboradoresdvacpDAOJpaImpl"]
+    },
+    {
+      "screen_number": 4,
+      "zul_file": "source/zk/WebContent/WEB-INF/avante/rolesdepago/contabilizacionDialogCtrl.zul",
+      "window_id": "contabilizacionDialogWindow",
+      "controller_bean": "${contabilizacionDialogCtrl}",
+      "controller_class": "avante.gth.webui.ContabilizacionDialogCtrl",
+      "controller_file": "source/zk/src/avante/gth/webui/ContabilizacionDialogCtrl.java",
+      "description": "Contabilización - Ejecuta contabilización de procesos de nómina (asientos contables)",
+      "entities_used": [
+        "AvEmpresa", "AvPyProcesosinstancias"
+      ],
+      "form_fields": [
+        {"id": "lbox_Procesos", "type": "listbox", "label": "Procesos (checkboxes)", "columns": ["Check", "Proceso"]}
+      ],
+      "operations": [
+        "Receives P_iIdeEjecProceso, P_iIdDmLocalidad, P_iIdColaborador as params",
+        "Gets list of processes from AvPyRubroslHisDAOJpaImpl.getprocesosejecucion()",
+        "Gets instances to contabilize from AvPyContabilizacionpDAOJpaImpl.getinstanciascontabilizar()",
+        "Verifies rubros without accounting template (getRubrosSinCtaContable)",
+        "Executes stored procedure PY_ContabilizaProcesoTIA for each instance",
+        "Executes stored procedure PY_ContabilizaPrestNoDesembolso for non-disbursement loans",
+        "Confirmation dialog before execution"
+      ],
+      "stored_procedures": ["PY_ContabilizaProcesoTIA", "PY_ContabilizaPrestNoDesembolso"],
+      "dao_classes": ["AvPyRubroslHisDAOJpaImpl", "AvPyContabilizacionpDAOJpaImpl"]
+    },
+    {
+      "screen_number": 5,
+      "zul_file": "source/zk/WebContent/WEB-INF/avante/rolesdepago/consultaContableList.zul",
+      "window_id": "consultacontableListWindow",
+      "controller_bean": "${consultacontableListCtrl}",
+      "controller_class": "avante.gth.webui.ConsultaContableListCtrl",
+      "controller_file": "source/zk/src/avante/gth/webui/ConsultaContableListCtrl.java",
+      "description": "Consulta Contable - Consulta asientos contables por rubro con resumen Debe/Haber/Nómina/Diferencia",
+      "entities_used": [
+        "AvEmpresa", "AvCatalogos", "AvPyPlantillaContable", "AvPyRubroslhis"
+      ],
+      "form_fields": [
+        {"id": "lbox_Empresacp", "type": "listbox/select", "label": "Empresa"},
+        {"id": "tbox_empresa", "type": "textbox", "label": "Empresa (readonly)"},
+        {"id": "tbox_estructura", "type": "textbox", "label": "Tipo (readonly=Asiento General)"},
+        {"id": "lbox_tipo", "type": "listbox/select", "label": "Estructura (tipo archivo CC)"},
+        {"id": "tbox_anio", "type": "textbox", "label": "Año"},
+        {"id": "tbox_mes", "type": "textbox", "label": "Mes"},
+        {"id": "lbox_Procesos", "type": "listbox", "label": "Procesos (checkboxes)"}
+      ],
+      "listbox_columns": [
+        {"id": "listheader_Rubro", "label": "Rubro"},
+        {"id": "listheader_CantidadDebe", "label": "Cantidad Debe"},
+        {"id": "listheader_Debe", "label": "Debe"},
+        {"id": "listheader_CantidadHaber", "label": "Cantidad Haber"},
+        {"id": "listheader_Haber", "label": "Haber"},
+        {"id": "listheader_Nomina", "label": "Nómina"},
+        {"id": "listheader_Diferencia", "label": "Diferencia"}
+      ],
+      "listbox_footers": [
+        "listfooter_totales (Totales)",
+        "lisfooter_totcantd",
+        "listfooter_totmontod (Total Debe)",
+        "listfooter_totcanth",
+        "listfooter_totmontoh (Total Haber)",
+        "listfooter_totnomina",
+        "listfooter_totdfif (Total Diferencia)"
+      ],
+      "operations": [
+        "Query detalle contable x rubro via AvPyRubroslHisDAOJpaImpl.getdetallecontablexrubro2()",
+        "Export to Excel (HSSFWorkbook) with 7 columns",
+        "Opens ReporteIRINECDialog.zul for IR/INEC reports",
+        "Processes are loaded with checkboxes from getprocesosejecucion()"
+      ],
+      "special_patterns": ["excel_export", "footer_totals"],
+      "renderers": [
+        "AvEmpresasListModelItemRenderer",
+        "CatalogosDropDownListModelItemRenderer",
+        "DetalleAsientoContableListModelItemRenderer"
+      ],
+      "dao_classes": ["AvPyRubroslHisDAOJpaImpl"]
+    },
+    {
+      "screen_number": 6,
+      "zul_file": "source/zk/WebContent/WEB-INF/avante/rolesdepago/reporteContableFinanciero.zul",
+      "window_id": "WindowConsultaContableFinanciera",
+      "controller_bean": "${ConsultaContableFinancieraListCtrl}",
+      "controller_class": "avante.gth.webui.ConsultaContableFinancieraListCtrl",
+      "controller_file": "source/zk/src/avante/gth/webui/ConsultaContableFinancieraListCtrl.java",
+      "description": "Reporte Contable Financiero - Genera reportes de nómina contable y cuenta/subcuenta con filtros",
+      "entities_used": [
+        "AvEmpresa", "AvCatalogos", "AvColaboradorese", "AvDimensionesl",
+        "AvPyClasesrubro", "AvPyCtasubctaAso", "AvPyRubro"
+      ],
+      "form_fields": [
+        {"id": "lbox_Empresas", "type": "listbox/select", "label": "Empresa"},
+        {"id": "lbox_Reportes", "type": "listbox/select", "label": "Reporte (Nomina Contable / Cuenta y SubCuenta)", "static_items": true},
+        {"id": "chbox_FiltroRubros", "type": "checkbox", "label": "Por Rubro"},
+        {"id": "chbox_FiltroColaborador", "type": "checkbox", "label": "Por Colaborador"},
+        {"id": "db_FechaInicio", "type": "datebox", "format": "yyyy-MM", "label": "Fecha Inicio"},
+        {"id": "db_FechaFin", "type": "datebox", "format": "yyyy-MM", "label": "Fecha Fin"},
+        {"id": "lbox_Cuenta", "type": "listbox", "label": "Seleccione Cuenta", "multiple": true},
+        {"id": "lbox_SubCuenta", "type": "listbox", "label": "Seleccione SubCuenta", "multiple": true},
+        {"id": "lbox_ClaseRubroReport", "type": "listbox/select", "label": "Clase Rubro"},
+        {"id": "lbox_RubroReport", "type": "listbox", "label": "Rubros", "multiple": true},
+        {"id": "lbox_ColaboradoresReport", "type": "listbox", "label": "Colaboradores", "columns": ["Cedula", "Colaborador"]}
+      ],
+      "operations": [
+        "Generates CSV report via shell scripts (generarCuentaSubCuenta.sh or generarNominaContable.sh)",
+        "CSV file download from /usr/share/avante/decode/",
+        "Dynamic form: shows/hides sections based on report type and checkboxes",
+        "Colaborador search via extended dialog (ColaboradoresExtendedSearchListBoxAdvance.zul)",
+        "Rubro filtering by clasificación (AvPyClasesrubro)"
+      ],
+      "special_patterns": ["csv_export", "shell_script_execution", "dynamic_form_visibility", "search_dialog"],
+      "shell_scripts": ["generarCuentaSubCuenta.sh", "generarNominaContable.sh"],
+      "renderers": [
+        "AvEmpresasListModelItemRenderer",
+        "ClasesRubrosListModelItemRenderer",
+        "AvColaboradoresCIListModelItemRenderer"
+      ],
+      "dao_classes": ["AvPyCtasubctaAsoDAOJpaImpl", "AvPyRubroDAOJpaImpl"]
+    },
+    {
+      "screen_number": 7,
+      "zul_file": "source/zk/WebContent/WEB-INF/avante/rolesdepago/consultaCuadreContableList.zul",
+      "window_id": "consultacuadrecontableListWindow",
+      "controller_bean": "${consultacuadrecontableListCtrl}",
+      "controller_class": "avante.gth.webui.ConsultaCuadreContableListCtrl",
+      "controller_file": "source/zk/src/avante/gth/webui/ConsultaCuadreContableListCtrl.java",
+      "description": "Consulta Cuadre Contable - Cuadre de provisiones contables consolidado por rubro",
+      "entities_used": [
+        "AvEmpresa", "AvPyCuadreprovcontable", "AvPyCuadreprovcontableDet",
+        "AvColaboradores", "AvDimensionesl", "AvPyProcesosinstancias",
+        "AvPyRubro", "AvPyRubroslpre"
+      ],
+      "form_fields": [
+        {"id": "lbox_Empresafcc", "type": "listbox/select", "label": "Empresa"},
+        {"id": "tbox_empresacc", "type": "textbox", "label": "Empresa (readonly)"},
+        {"id": "tbox_estructuracc", "type": "textbox", "label": "Estructura (readonly=Cuadre Contable)"},
+        {"id": "tbox_aniocc", "type": "textbox", "label": "Año"},
+        {"id": "tbox_mescc", "type": "textbox", "label": "Mes"}
+      ],
+      "listbox_columns": [
+        {"id": "listheader_Rubrocc", "label": "Rubro", "width": "10%"},
+        {"id": "listheader_TotColabcc", "label": "Num Colaboradores", "width": "4%"},
+        {"id": "listheader_TotProvAcumuladoMesAnteriorcc", "label": "Prov Acum Mes Anterior", "width": "7%"},
+        {"id": "listheader_ProvMesActualcc", "label": "Prov Mes Actual", "width": "7%"},
+        {"id": "listheader_ReintegroDiasNLD", "label": "Reintegro Dias NLD", "width": "7%"},
+        {"id": "listheader_Proporcc", "label": "Proporcional", "width": "7%"},
+        {"id": "listheader_Beneficiocc", "label": "Beneficio", "width": "7%"},
+        {"id": "listheader_BeneficioccM", "label": "Beneficio M", "width": "8%"},
+        {"id": "listheader_BeneficioccMAcum", "label": "Beneficio M Acum", "width": "8%"},
+        {"id": "listheader_ProvAjusteMensualcc", "label": "Prov Ajuste Mensual", "width": "8%"},
+        {"id": "listheader_ProvAjusteAnualMascc", "label": "Ajuste Anual +", "width": "8%"},
+        {"id": "listheader_ProvAjusteAnualMenoscc", "label": "Ajuste Anual -", "width": "8%"},
+        {"id": "listheader_ProvAcumuladoActualcc", "label": "Prov Acumulado Actual", "width": "10%"}
+      ],
+      "operations": [
+        "JPASearchObject query for AvPyCuadreprovcontable filtered by empresa, anio, mes",
+        "PagedListWrapper for server-side pagination",
+        "Double-click opens consultaCuadreContablexColabList.zul detail",
+        "Export to Excel (HSSFWorkbook) with 13 columns"
+      ],
+      "special_patterns": ["excel_export", "paged_list", "master_detail_drill_down"],
+      "renderers": [
+        "AvEmpresasListModelItemRenderer",
+        "AvPyCuadreprovcontableListModelItemRenderer"
+      ],
+      "dao_classes": ["AvPyCuadreprovcontableDAOJpaImpl"]
+    },
+    {
+      "screen_number": 8,
+      "zul_file": "source/zk/WebContent/WEB-INF/avante/rolesdepago/consultaCuadreContablexColabList.zul",
+      "window_id": "consultaCuadreContablexColabListWindow",
+      "controller_bean": "${consultacuadrecontabxcolabListCtrl}",
+      "controller_class": "avante.gth.webui.ConsultaCuadreContablexColabListCtrl",
+      "controller_file": "source/zk/src/avante/gth/webui/ConsultaCuadreContablexColabListCtrl.java",
+      "description": "Consulta Cuadre Contable por Colaborador - Detalle de provisiones por colaborador dentro de un cuadre",
+      "entities_used": [
+        "AvColaboradores", "AvPyCuadreprovcontable", "AvPyCuadreprovcontableDet"
+      ],
+      "form_fields": [
+        {"id": "tbox_colaborador", "type": "textbox", "label": "Colaborador (búsqueda por cédula o nombre)"}
+      ],
+      "listbox_columns": [
+        {"id": "listheader_vcedula", "label": "Cédula", "width": "5%", "sort": "avColaboradorescc.vcedula"},
+        {"id": "listheader_vnombres", "label": "Nombres", "width": "18%", "sort": "avColaboradorescc.vapellidosnombres"},
+        {"id": "listheader_ProvAcumuladoMesAnteriorcc", "label": "Prov Acum Mes Anterior", "width": "8%"},
+        {"id": "listheader_ProvMesActualcc", "label": "Prov Mes Actual", "width": "6%"},
+        {"id": "listheader_ReintegroDiasNLD", "label": "Reintegro Dias NLD", "width": "8%"},
+        {"id": "listheader_Proporcc", "label": "Proporcional", "width": "6%"},
+        {"id": "listheader_Beneficiocc", "label": "Beneficio", "width": "6%"},
+        {"id": "listheader_BeneficioccM", "label": "Beneficio M", "width": "6%"},
+        {"id": "listheader_BeneficioccMAcum", "label": "Beneficio M Acum", "width": "7%"},
+        {"id": "listheader_ProvAjusteMensualcc", "label": "Ajuste Mensual", "width": "8%"},
+        {"id": "listheader_ProvAjusteAnualMascc", "label": "Ajuste Anual +", "width": "6.5%"},
+        {"id": "listheader_ProvAjusteAnualMenoscc", "label": "Ajuste Anual -", "width": "6.5%"},
+        {"id": "listheader_ProvAcumuladoActualcc", "label": "Prov Acumulado Actual", "width": "9%"}
+      ],
+      "operations": [
+        "Receives cuadrecontable (AvPyCuadreprovcontable) and parent controller as creation params",
+        "JPASearchObject query for AvPyCuadreprovcontableDet filtered by iidcuadrecontable",
+        "Search by cedula or apellidosnombres (OR filter with ILIKE)",
+        "PagedListWrapper for server-side pagination",
+        "Export to Excel (HSSFWorkbook) with 15 columns (includes Estado and Zona)",
+        "Modal dialog window"
+      ],
+      "special_patterns": ["excel_export", "paged_list", "modal_dialog", "search_filter"],
+      "renderers": [
+        "AvPyCuadreprovcontableDetListModelItemRenderer"
+      ],
+      "dao_classes": ["AvPyCuadreprovcontableDAOJpaImpl"]
+    }
+  ],
+
+  "entities": {
+    "AvPyInterfas": {
+      "file": "source/zk/src/avante/backend/model/AvPyInterfas.java",
+      "table": "av_py_interfas",
+      "pk_strategy": "none (manual @Id)",
+      "pk_field": "iidinterfas",
+      "fields": [
+        {"name": "iidinterfas", "type": "int", "column": "iidinterfas", "pk": true, "nullable": false, "unique": true},
+        {"name": "csepadador", "type": "String", "column": "csepadador", "length": 1},
+        {"name": "horaingresoAu", "type": "Date", "column": "horaingreso_au", "temporal": "DATE"},
+        {"name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au", "temporal": "DATE"},
+        {"name": "iidbanco", "type": "BigDecimal", "column": "iidbanco", "nullable": false, "precision": 10},
+        {"name": "iidrpt", "type": "BigDecimal", "column": "iidrpt", "precision": 10},
+        {"name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au", "length": 20},
+        {"name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au", "length": 20},
+        {"name": "vahorros", "type": "String", "column": "vahorros", "nullable": false, "length": 10},
+        {"name": "vambito", "type": "String", "column": "vambito", "nullable": false, "length": 3},
+        {"name": "vcorriente", "type": "String", "column": "vcorriente", "nullable": false, "length": 10},
+        {"name": "vinterfas", "type": "String", "column": "vinterfas", "nullable": false, "length": 60},
+        {"name": "vvirtual", "type": "String", "column": "vvirtual", "nullable": false, "length": 10},
+        {"name": "vseparadorlinea", "type": "String", "column": "vseparadorlinea", "nullable": false, "length": 10}
+      ],
+      "relationships": []
+    },
+
+    "AvPyInterfasarchivo": {
+      "file": "source/zk/src/avante/backend/model/AvPyInterfasarchivo.java",
+      "table": "av_py_interfasarchivo",
+      "pk_strategy": "none (manual @Id)",
+      "pk_field": "iidregistro",
+      "fields": [
+        {"name": "iidregistro", "type": "Integer", "column": "iidregistro", "pk": true, "nullable": false, "unique": true, "precision": 10},
+        {"name": "iidejecproceso", "type": "Integer", "column": "iidejecproceso", "nullable": false, "precision": 10},
+        {"name": "iidinterfas", "type": "Integer", "column": "iidinterfas", "nullable": false, "precision": 10},
+        {"name": "isecuencial", "type": "Integer", "column": "isecuencial"},
+        {"name": "horaingresoAu", "type": "Date", "column": "horaingreso_au", "temporal": "DATE"},
+        {"name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au", "temporal": "DATE"},
+        {"name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au", "length": 20},
+        {"name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au", "length": 20},
+        {"name": "vcadena", "type": "String", "column": "vcadena", "nullable": false, "length": 1200},
+        {"name": "vcd", "type": "String", "column": "vcd", "nullable": false, "length": 1},
+        {"name": "vcadenaorder", "type": "String", "column": "vcadenaorder"}
+      ],
+      "relationships": []
+    },
+
+    "AvPyRubrosIess": {
+      "file": "source/zk/src/avante/backend/model/AvPyRubrosIess.java",
+      "table": "av_py_rubros_iess",
+      "pk_strategy": "IDENTITY",
+      "pk_field": "iidrubrosIess",
+      "fields": [
+        {"name": "iidrubrosIess", "type": "int", "column": "iidrubros_iess", "pk": true, "generated": "IDENTITY"},
+        {"name": "horaingresoAu", "type": "Date", "column": "horaingreso_au", "temporal": "DATE"},
+        {"name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au", "temporal": "DATE"},
+        {"name": "ianio", "type": "int", "column": "ianio"},
+        {"name": "imes", "type": "int", "column": "imes"},
+        {"name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au"},
+        {"name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au"},
+        {"name": "vexistennovedades", "type": "String", "column": "vexistennovedades"},
+        {"name": "vidrubro", "type": "String", "column": "vidrubro"},
+        {"name": "vnombrearchivo", "type": "String", "column": "vnombrearchivo"},
+        {"name": "vnovedades", "type": "String", "column": "vnovedades", "lob": true},
+        {"name": "vstts", "type": "String", "column": "vstts"}
+      ],
+      "relationships": [
+        {"name": "avEmpresa", "type": "ManyToOne", "target": "AvEmpresa", "joinColumn": "iidempresa"},
+        {"name": "avPyRubrosIessls", "type": "OneToMany", "target": "AvPyRubrosIessl", "mappedBy": "avPyRubrosIess", "cascade": "PERSIST"}
+      ]
+    },
+
+    "AvPyRubrosIessl": {
+      "file": "source/zk/src/avante/backend/model/AvPyRubrosIessl.java",
+      "table": "av_py_rubros_iessl",
+      "pk_strategy": "IDENTITY",
+      "pk_field": "iidrubrosIessl",
+      "fields": [
+        {"name": "iidrubrosIessl", "type": "int", "column": "iidrubros_iessl", "pk": true, "generated": "IDENTITY"},
+        {"name": "cexisteavante", "type": "String", "column": "cexisteavante"},
+        {"name": "cexisteiess", "type": "String", "column": "cexisteiess"},
+        {"name": "horaingresoAu", "type": "Date", "column": "horaingreso_au", "temporal": "DATE"},
+        {"name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au", "temporal": "DATE"},
+        {"name": "iiddmlocalidad", "type": "int", "column": "iiddmlocalidad"},
+        {"name": "iidnropatronalavante", "type": "int", "column": "iidnropatronalavante"},
+        {"name": "iidnropatronaliess", "type": "int", "column": "iidnropatronaliess"},
+        {"name": "maporteconyuge", "type": "BigDecimal", "column": "maporteconyuge"},
+        {"name": "mcreditoiess", "type": "BigDecimal", "column": "mcreditoiess"},
+        {"name": "mdiferencia", "type": "BigDecimal", "column": "mdiferencia"},
+        {"name": "mmora", "type": "BigDecimal", "column": "mmora"},
+        {"name": "msueldoavante", "type": "BigDecimal", "column": "msueldoavante"},
+        {"name": "msueldoiess", "type": "BigDecimal", "column": "msueldoiess"},
+        {"name": "mvalor", "type": "BigDecimal", "column": "mvalor"},
+        {"name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au"},
+        {"name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au"},
+        {"name": "vcedulaIESS", "type": "String", "column": "vcedulaIESS"},
+        {"name": "vnombreIESS", "type": "String", "column": "vnombreIESS"},
+        {"name": "vobservacion", "type": "String", "column": "vobservacion"},
+        {"name": "vstts", "type": "String", "column": "vstts"}
+      ],
+      "relationships": [
+        {"name": "avPyRubrosIess", "type": "ManyToOne", "target": "AvPyRubrosIess", "joinColumn": "iidrubros_iess"},
+        {"name": "avColaboradorese", "type": "ManyToOne", "target": "AvColaboradorese", "joinColumns": ["iidcolaborador->iidcolaborador", "iidempresa->iidempresa"]}
+      ]
+    },
+
+    "AvPyRubrosIdo": {
+      "file": "source/zk/src/avante/backend/model/AvPyRubrosIdo.java",
+      "table": "av_py_rubros_ido",
+      "pk_strategy": "SEQUENCE (savcatalogos)",
+      "pk_field": "iidrubroidol",
+      "fields": [
+        {"name": "iidrubroidol", "type": "Integer", "column": "iidrubroidol", "pk": true, "generated": "SEQUENCE", "generator": "savcatalogos"},
+        {"name": "dfdesde", "type": "Date", "column": "dfdesde", "temporal": "DATE"},
+        {"name": "dfhasta", "type": "Date", "column": "dfhasta", "temporal": "DATE"},
+        {"name": "horaingresoAu", "type": "Date", "column": "horaingreso_au", "temporal": "DATE"},
+        {"name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au", "temporal": "DATE"},
+        {"name": "iiddmccosto", "type": "int", "column": "iiddmccosto"},
+        {"name": "iiddmlocalidad", "type": "int", "column": "iiddmlocalidad"},
+        {"name": "iiddmnerol", "type": "int", "column": "iiddmnerol"},
+        {"name": "iiddmrol", "type": "int", "column": "iiddmrol"},
+        {"name": "itcomporta", "type": "int", "column": "itcomporta"},
+        {"name": "mvalor01", "type": "BigDecimal", "column": "mvalor01"},
+        {"name": "mvalor02", "type": "BigDecimal", "column": "mvalor02"},
+        {"name": "iidrubrosIdoUpl", "type": "Integer", "column": "iidrubros_ido_upl"},
+        {"name": "vstts", "type": "String", "column": "vstts"},
+        {"name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au"},
+        {"name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au"},
+        {"name": "icartaimpresa", "type": "int", "column": "icartaimpresa"},
+        {"name": "iflagenvio", "type": "int", "column": "iflagenvio"},
+        {"name": "igeneracarta", "type": "int", "column": "igeneracarta"},
+        {"name": "cestadocaja", "type": "String", "column": "cestadocaja"},
+        {"name": "dfechapagocaja", "type": "Date", "column": "dfechapagocaja", "temporal": "DATE"},
+        {"name": "usuariocaja", "type": "String", "column": "usuariocaja"},
+        {"name": "idcodsgt", "type": "int", "column": "idcodsgt"}
+      ],
+      "relationships": [
+        {"name": "avPyRubro", "type": "ManyToOne", "target": "AvPyRubro", "joinColumn": "vidrubro"},
+        {"name": "avColaboradorese", "type": "ManyToOne", "target": "AvColaboradorese", "joinColumns": ["iidcolaborador->iidcolaborador", "iidempresa->iidempresa"]}
+      ]
+    },
+
+    "AvPyCuadreprovcontable": {
+      "file": "source/zk/src/avante/backend/model/AvPyCuadreprovcontable.java",
+      "table": "av_py_cuadreprovcontable",
+      "pk_strategy": "SEQUENCE",
+      "pk_field": "iidcuadrecontable",
+      "sequence_name": "IIDCUADRECONTABLE",
+      "generator": "AV_PY_CUADREPROVCONTABLE_IIDCUADRECONTABLE_GENERATOR",
+      "fields": [
+        {"name": "iidcuadrecontable", "type": "Integer", "column": "iidcuadrecontable", "pk": true, "generated": "SEQUENCE", "default": -1},
+        {"name": "ianio", "type": "Integer", "column": "ianio"},
+        {"name": "imes", "type": "Integer", "column": "imes"},
+        {"name": "mbeneficio", "type": "BigDecimal", "column": "mbeneficio", "precision": 10, "scale": 2},
+        {"name": "mmesactual", "type": "BigDecimal", "column": "mmesactual", "precision": 10, "scale": 2},
+        {"name": "mmesanterior", "type": "BigDecimal", "column": "mmesanterior", "precision": 10, "scale": 2},
+        {"name": "mproporcional", "type": "BigDecimal", "column": "mproporcional", "precision": 10, "scale": 2},
+        {"name": "majuste", "type": "BigDecimal", "column": "majuste", "precision": 10, "scale": 2},
+        {"name": "macumuladoactual", "type": "BigDecimal", "column": "macumuladoactual", "precision": 10, "scale": 2},
+        {"name": "mbeneficiom", "type": "BigDecimal", "column": "mbeneficiom", "precision": 10, "scale": 2},
+        {"name": "mbeneficiomacum", "type": "BigDecimal", "column": "mbeneficiomacum", "precision": 10, "scale": 2},
+        {"name": "mreintegrodiasnld", "type": "BigDecimal", "column": "mreintegrodiasnld", "precision": 10, "scale": 2},
+        {"name": "majusteanualmas", "type": "BigDecimal", "column": "majusteanualmas", "precision": 10, "scale": 2},
+        {"name": "majusteanualmenos", "type": "BigDecimal", "column": "majusteanualmenos", "precision": 10, "scale": 2},
+        {"name": "numcolab", "type": "int", "column": "numcolab"}
+      ],
+      "relationships": [
+        {"name": "avPyRubro", "type": "ManyToOne", "target": "AvPyRubro", "joinColumn": "vidrubro", "nullable": false, "insertable": false},
+        {"name": "avEmpresa", "type": "ManyToOne", "target": "AvEmpresa", "joinColumn": "iidempresa"},
+        {"name": "AvPyCuadreprovcontableDets", "type": "OneToMany", "target": "AvPyCuadreprovcontableDet", "mappedBy": "avPyCuadreprovcontable"}
+      ]
+    },
+
+    "AvPyCuadreprovcontableDet": {
+      "file": "source/zk/src/avante/backend/model/AvPyCuadreprovcontableDet.java",
+      "table": "av_py_cuadreprovcontable_det",
+      "pk_strategy": "EmbeddedId (AvPyCuadreprovcontableDetPK)",
+      "pk_class": "AvPyCuadreprovcontableDetPK",
+      "pk_fields": [
+        {"name": "iidcolaborador", "type": "Integer"},
+        {"name": "iidcuadrecontable", "type": "Integer"}
+      ],
+      "fields": [
+        {"name": "vstts", "type": "String", "column": "vstts"},
+        {"name": "iidzona", "type": "int", "column": "iidzona"},
+        {"name": "macumulado", "type": "BigDecimal", "column": "macumulado", "precision": 10, "scale": 2},
+        {"name": "majuste", "type": "BigDecimal", "column": "majuste", "precision": 10, "scale": 2},
+        {"name": "mbeneficio", "type": "BigDecimal", "column": "mbeneficio", "precision": 10, "scale": 2},
+        {"name": "mmesactual", "type": "BigDecimal", "column": "mmesactual", "precision": 10, "scale": 2},
+        {"name": "mmesanterior", "type": "BigDecimal", "column": "mmesanterior", "precision": 10, "scale": 2},
+        {"name": "mproporcional", "type": "BigDecimal", "column": "mproporcional", "precision": 10, "scale": 2},
+        {"name": "mbeneficiom", "type": "BigDecimal", "column": "mbeneficiom", "precision": 10, "scale": 2},
+        {"name": "mbeneficiomacum", "type": "BigDecimal", "column": "mbeneficiomacum", "precision": 10, "scale": 2},
+        {"name": "mreintegrodiasnld", "type": "BigDecimal", "column": "mreintegrodiasnld", "precision": 10, "scale": 2},
+        {"name": "majusteanualmas", "type": "BigDecimal", "column": "majusteanualmas", "precision": 10, "scale": 2},
+        {"name": "majusteanualmenos", "type": "BigDecimal", "column": "majusteanualmenos", "precision": 10, "scale": 2}
+      ],
+      "relationships": [
+        {"name": "avColaboradorescc", "type": "ManyToOne", "target": "AvColaboradores", "joinColumn": "iidcolaborador"},
+        {"name": "avPyCuadreprovcontable", "type": "ManyToOne", "target": "AvPyCuadreprovcontable", "joinColumn": "iidcuadrecontable"}
+      ]
+    },
+
+    "AvPyPlantillaContable": {
+      "file": "source/zk/src/avante/backend/model/AvPyPlantillaContable.java",
+      "table": "av_py_plantilla_contable",
+      "pk_strategy": "SEQUENCE",
+      "pk_field": "iidplatillacontablel",
+      "sequence_name": "s_av_py_plantilla_contable",
+      "generator": "savpyplantillacontable",
+      "allocation_size": 20,
+      "fields": [
+        {"name": "iidplatillacontablel", "type": "Integer", "column": "iidplatillacontablel", "pk": true, "generated": "SEQUENCE", "default": -1},
+        {"name": "cauxiliar", "type": "String", "column": "cauxiliar"},
+        {"name": "cdbhb", "type": "String", "column": "cdbhb"},
+        {"name": "cdistribucionc", "type": "String", "column": "cdistribucionc"},
+        {"name": "crpt", "type": "String", "column": "crpt"},
+        {"name": "ctcDmccosto", "type": "String", "column": "ctc_dmccosto"},
+        {"name": "ctcDmlocalidad", "type": "String", "column": "ctc_dmlocalidad"},
+        {"name": "vidagrupcc", "type": "String", "column": "vidagrupcc"},
+        {"name": "vidagruploc", "type": "String", "column": "vidagruploc"},
+        {"name": "vidcuenta", "type": "String", "column": "vidcuenta"},
+        {"name": "vidsubcuenta", "type": "String", "column": "vidsubcuenta"}
+      ],
+      "relationships": [
+        {"name": "avDimensionesl", "type": "ManyToOne", "target": "AvDimensionesl", "joinColumn": "iiddmcustom", "fetch": "LAZY", "insertable": false},
+        {"name": "avPyProceso", "type": "ManyToOne", "target": "AvPyProcesos", "joinColumn": "iidpyproceso", "fetch": "LAZY", "nullable": false},
+        {"name": "avPyRubro", "type": "ManyToOne", "target": "AvPyRubro", "joinColumn": "vidrubro"}
+      ]
+    },
+
+    "AvPyCtasubctaAso": {
+      "file": "source/zk/src/avante/backend/model/AvPyCtasubctaAso.java",
+      "table": "av_py_ctasubcta_aso",
+      "pk_strategy": "EmbeddedId (AvPyCtasubctaAsoPK)",
+      "pk_class": "AvPyCtasubctaAsoPK",
+      "pk_fields": [
+        {"name": "iiditemCtaSubCta", "type": "int"},
+        {"name": "vidCuenta", "type": "String"},
+        {"name": "vidSubCuenta", "type": "String"}
+      ],
+      "fields": [
+        {"name": "descripcion", "type": "String", "column": "descripcion"},
+        {"name": "horaingreso", "type": "Date", "column": "horaingreso", "temporal": "DATE"},
+        {"name": "horamodificacion", "type": "Date", "column": "horamodificacion", "temporal": "DATE"},
+        {"name": "usuarioingreso", "type": "String", "column": "usuarioingreso"},
+        {"name": "usuariomodicacion", "type": "String", "column": "usuariomodicacion"},
+        {"name": "vstts", "type": "String", "column": "vstts"}
+      ],
+      "relationships": [],
+      "named_queries": ["AvPyCtasubctaAso.findAll"]
+    },
+
+    "AvEnEmpresaspatronal": {
+      "file": "source/zk/src/avante/backend/model/AvEnEmpresaspatronal.java",
+      "table": "av_en_empresaspatronal",
+      "pk_strategy": "none (manual @Id)",
+      "pk_field": "iidnropatronal",
+      "fields": [
+        {"name": "iidnropatronal", "type": "Integer", "column": "iidnropatronal", "pk": true},
+        {"name": "horaingresoAu", "type": "Date", "column": "horaingreso_au", "temporal": "DATE"},
+        {"name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au", "temporal": "DATE"},
+        {"name": "horaconsolidadoBot", "type": "Date", "column": "horaconsolidado_au", "temporal": "DATE"},
+        {"name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au"},
+        {"name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au"},
+        {"name": "usuarioejec_bot", "type": "String", "column": "usuarioejec_bot"},
+        {"name": "vagencia", "type": "String", "column": "vagencia"},
+        {"name": "vidagencia", "type": "String", "column": "vidagencia"},
+        {"name": "vnropatronal", "type": "String", "column": "vnropatronal"}
+      ],
+      "relationships": [
+        {"name": "avEmpresa", "type": "ManyToOne", "target": "AvEmpresa", "joinColumn": "iidempresa"},
+        {"name": "avDimensionesls", "type": "OneToMany", "target": "AvDimensionesl", "mappedBy": "avEnEmpresaspatronal"}
+      ]
+    },
+
+    "AvPyParametro": {
+      "file": "source/zk/src/avante/backend/model/AvPyParametro.java",
+      "table": "av_py_parametros",
+      "pk_strategy": "EmbeddedId (AvPyParametroPK)",
+      "pk_class": "AvPyParametroPK",
+      "pk_fields": [
+        {"name": "videntorno", "type": "String"},
+        {"name": "vidparametro", "type": "String"}
+      ],
+      "fields": [
+        {"name": "ddatofechafin", "type": "Date", "column": "ddatofechafin", "temporal": "DATE"},
+        {"name": "ddatofechaini", "type": "Date", "column": "ddatofechaini", "temporal": "DATE"},
+        {"name": "horaingresoAu", "type": "Date", "column": "horaingreso_au", "temporal": "DATE"},
+        {"name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au", "temporal": "DATE"},
+        {"name": "mdatonumero", "type": "BigDecimal", "column": "mdatonumero"},
+        {"name": "mdatonumero2", "type": "BigDecimal", "column": "mdatonumero2"},
+        {"name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au"},
+        {"name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au"},
+        {"name": "vdatocadena", "type": "String", "column": "vdatocadena"},
+        {"name": "vdatocadena2", "type": "String", "column": "vdatocadena2"},
+        {"name": "vparametro", "type": "String", "column": "vparametro"}
+      ],
+      "relationships": []
+    },
+
+    "AvPyClasesrubro": {
+      "file": "source/zk/src/avante/backend/model/AvPyClasesrubro.java",
+      "table": "av_py_clasesrubros",
+      "pk_strategy": "none (natural key)",
+      "pk_field": "vidclase",
+      "fields": [
+        {"name": "vidclase", "type": "String", "column": "vidclase", "pk": true, "nullable": false, "unique": true, "length": 50},
+        {"name": "cocultar", "type": "String", "column": "cocultar", "length": 1},
+        {"name": "vclase", "type": "String", "column": "vclase", "nullable": false, "length": 100},
+        {"name": "vnivel", "type": "String", "column": "vnivel", "length": 1},
+        {"name": "videxterno", "type": "String", "column": "videxterno", "length": 20},
+        {"name": "vidclasepadre", "type": "String", "column": "vidclasepadre", "length": 50},
+        {"name": "horaingresoAu", "type": "Date", "column": "horaingreso_au", "temporal": "DATE"},
+        {"name": "horamodificacionAu", "type": "Date", "column": "horamodificacion_au", "temporal": "DATE"},
+        {"name": "usuarioingresoAu", "type": "String", "column": "usuarioingreso_au", "length": 20},
+        {"name": "usuariomodificacionAu", "type": "String", "column": "usuariomodificacion_au", "length": 20},
+        {"name": "creportenomina", "type": "String", "column": "creportenomina"},
+        {"name": "casignarubro", "type": "String", "column": "casignarubro"}
+      ],
+      "relationships": [
+        {"name": "avPyClasesrubrosls", "type": "OneToMany", "target": "AvPyClasesrubrosl", "mappedBy": "avPyClasesrubro"}
+      ]
+    },
+
+    "Dominios": {
+      "file": "source/zk/src/avante/backend/model/Dominios.java",
+      "table": "NONE (non-JPA, in-memory domain object)",
+      "description": "Simple POJO for dropdown options, not a JPA entity",
+      "fields": [
+        {"name": "id", "type": "int"},
+        {"name": "domId", "type": "String"},
+        {"name": "domText", "type": "String"}
+      ],
+      "relationships": []
+    }
+  },
+
+  "dao_native_sql_queries": {
+    "AvPyRubrosIessDAOJpaImpl": {
+      "file": "source/zk/src/avante/backend/dao/impl/AvPyRubrosIessDAOJpaImpl.java",
+      "methods": [
+        {
+          "name": "retornaConsultaResumenPlanilla",
+          "type": "JPQL",
+          "description": "Summarizes IESS planilla by nropatronal and localidad with IESS contribution calculations",
+          "tables": ["av_py_rubros_iessl"],
+          "params": ["AvPyRubrosIess.iidrubrosIess"],
+          "returns": "Object[] (patronal, localidad, sum sueldoavante, sum sueldoiess, sum creditoiess, sum valor, IESS breakdowns)"
+        },
+        {
+          "name": "retornaConsultaAgenciasProceso",
+          "type": "native SQL",
+          "description": "Gets distinct patronal agencies for a given IESS rubros batch",
+          "tables": ["av_en_empresaspatronal", "av_py_rubros_iessl"]
+        },
+        {
+          "name": "retornaConsultaSucNombre",
+          "type": "native SQL",
+          "description": "Gets employees by patronal number with location and value details",
+          "tables": ["av_py_rubros_iessl", "av_dimensionesl", "av_colaboradores", "av_colaboradorese"]
+        },
+        {
+          "name": "retornaConsultaSucLocTotSuc",
+          "type": "native SQL",
+          "description": "Sum values by location for a patronal number",
+          "tables": ["av_py_rubros_iessl", "av_dimensionesl", "av_colaboradores", "av_colaboradorese"]
+        },
+        {
+          "name": "retornaConsultaSucLocTotSucFR",
+          "type": "native SQL",
+          "description": "Sum values by location using rubroslhis for RUBPROVFR type",
+          "tables": ["av_py_rubros_iessl", "av_colaboradores", "av_py_procesosinstancias", "av_py_procesos", "av_colaboradorese", "av_dimensionesl", "av_py_rubroslhis"]
+        },
+        {
+          "name": "getValorPorAgencia",
+          "type": "native SQL",
+          "description": "Gets total value per agency from IESS records",
+          "tables": ["av_py_rubros_iessl", "av_py_procesosinstancias", "av_py_procesos", "av_colaboradorese", "av_dimensionesl", "av_py_rubroslhis"]
+        },
+        {
+          "name": "tieneAfiliacionConyuge",
+          "type": "native SQL",
+          "description": "Checks if employee has spouse IESS affiliation",
+          "tables": ["av_colaboradoresfa"]
+        },
+        {
+          "name": "retornaAfiliacionConyuge",
+          "type": "JPQL",
+          "description": "Gets spouse IESS contribution value from rubroslhis",
+          "tables": ["AvPyRubroslhis"]
+        },
+        {
+          "name": "procesosAportablesNoIess",
+          "type": "native SQL",
+          "description": "Finds employees with IESS contributions but NOT in IESS planilla",
+          "tables": ["av_py_rubroslhis", "av_py_procesosinstancias", "av_py_procesos", "av_colaboradores", "av_colaboradorese", "av_dimensionesl"]
+        },
+        {
+          "name": "getValorTotal",
+          "type": "native SQL",
+          "description": "Gets total value for all agencies",
+          "tables": ["av_py_rubros_iessl"]
+        }
+      ]
+    },
+
+    "AvPyCuadreprovcontableDAOJpaImpl": {
+      "file": "source/zk/src/avante/backend/dao/impl/AvPyCuadreprovcontableDAOJpaImpl.java",
+      "methods": [
+        {
+          "name": "getcabeceraprevia",
+          "type": "JPQL",
+          "description": "Gets previous cuadre contable header by empresa, rubro, anio, mes"
+        },
+        {
+          "name": "getcuadrecontable",
+          "type": "JPQL",
+          "description": "Gets cuadre contable list by empresa, anio, mes"
+        },
+        {
+          "name": "getcuadrecontabledet",
+          "type": "JPQL",
+          "description": "Gets cuadre contable detail records by iidcuadrecontable"
+        },
+        {
+          "name": "gethaycuadrecontablecab",
+          "type": "native SQL",
+          "description": "Checks if cuadre contable exists for empresa/anio/mes joining with clasesrubrosl",
+          "tables": ["av_py_cuadreprovcontable", "av_py_clasesrubrosl"]
+        }
+      ]
+    },
+
+    "AvPyContabilizacionpDAOJpaImpl": {
+      "file": "source/zk/src/avante/backend/dao/impl/AvPyContabilizacionpDAOJpaImpl.java",
+      "methods": [
+        {
+          "name": "getinstanciascontabilizar",
+          "type": "native SQL",
+          "description": "Gets process instances to contabilize by process IDs, year, month, empresa",
+          "tables": ["av_py_procesosinstancias", "av_py_procesos", "av_py_rubroslhis"]
+        },
+        {
+          "name": "getrubrosplantillacontabxproceso",
+          "type": "JPQL",
+          "description": "Gets rubros from contable template for a given process"
+        },
+        {
+          "name": "getconsultareportesIR",
+          "type": "native SQL (stored procedure)",
+          "description": "Calls PY_RPT_IR stored procedure"
+        },
+        {
+          "name": "getconsultareportesINEC",
+          "type": "native SQL (stored procedure)",
+          "description": "Calls PY_RPT_INEC stored procedure"
+        },
+        {
+          "name": "getlocalidadesdistrib",
+          "type": "JPQL",
+          "description": "Gets distribution locations for a collaborator"
+        },
+        {
+          "name": "getNumeroColaboradores",
+          "type": "native SQL",
+          "description": "Counts distinct employees for IR/INEC reports"
+        }
+      ]
+    },
+
+    "AvPyCtasubctaAsoDAOJpaImpl": {
+      "file": "source/zk/src/avante/backend/dao/impl/AvPyCtasubctaAsoDAOJpaImpl.java",
+      "methods": [
+        {
+          "name": "getCuentasActivas",
+          "type": "JPQL",
+          "description": "Gets active accounts from AvPyCtasubctaAso"
+        },
+        {
+          "name": "getCuentasDesdeCatalogo",
+          "type": "JPQL",
+          "description": "Gets accounts from AvCatalogos (catalog-based)"
+        },
+        {
+          "name": "getSubCuentasActivas",
+          "type": "JPQL",
+          "description": "Gets active sub-accounts"
+        },
+        {
+          "name": "getSubCuentasByCuenta",
+          "type": "JPQL",
+          "description": "Gets sub-accounts filtered by account"
+        },
+        {
+          "name": "getSubCuentasByListCuentas",
+          "type": "JPQL (parameterized)",
+          "description": "Gets sub-accounts by list of accounts using IN clause"
+        }
+      ]
+    },
+
+    "AvPyInterfasDAOJpaImpl": {
+      "file": "source/zk/src/avante/backend/dao/impl/AvPyInterfasDAOJpaImpl.java",
+      "methods": [
+        {
+          "name": "getavpypinterfasxid",
+          "type": "JPQL",
+          "description": "Gets interface config by ID"
+        }
+      ]
+    }
+  },
+
+  "stored_procedures_summary": [
+    {"name": "PY_ArchivoInterfasIess", "used_by": "InterfasIESSListCtrl", "params": ["P_dFInicio", "P_iIdNroPatronal", "P_iIdInterfas", "P_Usuario", "P_vstts", "P_iIdDmLocalidad", "P_dFFin", "P_iIdEmpresa", "P_iSecuencial"]},
+    {"name": "PY_ArchivoInterfasCon", "used_by": "InterfasContableDialogCtrl", "params": ["P_iIdInterfas", "P_iIdEjecProceso", "P_Usuario", "P_iIdEmpresa", "P_TipoArcCon", "P_iSecuencial"], "output_param": "vTipo"},
+    {"name": "PY_ContabilizaProcesoTIA", "used_by": "ContabilizacionDialogCtrl", "params": ["P_vIdUser", "P_iIdEjecProceso", "P_iIdDmLocalidad", "P_iIdColaborador"], "output_param": "vTipo"},
+    {"name": "PY_ContabilizaPrestNoDesembolso", "used_by": "ContabilizacionDialogCtrl", "params": ["P_vIdUser", "P_iIdEjecProceso", "P_iIdDmLocalidad", "P_iIdColaborador"], "output_param": "vTipo"},
+    {"name": "PY_RPT_IR", "used_by": "AvPyContabilizacionpDAOJpaImpl", "params": ["anioco", "mesco", "iidempresa"]},
+    {"name": "PY_RPT_INEC", "used_by": "AvPyContabilizacionpDAOJpaImpl", "params": ["anioco", "mesco", "iidempresa"]}
+  ],
+
+  "shell_scripts_summary": [
+    {"name": "pasainterfaznomina.sh", "used_by": "InterfasIESSListCtrl", "params": "nombre_fichero + IP"},
+    {"name": "pasainterfascontable.sh", "used_by": "InterfasContableDialogCtrl", "params": "nombre_archivo + IP (132.142.160.19)"},
+    {"name": "generarCuentaSubCuenta.sh", "used_by": "ConsultaContableFinancieraListCtrl", "params": "iidempresa + fechaI + fechaF + cuentas + subcuentas"},
+    {"name": "generarNominaContable.sh", "used_by": "ConsultaContableFinancieraListCtrl", "params": "iidempresa + fechaI + fechaF + rubros + colaboradores + nombreArchivo"}
+  ],
+
+  "special_patterns_summary": {
+    "file_upload": ["cargaRubrosIESS (IESS planilla file upload via Fileupload)"],
+    "file_download": ["interfazIESS (text file download)", "interfasContable (text file download)"],
+    "file_generation_server": ["interfazIESS (writes to /usr/share/avante/compartidos/archivos/)", "interfasContable (writes to PG_PATHTOUTPUTFILE param path)"],
+    "excel_export": ["cargaRubrosIESS (HSSFWorkbook)", "consultaContableList (HSSFWorkbook)", "consultaCuadreContableList (HSSFWorkbook)", "consultaCuadreContablexColabList (HSSFWorkbook)"],
+    "csv_export": ["reporteContableFinanciero (via shell script)"],
+    "jasper_reports": ["cargaRubrosIESS (Jasper report with multiple formats: PDF, Excel, HTML, XML, etc.)"],
+    "shell_script_execution": ["interfazIESS (pasainterfaznomina.sh)", "interfasContable (pasainterfascontable.sh)", "reporteContableFinanciero (generarCuentaSubCuenta.sh, generarNominaContable.sh)"],
+    "stored_procedure_calls": ["interfazIESS (PY_ArchivoInterfasIess)", "interfasContable (PY_ArchivoInterfasCon)", "contabilizacionDialogCtrl (PY_ContabilizaProcesoTIA, PY_ContabilizaPrestNoDesembolso)"],
+    "batch_processing": ["contabilizacionDialogCtrl (loops through multiple instances to contabilize)"],
+    "modal_dialogs": ["interfasContable (modal from process execution)", "contabilizacionDialogCtrl (modal with confirm)", "consultaCuadreContablexColabList (modal detail)"],
+    "master_detail": ["consultaCuadreContable -> consultaCuadreContablexColab (double-click drilldown)"],
+    "paged_lists": ["consultaCuadreContableList (PagedListWrapper)", "consultaCuadreContablexColabList (PagedListWrapper)"],
+    "aws_integration": ["cargaRubrosIESS (SenderAWS for BOT IESS planillas)"],
+    "search_dialogs": ["reporteContableFinanciero (ColaboradoresExtendedSearchListBoxAdvance.zul)"],
+    "context_menu": ["cargaRubrosIESS (right-click approve/inactivate via menupopup)"]
+  },
+
+  "renderer_column_mappings": {
+    "DetalleAsientoContableListModelItemRenderer": {
+      "data_type": "Object[] (native query result)",
+      "columns": [
+        {"index": 0, "display": "Rubro", "source": "obj[10]"},
+        {"index": 1, "display": "Cantidad Debe", "source": "obj[8] (if obj[4]='D')"},
+        {"index": 2, "display": "Debe", "source": "obj[5]"},
+        {"index": 3, "display": "Cantidad Haber", "source": "obj[8] (if obj[4]='H')"},
+        {"index": 4, "display": "Haber", "source": "obj[6]"},
+        {"index": 5, "display": "Nómina", "source": "obj[11]"},
+        {"index": 6, "display": "Diferencia", "source": "calculated: obj[11] - obj[5 or 6] based on D/H"}
+      ]
+    },
+    "AvPyCuadreprovcontableListModelItemRenderer": {
+      "data_type": "AvPyCuadreprovcontable",
+      "columns": [
+        {"display": "Rubro", "source": "avPyRubro.vrubro"},
+        {"display": "Num Colab", "source": "numcolab"},
+        {"display": "Mes Anterior", "source": "mmesanterior"},
+        {"display": "Mes Actual", "source": "mmesactual"},
+        {"display": "Reintegro Dias NLD", "source": "mreintegrodiasnld"},
+        {"display": "Proporcional", "source": "mproporcional"},
+        {"display": "Beneficio", "source": "mbeneficio"},
+        {"display": "Beneficio M", "source": "mbeneficiom"},
+        {"display": "Beneficio M Acum", "source": "mbeneficiomacum"},
+        {"display": "Ajuste", "source": "majuste"},
+        {"display": "Ajuste Anual +", "source": "majusteanualmas"},
+        {"display": "Ajuste Anual -", "source": "majusteanualmenos"},
+        {"display": "Acumulado Actual", "source": "macumuladoactual"}
+      ],
+      "double_click_action": "onCaudreContListItemDoubleClicked -> opens detail by collaborator"
+    },
+    "AvPyCuadreprovcontableDetListModelItemRenderer": {
+      "data_type": "AvPyCuadreprovcontableDet",
+      "columns": [
+        {"display": "Cédula", "source": "avColaboradorescc.vcedula"},
+        {"display": "Nombres", "source": "avColaboradorescc.vapellidosnombres"},
+        {"display": "Mes Anterior", "source": "mmesanterior"},
+        {"display": "Mes Actual", "source": "mmesactual"},
+        {"display": "Reintegro Dias NLD", "source": "mreintegrodiasnld"},
+        {"display": "Proporcional", "source": "mproporcional"},
+        {"display": "Beneficio", "source": "mbeneficio"},
+        {"display": "Beneficio M", "source": "mbeneficiom"},
+        {"display": "Beneficio M Acum", "source": "mbeneficiomacum"},
+        {"display": "Ajuste", "source": "majuste"},
+        {"display": "Ajuste Anual +", "source": "majusteanualmas"},
+        {"display": "Ajuste Anual -", "source": "majusteanualmenos"},
+        {"display": "Acumulado", "source": "macumulado"}
+      ]
+    },
+    "AvPyRubrosIesslListModelItemRenderer": {
+      "data_type": "AvPyRubrosIessl",
+      "columns": [
+        {"display": "Sucursal", "source": "avColaboradorese.avDimensionesllo.vidditem"},
+        {"display": "Cédula", "source": "vcedulaIESS"},
+        {"display": "Nombre", "source": "avColaboradorese.avColaboradores.vapellidosnombres"},
+        {"display": "Estado Registro", "source": "vstts"},
+        {"display": "Sueldo Tia", "source": "msueldoavante"},
+        {"display": "Sueldo IESS", "source": "msueldoiess"},
+        {"display": "Diferencia", "source": "mdiferencia"},
+        {"display": "Crédito IESS", "source": "mcreditoiess"},
+        {"display": "Observación", "source": "vobservacion"},
+        {"display": "Valor", "source": "mvalor"},
+        {"display": "Agencia IESS", "source": "patronalIess.vidagencia"},
+        {"display": "Agencia Avante", "source": "patronalAvante.vidagencia"},
+        {"display": "Existe IESS", "source": "cexisteiess"},
+        {"display": "Existe Avante", "source": "cexisteavante"},
+        {"display": "Estado Colaborador", "source": "avColaboradorese.vstts (ACT->A, else->I)"}
+      ]
+    }
+  }
+}

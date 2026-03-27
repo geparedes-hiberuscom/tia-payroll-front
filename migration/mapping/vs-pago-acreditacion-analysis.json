@@ -1,0 +1,789 @@
+{
+  "functionalities": [
+    {
+      "id": "func-pago-acreditacion",
+      "name": "Pago y Acreditación",
+      "description": "Generación de archivos de acreditación bancaria para procesos de nómina, bonificaciones y rubros IDO, con selección de banco, formato y tipo de acreditación, generación de archivos planos para carga en entidades financieras, y consulta histórica de acreditaciones realizadas",
+      "screens": [
+        {
+          "name": "acreditacion.zul",
+          "description": "Diálogo de generación de archivo de acreditación bancaria general para un proceso de nómina ejecutado, con selección de banco y formato de archivo, generación y descarga del archivo plano",
+          "actions": [
+            {
+              "name": "Seleccionar banco",
+              "description": "Selecciona el banco destino de la acreditación y carga los formatos de archivo disponibles para ese banco",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de acreditación (extiende GFCBaseCtrl) que maneja onSelect$lbox_Bancos para cargar los formatos de interfaz del banco seleccionado"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de catálogos de bancos y formatos de interfaz de acreditación"
+                },
+                {
+                  "className": "AvPyInterfasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener los formatos de interfaz bancaria filtrados por banco"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo que representa los bancos disponibles para acreditación"
+                },
+                {
+                  "className": "AvPyInterfas.java",
+                  "type": "Modelo",
+                  "description": "Entidad de interfaz de acreditación con formato, estructura y configuración del archivo bancario"
+                },
+                {
+                  "className": "CatalogosDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de bancos"
+                },
+                {
+                  "className": "AvPyInterfasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de formatos de interfaz bancaria"
+                }
+              ]
+            },
+            {
+              "name": "Generar archivo de acreditación",
+              "description": "Genera el archivo plano de acreditación bancaria con los datos de nómina del proceso seleccionado, en el formato del banco destino, y lo descarga",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnArchivo que invoca generarArchivo(false) para generar un nuevo archivo de acreditación con datos del proceso y descargarlo vía Filedownload"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de negocio para generar el archivo de acreditación con datos de colaboradores, cuentas y montos"
+                },
+                {
+                  "className": "AvPyInterfasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos del formato de interfaz y estructura del archivo a generar"
+                },
+                {
+                  "className": "AvPyInterfas.java",
+                  "type": "Modelo",
+                  "description": "Entidad de interfaz con la definición del formato del archivo de acreditación"
+                },
+                {
+                  "className": "AvPyInterfasarchivo.java",
+                  "type": "Modelo",
+                  "description": "Entidad que almacena el archivo de acreditación generado con contenido y metadatos"
+                }
+              ]
+            },
+            {
+              "name": "Generar archivo adicional de acreditación",
+              "description": "Genera un archivo adicional de acreditación para el mismo proceso (adición a un archivo ya existente)",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnArchivoAdd que invoca generarArchivo(true) para agregar registros a un archivo de acreditación existente"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de adición al archivo de acreditación existente"
+                },
+                {
+                  "className": "AvPyInterfasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para gestionar la actualización del archivo de interfaz con registros adicionales"
+                },
+                {
+                  "className": "AvPyInterfasarchivo.java",
+                  "type": "Modelo",
+                  "description": "Entidad del archivo de acreditación que se actualiza con registros adicionales"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "acreditacionBonificaciones.zul",
+          "description": "Pantalla de generación de archivos de acreditación bancaria para bonificaciones con selección de rol, formato, banco, estado y tipo de acreditación, generación de archivo para sistema bancario y archivo para caja",
+          "actions": [
+            {
+              "name": "Seleccionar rol de nómina",
+              "description": "Selecciona el tipo de rol de nómina para filtrar los datos de bonificaciones a acreditar",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionBonificacionesCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de acreditación de bonificaciones (extiende GFCBaseCtrl) que maneja onSelect$lbox_Rol para filtrar datos por tipo de rol y recargar formatos"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de roles de nómina y datos de bonificaciones"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de empresa asociada al rol"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia de proceso de nómina asociada a la acreditación de bonificaciones"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para el contexto de la acreditación"
+                },
+                {
+                  "className": "RolesListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de roles de nómina"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar formato, banco y estado",
+              "description": "Configura los parámetros de generación seleccionando formato de archivo, banco destino, estado de acreditación y tipo de acreditación",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionBonificacionesCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Formato, onSelect$lbox_Banco, onSelect$lbox_Estado y onSelect$lbox_TipoAcreditacion para configurar parámetros de generación"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee catálogos de formatos, bancos, estados y tipos de acreditación"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener parámetros de configuración de acreditación"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para bancos, estados y tipos de acreditación"
+                },
+                {
+                  "className": "AvPyInterfas.java",
+                  "type": "Modelo",
+                  "description": "Entidad de interfaz para formatos de archivo bancario"
+                },
+                {
+                  "className": "AvPyParametro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de parámetro de configuración de acreditación"
+                },
+                {
+                  "className": "AvPyParametroPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta del parámetro de acreditación"
+                },
+                {
+                  "className": "CatalogosDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdowns de catálogos (bancos, estados, tipos)"
+                },
+                {
+                  "className": "AvPyInterfasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de formatos de interfaz"
+                }
+              ]
+            },
+            {
+              "name": "Generar archivo de acreditación bancaria",
+              "description": "Genera el archivo plano de acreditación bancaria para bonificaciones con los datos del proceso y formato seleccionado, y lo descarga",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionBonificacionesCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnArchivo para generar el archivo de acreditación bancaria con datos de bonificaciones y descargarlo"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de generación del archivo de acreditación bancaria con colaboradores, cuentas y montos"
+                },
+                {
+                  "className": "AvPyInterfasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener la estructura del formato de interfaz bancaria"
+                },
+                {
+                  "className": "AvPyInterfas.java",
+                  "type": "Modelo",
+                  "description": "Entidad de interfaz con la definición del formato del archivo"
+                },
+                {
+                  "className": "AvPyInterfasarchivo.java",
+                  "type": "Modelo",
+                  "description": "Entidad que almacena el archivo de acreditación generado"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador con datos bancarios para la acreditación"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad/dimensión para filtros de acreditación"
+                }
+              ]
+            },
+            {
+              "name": "Generar archivo para caja",
+              "description": "Genera el archivo de acreditación para pago en caja (colaboradores sin cuenta bancaria) con formato específico",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionBonificacionesCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnArchivoCaja para generar el archivo de pago en caja para colaboradores sin cuenta bancaria"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de generación del archivo de pago por caja"
+                },
+                {
+                  "className": "PagosProcesosCajaMsgDAOImpl.java",
+                  "type": "DAO (Mensajería)",
+                  "description": "DAO de mensajería para envío de pagos de procesos a sistema de caja"
+                },
+                {
+                  "className": "PagosProcesosCajaMsg.java",
+                  "type": "Modelo (Mensaje)",
+                  "description": "Modelo de mensaje con datos de pagos de procesos para el sistema de caja"
+                },
+                {
+                  "className": "AvPyInterfasarchivo.java",
+                  "type": "Modelo",
+                  "description": "Entidad del archivo de acreditación generado para caja"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar locales",
+              "description": "Abre el diálogo de selección de locales/localidades para filtrar la acreditación por ubicación",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionBonificacionesCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnLocales para abrir el diálogo extendido de selección de locales"
+                },
+                {
+                  "className": "LocalesExtendsSearchDialogBoxCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de búsqueda extendida de locales/localidades"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad/dimensión seleccionada"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "AcreditacionRubrosIdo.zul",
+          "description": "Pantalla de acreditación de rubros IDO (Ingresos por Descuentos Obligatorios) con listado de rubros IDO por colaborador, filtros por empresa, localidad, rubro y banco, generación de archivo de acreditación, impresión de cartas y aprobación de acreditaciones",
+          "actions": [
+            {
+              "name": "Listar rubros IDO para acreditación",
+              "description": "Muestra la lista paginada de rubros IDO pendientes de acreditación con filtros por empresa, localidad, rubro y colaborador",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionRubrosIdoCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de acreditación de rubros IDO (extiende GFCBaseListCtrl<AvPyRubrosIdo>) con listado paginado y múltiples filtros"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de rubros IDO pendientes de acreditación"
+                },
+                {
+                  "className": "AvPyRubrosIdoDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO JPA para acceso a datos de rubros IDO"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener empresas para el filtro"
+                },
+                {
+                  "className": "AvDimensioneslDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener localidades para el filtro"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros disponibles para el filtro"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de rubro IDO con datos de colaborador, monto, estado y acreditación"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtros"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad/dimensión para filtros"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de definición de rubro para filtros"
+                },
+                {
+                  "className": "AcreditacionesRubrosIdoModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items del listado de rubros IDO para acreditación"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                },
+                {
+                  "className": "AvDimensioneslloccontratacionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de localidades"
+                },
+                {
+                  "className": "RubrosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de rubros"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar empresa y localidad",
+              "description": "Filtra los rubros IDO al seleccionar empresa y localidad, recargando los datos del listado",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionRubrosIdoCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Empresas y onSelect$lbox_Localidades para aplicar filtros jerárquicos y recargar el listado"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene datos de la empresa seleccionada"
+                },
+                {
+                  "className": "AvDimensionesluserDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene localidades del usuario para la empresa seleccionada"
+                },
+                {
+                  "className": "AvRhColaboradoresdvacpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene datos de localidades y divisiones del usuario"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar banco y formato",
+              "description": "Configura el banco destino y formato de archivo para la generación del archivo de acreditación",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionRubrosIdoCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Banco, onSelect$lbox_Formato y onSelect$lbox_TipoAcreditacion para configurar parámetros de generación"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener parámetros de configuración de acreditación"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para bancos y tipos de acreditación"
+                },
+                {
+                  "className": "AvPyInterfas.java",
+                  "type": "Modelo",
+                  "description": "Entidad de interfaz para formatos de archivo bancario"
+                },
+                {
+                  "className": "AvPyParametro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de parámetro de configuración"
+                },
+                {
+                  "className": "AvPyParametroPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta del parámetro"
+                },
+                {
+                  "className": "CatalogosDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de bancos y tipos"
+                },
+                {
+                  "className": "AvPyInterfasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de formatos de interfaz"
+                }
+              ]
+            },
+            {
+              "name": "Buscar colaborador",
+              "description": "Abre el buscador avanzado de colaboradores para filtrar los rubros IDO por persona específica",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionRubrosIdoCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSearchColaborador para abrir el buscador extendido de colaboradores"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee búsqueda de colaboradores"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador encontrado y seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Limpiar filtros",
+              "description": "Limpia todos los filtros aplicados y restaura la vista inicial",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionRubrosIdoCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnLimpia para limpiar todos los filtros de búsqueda y restaurar el estado inicial"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar listado",
+              "description": "Recarga el listado de rubros IDO con los filtros actuales",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionRubrosIdoCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnRefresh para recargar los datos del listado con los filtros aplicados"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta actualizada de rubros IDO"
+                },
+                {
+                  "className": "AvPyRubrosIdoDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta actualizada"
+                }
+              ]
+            },
+            {
+              "name": "Imprimir carta de acreditación",
+              "description": "Genera e imprime la carta de acreditación en formato RTF para los rubros IDO seleccionados",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionRubrosIdoCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnImprimirCarta para generar la carta de acreditación usando plantilla RTF con datos del rubro IDO y colaborador"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos para la generación de la carta de acreditación"
+                },
+                {
+                  "className": "AvRTFTemplateWithCache.java",
+                  "type": "Utilidad",
+                  "description": "Motor de plantillas RTF con caché para la generación de cartas de acreditación"
+                },
+                {
+                  "className": "UseCaseUtil.java",
+                  "type": "Utilidad",
+                  "description": "Utilidad de casos de uso para la generación RTF"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro IDO con datos de carta (igeneracarta, icartaimpresa)"
+                },
+                {
+                  "className": "AvPyRubrosIessl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubros IESS de línea asociados al rubro IDO"
+                }
+              ]
+            },
+            {
+              "name": "Aprobar acreditación",
+              "description": "Aprueba la acreditación de los rubros IDO seleccionados, actualizando su estado y generando la transacción de pago",
+              "relatedClasses": [
+                {
+                  "className": "AcreditacionRubrosIdoCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnApprove para aprobar la acreditación de rubros IDO seleccionados con persistencia del cambio de estado"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de aprobación: actualización de estado, generación de pago"
+                },
+                {
+                  "className": "AvPyRubrosIdoDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para actualizar el estado de aprobación de los rubros IDO"
+                },
+                {
+                  "className": "PagosRubrosIDOCajaMsgDAOImpl.java",
+                  "type": "DAO (Mensajería)",
+                  "description": "DAO de mensajería para envío de pagos de rubros IDO al sistema de caja"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro IDO cuyo estado de aprobación se actualiza"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "consultaAcreditacionesList.zul",
+          "description": "Pantalla de consulta histórica de acreditaciones realizadas con filtros por empresa, localidad, rol, banco, rubro y colaborador, con exportación a Excel",
+          "actions": [
+            {
+              "name": "Consultar acreditaciones",
+              "description": "Muestra el listado histórico de acreditaciones realizadas con múltiples filtros de búsqueda por empresa, localidad, rol, banco, rubro y colaborador",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaAcreditacionesListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de consulta de acreditaciones (extiende GFCBaseCtrl) con múltiples filtros y búsqueda de colaboradores"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de acreditaciones históricas con múltiples filtros"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener lista de empresas para el filtro"
+                },
+                {
+                  "className": "AvDimensioneslDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener localidades para el filtro"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros para el filtro"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtros de consulta"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad/dimensión para filtros"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para bancos y roles"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro para filtros de consulta"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador para búsqueda específica"
+                },
+                {
+                  "className": "AvColaboradoresV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista de colaboradores con datos básicos para la consulta"
+                },
+                {
+                  "className": "ConsultaAcreditacionesListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items del listado de acreditaciones históricas con columnas de cédula, nombres, local, rol, cargo, tipo, banco, cuenta, montos"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                },
+                {
+                  "className": "AvDimensioneslListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de localidades"
+                },
+                {
+                  "className": "AvDimensioneslloccontratacionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de localidades de contratación"
+                },
+                {
+                  "className": "CatalogosDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdowns de catálogos (bancos, roles)"
+                },
+                {
+                  "className": "RubrosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de rubros"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar empresa",
+              "description": "Filtra las acreditaciones al seleccionar una empresa y recarga localidades disponibles",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaAcreditacionesListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Empresas para recargar localidades y aplicar filtro por empresa"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene datos de la empresa seleccionada"
+                },
+                {
+                  "className": "AvDimensioneslDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene localidades para la empresa seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar localidad, rol, banco y rubro",
+              "description": "Aplica filtros adicionales de localidad, rol, banco y rubro a la consulta de acreditaciones",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaAcreditacionesListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Localidades, onSelect$lbox_Rol, onSelect$lbox_Banco y onSelect$lbox_Rubro para aplicar filtros jerárquicos"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad seleccionada"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para roles y bancos seleccionados"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Buscar colaborador",
+              "description": "Abre el buscador avanzado de colaboradores para filtrar acreditaciones por persona específica",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaAcreditacionesListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSearchColaborador y doSearchColaboradorExtended() para abrir el buscador avanzado de colaboradores"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee búsqueda de colaboradores con filtros avanzados"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador encontrado y seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Limpiar filtros",
+              "description": "Limpia todos los filtros aplicados y restaura la vista inicial",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaAcreditacionesListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnLimpia para limpiar todos los filtros de búsqueda"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar consulta",
+              "description": "Recarga el listado de acreditaciones con los filtros actuales ejecutando la consulta doRefresh()",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaAcreditacionesListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnRefresh y doRefresh() para recargar los datos con los filtros aplicados"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta actualizada de acreditaciones"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta los datos de acreditaciones consultadas a formato Excel",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaAcreditacionesListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnExportarExcel y doExportaExcel() para generar la exportación de datos de acreditaciones a Excel"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos de acreditaciones para la exportación"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "relatedControllers": [
+        "AcreditacionDialogCtrl.java",
+        "AcreditacionBonificacionesCtrl.java",
+        "AcreditacionRubrosIdoCtrl.java",
+        "ConsultaAcreditacionesListCtrl.java"
+      ]
+    }
+  ]
+}

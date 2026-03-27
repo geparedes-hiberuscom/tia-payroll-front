@@ -1,0 +1,1163 @@
+{
+  "catalogMetadata": {
+    "title": "Payroll Microservices Candidate Catalog",
+    "description": "Análisis consolidado de microservicios candidatos con pantallas asociadas, funcionalidades y MFEs",
+    "generatedAt": "2026-03-05",
+    "sourceFiles": [
+      "payroll-microservices-analysis.json",
+      "payroll-functionalities.json",
+      "mfes-generated.json"
+    ],
+    "totals": {
+      "microservices": 17,
+      "screens": 51,
+      "functionalities": 34,
+      "mfes": 9,
+      "estimatedPorts": "8101-8117"
+    }
+  },
+  "microservices": [
+    {
+      "serviceId": "MS-001",
+      "name": "SalaryComponentService",
+      "port": 8101,
+      "criticality": "HIGH",
+      "complexity": "MEDIUM",
+      "businessCapability": "Salary Component Management",
+      "description": "Gestiona el catálogo de componentes de nómina (rubros): ingresos, deducciones, aportes. Define clasificaciones, tipos y jerarquías de rubros",
+      "phase": "Phase 1 - Core Services",
+      "functionalities": [
+        {
+          "id": "PRL-F001",
+          "name": "Gestión de Componentes Salariales",
+          "domain": "SalaryComponent"
+        },
+        {
+          "id": "PRL-F014",
+          "name": "Gestión de Parámetros de Nómina",
+          "domain": "Configuration"
+        },
+        {
+          "id": "PRL-F025",
+          "name": "Gestión de Tasas de Descuento",
+          "domain": "TaxDeduction"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-001",
+          "screenName": "Parámetros - Listado",
+          "controllerClassName": "ParametrosListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-rubros-parametros"
+        },
+        {
+          "screenId": "scr-002",
+          "screenName": "Parámetros - Editar/Crear",
+          "controllerClassName": "ParametrosDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-rubros-parametros"
+        },
+        {
+          "screenId": "scr-003",
+          "screenName": "Rubros - Listado",
+          "controllerClassName": "RubrosListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-rubros-parametros"
+        },
+        {
+          "screenId": "scr-004",
+          "screenName": "Rubros - Editar/Crear",
+          "controllerClassName": "RubrosDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-rubros-parametros"
+        },
+        {
+          "screenId": "scr-005",
+          "screenName": "Rubros x Proceso - Asignación",
+          "controllerClassName": "RubrosxProcesoDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-rubros-parametros"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyRubro.java",
+        "AvPyRubrosl.java",
+        "AvPyClasesrubro.java",
+        "AvPyClasesrubrosl.java",
+        "AvPyParametro.java"
+      ],
+      "restEndpoints": [
+        "GET /api/payroll/components",
+        "POST /api/payroll/components",
+        "PUT /api/payroll/components/{id}",
+        "DELETE /api/payroll/components/{id}",
+        "GET /api/payroll/components/classes",
+        "GET /api/payroll/parameters",
+        "POST /api/payroll/parameters",
+        "PUT /api/payroll/parameters/{id}"
+      ],
+      "dependencies": ["CompanyStructureService"],
+      "screenCount": 5,
+      "functionalityCount": 3
+    },
+    {
+      "serviceId": "MS-002",
+      "name": "EmployeeSalaryCalculationService",
+      "port": 8102,
+      "criticality": "CRITICAL",
+      "complexity": "HIGH",
+      "businessCapability": "Employee Salary Calculation",
+      "description": "Calcula salarios por empleado aplicando rubros configurados. Determina qué rubros aplican a cada empleado según su contrato y posición",
+      "phase": "Phase 1 - Core Services",
+      "functionalities": [
+        {
+          "id": "PRL-F002",
+          "name": "Cálculo de Rubros por Empleado",
+          "domain": "SalaryCalculation"
+        },
+        {
+          "id": "PRL-F018",
+          "name": "Cálculo de Acumulados",
+          "domain": "SalaryCalculation"
+        },
+        {
+          "id": "PRL-F019",
+          "name": "Historial de Cambios de Rubros",
+          "domain": "RubroHistory"
+        },
+        {
+          "id": "PRL-F030",
+          "name": "Asignación de Rubros por Contrato",
+          "domain": "ContractManagement"
+        },
+        {
+          "id": "PRL-F034",
+          "name": "Simulación de Nómina",
+          "domain": "Simulation"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-201",
+          "screenName": "Nómina - Resumen General",
+          "controllerClassName": "NominaResumenGeneralCtrl",
+          "screenType": "Summary",
+          "mfeId": "mfe-payroll-salary-calculation"
+        },
+        {
+          "screenId": "scr-202",
+          "screenName": "Acumulados - Main",
+          "controllerClassName": "AcumuladosMainCtrl",
+          "screenType": "Main",
+          "mfeId": "mfe-payroll-salary-calculation"
+        },
+        {
+          "screenId": "scr-203",
+          "screenName": "Nómina - Resumen por Rubro",
+          "controllerClassName": "NominaResumenGralxRubroCtrl",
+          "screenType": "Summary",
+          "mfeId": "mfe-payroll-salary-calculation"
+        },
+        {
+          "screenId": "scr-205",
+          "screenName": "Nómina - Resumen General x Rubro",
+          "controllerClassName": "NominaResumenGralCxRubroCtrl",
+          "screenType": "Summary",
+          "mfeId": "mfe-payroll-salary-calculation"
+        },
+        {
+          "screenId": "scr-206",
+          "screenName": "Nómina x Colaborador - Listado",
+          "controllerClassName": "NominaxColabListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-salary-calculation"
+        },
+        {
+          "screenId": "scr-208",
+          "screenName": "Nómina x Colaborador - Detalle",
+          "controllerClassName": "NominaxColabPreDialogCtrl",
+          "screenType": "Detail",
+          "mfeId": "mfe-payroll-salary-calculation"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyRubroslpreColab.java",
+        "AvPyRubroslpre.java",
+        "AvPyAcumulado.java",
+        "AvPyRubroslhis.java"
+      ],
+      "restEndpoints": [
+        "POST /api/employees/{employeeId}/salary/calculate",
+        "GET /api/employees/{employeeId}/salary/components",
+        "GET /api/employees/{employeeId}/salary/history",
+        "PUT /api/employees/{employeeId}/salary/components/{rubroId}",
+        "POST /api/employees/{employeeId}/salary/retroactive",
+        "GET /api/employees/{employeeId}/salary/accumulated",
+        "POST /api/employees/{employeeId}/salary/simulate"
+      ],
+      "dependencies": ["SalaryComponentService", "EmployeeService", "ContractService"],
+      "screenCount": 6,
+      "functionalityCount": 5
+    },
+    {
+      "serviceId": "MS-003",
+      "name": "PayrollGenerationService",
+      "port": 8103,
+      "criticality": "CRITICAL",
+      "complexity": "VERY_HIGH",
+      "businessCapability": "Payroll Generation & Execution",
+      "description": "Orquesta y ejecuta el ciclo completo de generación de nómina para un período. Coordina cálculos, validaciones y aprobaciones",
+      "phase": "Phase 1 - Core Services",
+      "functionalities": [
+        {
+          "id": "PRL-F003",
+          "name": "Generación y Ejecución de Nómina",
+          "domain": "PayrollGeneration"
+        },
+        {
+          "id": "PRL-F016",
+          "name": "Validación de Procesos",
+          "domain": "Validation"
+        },
+        {
+          "id": "PRL-F017",
+          "name": "Auditoría de Cambios",
+          "domain": "Audit"
+        },
+        {
+          "id": "PRL-F024",
+          "name": "Interfaz de Importación de Datos",
+          "domain": "DataIntegration"
+        },
+        {
+          "id": "PRL-F026",
+          "name": "Cierre de Período",
+          "domain": "PeriodManagement"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-207",
+          "screenName": "Nómina x Colaborador - Preview",
+          "controllerClassName": "NominaxColabPreListCtrl",
+          "screenType": "Preview",
+          "mfeId": "mfe-payroll-salary-calculation"
+        },
+        {
+          "screenId": "scr-209",
+          "screenName": "Resumen Nómina - General",
+          "controllerClassName": "ResumenGralNominaDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-salary-calculation"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyProcesos.java",
+        "AvPyProcesosinstancias.java",
+        "AvPyProcesosl.java",
+        "AvPyLogRegistrosProceso.java",
+        "AvPyParametro.java"
+      ],
+      "restEndpoints": [
+        "POST /api/payroll/processes/start",
+        "POST /api/payroll/processes/{processId}/execute",
+        "GET /api/payroll/processes/{processId}/status",
+        "POST /api/payroll/processes/{processId}/validate",
+        "POST /api/payroll/processes/{processId}/close-period",
+        "POST /api/payroll/import"
+      ],
+      "dependencies": ["SalaryComponentService", "EmployeeSalaryCalculationService"],
+      "screenCount": 2,
+      "functionalityCount": 5
+    },
+    {
+      "serviceId": "MS-004",
+      "name": "PaymentDistributionService",
+      "port": 8104,
+      "criticality": "HIGH",
+      "complexity": "MEDIUM",
+      "businessCapability": "Payment Distribution & Allocation",
+      "description": "Gestiona la distribución de pagos entre cuentas bancarias. Administra configuraciones de acreditación y bonificaciones",
+      "phase": "Phase 2 - Distribution & Integration",
+      "functionalities": [
+        {
+          "id": "PRL-F004",
+          "name": "Distribución de Pagos",
+          "domain": "PaymentAllocation"
+        },
+        {
+          "id": "PRL-F020",
+          "name": "Descuentos Diferidos",
+          "domain": "Deferred"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-301",
+          "screenName": "Distribución de Pagos - Listado",
+          "controllerClassName": "DistribucionCostosListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-distribution"
+        },
+        {
+          "screenId": "scr-302",
+          "screenName": "Distribución de Pagos - Editar/Crear",
+          "controllerClassName": "DistribucionCostosDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-distribution"
+        },
+        {
+          "screenId": "scr-303",
+          "screenName": "Distribución por Colaborador - Asignación",
+          "controllerClassName": "ColaboradoresDistribucionDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-distribution"
+        },
+        {
+          "screenId": "scr-304",
+          "screenName": "Valores Diferidos - Listado",
+          "controllerClassName": "DistribValesDifListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-distribution"
+        },
+        {
+          "screenId": "scr-305",
+          "screenName": "Valores Diferidos - Editar/Crear",
+          "controllerClassName": "DistribValesDiferidosDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-distribution"
+        },
+        {
+          "screenId": "scr-307",
+          "screenName": "Acreditación - Bonificaciones",
+          "controllerClassName": "AcreditacionBonificacionesCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-distribution"
+        },
+        {
+          "screenId": "scr-308",
+          "screenName": "Actualizar Pago Sugerido - Anticipos",
+          "controllerClassName": "ActualizarPagoSugeridoAnticiposDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-distribution"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyDistribucion.java",
+        "AvPyDistribucionDet.java",
+        "AvPyDistribValesdif.java",
+        "AvPyDistribValesdifDet.java"
+      ],
+      "restEndpoints": [
+        "POST /api/payroll/{payrollId}/distributions",
+        "GET /api/payroll/{payrollId}/distributions",
+        "PUT /api/payroll/{payrollId}/distributions/{distributionId}",
+        "POST /api/payroll/{payrollId}/deferred-values",
+        "GET /api/payroll/{payrollId}/deferred-values"
+      ],
+      "dependencies": ["PayrollGenerationService", "BankingIntegrationService"],
+      "screenCount": 7,
+      "functionalityCount": 2
+    },
+    {
+      "serviceId": "MS-005",
+      "name": "CostAllocationService",
+      "port": 8105,
+      "criticality": "HIGH",
+      "complexity": "MEDIUM",
+      "businessCapability": "Departmental Cost Allocation",
+      "description": "Asigna costos de nómina a centros de costo, departamentos y dimensiones organizacionales",
+      "phase": "Phase 2 - Distribution & Integration",
+      "functionalities": [
+        {
+          "id": "PRL-F005",
+          "name": "Asignación de Costos por Departamento",
+          "domain": "CostAllocation"
+        },
+        {
+          "id": "PRL-F031",
+          "name": "Distribución por Dimensión",
+          "domain": "CostAllocation"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-401",
+          "screenName": "Distribución de Costos - Listado",
+          "controllerClassName": "DistribucionCostosListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-cost-allocation"
+        },
+        {
+          "screenId": "scr-402",
+          "screenName": "Distribución de Costos - Editar/Crear",
+          "controllerClassName": "DistribucionCostosDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-cost-allocation"
+        },
+        {
+          "screenId": "scr-403",
+          "screenName": "Distribución de Costos - Por Perfil",
+          "controllerClassName": "DistribucionCostosLocxPerfilListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-cost-allocation"
+        },
+        {
+          "screenId": "scr-404",
+          "screenName": "Distribución de Costos - Por Colaborador",
+          "controllerClassName": "DistribucionCostosColabxPerfilListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-cost-allocation"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyDistcosto.java",
+        "AvPyDistcostoscxpl.java",
+        "AvPyDistcostoslxpl.java",
+        "AvPyDistcostoscxplV.java",
+        "AvPyDistcostoslxplV.java"
+      ],
+      "restEndpoints": [
+        "POST /api/payroll/{payrollId}/cost-allocation",
+        "GET /api/payroll/{payrollId}/cost-allocation",
+        "PUT /api/payroll/{payrollId}/cost-allocation/{allocationId}",
+        "GET /api/payroll/by-department",
+        "GET /api/departments/{departmentId}/salary-costs"
+      ],
+      "dependencies": ["PayrollGenerationService", "CompanyStructureService"],
+      "screenCount": 4,
+      "functionalityCount": 2
+    },
+    {
+      "serviceId": "MS-006",
+      "name": "DebtManagementService",
+      "port": 8106,
+      "criticality": "HIGH",
+      "complexity": "MEDIUM",
+      "businessCapability": "Employee Debt & Withholding Management",
+      "description": "Gestiona deudas de empleados, embargos judiciales y retenciones. Controla endeudamiento y acuerdos de pago",
+      "phase": "Phase 3 - Advanced Features",
+      "functionalities": [
+        {
+          "id": "PRL-F006",
+          "name": "Gestión de Deudas y Embargos",
+          "domain": "DebtManagement"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-505",
+          "screenName": "Deudas - Endeudamiento",
+          "controllerClassName": "EndeudamientoMsgCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-loans-debts"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyEndeudamiento.java"
+      ],
+      "restEndpoints": [
+        "GET /api/payroll/{payrollId}/debts",
+        "POST /api/payroll/{payrollId}/debts/approval",
+        "GET /api/employee/{employeeId}/debt-status"
+      ],
+      "dependencies": ["EmployeeSalaryCalculationService"],
+      "screenCount": 1,
+      "functionalityCount": 1
+    },
+    {
+      "serviceId": "MS-007",
+      "name": "SpecialDeductionService",
+      "port": 8107,
+      "criticality": "CRITICAL",
+      "complexity": "MEDIUM",
+      "businessCapability": "Tax & Special Deductions",
+      "description": "Calcula impuestos (IR), aportes IESS, tasas de descuento especiales. Maneja tabla de tarifas impositivas",
+      "phase": "Phase 1 - Core Services",
+      "functionalities": [
+        {
+          "id": "PRL-F007",
+          "name": "Cálculo de Impuestos y IESS",
+          "domain": "TaxDeduction"
+        },
+        {
+          "id": "PRL-F025",
+          "name": "Gestión de Tasas de Descuento",
+          "domain": "TaxDeduction"
+        }
+      ],
+      "screens": [],
+      "screenNotes": "No posee pantallas propias. Las tasas se configuran vía SalaryComponentService (Rubros/Parámetros). Servicio backend puro de cálculo.",
+      "relatedEntities": [
+        "AvPyRubro.java (type=DEDUCCION)",
+        "AvPyParametro.java (taxRates)"
+      ],
+      "restEndpoints": [
+        "POST /api/deductions/calculate-tax/{employeeId}",
+        "POST /api/deductions/calculate-iess/{employeeId}",
+        "GET /api/deductions/tax-rates",
+        "PUT /api/deductions/tax-rates/{rateId}"
+      ],
+      "dependencies": ["SalaryComponentService", "EmployeeSalaryCalculationService"],
+      "screenCount": 0,
+      "functionalityCount": 2
+    },
+    {
+      "serviceId": "MS-008",
+      "name": "LoanManagementService",
+      "port": 8108,
+      "criticality": "HIGH",
+      "complexity": "HIGH",
+      "businessCapability": "Employee Loans & Credit Management",
+      "description": "Gestiona préstamos de empleados, cuotas, abonos, cancelaciones. Controla plan de amortización y estado de deuda",
+      "phase": "Phase 3 - Advanced Features",
+      "functionalities": [
+        {
+          "id": "PRL-F008",
+          "name": "Gestión de Préstamos a Empleados",
+          "domain": "LoanManagement"
+        },
+        {
+          "id": "PRL-F021",
+          "name": "Gestión de Cuotas de Préstamo",
+          "domain": "LoanManagement"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-501",
+          "screenName": "Préstamos - Listado",
+          "controllerClassName": "RubrosPrestamoListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-loans-debts"
+        },
+        {
+          "screenId": "scr-502",
+          "screenName": "Préstamos - Detalle",
+          "controllerClassName": "RubrosPrestamoDetailCtrl",
+          "screenType": "Form",
+          "mfeId": "mfe-payroll-loans-debts"
+        },
+        {
+          "screenId": "scr-503",
+          "screenName": "Abonos a Préstamos",
+          "controllerClassName": "RubrosPrestamoAbonosCtrl",
+          "screenType": "Form",
+          "mfeId": "mfe-payroll-loans-debts"
+        },
+        {
+          "screenId": "scr-504",
+          "screenName": "Cancelación de Préstamos",
+          "controllerClassName": "RubrosPrestamoAbonosCancelCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-loans-debts"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyRubrosPrestamo.java",
+        "AvPyRubroslpreColab.java"
+      ],
+      "restEndpoints": [
+        "GET /api/payroll/{payrollId}/loans",
+        "GET /api/payroll/{payrollId}/loans/{loanId}",
+        "POST /api/payroll/{payrollId}/loans/{loanId}/payments",
+        "PUT /api/payroll/{payrollId}/loans/{loanId}/cancel",
+        "GET /api/payroll/{payrollId}/loans/{loanId}/amortization"
+      ],
+      "dependencies": ["EmployeeSalaryCalculationService", "PaymentDistributionService"],
+      "screenCount": 4,
+      "functionalityCount": 2
+    },
+    {
+      "serviceId": "MS-009",
+      "name": "AdvanceManagementService",
+      "port": 8109,
+      "criticality": "HIGH",
+      "complexity": "HIGH",
+      "businessCapability": "Salary Advance Requests & Authorization",
+      "description": "Gestiona solicitudes de anticipo de sueldo, flujo de aprobación, carga masiva y reportes de anticipos",
+      "phase": "Phase 3 - Advanced Features",
+      "functionalities": [
+        {
+          "id": "PRL-F012",
+          "name": "Autorización de Anticipo de Sueldo",
+          "domain": "AdvanceManagement"
+        },
+        {
+          "id": "PRL-F013",
+          "name": "Autorización de Sobregiro",
+          "domain": "AdvanceManagement"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-601",
+          "screenName": "Solicitud de Anticipos - Listado",
+          "controllerClassName": "SolicitudAnticipoSueldoListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-advances-overdrafts"
+        },
+        {
+          "screenId": "scr-602",
+          "screenName": "Solicitud de Anticipo - Crear/Editar",
+          "controllerClassName": "solicitudAnticipoDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-advances-overdrafts"
+        },
+        {
+          "screenId": "scr-603",
+          "screenName": "Aprobación de Anticipos - Masiva",
+          "controllerClassName": "AprobacionMasivaAnticiposSueldoDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-advances-overdrafts"
+        },
+        {
+          "screenId": "scr-604",
+          "screenName": "Autorización de Anticipos - Colaborador",
+          "controllerClassName": "ColaboradoresAutorizaAnticipoDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-advances-overdrafts"
+        },
+        {
+          "screenId": "scr-605",
+          "screenName": "Archivo de Anticipos",
+          "controllerClassName": "ArchivoAnticipoSueldoListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-advances-overdrafts"
+        },
+        {
+          "screenId": "scr-608",
+          "screenName": "Reportes de Anticipos",
+          "controllerClassName": "ReportesAnticiposSueldoCtrl",
+          "screenType": "Report",
+          "mfeId": "mfe-payroll-advances-overdrafts"
+        }
+      ],
+      "relatedEntities": [
+        "AvRhSolicitudAnticipoSueldo.java",
+        "AvRhAutorizaAnticipoSueldo.java",
+        "AvRhCargaAnticipoSueldoAcre.java"
+      ],
+      "restEndpoints": [
+        "POST /api/payroll/{payrollId}/advances/request",
+        "GET /api/payroll/{payrollId}/advances",
+        "POST /api/payroll/{payrollId}/advances/{advanceId}/approve",
+        "POST /api/payroll/{payrollId}/advances/batch-approve",
+        "GET /api/employee/{employeeId}/advance-limit",
+        "POST /api/payroll/{payrollId}/advances/upload-file"
+      ],
+      "dependencies": ["EmployeeSalaryCalculationService", "PayrollGenerationService"],
+      "screenCount": 6,
+      "functionalityCount": 2
+    },
+    {
+      "serviceId": "MS-010",
+      "name": "OverdraftAuthorizationService",
+      "port": 8118,
+      "criticality": "MEDIUM",
+      "complexity": "MEDIUM",
+      "businessCapability": "Overdraft Management & Authorization",
+      "description": "Gestiona sobregiros de sueldo, autorización y límites. Separado de anticipos por ser un flujo de aprobación diferente",
+      "phase": "Phase 3 - Advanced Features",
+      "functionalities": [
+        {
+          "id": "PRL-F013",
+          "name": "Autorización de Sobregiro",
+          "domain": "AdvanceManagement"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-606",
+          "screenName": "Sobregiros - Listado",
+          "controllerClassName": "SobregiroListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-advances-overdrafts"
+        },
+        {
+          "screenId": "scr-607",
+          "screenName": "Sobregiros - Autorización",
+          "controllerClassName": "SobregiroDialogCtrl",
+          "screenType": "Dialog",
+          "mfeId": "mfe-payroll-advances-overdrafts"
+        }
+      ],
+      "relatedEntities": [
+        "AvRhAutorizaSobregiro.java"
+      ],
+      "restEndpoints": [
+        "POST /api/payroll/{payrollId}/overdraft/authorize",
+        "GET /api/payroll/{payrollId}/overdrafts",
+        "GET /api/employee/{employeeId}/overdraft-status",
+        "PUT /api/payroll/{payrollId}/overdrafts/{overdraftId}"
+      ],
+      "dependencies": ["AdvanceManagementService", "EmployeeSalaryCalculationService"],
+      "screenCount": 2,
+      "functionalityCount": 1
+    },
+    {
+      "serviceId": "MS-011",
+      "name": "AccountingIntegrationService",
+      "port": 8112,
+      "criticality": "CRITICAL",
+      "complexity": "HIGH",
+      "businessCapability": "Accounting Export & Integration",
+      "description": "Genera y exporta asientos contables desde nómina. Gestiona plantillas contables, mapeo de cuentas y conciliación",
+      "phase": "Phase 4 - Integrations",
+      "functionalities": [
+        {
+          "id": "PRL-F009",
+          "name": "Integración Contable",
+          "domain": "Accounting"
+        },
+        {
+          "id": "PRL-F015",
+          "name": "Plantillas Contables",
+          "domain": "Accounting"
+        },
+        {
+          "id": "PRL-F022",
+          "name": "Mapeo de Cuentas Contables",
+          "domain": "Accounting"
+        },
+        {
+          "id": "PRL-F027",
+          "name": "Reversión de Nómina",
+          "domain": "Reversal"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-701",
+          "screenName": "Consulta Contable - Asientos",
+          "controllerClassName": "ConsultaContableListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-accounting-integration"
+        },
+        {
+          "screenId": "scr-702",
+          "screenName": "Consulta Contable Financiera",
+          "controllerClassName": "ConsultaContableFinancieraListCtrl",
+          "screenType": "Report",
+          "mfeId": "mfe-payroll-accounting-integration"
+        },
+        {
+          "screenId": "scr-703",
+          "screenName": "Plantilla Contable - Configuración",
+          "controllerClassName": "PlantillaContableListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-accounting-integration"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyPlantillaContable.java",
+        "AvPyRubroslhis.java",
+        "AvPyCtasubctaAso.java"
+      ],
+      "restEndpoints": [
+        "GET /api/payroll/{payrollId}/gl-entries",
+        "POST /api/payroll/{payrollId}/post-entries",
+        "GET /api/payroll/{payrollId}/journals/{journalId}",
+        "POST /api/journals/{journalId}/reverse",
+        "GET /api/accounting/templates",
+        "POST /api/accounting/templates"
+      ],
+      "dependencies": ["PayrollGenerationService", "SalaryComponentService"],
+      "screenCount": 3,
+      "functionalityCount": 4
+    },
+    {
+      "serviceId": "MS-012",
+      "name": "BankingIntegrationService",
+      "port": 8110,
+      "criticality": "CRITICAL",
+      "complexity": "HIGH",
+      "businessCapability": "Banking & Payment Interface",
+      "description": "Genera archivos ACH/SWIFT, gestiona transferencias bancarias, confirmaciones de pago y consulta de acreditaciones",
+      "phase": "Phase 4 - Integrations",
+      "functionalities": [
+        {
+          "id": "PRL-F010",
+          "name": "Interfaz Bancaria",
+          "domain": "Banking"
+        },
+        {
+          "id": "PRL-F028",
+          "name": "Validación de Datos Bancarios",
+          "domain": "Banking"
+        },
+        {
+          "id": "PRL-F029",
+          "name": "Reintentos de Transferencia",
+          "domain": "Banking"
+        },
+        {
+          "id": "PRL-F032",
+          "name": "Confirmación de Pagos Bancarios",
+          "domain": "Banking"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-306",
+          "screenName": "Acreditaciones - Listado",
+          "controllerClassName": "ConsultaAcreditacionesListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-distribution"
+        },
+        {
+          "screenId": "scr-801",
+          "screenName": "Acreditaciones - Consulta",
+          "controllerClassName": "ConsultaAcreditacionesListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-banking-data-integration"
+        },
+        {
+          "screenId": "scr-802",
+          "screenName": "Generación de Archivo Bancario",
+          "controllerClassName": "GeneracionArchivoBancarioCtrl",
+          "screenType": "Form",
+          "mfeId": "mfe-payroll-banking-data-integration"
+        },
+        {
+          "screenId": "scr-804",
+          "screenName": "Gestión de Archivos de Interfaz",
+          "controllerClassName": "GestionArchivosInterfazCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-banking-data-integration"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyInterfas.java",
+        "AvPyInterfasarchivo.java"
+      ],
+      "restEndpoints": [
+        "POST /api/payroll/{payrollId}/banking-file",
+        "GET /api/payroll/{payrollId}/banking-status",
+        "POST /api/payroll/{payrollId}/banking-confirmation",
+        "GET /api/payroll/{payrollId}/acreditaciones",
+        "POST /api/payroll/{payrollId}/banking-retry"
+      ],
+      "dependencies": ["PaymentDistributionService", "PayrollGenerationService"],
+      "screenCount": 4,
+      "functionalityCount": 4
+    },
+    {
+      "serviceId": "MS-013",
+      "name": "PayrollReportingService",
+      "port": 8111,
+      "criticality": "MEDIUM",
+      "complexity": "MEDIUM",
+      "businessCapability": "Payroll Reports & Analytics",
+      "description": "Genera todos los reportes de nómina: roles, comparativas, gastos personales, decimotercero, reportes de cumplimiento",
+      "phase": "Phase 5 - Reporting & Analytics",
+      "functionalities": [
+        {
+          "id": "PRL-F011",
+          "name": "Reportes y Análisis de Nómina",
+          "domain": "Reporting"
+        },
+        {
+          "id": "PRL-F023",
+          "name": "Comparativa de Nóminas",
+          "domain": "Reporting"
+        },
+        {
+          "id": "PRL-F033",
+          "name": "Exportación de Nómina",
+          "domain": "Reporting"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-204",
+          "screenName": "Nómina - Comparativo",
+          "controllerClassName": "ComparativoNominasListCtrl",
+          "screenType": "Comparison",
+          "mfeId": "mfe-payroll-salary-calculation"
+        },
+        {
+          "screenId": "scr-901",
+          "screenName": "Reportes - Catálogo",
+          "controllerClassName": "ReportsListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-reports-analytics"
+        },
+        {
+          "screenId": "scr-902",
+          "screenName": "Comparativa de Nóminas",
+          "controllerClassName": "ComparativoNominasListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-reports-analytics"
+        },
+        {
+          "screenId": "scr-903",
+          "screenName": "Reportes Especiales - IR/INEC",
+          "controllerClassName": "ReporteIRINECDialogCtrl",
+          "screenType": "Report",
+          "mfeId": "mfe-payroll-reports-analytics"
+        },
+        {
+          "screenId": "scr-905",
+          "screenName": "Exportación de Reportes",
+          "controllerClassName": "ReportExportCtrl",
+          "screenType": "Form",
+          "mfeId": "mfe-payroll-reports-analytics"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyComparativoNomina.java",
+        "AvPyRubroslhis.java",
+        "AvCaPeriodosta.java"
+      ],
+      "restEndpoints": [
+        "GET /api/payroll/{payrollId}/reports",
+        "GET /api/payroll/{payrollId}/reports/{reportId}",
+        "POST /api/payroll/{payrollId}/reports/{reportId}/generate",
+        "GET /api/payroll/{payrollId}/reports/special/ir",
+        "GET /api/payroll/{payrollId}/reports/special/inec",
+        "POST /api/payroll/{payrollId}/reports/export"
+      ],
+      "dependencies": ["PayrollGenerationService", "EmployeeSalaryCalculationService"],
+      "screenCount": 5,
+      "functionalityCount": 3
+    },
+    {
+      "serviceId": "MS-014",
+      "name": "FileGenerationService",
+      "port": 8114,
+      "criticality": "HIGH",
+      "complexity": "MEDIUM",
+      "businessCapability": "File Format Generation (ACH/SWIFT/CSV)",
+      "description": "Genera archivos en formatos específicos para bancos (ACH, SWIFT) y exportación de datos (CSV, XML)",
+      "phase": "Phase 4 - Integrations",
+      "functionalities": [
+        {
+          "id": "PRL-F010",
+          "name": "Interfaz Bancaria (generación de archivo)",
+          "domain": "Banking"
+        },
+        {
+          "id": "PRL-F024",
+          "name": "Interfaz de Importación de Datos",
+          "domain": "DataIntegration"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-802",
+          "screenName": "Generación de Archivo Bancario",
+          "controllerClassName": "GeneracionArchivoBancarioCtrl",
+          "screenType": "Form",
+          "mfeId": "mfe-payroll-banking-data-integration"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyInterfas.java",
+        "AvPyInterfasarchivo.java"
+      ],
+      "restEndpoints": [
+        "POST /api/files/generate-ach",
+        "POST /api/files/generate-swift",
+        "POST /api/files/validate",
+        "GET /api/files/{fileId}"
+      ],
+      "dependencies": ["BankingIntegrationService"],
+      "screenCount": 1,
+      "functionalityCount": 2
+    },
+    {
+      "serviceId": "MS-015",
+      "name": "DataExportService",
+      "port": 8115,
+      "criticality": "MEDIUM",
+      "complexity": "MEDIUM",
+      "businessCapability": "Data Export & CSV Generation",
+      "description": "Exporta datos de nómina, contratos y colaboradores a sistemas externos en formato CSV/XML/JSON",
+      "phase": "Phase 4 - Integrations",
+      "functionalities": [
+        {
+          "id": "PRL-F033",
+          "name": "Exportación de Nómina",
+          "domain": "Reporting"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-803",
+          "screenName": "Exportación de Datos - CSV",
+          "controllerClassName": "GeneracionCSVContratosCtrl",
+          "screenType": "Form",
+          "mfeId": "mfe-payroll-banking-data-integration"
+        },
+        {
+          "screenId": "scr-905",
+          "screenName": "Exportación de Reportes",
+          "controllerClassName": "ReportExportCtrl",
+          "screenType": "Form",
+          "mfeId": "mfe-payroll-reports-analytics"
+        }
+      ],
+      "relatedEntities": [
+        "AvRhContratoscsv.java"
+      ],
+      "restEndpoints": [
+        "POST /api/export/csv",
+        "POST /api/export/validate",
+        "GET /api/export/fields",
+        "POST /api/export/schedule"
+      ],
+      "dependencies": ["PayrollReportingService"],
+      "screenCount": 2,
+      "functionalityCount": 1
+    },
+    {
+      "serviceId": "MS-016",
+      "name": "AnalyticsService",
+      "port": 8116,
+      "criticality": "MEDIUM",
+      "complexity": "HIGH",
+      "businessCapability": "Payroll Analytics & Dashboards",
+      "description": "Servicio de análíticas: KPIs, tendencias, anomalías, dashboards de nómina",
+      "phase": "Phase 5 - Reporting & Analytics",
+      "functionalities": [
+        {
+          "id": "PRL-F023",
+          "name": "Comparativa de Nóminas",
+          "domain": "Reporting"
+        }
+      ],
+      "screens": [
+        {
+          "screenId": "scr-904",
+          "screenName": "Análisis de Nómina - Dashboards",
+          "controllerClassName": "PayrollAnalyticsDashboardCtrl",
+          "screenType": "Dashboard",
+          "mfeId": "mfe-payroll-reports-analytics"
+        }
+      ],
+      "relatedEntities": [
+        "AvPyComparativoNomina.java",
+        "AvPyRubroslhis.java"
+      ],
+      "restEndpoints": [
+        "GET /api/analytics/dashboard/{payrollId}",
+        "GET /api/analytics/metrics/{payrollId}",
+        "GET /api/analytics/trends/{payrollId}",
+        "GET /api/analytics/anomalies/{payrollId}"
+      ],
+      "dependencies": ["PayrollReportingService", "PayrollGenerationService"],
+      "screenCount": 1,
+      "functionalityCount": 1
+    },
+    {
+      "serviceId": "MS-017",
+      "name": "QueryService",
+      "port": 8117,
+      "criticality": "MEDIUM",
+      "complexity": "MEDIUM",
+      "businessCapability": "Advanced Query & Data Aggregation",
+      "description": "Motor de consultas avanzadas: comparativas multi-período, agregaciones por dimensión, consultas custom",
+      "phase": "Phase 5 - Reporting & Analytics",
+      "functionalities": [],
+      "screens": [
+        {
+          "screenId": "scr-902",
+          "screenName": "Comparativa de Nóminas",
+          "controllerClassName": "ComparativoNominasListCtrl",
+          "screenType": "List",
+          "mfeId": "mfe-payroll-reports-analytics"
+        }
+      ],
+      "relatedEntities": [],
+      "restEndpoints": [
+        "POST /api/query/comparative",
+        "POST /api/query/aggregate",
+        "GET /api/query/dimensions",
+        "POST /api/query/custom"
+      ],
+      "dependencies": ["PayrollReportingService", "AnalyticsService"],
+      "screenCount": 1,
+      "functionalityCount": 0
+    }
+  ],
+  "summary": {
+    "byPhase": [
+      {
+        "phase": "Phase 1 - Core Services",
+        "microservices": ["SalaryComponentService", "EmployeeSalaryCalculationService", "PayrollGenerationService", "SpecialDeductionService"],
+        "totalScreens": 13,
+        "totalFunctionalities": 15,
+        "priority": "CRITICAL",
+        "estimatedDays": 60
+      },
+      {
+        "phase": "Phase 2 - Distribution & Integration",
+        "microservices": ["PaymentDistributionService", "CostAllocationService"],
+        "totalScreens": 11,
+        "totalFunctionalities": 4,
+        "priority": "HIGH",
+        "estimatedDays": 57
+      },
+      {
+        "phase": "Phase 3 - Advanced Features",
+        "microservices": ["DebtManagementService", "LoanManagementService", "AdvanceManagementService", "OverdraftAuthorizationService"],
+        "totalScreens": 13,
+        "totalFunctionalities": 6,
+        "priority": "HIGH",
+        "estimatedDays": 75
+      },
+      {
+        "phase": "Phase 4 - Integrations",
+        "microservices": ["AccountingIntegrationService", "BankingIntegrationService", "FileGenerationService", "DataExportService"],
+        "totalScreens": 10,
+        "totalFunctionalities": 11,
+        "priority": "CRITICAL",
+        "estimatedDays": 66
+      },
+      {
+        "phase": "Phase 5 - Reporting & Analytics",
+        "microservices": ["PayrollReportingService", "AnalyticsService", "QueryService"],
+        "totalScreens": 7,
+        "totalFunctionalities": 4,
+        "priority": "MEDIUM",
+        "estimatedDays": 36
+      }
+    ],
+    "byCriticality": {
+      "CRITICAL": ["EmployeeSalaryCalculationService", "PayrollGenerationService", "SpecialDeductionService", "AccountingIntegrationService", "BankingIntegrationService"],
+      "HIGH": ["SalaryComponentService", "PaymentDistributionService", "CostAllocationService", "DebtManagementService", "LoanManagementService", "AdvanceManagementService", "FileGenerationService"],
+      "MEDIUM": ["OverdraftAuthorizationService", "PayrollReportingService", "DataExportService", "AnalyticsService", "QueryService"]
+    },
+    "screenDistribution": {
+      "SalaryComponentService": 5,
+      "EmployeeSalaryCalculationService": 6,
+      "PayrollGenerationService": 2,
+      "PaymentDistributionService": 7,
+      "CostAllocationService": 4,
+      "DebtManagementService": 1,
+      "SpecialDeductionService": 0,
+      "LoanManagementService": 4,
+      "AdvanceManagementService": 6,
+      "OverdraftAuthorizationService": 2,
+      "AccountingIntegrationService": 3,
+      "BankingIntegrationService": 4,
+      "PayrollReportingService": 5,
+      "FileGenerationService": 1,
+      "DataExportService": 2,
+      "AnalyticsService": 1,
+      "QueryService": 1
+    },
+    "crossCuttingConcerns": {
+      "authentication": "OAuth2 + JWT token-based auth",
+      "authorization": "Role-based (PAYROLL_USER, PAYROLL_ADMIN, PAYROLL_MANAGER, FINANCE_MANAGER, CFO)",
+      "logging": "Centralized logging via ELK stack",
+      "monitoring": "Spring Boot Actuator + Prometheus + Grafana",
+      "messaging": "Apache Kafka for async communication between services",
+      "apiGateway": "Spring Cloud Gateway on port 8080",
+      "serviceDiscovery": "Eureka Server on port 8761",
+      "configServer": "Spring Cloud Config on port 8888"
+    }
+  }
+}

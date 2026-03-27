@@ -1,0 +1,925 @@
+{
+  "endpoints": [
+    {
+      "screenName": "parametros.zul / parametrosDialog.zul",
+      "baseUrl": "/api/v1/parametros",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/parametros",
+          "summary": "Listar parámetros",
+          "description": "Obtiene la lista paginada de parámetros del sistema de nómina con filtros opcionales por ID, nombre y observaciones",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "idParametro", "type": "string", "required": false, "description": "Filtro por identificador de parámetro"},
+            {"name": "nombre", "type": "string", "required": false, "description": "Filtro por nombre del parámetro"},
+            {"name": "observaciones", "type": "string", "required": false, "description": "Filtro por observaciones"}
+          ],
+          "responseDTO": {
+            "name": "ParametroPageResponseDTO",
+            "description": "Lista paginada de parámetros del sistema",
+            "fields": [
+              {"name": "content", "type": "array<ParametroResponseDTO>", "required": true, "description": "Lista de parámetros"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/parametros/{entorno}/{idParametro}",
+          "summary": "Obtener parámetro por ID",
+          "description": "Obtiene un parámetro específico del sistema por su clave compuesta (entorno + idParametro)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ParametroResponseDTO",
+            "description": "Detalle completo de un parámetro del sistema",
+            "fields": [
+              {"name": "entorno", "type": "string", "required": true, "description": "Identificador del entorno (parte de la clave compuesta)"},
+              {"name": "idParametro", "type": "string", "required": true, "description": "Identificador del parámetro (parte de la clave compuesta)"},
+              {"name": "parametro", "type": "string", "required": true, "description": "Nombre descriptivo del parámetro"},
+              {"name": "datoCadena", "type": "string", "required": false, "description": "Valor tipo cadena del parámetro"},
+              {"name": "datoCadena2", "type": "string", "required": false, "description": "Valor tipo cadena secundario del parámetro"},
+              {"name": "datoNumero", "type": "number", "required": false, "description": "Valor numérico del parámetro"},
+              {"name": "datoNumero2", "type": "number", "required": false, "description": "Valor numérico secundario del parámetro"},
+              {"name": "datoFechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del parámetro"},
+              {"name": "datoFechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del parámetro"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/parametros",
+          "summary": "Crear parámetro",
+          "description": "Crea un nuevo parámetro del sistema de nómina",
+          "requestDTO": {
+            "name": "ParametroCreateDTO",
+            "description": "Datos para crear un nuevo parámetro",
+            "fields": [
+              {"name": "entorno", "type": "string", "required": true, "description": "Identificador del entorno"},
+              {"name": "idParametro", "type": "string", "required": true, "description": "Identificador del parámetro"},
+              {"name": "parametro", "type": "string", "required": true, "description": "Nombre descriptivo del parámetro"},
+              {"name": "datoCadena", "type": "string", "required": false, "description": "Valor tipo cadena"},
+              {"name": "datoCadena2", "type": "string", "required": false, "description": "Valor tipo cadena secundario"},
+              {"name": "datoNumero", "type": "number", "required": false, "description": "Valor numérico"},
+              {"name": "datoNumero2", "type": "number", "required": false, "description": "Valor numérico secundario"},
+              {"name": "datoFechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio"},
+              {"name": "datoFechaFin", "type": "datetime", "required": false, "description": "Fecha de fin"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ParametroResponseDTO",
+            "description": "Parámetro creado con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/parametros/{entorno}/{idParametro}",
+          "summary": "Actualizar parámetro",
+          "description": "Actualiza un parámetro existente del sistema de nómina",
+          "requestDTO": {
+            "name": "ParametroUpdateDTO",
+            "description": "Datos para actualizar un parámetro existente",
+            "fields": [
+              {"name": "parametro", "type": "string", "required": false, "description": "Nombre descriptivo del parámetro"},
+              {"name": "datoCadena", "type": "string", "required": false, "description": "Valor tipo cadena"},
+              {"name": "datoCadena2", "type": "string", "required": false, "description": "Valor tipo cadena secundario"},
+              {"name": "datoNumero", "type": "number", "required": false, "description": "Valor numérico"},
+              {"name": "datoNumero2", "type": "number", "required": false, "description": "Valor numérico secundario"},
+              {"name": "datoFechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio"},
+              {"name": "datoFechaFin", "type": "datetime", "required": false, "description": "Fecha de fin"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ParametroResponseDTO",
+            "description": "Parámetro actualizado con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/parametros/{entorno}/{idParametro}",
+          "summary": "Eliminar parámetro",
+          "description": "Elimina un parámetro del sistema de nómina por su clave compuesta",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "gestionTablaIR.zul / gestionTablaIRDialog.zul",
+      "baseUrl": "/api/v1/tabla-ir",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/tabla-ir",
+          "summary": "Listar tabla IR",
+          "description": "Obtiene la lista paginada de rangos de la tabla de Impuesto a la Renta con filtros por año y tipo",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año fiscal"},
+            {"name": "tipo", "type": "string", "required": false, "description": "Filtro por tipo de tabla (ej. mensual, anual)"}
+          ],
+          "responseDTO": {
+            "name": "TablaIRPageResponseDTO",
+            "description": "Lista paginada de rangos de la tabla IR",
+            "fields": [
+              {"name": "content", "type": "array<TablaIRResponseDTO>", "required": true, "description": "Lista de rangos IR"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/tabla-ir/{id}",
+          "summary": "Obtener rango IR por ID",
+          "description": "Obtiene un rango específico de la tabla de Impuesto a la Renta por su identificador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "TablaIRResponseDTO",
+            "description": "Detalle de un rango de la tabla IR",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único del rango IR"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año fiscal al que aplica el rango"},
+              {"name": "nivel", "type": "integer", "required": true, "description": "Nivel del rango dentro de la tabla"},
+              {"name": "tipo", "type": "string", "required": true, "description": "Tipo de tabla (mensual/anual)"},
+              {"name": "valorMinimo", "type": "number", "required": true, "description": "Valor mínimo del rango (fracción básica inferior)"},
+              {"name": "valorMaximo", "type": "number", "required": false, "description": "Valor máximo del rango (fracción básica superior)"},
+              {"name": "fraccionBasica", "type": "number", "required": false, "description": "Impuesto sobre la fracción básica"},
+              {"name": "porcentajeExcedente", "type": "number", "required": false, "description": "Porcentaje sobre el excedente de la fracción básica"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/tabla-ir",
+          "summary": "Crear rango IR",
+          "description": "Crea un nuevo rango en la tabla de Impuesto a la Renta",
+          "requestDTO": {
+            "name": "TablaIRCreateDTO",
+            "description": "Datos para crear un nuevo rango IR",
+            "fields": [
+              {"name": "anio", "type": "integer", "required": true, "description": "Año fiscal"},
+              {"name": "nivel", "type": "integer", "required": true, "description": "Nivel del rango"},
+              {"name": "tipo", "type": "string", "required": true, "description": "Tipo de tabla (mensual/anual)"},
+              {"name": "valorMinimo", "type": "number", "required": true, "description": "Valor mínimo del rango"},
+              {"name": "valorMaximo", "type": "number", "required": false, "description": "Valor máximo del rango"},
+              {"name": "fraccionBasica", "type": "number", "required": false, "description": "Impuesto sobre la fracción básica"},
+              {"name": "porcentajeExcedente", "type": "number", "required": false, "description": "Porcentaje sobre el excedente"}
+            ]
+          },
+          "responseDTO": {
+            "name": "TablaIRResponseDTO",
+            "description": "Rango IR creado con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/tabla-ir/{id}",
+          "summary": "Actualizar rango IR",
+          "description": "Actualiza un rango existente de la tabla de Impuesto a la Renta",
+          "requestDTO": {
+            "name": "TablaIRUpdateDTO",
+            "description": "Datos para actualizar un rango IR existente",
+            "fields": [
+              {"name": "anio", "type": "integer", "required": false, "description": "Año fiscal"},
+              {"name": "nivel", "type": "integer", "required": false, "description": "Nivel del rango"},
+              {"name": "tipo", "type": "string", "required": false, "description": "Tipo de tabla (mensual/anual)"},
+              {"name": "valorMinimo", "type": "number", "required": false, "description": "Valor mínimo del rango"},
+              {"name": "valorMaximo", "type": "number", "required": false, "description": "Valor máximo del rango"},
+              {"name": "fraccionBasica", "type": "number", "required": false, "description": "Impuesto sobre la fracción básica"},
+              {"name": "porcentajeExcedente", "type": "number", "required": false, "description": "Porcentaje sobre el excedente"}
+            ]
+          },
+          "responseDTO": {
+            "name": "TablaIRResponseDTO",
+            "description": "Rango IR actualizado con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/tabla-ir/{id}",
+          "summary": "Eliminar rango IR",
+          "description": "Elimina un rango de la tabla de Impuesto a la Renta por su identificador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "GastosPersonalesDialog.zul",
+      "baseUrl": "/api/v1/gastos-personales",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/gastos-personales",
+          "summary": "Listar gastos personales",
+          "description": "Obtiene la lista de configuración de gastos personales deducibles con filtro por empresa y año fiscal",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por identificador de empresa"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año fiscal"}
+          ],
+          "responseDTO": {
+            "name": "GastosPersonalesListResponseDTO",
+            "description": "Lista de configuración de gastos personales",
+            "fields": [
+              {"name": "items", "type": "array<GastosPersonalesResponseDTO>", "required": true, "description": "Lista de gastos personales"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/gastos-personales/{id}",
+          "summary": "Obtener gasto personal por ID",
+          "description": "Obtiene la configuración de un gasto personal deducible específico",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "GastosPersonalesResponseDTO",
+            "description": "Detalle de configuración de gasto personal deducible",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año fiscal"},
+              {"name": "descripcion", "type": "string", "required": true, "description": "Descripción del tipo de gasto personal"},
+              {"name": "montoMaximo", "type": "number", "required": false, "description": "Monto máximo deducible"},
+              {"name": "porcentaje", "type": "number", "required": false, "description": "Porcentaje deducible"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la configuración (activo/inactivo)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/gastos-personales",
+          "summary": "Crear gasto personal",
+          "description": "Crea una nueva configuración de gasto personal deducible",
+          "requestDTO": {
+            "name": "GastosPersonalesCreateDTO",
+            "description": "Datos para crear configuración de gasto personal",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año fiscal"},
+              {"name": "descripcion", "type": "string", "required": true, "description": "Descripción del tipo de gasto personal"},
+              {"name": "montoMaximo", "type": "number", "required": false, "description": "Monto máximo deducible"},
+              {"name": "porcentaje", "type": "number", "required": false, "description": "Porcentaje deducible"}
+            ]
+          },
+          "responseDTO": {
+            "name": "GastosPersonalesResponseDTO",
+            "description": "Gasto personal creado con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/gastos-personales/{id}",
+          "summary": "Actualizar gasto personal",
+          "description": "Actualiza una configuración de gasto personal deducible existente",
+          "requestDTO": {
+            "name": "GastosPersonalesUpdateDTO",
+            "description": "Datos para actualizar configuración de gasto personal",
+            "fields": [
+              {"name": "descripcion", "type": "string", "required": false, "description": "Descripción del tipo de gasto personal"},
+              {"name": "montoMaximo", "type": "number", "required": false, "description": "Monto máximo deducible"},
+              {"name": "porcentaje", "type": "number", "required": false, "description": "Porcentaje deducible"}
+            ]
+          },
+          "responseDTO": {
+            "name": "GastosPersonalesResponseDTO",
+            "description": "Gasto personal actualizado con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/gastos-personales/{id}",
+          "summary": "Eliminar gasto personal",
+          "description": "Elimina una configuración de gasto personal deducible",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "genIngProyectados.zul",
+      "baseUrl": "/api/v1/ingresos-proyectados",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/ingresos-proyectados",
+          "summary": "Listar ingresos proyectados",
+          "description": "Obtiene la lista de ingresos proyectados por empresa y período fiscal",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por identificador de empresa"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año fiscal"}
+          ],
+          "responseDTO": {
+            "name": "IngresosProyectadosListResponseDTO",
+            "description": "Lista de ingresos proyectados",
+            "fields": [
+              {"name": "items", "type": "array<IngresoProyectadoResponseDTO>", "required": true, "description": "Lista de ingresos proyectados"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/ingresos-proyectados/{id}",
+          "summary": "Obtener ingreso proyectado por ID",
+          "description": "Obtiene un registro de ingreso proyectado específico",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "IngresoProyectadoResponseDTO",
+            "description": "Detalle de ingreso proyectado",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año fiscal de la proyección"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de la proyección"},
+              {"name": "montoProyectado", "type": "number", "required": true, "description": "Monto del ingreso proyectado"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la proyección"},
+              {"name": "fechaGeneracion", "type": "datetime", "required": false, "description": "Fecha de generación de la proyección"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/ingresos-proyectados/generar",
+          "summary": "Generar ingresos proyectados",
+          "description": "Ejecuta el proceso de generación de ingresos proyectados para un período y empresa especificados",
+          "requestDTO": {
+            "name": "GenerarIngresosProyectadosDTO",
+            "description": "Datos para generar ingresos proyectados",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año fiscal"},
+              {"name": "mesDesde", "type": "integer", "required": false, "description": "Mes de inicio de la proyección"},
+              {"name": "mesHasta", "type": "integer", "required": false, "description": "Mes de fin de la proyección"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ProcesoResponseDTO",
+            "description": "Resultado de la ejecución del proceso de generación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la generación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "registrosGenerados", "type": "integer", "required": false, "description": "Cantidad de registros generados"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/ingresos-proyectados/{id}",
+          "summary": "Actualizar ingreso proyectado",
+          "description": "Actualiza un registro de ingreso proyectado existente",
+          "requestDTO": {
+            "name": "IngresoProyectadoUpdateDTO",
+            "description": "Datos para actualizar ingreso proyectado",
+            "fields": [
+              {"name": "montoProyectado", "type": "number", "required": false, "description": "Monto del ingreso proyectado"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la proyección"}
+            ]
+          },
+          "responseDTO": {
+            "name": "IngresoProyectadoResponseDTO",
+            "description": "Ingreso proyectado actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/ingresos-proyectados/{id}",
+          "summary": "Eliminar ingreso proyectado",
+          "description": "Elimina un registro de ingreso proyectado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "ReporteIRINECDialog.zul",
+      "baseUrl": "/api/v1/reportes-ir-inec",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/reportes-ir-inec",
+          "summary": "Listar reportes IR/INEC disponibles",
+          "description": "Obtiene la lista de reportes IR e INEC disponibles con filtros por empresa y período",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por identificador de empresa"},
+            {"name": "tipo", "type": "string", "required": false, "description": "Tipo de reporte: IR o INEC"}
+          ],
+          "responseDTO": {
+            "name": "ReporteIRINECListResponseDTO",
+            "description": "Lista de reportes IR/INEC disponibles",
+            "fields": [
+              {"name": "items", "type": "array<ReporteIRINECResponseDTO>", "required": true, "description": "Lista de reportes"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/reportes-ir-inec/{id}",
+          "summary": "Obtener reporte IR/INEC por ID",
+          "description": "Obtiene un reporte IR/INEC específico por su identificador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ReporteIRINECResponseDTO",
+            "description": "Detalle de un reporte IR/INEC",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único del reporte"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "tipo", "type": "string", "required": true, "description": "Tipo de reporte (IR/INEC)"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año fiscal del reporte"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del reporte"},
+              {"name": "fechaGeneracion", "type": "datetime", "required": false, "description": "Fecha de generación del reporte"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/reportes-ir-inec/generar",
+          "summary": "Generar reporte IR/INEC",
+          "description": "Ejecuta la generación del reporte IR o INEC para una empresa y período",
+          "requestDTO": {
+            "name": "GenerarReporteIRINECDTO",
+            "description": "Datos para generar un reporte IR/INEC",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "tipo", "type": "string", "required": true, "description": "Tipo de reporte: IR o INEC"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año fiscal del reporte"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato de salida (PDF, XLSX, CSV)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ProcesoResponseDTO",
+            "description": "Resultado de la generación del reporte",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la generación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo generado"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/reportes-ir-inec/{id}",
+          "summary": "Actualizar reporte IR/INEC",
+          "description": "Actualiza la configuración de un reporte IR/INEC existente",
+          "requestDTO": {
+            "name": "ReporteIRINECUpdateDTO",
+            "description": "Datos para actualizar un reporte",
+            "fields": [
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del reporte"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones del reporte"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ReporteIRINECResponseDTO",
+            "description": "Reporte actualizado con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/reportes-ir-inec/{id}",
+          "summary": "Eliminar reporte IR/INEC",
+          "description": "Elimina un reporte IR/INEC por su identificador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "plantillaContable.zul / plantillaContableDialog.zul",
+      "baseUrl": "/api/v1/plantillas-contables",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/plantillas-contables",
+          "summary": "Listar plantillas contables",
+          "description": "Obtiene la lista paginada de plantillas contables con filtros por proceso, rubro y localidad",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "procesoId", "type": "integer", "required": false, "description": "Filtro por identificador de proceso de nómina"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por identificador de rubro"},
+            {"name": "cuenta", "type": "string", "required": false, "description": "Filtro por cuenta contable"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por identificador de localidad/dimensión"}
+          ],
+          "responseDTO": {
+            "name": "PlantillaContablePageResponseDTO",
+            "description": "Lista paginada de plantillas contables",
+            "fields": [
+              {"name": "content", "type": "array<PlantillaContableResponseDTO>", "required": true, "description": "Lista de plantillas contables"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/plantillas-contables/{id}",
+          "summary": "Obtener plantilla contable por ID",
+          "description": "Obtiene una plantilla contable específica con su configuración de cuenta, rubro, proceso y dimensión",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "PlantillaContableResponseDTO",
+            "description": "Detalle de una plantilla contable",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la plantilla contable"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "Identificador del proceso de nómina asociado"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso de nómina"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro de nómina"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "cuenta", "type": "string", "required": true, "description": "Código de cuenta contable"},
+              {"name": "subcuenta", "type": "string", "required": false, "description": "Código de subcuenta contable"},
+              {"name": "auxiliar", "type": "string", "required": false, "description": "Indicador de auxiliar contable (S/N)"},
+              {"name": "debeHaber", "type": "string", "required": true, "description": "Indicador de débito o haber (D/H)"},
+              {"name": "distribucionCosto", "type": "string", "required": false, "description": "Indicador de distribución por centro de costo (S/N)"},
+              {"name": "rpt", "type": "string", "required": false, "description": "Indicador para reportes (S/N)"},
+              {"name": "tcDmCentroCosto", "type": "string", "required": false, "description": "Tipo de cruce para dimensión centro de costo"},
+              {"name": "tcDmLocalidad", "type": "string", "required": false, "description": "Tipo de cruce para dimensión localidad"},
+              {"name": "agrupacionCC", "type": "string", "required": false, "description": "Agrupación por centro de costo"},
+              {"name": "agrupacionLoc", "type": "string", "required": false, "description": "Agrupación por localidad"},
+              {"name": "dimensionId", "type": "integer", "required": false, "description": "Identificador de la dimensión/localidad asociada"},
+              {"name": "dimensionNombre", "type": "string", "required": false, "description": "Nombre de la dimensión/localidad"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/plantillas-contables",
+          "summary": "Crear plantilla contable",
+          "description": "Crea una nueva plantilla contable con mapeo de cuenta, rubro, proceso y dimensión",
+          "requestDTO": {
+            "name": "PlantillaContableCreateDTO",
+            "description": "Datos para crear una nueva plantilla contable",
+            "fields": [
+              {"name": "procesoId", "type": "integer", "required": true, "description": "Identificador del proceso de nómina"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro de nómina"},
+              {"name": "cuenta", "type": "string", "required": true, "description": "Código de cuenta contable"},
+              {"name": "subcuenta", "type": "string", "required": false, "description": "Código de subcuenta contable"},
+              {"name": "auxiliar", "type": "string", "required": false, "description": "Indicador de auxiliar (S/N)"},
+              {"name": "debeHaber", "type": "string", "required": true, "description": "Indicador débito o haber (D/H)"},
+              {"name": "distribucionCosto", "type": "string", "required": false, "description": "Distribución por centro de costo (S/N)"},
+              {"name": "rpt", "type": "string", "required": false, "description": "Indicador para reportes (S/N)"},
+              {"name": "tcDmCentroCosto", "type": "string", "required": false, "description": "Tipo de cruce dimensión centro de costo"},
+              {"name": "tcDmLocalidad", "type": "string", "required": false, "description": "Tipo de cruce dimensión localidad"},
+              {"name": "agrupacionCC", "type": "string", "required": false, "description": "Agrupación centro de costo"},
+              {"name": "agrupacionLoc", "type": "string", "required": false, "description": "Agrupación localidad"},
+              {"name": "dimensionId", "type": "integer", "required": false, "description": "Identificador de dimensión/localidad"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PlantillaContableResponseDTO",
+            "description": "Plantilla contable creada con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/plantillas-contables/{id}",
+          "summary": "Actualizar plantilla contable",
+          "description": "Actualiza una plantilla contable existente con mapeo de cuenta, rubro y dimensión",
+          "requestDTO": {
+            "name": "PlantillaContableUpdateDTO",
+            "description": "Datos para actualizar una plantilla contable",
+            "fields": [
+              {"name": "cuenta", "type": "string", "required": false, "description": "Código de cuenta contable"},
+              {"name": "subcuenta", "type": "string", "required": false, "description": "Código de subcuenta contable"},
+              {"name": "auxiliar", "type": "string", "required": false, "description": "Indicador de auxiliar (S/N)"},
+              {"name": "debeHaber", "type": "string", "required": false, "description": "Indicador débito o haber (D/H)"},
+              {"name": "distribucionCosto", "type": "string", "required": false, "description": "Distribución por centro de costo (S/N)"},
+              {"name": "rpt", "type": "string", "required": false, "description": "Indicador para reportes (S/N)"},
+              {"name": "tcDmCentroCosto", "type": "string", "required": false, "description": "Tipo de cruce dimensión centro de costo"},
+              {"name": "tcDmLocalidad", "type": "string", "required": false, "description": "Tipo de cruce dimensión localidad"},
+              {"name": "agrupacionCC", "type": "string", "required": false, "description": "Agrupación centro de costo"},
+              {"name": "agrupacionLoc", "type": "string", "required": false, "description": "Agrupación localidad"},
+              {"name": "dimensionId", "type": "integer", "required": false, "description": "Identificador de dimensión/localidad"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PlantillaContableResponseDTO",
+            "description": "Plantilla contable actualizada con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/plantillas-contables/{id}",
+          "summary": "Eliminar plantilla contable",
+          "description": "Elimina una plantilla contable por su identificador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rubroplantillaContableDialog.zul",
+      "baseUrl": "/api/v1/plantillas-contables/{plantillaId}/rubros",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/plantillas-contables/{plantillaId}/rubros",
+          "summary": "Listar rubros de plantilla contable",
+          "description": "Obtiene los rubros de nómina asociados a una plantilla contable específica",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "plantillaId", "type": "integer", "required": true, "description": "Identificador de la plantilla contable"}
+          ],
+          "responseDTO": {
+            "name": "RubroPlantillaListResponseDTO",
+            "description": "Lista de rubros asociados a la plantilla contable",
+            "fields": [
+              {"name": "items", "type": "array<RubroPlantillaResponseDTO>", "required": true, "description": "Lista de rubros de la plantilla"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId}",
+          "summary": "Obtener rubro de plantilla por ID",
+          "description": "Obtiene un rubro específico asociado a una plantilla contable",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroPlantillaResponseDTO",
+            "description": "Detalle de un rubro asignado a la plantilla contable",
+            "fields": [
+              {"name": "plantillaId", "type": "integer", "required": true, "description": "Identificador de la plantilla contable"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro de nómina"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre descriptivo del rubro"},
+              {"name": "cuenta", "type": "string", "required": true, "description": "Cuenta contable asignada al rubro"},
+              {"name": "subcuenta", "type": "string", "required": false, "description": "Subcuenta contable del rubro"},
+              {"name": "debeHaber", "type": "string", "required": true, "description": "Indicador débito o haber (D/H)"},
+              {"name": "auxiliar", "type": "string", "required": false, "description": "Indicador de auxiliar (S/N)"},
+              {"name": "distribucionCosto", "type": "string", "required": false, "description": "Distribución por centro de costo (S/N)"},
+              {"name": "dimensionId", "type": "integer", "required": false, "description": "Identificador de la dimensión/localidad"},
+              {"name": "dimensionNombre", "type": "string", "required": false, "description": "Nombre de la dimensión/localidad"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/plantillas-contables/{plantillaId}/rubros",
+          "summary": "Agregar rubro a plantilla",
+          "description": "Asocia un rubro de nómina a una plantilla contable existente con configuración de cuenta",
+          "requestDTO": {
+            "name": "RubroPlantillaCreateDTO",
+            "description": "Datos para asociar un rubro a la plantilla contable",
+            "fields": [
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro de nómina a asociar"},
+              {"name": "cuenta", "type": "string", "required": true, "description": "Cuenta contable para el rubro"},
+              {"name": "subcuenta", "type": "string", "required": false, "description": "Subcuenta contable"},
+              {"name": "debeHaber", "type": "string", "required": true, "description": "Indicador débito o haber (D/H)"},
+              {"name": "auxiliar", "type": "string", "required": false, "description": "Indicador de auxiliar (S/N)"},
+              {"name": "distribucionCosto", "type": "string", "required": false, "description": "Distribución por centro de costo (S/N)"},
+              {"name": "dimensionId", "type": "integer", "required": false, "description": "Identificador de dimensión/localidad"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubroPlantillaResponseDTO",
+            "description": "Rubro asociado a plantilla con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId}",
+          "summary": "Actualizar rubro en plantilla",
+          "description": "Actualiza la configuración de un rubro asociado a una plantilla contable",
+          "requestDTO": {
+            "name": "RubroPlantillaUpdateDTO",
+            "description": "Datos para actualizar la asociación rubro-plantilla",
+            "fields": [
+              {"name": "cuenta", "type": "string", "required": false, "description": "Cuenta contable para el rubro"},
+              {"name": "subcuenta", "type": "string", "required": false, "description": "Subcuenta contable"},
+              {"name": "debeHaber", "type": "string", "required": false, "description": "Indicador débito o haber (D/H)"},
+              {"name": "auxiliar", "type": "string", "required": false, "description": "Indicador de auxiliar (S/N)"},
+              {"name": "distribucionCosto", "type": "string", "required": false, "description": "Distribución por centro de costo (S/N)"},
+              {"name": "dimensionId", "type": "integer", "required": false, "description": "Identificador de dimensión/localidad"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubroPlantillaResponseDTO",
+            "description": "Rubro actualizado en plantilla con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId}",
+          "summary": "Quitar rubro de plantilla",
+          "description": "Elimina la asociación de un rubro a una plantilla contable",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "contratoPlantilla.zul / contratoPlantillaDialog.zul",
+      "baseUrl": "/api/v1/contratos-plantilla",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/contratos-plantilla",
+          "summary": "Listar plantillas por contrato",
+          "description": "Obtiene la lista paginada de plantillas de contrato con filtros de búsqueda",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "nombre", "type": "string", "required": false, "description": "Filtro por nombre de plantilla"},
+            {"name": "descripcion", "type": "string", "required": false, "description": "Filtro por descripción"}
+          ],
+          "responseDTO": {
+            "name": "ContratoPlantillaPageResponseDTO",
+            "description": "Lista paginada de plantillas por contrato",
+            "fields": [
+              {"name": "content", "type": "array<ContratoPlantillaResponseDTO>", "required": true, "description": "Lista de plantillas de contrato"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/contratos-plantilla/{id}",
+          "summary": "Obtener plantilla de contrato por ID",
+          "description": "Obtiene una plantilla de contrato específica con su descripción y archivos asociados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ContratoPlantillaResponseDTO",
+            "description": "Detalle de una plantilla de contrato",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la plantilla de contrato"},
+              {"name": "descripcion", "type": "string", "required": true, "description": "Descripción de la plantilla de contrato"},
+              {"name": "nombreArchivo", "type": "string", "required": false, "description": "Nombre del archivo de la plantilla principal"},
+              {"name": "nombreArchivo2", "type": "string", "required": false, "description": "Nombre del archivo de la plantilla secundaria"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/contratos-plantilla",
+          "summary": "Crear plantilla de contrato",
+          "description": "Crea una nueva plantilla de contrato con archivos asociados",
+          "requestDTO": {
+            "name": "ContratoPlantillaCreateDTO",
+            "description": "Datos para crear una nueva plantilla de contrato",
+            "fields": [
+              {"name": "descripcion", "type": "string", "required": true, "description": "Descripción de la plantilla de contrato"},
+              {"name": "nombreArchivo", "type": "string", "required": false, "description": "Nombre del archivo de la plantilla principal"},
+              {"name": "nombreArchivo2", "type": "string", "required": false, "description": "Nombre del archivo de la plantilla secundaria"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ContratoPlantillaResponseDTO",
+            "description": "Plantilla de contrato creada con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/contratos-plantilla/{id}",
+          "summary": "Actualizar plantilla de contrato",
+          "description": "Actualiza una plantilla de contrato existente con descripción y archivos",
+          "requestDTO": {
+            "name": "ContratoPlantillaUpdateDTO",
+            "description": "Datos para actualizar una plantilla de contrato",
+            "fields": [
+              {"name": "descripcion", "type": "string", "required": false, "description": "Descripción de la plantilla de contrato"},
+              {"name": "nombreArchivo", "type": "string", "required": false, "description": "Nombre del archivo de la plantilla principal"},
+              {"name": "nombreArchivo2", "type": "string", "required": false, "description": "Nombre del archivo de la plantilla secundaria"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ContratoPlantillaResponseDTO",
+            "description": "Plantilla de contrato actualizada con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/contratos-plantilla/{id}",
+          "summary": "Eliminar plantilla de contrato",
+          "description": "Elimina una plantilla de contrato por su identificador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/contratos-plantilla/{id}/archivo",
+          "summary": "Subir archivo de plantilla",
+          "description": "Sube un archivo de plantilla de contrato (principal o secundario) al servidor",
+          "requestDTO": {
+            "name": "ArchivoPlantillaUploadDTO",
+            "description": "Archivo de plantilla para subir (multipart)",
+            "fields": [
+              {"name": "archivo", "type": "binary", "required": true, "description": "Archivo de plantilla a subir"},
+              {"name": "tipo", "type": "string", "required": true, "description": "Tipo de archivo: PRINCIPAL o SECUNDARIO"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ArchivoPlantillaResponseDTO",
+            "description": "Resultado de la subida del archivo",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la subida fue exitosa"},
+              {"name": "nombreArchivo", "type": "string", "required": true, "description": "Nombre del archivo guardado"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

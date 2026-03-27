@@ -1,0 +1,57 @@
+{
+  "slice_id": "slice-4-consultas",
+  "slice_nombre": "👤 Consultas",
+  "moduleName": "consultas",
+  "fullPackage": "com.tia.consultas",
+  "target": "springboot",
+  "generatedAt": "2026-03-24T22:40:02.344Z",
+  "api_file": "vs-consultas-endpoints.json",
+  "api_endpoints_count": 45,
+  "api_schemas_count": 0,
+  "source_context": {
+    "funcionalidades": [
+      "nominaxColabList",
+      "nominaxColabPreList_nominaxColabPreDialog",
+      "nominaresumenGeneral_ResumenGralNominaDialog",
+      "nominaresumenGralxRubro",
+      "nominaresumenGralCxRubro",
+      "comparativoNominas",
+      "conSueldo",
+      "acumulados",
+      "DTOscompartidossubrecursos"
+    ],
+    "total_controladores": 45,
+    "total_servicios": 0,
+    "total_entidades": 39,
+    "total_daos": 0
+  },
+  "generated": {
+    "application_services": [
+      "NominaxcolablistApplicationService",
+      "NominaxcolabprelistNominaxcolabpredialogApplicationService",
+      "NominaresumengeneralResumengralnominadialogApplicationService",
+      "NominaresumengralxrubroApplicationService",
+      "NominaresumengralcxrubroApplicationService",
+      "ComparativonominasApplicationService",
+      "ConsueldoApplicationService",
+      "AcumuladosApplicationService",
+      "DtoscompartidossubrecursosApplicationService"
+    ],
+    "rest_controllers": [
+      "NominaxcolablistController",
+      "NominaxcolabprelistNominaxcolabpredialogController",
+      "NominaresumengeneralResumengralnominadialogController",
+      "NominaresumengralxrubroController",
+      "NominaresumengralcxrubroController",
+      "ComparativonominasController",
+      "ConsueldoController",
+      "AcumuladosController",
+      "DtoscompartidossubrecursosController"
+    ]
+  },
+  "resumen": {
+    "total_services_generated": 9,
+    "total_controllers_generated": 9,
+    "total_api_endpoints": 45
+  }
+}

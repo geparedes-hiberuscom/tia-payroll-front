@@ -1,0 +1,404 @@
+{
+  "endpoints": [
+    {
+      "screenName": "consultaEstadisticasPersonal.zul",
+      "baseUrl": "/api/v1/estadisticas/personal",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/estadisticas/personal",
+          "summary": "Consultar estadísticas de personal",
+          "description": "Obtiene las estadísticas de personal agrupadas por localidad/sucursal para una empresa y período (mes/año). Calcula por cada localidad: número de ingresos (contratados en el mes), retirados (desvinculados en el mes) y activos (empleados activos a la fecha). Datos provienen de native SQL con subqueries correlacionadas sobre av_colaboradorese/av_dimensionesl. Columnas: Local, Nombre, Ingresos, Retirados, Activos. Incluye totales sumados en footer",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "fecha", "type": "string", "required": true, "description": "Fecha del período en formato YYYY-MM"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por ID de localidad (iiddimensionesl). Si no se envía, retorna todas las localidades"}
+          ],
+          "responseDTO": {
+            "name": "EstadisticasPersonalListDTO",
+            "description": "Lista de estadísticas de personal por localidad con totales",
+            "fields": [
+              {"name": "items", "type": "array<EstadisticaPersonalDTO>", "required": true, "description": "Lista de estadísticas por localidad"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de localidades"},
+              {"name": "totalIngresos", "type": "integer", "required": false, "description": "Sumatoria total de ingresos"},
+              {"name": "totalRetirados", "type": "integer", "required": false, "description": "Sumatoria total de retirados"},
+              {"name": "totalActivos", "type": "integer", "required": false, "description": "Sumatoria total de activos"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/estadisticas/personal/{localidadId}",
+          "summary": "Obtener estadística de personal de una localidad",
+          "description": "Obtiene el detalle de estadística de personal de una localidad específica con conteo de ingresos, retirados y activos para el período indicado",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "fecha", "type": "string", "required": true, "description": "Fecha del período (YYYY-MM)"}
+          ],
+          "responseDTO": {
+            "name": "EstadisticaPersonalDTO",
+            "description": "Estadística de personal de una localidad (native SQL Object[])",
+            "fields": [
+              {"name": "localCodigo", "type": "string", "required": true, "description": "Código de la localidad/sucursal (dl.vidditem)"},
+              {"name": "localNombre", "type": "string", "required": true, "description": "Nombre de la localidad (dl.vditem)"},
+              {"name": "localidadId", "type": "integer", "required": true, "description": "ID de la localidad (iiddimensionesl)"},
+              {"name": "ingresos", "type": "integer", "required": false, "description": "Número de empleados ingresados en el mes (dfingreso en el mes/año, iiddmcustom=1)"},
+              {"name": "retirados", "type": "integer", "required": false, "description": "Número de empleados retirados en el mes (vstts=EEP, dfsalida en el mes/año, iiddmcustom=1)"},
+              {"name": "activos", "type": "integer", "required": false, "description": "Número de empleados activos a la fecha (vstts=ACT, dfingreso<=fecha, iiddmcustom=1)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/estadisticas/personal/exportar/excel",
+          "summary": "Exportar estadísticas de personal a Excel",
+          "description": "Exporta las estadísticas de personal a archivo Excel (reporteEstadisticasPersonal.xls) con columnas: Local, Nombre, Ingresos, Retirados, Activos y fila de totales",
+          "requestDTO": {
+            "name": "ExportarEstadisticasPersonalDTO",
+            "description": "Filtros para la exportación",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "fecha", "type": "string", "required": true, "description": "Fecha del período (YYYY-MM)"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del Excel"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de localidades exportadas"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/estadisticas/personal/{localidadId}",
+          "summary": "Actualizar ajuste de estadística de personal",
+          "description": "Permite registrar un ajuste manual a las estadísticas de personal de una localidad para un período (por ejemplo, corrección de conteo de ingresos o retirados por movimientos especiales)",
+          "requestDTO": {
+            "name": "AjusteEstadisticaPersonalDTO",
+            "description": "Datos del ajuste",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "fecha", "type": "string", "required": true, "description": "Período (YYYY-MM)"},
+              {"name": "ajusteIngresos", "type": "integer", "required": false, "description": "Ajuste al conteo de ingresos"},
+              {"name": "ajusteRetirados", "type": "integer", "required": false, "description": "Ajuste al conteo de retirados"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones del ajuste"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EstadisticaPersonalDTO",
+            "description": "Estadística ajustada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/estadisticas/personal/{localidadId}",
+          "summary": "Eliminar ajuste de estadística de personal",
+          "description": "Elimina un ajuste manual registrado previamente para una localidad y período, restaurando los valores calculados originales",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "consultaEstadisticasHorasExtras.zul",
+      "baseUrl": "/api/v1/estadisticas/horas-extras",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/estadisticas/horas-extras",
+          "summary": "Consultar estadísticas de horas extras",
+          "description": "Obtiene las estadísticas de horas extras por colaborador para una empresa y período. Ejecuta UNION de datos pre-liquidación (av_py_rubroslpre) e históricos (av_py_rubroslhis) filtrados por rubros de horas extras (RUBHORAS50, RUBHORAS100, RUBHORAS25) y procesos tipo nómina (ctipoproceso=NO). Columnas: #Local, Local, Cédula, Nombres, Rol, Concepto, Descripción, Importe (mvlrout01), Cantidad (mvlrout02), Estado. Incluye totales de Importe y Cantidad en footer",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "anio", "type": "integer", "required": true, "description": "Año de la consulta"},
+            {"name": "mes", "type": "integer", "required": true, "description": "Mes de la consulta"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por ID de localidad"},
+            {"name": "colaborador", "type": "string", "required": false, "description": "Búsqueda por cédula o nombre del colaborador (LIKE)"},
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"}
+          ],
+          "responseDTO": {
+            "name": "EstadisticasHorasExtrasListDTO",
+            "description": "Lista de estadísticas de horas extras con totales",
+            "fields": [
+              {"name": "content", "type": "array<EstadisticaHorasExtrasDTO>", "required": true, "description": "Lista de registros de horas extras"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"},
+              {"name": "totalImporte", "type": "number", "required": false, "description": "Sumatoria total de Importe (mvlrout01)"},
+              {"name": "totalCantidad", "type": "number", "required": false, "description": "Sumatoria total de Cantidad (mvlrout02)"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId}",
+          "summary": "Obtener detalle de horas extras de un colaborador por rubro",
+          "description": "Obtiene el detalle de horas extras de un colaborador para un rubro específico (RUBHORAS50, RUBHORAS100, RUBHORAS25) en el período indicado, con importe, cantidad, localidad, rol y estado",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "anio", "type": "integer", "required": true, "description": "Año"},
+            {"name": "mes", "type": "integer", "required": true, "description": "Mes"}
+          ],
+          "responseDTO": {
+            "name": "EstadisticaHorasExtrasDTO",
+            "description": "Detalle de horas extras de un colaborador (native SQL UNION Object[])",
+            "fields": [
+              {"name": "localCodigo", "type": "string", "required": false, "description": "#Local - código de la localidad (dm.vidditem)"},
+              {"name": "localNombre", "type": "string", "required": false, "description": "Nombre de la localidad (dm.vditem)"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador (c.vcedula)"},
+              {"name": "nombres", "type": "string", "required": false, "description": "Apellidos y nombres del colaborador (c.vapellidosnombres, max 30 chars)"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "ID del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "rolCodigo", "type": "string", "required": false, "description": "Código del rol (lr.vidditem, dimensión custom)"},
+              {"name": "concepto", "type": "string", "required": false, "description": "ID del rubro/concepto (vidrubro: RUBHORAS50, RUBHORAS100, RUBHORAS25)"},
+              {"name": "descripcion", "type": "string", "required": false, "description": "Descripción del rubro (r.vrubro)"},
+              {"name": "importe", "type": "number", "required": false, "description": "Importe del rubro (mvlrout01)"},
+              {"name": "cantidad", "type": "number", "required": false, "description": "Cantidad de horas (mvlrout02)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del colaborador (ACT→A, EEP→I)"},
+              {"name": "origen", "type": "string", "required": false, "description": "Origen del dato: PRE (pre-liquidación) o HIS (histórico)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/estadisticas/horas-extras/exportar/excel",
+          "summary": "Exportar estadísticas de horas extras a Excel",
+          "description": "Exporta las estadísticas de horas extras a archivo Excel (reporteEstadisticasHE.xls) con columnas: #Local, Local, Cédula, Nombres, Rol, Concepto, Descripción, Importe, Cantidad, Estado y fila de totales",
+          "requestDTO": {
+            "name": "ExportarEstadisticasHEDTO",
+            "description": "Filtros para la exportación",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"},
+              {"name": "colaborador", "type": "string", "required": false, "description": "Filtro por cédula o nombre"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del Excel"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total exportados"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId}",
+          "summary": "Actualizar ajuste de horas extras",
+          "description": "Permite registrar un ajuste manual a un registro de horas extras de un colaborador para un rubro y período específico",
+          "requestDTO": {
+            "name": "AjusteHorasExtrasDTO",
+            "description": "Datos del ajuste",
+            "fields": [
+              {"name": "anio", "type": "integer", "required": true, "description": "Año"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes"},
+              {"name": "ajusteImporte", "type": "number", "required": false, "description": "Ajuste al importe"},
+              {"name": "ajusteCantidad", "type": "number", "required": false, "description": "Ajuste a la cantidad"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EstadisticaHorasExtrasDTO",
+            "description": "Registro ajustado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId}",
+          "summary": "Eliminar ajuste de horas extras",
+          "description": "Elimina un ajuste manual de horas extras restaurando los valores calculados originales",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "ConsultaEstadisticasRotacion.zul",
+      "baseUrl": "/api/v1/estadisticas/rotacion",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/estadisticas/rotacion",
+          "summary": "Consultar estadísticas de rotación de personal",
+          "description": "Obtiene las estadísticas de rotación de personal agrupadas por localidad para una empresa y rango de fechas. Soporta 3 tipos de consulta: Mensual (M, un mes), Acumulado (A, desde enero hasta el mes), Personalizado (P, rango libre). Calcula por localidad: Inicial (empleados al inicio del período), Ingresos (nuevos en el período), Retirados (desvinculados en el período), Final (Inicial+Ingresos-Retirados), Rotación% = ((Ingresos+Retirados)/(Inicial+Final))*100. Datos de la tabla snapshot av_colaboradores_mensual (sin entidad JPA) con filtro c_rol IN ('A','B','C','D','G','P'). Incluye totales y rotación global en footer",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "tipo", "type": "string", "required": true, "description": "Tipo de consulta: M=Mensual, A=Acumulado, P=Personalizado"},
+            {"name": "fechaInicio", "type": "string", "required": true, "description": "Fecha de inicio del período (YYYY-MM). En tipo M se ajusta al primer día del mes. En tipo A se ajusta al 1 de enero del año"},
+            {"name": "fechaFin", "type": "string", "required": true, "description": "Fecha de fin del período (YYYY-MM). Se ajusta al último día del mes"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por ID de localidad"}
+          ],
+          "responseDTO": {
+            "name": "EstadisticasRotacionListDTO",
+            "description": "Lista de estadísticas de rotación por localidad con totales",
+            "fields": [
+              {"name": "items", "type": "array<EstadisticaRotacionDTO>", "required": true, "description": "Lista de estadísticas por localidad"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de localidades"},
+              {"name": "totalInicial", "type": "integer", "required": false, "description": "Sumatoria total Inicial"},
+              {"name": "totalIngresos", "type": "integer", "required": false, "description": "Sumatoria total Ingresos"},
+              {"name": "totalRetirados", "type": "integer", "required": false, "description": "Sumatoria total Retirados"},
+              {"name": "totalFinal", "type": "integer", "required": false, "description": "Sumatoria total Final"},
+              {"name": "rotacionGlobal", "type": "number", "required": false, "description": "Rotación global calculada: ((totalIngresos+totalRetirados)/(totalInicial+totalFinal))*100"},
+              {"name": "tipoConsulta", "type": "string", "required": false, "description": "Tipo de consulta ejecutada (M/A/P)"},
+              {"name": "fechaInicioEfectiva", "type": "string", "required": false, "description": "Fecha inicio efectiva después de ajustes por tipo"},
+              {"name": "fechaFinEfectiva", "type": "string", "required": false, "description": "Fecha fin efectiva después de ajustes por tipo"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/estadisticas/rotacion/{localidadId}",
+          "summary": "Obtener estadística de rotación de una localidad",
+          "description": "Obtiene el detalle de la estadística de rotación de una localidad específica con conteos de inicial, ingresos, retirados, final y porcentaje de rotación para el período",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "tipo", "type": "string", "required": true, "description": "Tipo: M, A o P"},
+            {"name": "fechaInicio", "type": "string", "required": true, "description": "Fecha inicio (YYYY-MM)"},
+            {"name": "fechaFin", "type": "string", "required": true, "description": "Fecha fin (YYYY-MM)"}
+          ],
+          "responseDTO": {
+            "name": "EstadisticaRotacionDTO",
+            "description": "Estadística de rotación de una localidad (native SQL Object[])",
+            "fields": [
+              {"name": "localCodigo", "type": "string", "required": true, "description": "Código de la localidad (dl.vidditem)"},
+              {"name": "localNombre", "type": "string", "required": true, "description": "Nombre de la localidad (dl.vditem)"},
+              {"name": "localidadId", "type": "integer", "required": true, "description": "ID de la localidad"},
+              {"name": "inicial", "type": "integer", "required": false, "description": "Empleados al inicio del período: activos con fingreso<fechaInicio O inactivos con fingreso<fechaInicio y fsalida>=fechaInicio. Filtro c_rol IN (A,B,C,D,G,P)"},
+              {"name": "ingresos", "type": "integer", "required": false, "description": "Empleados ingresados durante el período: fingreso en rango de fechas. Filtro c_rol IN (A,B,C,D,G,P)"},
+              {"name": "retirados", "type": "integer", "required": false, "description": "Empleados retirados durante el período: estado=I y fsalida en rango de fechas. Filtro c_rol IN (A,B,C,D,G,P)"},
+              {"name": "final", "type": "integer", "required": false, "description": "Empleados al final: Inicial + Ingresos - Retirados"},
+              {"name": "rotacion", "type": "number", "required": false, "description": "Porcentaje de rotación: ROUND(((Ingresos+Retirados)/SUM(Inicial+Final))*100, 2)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/estadisticas/rotacion/exportar/excel",
+          "summary": "Exportar estadísticas de rotación a Excel",
+          "description": "Exporta las estadísticas de rotación a archivo Excel (reporteEstadisticasRotacion.xls) con columnas: Local, Nombre, Inicial, Ingresos, Retirados, Final, Rotación% y fila de totales con rotación global",
+          "requestDTO": {
+            "name": "ExportarEstadisticasRotacionDTO",
+            "description": "Filtros para la exportación",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "tipo", "type": "string", "required": true, "description": "Tipo: M, A o P"},
+              {"name": "fechaInicio", "type": "string", "required": true, "description": "Fecha inicio (YYYY-MM)"},
+              {"name": "fechaFin", "type": "string", "required": true, "description": "Fecha fin (YYYY-MM)"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del Excel"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de localidades exportadas"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/estadisticas/rotacion/{localidadId}",
+          "summary": "Actualizar ajuste de rotación",
+          "description": "Permite registrar un ajuste manual a las estadísticas de rotación de una localidad para un período dado",
+          "requestDTO": {
+            "name": "AjusteRotacionDTO",
+            "description": "Datos del ajuste",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "tipo", "type": "string", "required": true, "description": "Tipo: M, A o P"},
+              {"name": "fechaInicio", "type": "string", "required": true, "description": "Fecha inicio"},
+              {"name": "fechaFin", "type": "string", "required": true, "description": "Fecha fin"},
+              {"name": "ajusteInicial", "type": "integer", "required": false, "description": "Ajuste al conteo inicial"},
+              {"name": "ajusteIngresos", "type": "integer", "required": false, "description": "Ajuste al conteo de ingresos"},
+              {"name": "ajusteRetirados", "type": "integer", "required": false, "description": "Ajuste al conteo de retirados"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EstadisticaRotacionDTO",
+            "description": "Estadística ajustada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/estadisticas/rotacion/{localidadId}",
+          "summary": "Eliminar ajuste de rotación",
+          "description": "Elimina un ajuste manual de rotación restaurando los valores calculados originales",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Tabla snapshot mensual (referencia técnica)",
+      "baseUrl": null,
+      "operations": [],
+      "sharedDTOs": [
+        {
+          "name": "ColaboradorMensualSnapshotDTO",
+          "description": "Datos de la tabla av_colaboradores_mensual (sin entidad JPA). Snapshot mensual de empleados usado en cálculo de rotación. Esta tabla se alimenta externamente (ETL/batch) y no tiene operaciones CRUD desde la aplicación",
+          "fields": [
+            {"name": "cedula", "type": "string", "required": true, "description": "Cédula del empleado (vcedula, se une con av_colaboradores.vcedula)"},
+            {"name": "sucursalBase", "type": "string", "required": false, "description": "Código de sucursal base (sucursal_base, se une con av_dimensionesl.vidditem)"},
+            {"name": "codigoRol", "type": "string", "required": false, "description": "Código de rol (c_rol, valores válidos: A,B,C,D,G,P; se une con av_dimensionesl.vidditem dim DMCU)"},
+            {"name": "estado", "type": "string", "required": false, "description": "Estado del empleado: A=Activo, I=Inactivo"},
+            {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha de ingreso del empleado (fingreso)"},
+            {"name": "fechaSalida", "type": "datetime", "required": false, "description": "Fecha de salida del empleado (fsalida)"},
+            {"name": "periodo", "type": "string", "required": false, "description": "Período del snapshot en formato YYYYMM (ej: 202603)"}
+          ]
+        },
+        {
+          "name": "ExportarResponseDTO",
+          "description": "DTO compartido para respuestas de exportación Excel (Apache POI HSSF)",
+          "fields": [
+            {"name": "success", "type": "boolean", "required": true, "description": "Indica si la exportación fue exitosa"},
+            {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo generado"},
+            {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+          ]
+        }
+      ]
+    }
+  ]
+}

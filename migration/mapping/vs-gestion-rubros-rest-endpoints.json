@@ -1,0 +1,881 @@
+{
+  "_metadata": {
+    "generatedBy": "migration-flow",
+    "source": "migration/plan/config.json",
+    "generatedAt": "2026-03-20",
+    "verticalSlice": "Gestión de Rubros",
+    "description": "Endpoints REST y DTOs para las 9 pantallas de Gestión de Rubros: rubros CRUD, asignación a procesos, rubros IDO (ingreso directo por operador), carga por proceso, carga masiva y consulta"
+  },
+  "endpoints": [
+    {
+      "screenName": "rubros.zul / rubrosDialog.zul",
+      "baseUrl": "/api/v1/rubros",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros",
+          "summary": "Listar rubros",
+          "description": "Obtiene la lista paginada de rubros de nómina con filtros opcionales por ID, nombre, efecto y ámbito",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroPageResponseDTO",
+            "description": "Lista paginada de rubros de nómina",
+            "fields": [
+              {"name": "content", "type": "array", "required": true, "description": "Lista de objetos RubroResponseDTO"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros/{idRubro}",
+          "summary": "Obtener rubro por ID",
+          "description": "Obtiene un rubro de nómina específico por su identificador con toda su configuración de cálculo",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroResponseDTO",
+            "description": "Detalle completo de un rubro de nómina",
+            "fields": [
+              {"name": "idRubro", "type": "string", "required": true, "description": "Identificador único del rubro (clave primaria)"},
+              {"name": "nombre", "type": "string", "required": true, "description": "Nombre descriptivo del rubro"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito del rubro"},
+              {"name": "efecto", "type": "string", "required": false, "description": "Efecto del rubro: ingreso, egreso o neutro"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones del rubro"},
+              {"name": "procedimientoCalculo", "type": "string", "required": false, "description": "Stored procedure de cálculo asociado al rubro"},
+              {"name": "rubroHistorico", "type": "string", "required": false, "description": "Identificador de rubro histórico vinculado"},
+              {"name": "secuenciaImpresion", "type": "integer", "required": false, "description": "Orden de impresión del rubro en el rol"},
+              {"name": "secuenciaSobregiro", "type": "integer", "required": false, "description": "Orden del rubro para cálculo de sobregiro"},
+              {"name": "aplicaInterfaz", "type": "boolean", "required": false, "description": "Indica si el rubro aplica para generación de interfaz"},
+              {"name": "insertaEnLote", "type": "boolean", "required": false, "description": "Indica si el rubro se inserta en lote"},
+              {"name": "carta", "type": "integer", "required": false, "description": "Indicador de generación de carta"},
+              {"name": "habilitado", "type": "integer", "required": false, "description": "Estado de habilitación del rubro (1=activo, 0=inactivo)"},
+              {"name": "antiguedadMinima", "type": "integer", "required": false, "description": "Antigüedad mínima en meses para aplicar el rubro"},
+              {"name": "numAprobaciones", "type": "integer", "required": false, "description": "Número de aprobaciones requeridas"},
+              {"name": "numAprobacionesNoLocales", "type": "integer", "required": false, "description": "Número de aprobaciones no locales requeridas"},
+              {"name": "plazoMaximo", "type": "integer", "required": false, "description": "Plazo máximo en meses (para préstamos)"},
+              {"name": "plazoMinimo", "type": "integer", "required": false, "description": "Plazo mínimo en meses (para préstamos)"},
+              {"name": "montoMaximo", "type": "number", "required": false, "description": "Monto máximo permitido"},
+              {"name": "verificaEndeudamiento", "type": "integer", "required": false, "description": "Indicador de verificación de endeudamiento"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros",
+          "summary": "Crear rubro",
+          "description": "Crea un nuevo rubro de nómina con su configuración de cálculo, efectos y restricciones",
+          "requestDTO": {
+            "name": "RubroCreateDTO",
+            "description": "Datos para crear un nuevo rubro de nómina",
+            "fields": [
+              {"name": "idRubro", "type": "string", "required": true, "description": "Identificador único del rubro"},
+              {"name": "nombre", "type": "string", "required": true, "description": "Nombre descriptivo del rubro"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito del rubro"},
+              {"name": "efecto", "type": "string", "required": true, "description": "Efecto: ingreso, egreso o neutro"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones del rubro"},
+              {"name": "procedimientoCalculo", "type": "string", "required": false, "description": "Stored procedure de cálculo"},
+              {"name": "rubroHistorico", "type": "string", "required": false, "description": "ID de rubro histórico vinculado"},
+              {"name": "secuenciaImpresion", "type": "integer", "required": false, "description": "Orden de impresión"},
+              {"name": "secuenciaSobregiro", "type": "integer", "required": false, "description": "Orden para cálculo de sobregiro"},
+              {"name": "aplicaInterfaz", "type": "boolean", "required": false, "description": "Aplica para interfaz"},
+              {"name": "insertaEnLote", "type": "boolean", "required": false, "description": "Se inserta en lote"},
+              {"name": "carta", "type": "integer", "required": false, "description": "Indicador de carta"},
+              {"name": "habilitado", "type": "integer", "required": false, "description": "Estado de habilitación (1=activo)"},
+              {"name": "antiguedadMinima", "type": "integer", "required": false, "description": "Antigüedad mínima en meses"},
+              {"name": "numAprobaciones", "type": "integer", "required": false, "description": "Número de aprobaciones requeridas"},
+              {"name": "numAprobacionesNoLocales", "type": "integer", "required": false, "description": "Aprobaciones no locales requeridas"},
+              {"name": "plazoMaximo", "type": "integer", "required": false, "description": "Plazo máximo en meses"},
+              {"name": "plazoMinimo", "type": "integer", "required": false, "description": "Plazo mínimo en meses"},
+              {"name": "montoMaximo", "type": "number", "required": false, "description": "Monto máximo permitido"},
+              {"name": "verificaEndeudamiento", "type": "integer", "required": false, "description": "Indicador de verificación de endeudamiento"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubroResponseDTO",
+            "description": "Rubro creado con datos completos",
+            "fields": [
+              {"name": "idRubro", "type": "string", "required": true, "description": "Identificador único del rubro"},
+              {"name": "nombre", "type": "string", "required": true, "description": "Nombre descriptivo del rubro"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito del rubro"},
+              {"name": "efecto", "type": "string", "required": false, "description": "Efecto del rubro: ingreso, egreso o neutro"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones del rubro"},
+              {"name": "procedimientoCalculo", "type": "string", "required": false, "description": "Stored procedure de cálculo asociado"},
+              {"name": "rubroHistorico", "type": "string", "required": false, "description": "Identificador de rubro histórico vinculado"},
+              {"name": "secuenciaImpresion", "type": "integer", "required": false, "description": "Orden de impresión del rubro en el rol"},
+              {"name": "secuenciaSobregiro", "type": "integer", "required": false, "description": "Orden del rubro para cálculo de sobregiro"},
+              {"name": "aplicaInterfaz", "type": "boolean", "required": false, "description": "Indica si aplica para generación de interfaz"},
+              {"name": "insertaEnLote", "type": "boolean", "required": false, "description": "Indica si se inserta en lote"},
+              {"name": "carta", "type": "integer", "required": false, "description": "Indicador de generación de carta"},
+              {"name": "habilitado", "type": "integer", "required": false, "description": "Estado de habilitación (1=activo, 0=inactivo)"},
+              {"name": "antiguedadMinima", "type": "integer", "required": false, "description": "Antigüedad mínima en meses"},
+              {"name": "numAprobaciones", "type": "integer", "required": false, "description": "Número de aprobaciones requeridas"},
+              {"name": "numAprobacionesNoLocales", "type": "integer", "required": false, "description": "Aprobaciones no locales requeridas"},
+              {"name": "plazoMaximo", "type": "integer", "required": false, "description": "Plazo máximo en meses"},
+              {"name": "plazoMinimo", "type": "integer", "required": false, "description": "Plazo mínimo en meses"},
+              {"name": "montoMaximo", "type": "number", "required": false, "description": "Monto máximo permitido"},
+              {"name": "verificaEndeudamiento", "type": "integer", "required": false, "description": "Indicador de verificación de endeudamiento"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/rubros/{idRubro}",
+          "summary": "Actualizar rubro",
+          "description": "Actualiza un rubro de nómina existente con nueva configuración de cálculo y restricciones",
+          "requestDTO": {
+            "name": "RubroUpdateDTO",
+            "description": "Datos para actualizar un rubro existente",
+            "fields": [
+              {"name": "nombre", "type": "string", "required": false, "description": "Nombre descriptivo del rubro"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito del rubro"},
+              {"name": "efecto", "type": "string", "required": false, "description": "Efecto: ingreso, egreso o neutro"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones del rubro"},
+              {"name": "procedimientoCalculo", "type": "string", "required": false, "description": "Stored procedure de cálculo"},
+              {"name": "rubroHistorico", "type": "string", "required": false, "description": "ID de rubro histórico vinculado"},
+              {"name": "secuenciaImpresion", "type": "integer", "required": false, "description": "Orden de impresión"},
+              {"name": "secuenciaSobregiro", "type": "integer", "required": false, "description": "Orden para cálculo de sobregiro"},
+              {"name": "aplicaInterfaz", "type": "boolean", "required": false, "description": "Aplica para interfaz"},
+              {"name": "insertaEnLote", "type": "boolean", "required": false, "description": "Se inserta en lote"},
+              {"name": "carta", "type": "integer", "required": false, "description": "Indicador de carta"},
+              {"name": "habilitado", "type": "integer", "required": false, "description": "Estado de habilitación"},
+              {"name": "antiguedadMinima", "type": "integer", "required": false, "description": "Antigüedad mínima en meses"},
+              {"name": "numAprobaciones", "type": "integer", "required": false, "description": "Número de aprobaciones"},
+              {"name": "numAprobacionesNoLocales", "type": "integer", "required": false, "description": "Aprobaciones no locales"},
+              {"name": "plazoMaximo", "type": "integer", "required": false, "description": "Plazo máximo en meses"},
+              {"name": "plazoMinimo", "type": "integer", "required": false, "description": "Plazo mínimo en meses"},
+              {"name": "montoMaximo", "type": "number", "required": false, "description": "Monto máximo permitido"},
+              {"name": "verificaEndeudamiento", "type": "integer", "required": false, "description": "Indicador de verificación de endeudamiento"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubroResponseDTO",
+            "description": "Rubro actualizado con datos completos",
+            "fields": [
+              {"name": "idRubro", "type": "string", "required": true, "description": "Identificador único del rubro"},
+              {"name": "nombre", "type": "string", "required": true, "description": "Nombre descriptivo del rubro"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito del rubro"},
+              {"name": "efecto", "type": "string", "required": false, "description": "Efecto del rubro: ingreso, egreso o neutro"},
+              {"name": "observaciones", "type": "string", "required": false, "description": "Observaciones del rubro"},
+              {"name": "procedimientoCalculo", "type": "string", "required": false, "description": "Stored procedure de cálculo asociado"},
+              {"name": "rubroHistorico", "type": "string", "required": false, "description": "Identificador de rubro histórico vinculado"},
+              {"name": "secuenciaImpresion", "type": "integer", "required": false, "description": "Orden de impresión del rubro en el rol"},
+              {"name": "secuenciaSobregiro", "type": "integer", "required": false, "description": "Orden del rubro para cálculo de sobregiro"},
+              {"name": "aplicaInterfaz", "type": "boolean", "required": false, "description": "Indica si aplica para generación de interfaz"},
+              {"name": "insertaEnLote", "type": "boolean", "required": false, "description": "Indica si se inserta en lote"},
+              {"name": "carta", "type": "integer", "required": false, "description": "Indicador de generación de carta"},
+              {"name": "habilitado", "type": "integer", "required": false, "description": "Estado de habilitación (1=activo, 0=inactivo)"},
+              {"name": "antiguedadMinima", "type": "integer", "required": false, "description": "Antigüedad mínima en meses"},
+              {"name": "numAprobaciones", "type": "integer", "required": false, "description": "Número de aprobaciones requeridas"},
+              {"name": "numAprobacionesNoLocales", "type": "integer", "required": false, "description": "Aprobaciones no locales requeridas"},
+              {"name": "plazoMaximo", "type": "integer", "required": false, "description": "Plazo máximo en meses"},
+              {"name": "plazoMinimo", "type": "integer", "required": false, "description": "Plazo mínimo en meses"},
+              {"name": "montoMaximo", "type": "number", "required": false, "description": "Monto máximo permitido"},
+              {"name": "verificaEndeudamiento", "type": "integer", "required": false, "description": "Indicador de verificación de endeudamiento"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/rubros/{idRubro}",
+          "summary": "Eliminar rubro",
+          "description": "Elimina un rubro de nómina por su identificador. Valida que no tenga relaciones activas con procesos, plantillas contables o préstamos",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rubrosxprocesoDialog.zul",
+      "baseUrl": "/api/v1/rubros-proceso",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-proceso",
+          "summary": "Listar asignaciones rubro-proceso",
+          "description": "Obtiene la lista paginada de asignaciones de rubros a procesos de nómina con filtros por rubro y proceso",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroProcesoPageResponseDTO",
+            "description": "Lista paginada de asignaciones rubro-proceso",
+            "fields": [
+              {"name": "content", "type": "array", "required": true, "description": "Lista de objetos RubroProcesoResponseDTO"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-proceso/{id}",
+          "summary": "Obtener asignación rubro-proceso por ID",
+          "description": "Obtiene una asignación específica de rubro a proceso con configuración de ejecución",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroProcesoResponseDTO",
+            "description": "Detalle de la asignación rubro-proceso",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la asignación"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro asignado"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "Identificador del proceso de nómina"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "secuencia", "type": "integer", "required": false, "description": "Secuencia de ejecución del rubro dentro del proceso"},
+              {"name": "frecuenciaEjecucion", "type": "string", "required": false, "description": "Frecuencia de ejecución del rubro en el proceso"},
+              {"name": "procedimientoCalculo", "type": "string", "required": false, "description": "Stored procedure de cálculo para el proceso"},
+              {"name": "ambitoEjecucion", "type": "string", "required": false, "description": "Ámbito de ejecución del rubro"},
+              {"name": "insertaEnLote", "type": "integer", "required": false, "description": "Indica si se inserta en lote (1=sí, 0=no)"},
+              {"name": "validaPlantillaContable", "type": "string", "required": false, "description": "Indica si valida la plantilla contable"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la asignación"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros-proceso",
+          "summary": "Crear asignación rubro-proceso",
+          "description": "Asigna un rubro a un proceso de nómina con configuración de secuencia, frecuencia y procedimiento de cálculo",
+          "requestDTO": {
+            "name": "RubroProcesoCreateDTO",
+            "description": "Datos para asignar un rubro a un proceso",
+            "fields": [
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro a asignar"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "Identificador del proceso de nómina"},
+              {"name": "secuencia", "type": "integer", "required": false, "description": "Secuencia de ejecución"},
+              {"name": "frecuenciaEjecucion", "type": "string", "required": false, "description": "Frecuencia de ejecución"},
+              {"name": "procedimientoCalculo", "type": "string", "required": false, "description": "Stored procedure de cálculo"},
+              {"name": "ambitoEjecucion", "type": "string", "required": false, "description": "Ámbito de ejecución"},
+              {"name": "insertaEnLote", "type": "integer", "required": false, "description": "Inserta en lote (1=sí)"},
+              {"name": "validaPlantillaContable", "type": "string", "required": false, "description": "Valida plantilla contable"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubroProcesoResponseDTO",
+            "description": "Asignación creada con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la asignación generado"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro asignado"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "Identificador del proceso de nómina"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "secuencia", "type": "integer", "required": false, "description": "Secuencia de ejecución del rubro dentro del proceso"},
+              {"name": "frecuenciaEjecucion", "type": "string", "required": false, "description": "Frecuencia de ejecución"},
+              {"name": "procedimientoCalculo", "type": "string", "required": false, "description": "Stored procedure de cálculo"},
+              {"name": "ambitoEjecucion", "type": "string", "required": false, "description": "Ámbito de ejecución del rubro"},
+              {"name": "insertaEnLote", "type": "integer", "required": false, "description": "Indica si se inserta en lote (1=sí, 0=no)"},
+              {"name": "validaPlantillaContable", "type": "string", "required": false, "description": "Indica si valida la plantilla contable"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la asignación"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/rubros-proceso/{id}",
+          "summary": "Actualizar asignación rubro-proceso",
+          "description": "Actualiza la configuración de una asignación rubro-proceso existente",
+          "requestDTO": {
+            "name": "RubroProcesoUpdateDTO",
+            "description": "Datos para actualizar la asignación rubro-proceso",
+            "fields": [
+              {"name": "secuencia", "type": "integer", "required": false, "description": "Secuencia de ejecución"},
+              {"name": "frecuenciaEjecucion", "type": "string", "required": false, "description": "Frecuencia de ejecución"},
+              {"name": "procedimientoCalculo", "type": "string", "required": false, "description": "Stored procedure de cálculo"},
+              {"name": "ambitoEjecucion", "type": "string", "required": false, "description": "Ámbito de ejecución"},
+              {"name": "insertaEnLote", "type": "integer", "required": false, "description": "Inserta en lote (1=sí)"},
+              {"name": "validaPlantillaContable", "type": "string", "required": false, "description": "Valida plantilla contable"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la asignación"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubroProcesoResponseDTO",
+            "description": "Asignación actualizada con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la asignación"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro asignado"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "Identificador del proceso de nómina"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "secuencia", "type": "integer", "required": false, "description": "Secuencia de ejecución"},
+              {"name": "frecuenciaEjecucion", "type": "string", "required": false, "description": "Frecuencia de ejecución"},
+              {"name": "procedimientoCalculo", "type": "string", "required": false, "description": "Stored procedure de cálculo"},
+              {"name": "ambitoEjecucion", "type": "string", "required": false, "description": "Ámbito de ejecución del rubro"},
+              {"name": "insertaEnLote", "type": "integer", "required": false, "description": "Indica si se inserta en lote"},
+              {"name": "validaPlantillaContable", "type": "string", "required": false, "description": "Indica si valida la plantilla contable"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la asignación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/rubros-proceso/{id}",
+          "summary": "Eliminar asignación rubro-proceso",
+          "description": "Elimina la asignación de un rubro a un proceso de nómina",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rubrosIDOMain.zul / rubrosIDOList.zul / rubrosIDODetail.zul",
+      "baseUrl": "/api/v1/rubros-ido",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-ido",
+          "summary": "Listar rubros IDO",
+          "description": "Obtiene la lista paginada de rubros IDO (ingreso directo por operador) con filtros por rubro, colaborador, empresa, estado y rango de fechas",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroIDOPageResponseDTO",
+            "description": "Lista paginada de rubros IDO con datos denormalizados",
+            "fields": [
+              {"name": "content", "type": "array", "required": true, "description": "Lista de objetos RubroIDOResponseDTO"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-ido/{id}",
+          "summary": "Obtener rubro IDO por ID",
+          "description": "Obtiene un rubro IDO específico con detalle de colaborador, localidades, valores y fechas de aplicación",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroIDOResponseDTO",
+            "description": "Detalle completo de un rubro IDO",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único del rubro IDO"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro de nómina"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "Identificador del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "Identificador de la empresa"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Identificador de la localidad"},
+              {"name": "centroCostoId", "type": "integer", "required": false, "description": "Identificador del centro de costo"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "Identificador de la dimensión rol"},
+              {"name": "neroId", "type": "integer", "required": false, "description": "Identificador de la dimensión nero"},
+              {"name": "tipoComportamiento", "type": "integer", "required": true, "description": "Tipo de comportamiento del rubro IDO"},
+              {"name": "valor01", "type": "number", "required": false, "description": "Valor principal del rubro IDO"},
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor secundario del rubro IDO"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha de inicio de aplicación"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha de fin de aplicación"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del rubro IDO"},
+              {"name": "aplicacion", "type": "string", "required": false, "description": "Tipo de aplicación"},
+              {"name": "origen", "type": "string", "required": false, "description": "Origen del rubro IDO"},
+              {"name": "cargaUploadId", "type": "integer", "required": false, "description": "ID de la carga masiva asociada (si aplica)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros-ido",
+          "summary": "Crear rubro IDO",
+          "description": "Crea un nuevo rubro IDO (ingreso directo por operador) para un colaborador con valores, fechas y dimensiones",
+          "requestDTO": {
+            "name": "RubroIDOCreateDTO",
+            "description": "Datos para crear un nuevo rubro IDO",
+            "fields": [
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "Identificador del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Identificador de la localidad"},
+              {"name": "centroCostoId", "type": "integer", "required": false, "description": "Identificador del centro de costo"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "ID dimensión rol"},
+              {"name": "neroId", "type": "integer", "required": false, "description": "ID dimensión nero"},
+              {"name": "tipoComportamiento", "type": "integer", "required": true, "description": "Tipo de comportamiento"},
+              {"name": "valor01", "type": "number", "required": true, "description": "Valor principal"},
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor secundario"},
+              {"name": "fechaDesde", "type": "datetime", "required": true, "description": "Fecha de inicio de aplicación"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha de fin de aplicación"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubroIDOResponseDTO",
+            "description": "Rubro IDO creado con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único generado del rubro IDO"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro de nómina"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "Identificador del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "Identificador de la empresa"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Identificador de la localidad"},
+              {"name": "centroCostoId", "type": "integer", "required": false, "description": "Identificador del centro de costo"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "Identificador de la dimensión rol"},
+              {"name": "neroId", "type": "integer", "required": false, "description": "Identificador de la dimensión nero"},
+              {"name": "tipoComportamiento", "type": "integer", "required": true, "description": "Tipo de comportamiento del rubro IDO"},
+              {"name": "valor01", "type": "number", "required": false, "description": "Valor principal del rubro IDO"},
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor secundario del rubro IDO"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha de inicio de aplicación"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha de fin de aplicación"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del rubro IDO"},
+              {"name": "aplicacion", "type": "string", "required": false, "description": "Tipo de aplicación"},
+              {"name": "origen", "type": "string", "required": false, "description": "Origen del rubro IDO"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/rubros-ido/{id}",
+          "summary": "Actualizar rubro IDO",
+          "description": "Actualiza un rubro IDO existente con nuevos valores, fechas o dimensiones",
+          "requestDTO": {
+            "name": "RubroIDOUpdateDTO",
+            "description": "Datos para actualizar un rubro IDO",
+            "fields": [
+              {"name": "tipoComportamiento", "type": "integer", "required": false, "description": "Tipo de comportamiento"},
+              {"name": "valor01", "type": "number", "required": false, "description": "Valor principal"},
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor secundario"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha de inicio de aplicación"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha de fin de aplicación"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Identificador de la localidad"},
+              {"name": "centroCostoId", "type": "integer", "required": false, "description": "Identificador del centro de costo"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del rubro IDO"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubroIDOResponseDTO",
+            "description": "Rubro IDO actualizado con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único del rubro IDO"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro de nómina"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "Identificador del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "Identificador de la empresa"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Identificador de la localidad"},
+              {"name": "centroCostoId", "type": "integer", "required": false, "description": "Identificador del centro de costo"},
+              {"name": "tipoComportamiento", "type": "integer", "required": true, "description": "Tipo de comportamiento del rubro IDO"},
+              {"name": "valor01", "type": "number", "required": false, "description": "Valor principal del rubro IDO"},
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor secundario del rubro IDO"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha de inicio de aplicación"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha de fin de aplicación"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del rubro IDO"},
+              {"name": "aplicacion", "type": "string", "required": false, "description": "Tipo de aplicación"},
+              {"name": "origen", "type": "string", "required": false, "description": "Origen del rubro IDO"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/rubros-ido/{id}",
+          "summary": "Eliminar rubro IDO",
+          "description": "Elimina un rubro IDO por su identificador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rubrosIDOcargaxProceso.zul",
+      "baseUrl": "/api/v1/rubros-ido/cargar-proceso",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-ido/cargar-proceso",
+          "summary": "Listar cargas por proceso",
+          "description": "Obtiene la lista de ejecuciones de carga de rubros IDO por proceso con filtros por empresa, rubro y estado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CargaProcesoListResponseDTO",
+            "description": "Lista de ejecuciones de carga por proceso",
+            "fields": [
+              {"name": "items", "type": "array", "required": true, "description": "Lista de objetos CargaProcesoResponseDTO"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-ido/cargar-proceso/{id}",
+          "summary": "Obtener carga por proceso por ID",
+          "description": "Obtiene el detalle de una ejecución de carga de rubros IDO por proceso",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CargaProcesoResponseDTO",
+            "description": "Detalle de carga de rubros IDO por proceso",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la carga por proceso"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito de la carga"},
+              {"name": "accion", "type": "string", "required": false, "description": "Acción a ejecutar"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la carga"},
+              {"name": "fechaAplica", "type": "datetime", "required": false, "description": "Fecha de aplicación de la carga"},
+              {"name": "pathArchivo", "type": "string", "required": false, "description": "Ruta del archivo cargado"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que ejecutó la carga"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de la carga"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros-ido/cargar-proceso",
+          "summary": "Ejecutar carga por proceso",
+          "description": "Ejecuta la carga de rubros IDO a partir de un proceso de nómina definido, generando registros IDO automáticamente",
+          "requestDTO": {
+            "name": "CargaProcesoCreateDTO",
+            "description": "Datos para ejecutar la carga de rubros IDO por proceso",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro a cargar"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito de la carga"},
+              {"name": "accion", "type": "string", "required": true, "description": "Acción a ejecutar (INSERTAR/ACTUALIZAR/ELIMINAR)"},
+              {"name": "fechaAplica", "type": "datetime", "required": true, "description": "Fecha de aplicación"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ProcesoResponseDTO",
+            "description": "Resultado de la ejecución de la carga",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la carga fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "registrosProcesados", "type": "integer", "required": false, "description": "Cantidad de registros procesados"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/rubros-ido/cargar-proceso/{id}",
+          "summary": "Actualizar carga por proceso",
+          "description": "Actualiza los datos de una carga de rubros IDO por proceso existente",
+          "requestDTO": {
+            "name": "CargaProcesoUpdateDTO",
+            "description": "Datos para actualizar la carga por proceso",
+            "fields": [
+              {"name": "accion", "type": "string", "required": false, "description": "Acción a ejecutar"},
+              {"name": "fechaAplica", "type": "datetime", "required": false, "description": "Fecha de aplicación"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la carga"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CargaProcesoResponseDTO",
+            "description": "Carga actualizada con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la carga por proceso"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito de la carga"},
+              {"name": "accion", "type": "string", "required": false, "description": "Acción ejecutada"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la carga"},
+              {"name": "fechaAplica", "type": "datetime", "required": false, "description": "Fecha de aplicación de la carga"},
+              {"name": "pathArchivo", "type": "string", "required": false, "description": "Ruta del archivo cargado"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que ejecutó la carga"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de la carga"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/rubros-ido/cargar-proceso/{id}",
+          "summary": "Eliminar carga por proceso",
+          "description": "Elimina una carga de rubros IDO por proceso y sus registros asociados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "cargaRubrosIDO.zul",
+      "baseUrl": "/api/v1/rubros-ido/cargas-masivas",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-ido/cargas-masivas",
+          "summary": "Listar cargas masivas IDO",
+          "description": "Obtiene la lista paginada de cargas masivas de rubros IDO con datos de empresa, rubro, estado y fecha de aplicación",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CargaMasivaIDOPageResponseDTO",
+            "description": "Lista paginada de cargas masivas de rubros IDO",
+            "fields": [
+              {"name": "content", "type": "array", "required": true, "description": "Lista de objetos CargaMasivaIDOResponseDTO"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-ido/cargas-masivas/{id}",
+          "summary": "Obtener carga masiva IDO por ID",
+          "description": "Obtiene el detalle de una carga masiva de rubros IDO con su archivo, empresa y líneas cargadas",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CargaMasivaIDOResponseDTO",
+            "description": "Detalle de una carga masiva de rubros IDO",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la carga masiva"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "empresaNombreLargo", "type": "string", "required": false, "description": "Nombre largo de la empresa"},
+              {"name": "empresaNombreCorto", "type": "string", "required": false, "description": "Nombre corto de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito de la carga"},
+              {"name": "accion", "type": "string", "required": false, "description": "Acción ejecutada"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la carga"},
+              {"name": "fechaAplica", "type": "string", "required": false, "description": "Fecha de aplicación"},
+              {"name": "pathArchivo", "type": "string", "required": false, "description": "Ruta del archivo cargado"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que ejecutó la carga"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de la carga"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros-ido/cargas-masivas",
+          "summary": "Crear carga masiva IDO",
+          "description": "Sube un archivo de carga masiva de rubros IDO para procesamiento. Acepta archivos CSV/Excel con líneas de detalle por colaborador",
+          "requestDTO": {
+            "name": "CargaMasivaIDOCreateDTO",
+            "description": "Datos para iniciar una carga masiva de rubros IDO (multipart)",
+            "fields": [
+              {"name": "archivo", "type": "object", "required": true, "description": "Archivo CSV/Excel con los rubros IDO a cargar (binary/multipart)"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro"},
+              {"name": "ambito", "type": "string", "required": false, "description": "Ámbito de la carga"},
+              {"name": "accion", "type": "string", "required": true, "description": "Acción: INSERTAR, ACTUALIZAR o ELIMINAR"},
+              {"name": "fechaAplica", "type": "datetime", "required": true, "description": "Fecha de aplicación de los rubros"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CargaMasivaIDOResultDTO",
+            "description": "Resultado del procesamiento de la carga masiva",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la carga creada"},
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la carga fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "lineasProcesadas", "type": "integer", "required": false, "description": "Cantidad de líneas procesadas"},
+              {"name": "lineasConError", "type": "integer", "required": false, "description": "Cantidad de líneas con error"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros-ido/cargas-masivas/{id}/aprobar",
+          "summary": "Aprobar carga masiva",
+          "description": "Aprueba una carga masiva de rubros IDO previamente cargada, aplicando los registros a la tabla de rubros IDO",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ProcesoResponseDTO",
+            "description": "Resultado de la aprobación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la aprobación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "registrosAplicados", "type": "integer", "required": false, "description": "Cantidad de registros aplicados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/rubros-ido/cargas-masivas/{id}",
+          "summary": "Eliminar carga masiva IDO",
+          "description": "Elimina una carga masiva de rubros IDO y sus líneas de detalle (solo si no está aprobada)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "consultaRubrosIdoList.zul",
+      "baseUrl": "/api/v1/rubros-ido/consulta",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-ido/consulta",
+          "summary": "Consultar rubros IDO",
+          "description": "Consulta avanzada de rubros IDO con filtros por rubro, colaborador, empresa, estado, rango de fechas, localidad y centro de costo",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ConsultaRubroIDOPageResponseDTO",
+            "description": "Lista paginada de resultados de consulta de rubros IDO",
+            "fields": [
+              {"name": "content", "type": "array", "required": true, "description": "Lista de objetos RubroIDOResponseDTO encontrados"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-ido/consulta/{id}",
+          "summary": "Obtener rubro IDO de consulta por ID",
+          "description": "Obtiene el detalle de un rubro IDO específico desde la pantalla de consulta",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroIDOResponseDTO",
+            "description": "Detalle del rubro IDO consultado",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único del rubro IDO"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro de nómina"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "Identificador del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "Identificador de la empresa"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Identificador de la localidad"},
+              {"name": "centroCostoId", "type": "integer", "required": false, "description": "Identificador del centro de costo"},
+              {"name": "tipoComportamiento", "type": "integer", "required": true, "description": "Tipo de comportamiento del rubro IDO"},
+              {"name": "valor01", "type": "number", "required": false, "description": "Valor principal del rubro IDO"},
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor secundario del rubro IDO"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha de inicio de aplicación"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha de fin de aplicación"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del rubro IDO"},
+              {"name": "aplicacion", "type": "string", "required": false, "description": "Tipo de aplicación"},
+              {"name": "origen", "type": "string", "required": false, "description": "Origen del rubro IDO"},
+              {"name": "cargaUploadId", "type": "integer", "required": false, "description": "ID de la carga masiva asociada (si aplica)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/rubros-ido/consulta/exportar",
+          "summary": "Exportar consulta a Excel",
+          "description": "Exporta los resultados de la consulta de rubros IDO a un archivo Excel con los filtros aplicados",
+          "requestDTO": {
+            "name": "ExportarConsultaIDODTO",
+            "description": "Filtros para la exportación de consulta de rubros IDO",
+            "fields": [
+              {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por identificador de rubro"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por identificador de colaborador"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por identificador de empresa"},
+              {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha desde"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha hasta"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato de exportación (XLSX, CSV)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la exportación fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo exportado"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/rubros-ido/consulta/{id}/estado",
+          "summary": "Cambiar estado de rubro IDO",
+          "description": "Actualiza el estado de un rubro IDO desde la pantalla de consulta (activar/inactivar)",
+          "requestDTO": {
+            "name": "CambiarEstadoIDODTO",
+            "description": "Datos para cambiar el estado de un rubro IDO",
+            "fields": [
+              {"name": "estado", "type": "string", "required": true, "description": "Nuevo estado del rubro IDO"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubroIDOResponseDTO",
+            "description": "Rubro IDO con estado actualizado",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único del rubro IDO"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro de nómina"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "Identificador del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "Identificador de la empresa"},
+              {"name": "tipoComportamiento", "type": "integer", "required": true, "description": "Tipo de comportamiento del rubro IDO"},
+              {"name": "valor01", "type": "number", "required": false, "description": "Valor principal del rubro IDO"},
+              {"name": "valor02", "type": "number", "required": false, "description": "Valor secundario del rubro IDO"},
+              {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Fecha de inicio de aplicación"},
+              {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Fecha de fin de aplicación"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado actualizado del rubro IDO"},
+              {"name": "aplicacion", "type": "string", "required": false, "description": "Tipo de aplicación"},
+              {"name": "origen", "type": "string", "required": false, "description": "Origen del rubro IDO"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/rubros-ido/consulta/{id}",
+          "summary": "Eliminar rubro IDO desde consulta",
+          "description": "Elimina un rubro IDO desde la pantalla de consulta",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,586 @@
+{
+  "analysis": {
+    "parentModule": "PayrollManagement",
+    "parentDomain": "Finance",
+    "totalMicroservices": 11,
+    "decompositionStrategy": "functional-decomposition",
+    "confidence": "HIGH",
+    "analysisDate": "2026-03-04",
+    "analysisNotes": "Descomposición funcional del módulo Payroll en 11 microservicios independientes. Cada servicio representa una funcionalidad de negocio específica del ciclo de nómina. Basado en análisis de 74 entidades AvPy* y patrones de datos.",
+    "keyCharacteristics": {
+      "totalPayrollEntities": 74,
+      "totalSalaryComponents": 12,
+      "totalProcessingTypes": 5,
+      "totalDeductionTypes": 6
+    }
+  },
+  "microservices": [
+    {
+      "name": "SalaryComponentService",
+      "businessCapability": "Salary Component Management",
+      "description": "Gestiona el catálogo de componentes de nómina (rubros): ingresos, deducciones, aportes. Define clasificaciones, tipos y jerarquías de rubros",
+      "businessContext": "Centro de configuración de la estructura de nómina. Define qué se paga cada mes",
+      "coreResponsibilities": [
+        "Crear y mantener rubros salariales",
+        "Clasificar rubros por tipo (ingreso, deducción, aporte)",
+        "Gestionar jerarquía de rubros",
+        "Mantener vigencia y validez de rubros"
+      ],
+      "relatedEntities": [
+        "AvPyRubro.java",
+        "AvPyRubrosl.java",
+        "AvPyClasesrubro.java",
+        "AvPyClasesrubrosl.java"
+      ],
+      "dataModel": {
+        "primary": "AvPyRubro",
+        "details": "AvPyRubrosl, AvPyClasesrubro"
+      },
+      "restEndpoints": [
+        "GET /api/payroll/components",
+        "POST /api/payroll/components",
+        "PUT /api/payroll/components/{id}",
+        "DELETE /api/payroll/components/{id}",
+        "GET /api/payroll/components/classes"
+      ],
+      "dependencies": [
+        "CompanyStructureService"
+      ],
+      "criticality": "HIGH",
+      "complexity": "MEDIUM",
+      "suggestedPort": 8101
+    },
+    {
+      "name": "EmployeeSalaryCalculationService",
+      "businessCapability": "Employee Salary Calculation",
+      "description": "Calcula salarios por empleado aplicando rubros configurados. Determina qué rubros aplican a cada empleado según su contrato y posición",
+      "businessContext": "Núcleo del cálculo de nómina. Aplica la estructura de rubros a cada empleado individual",
+      "coreResponsibilities": [
+        "Calcular rubros individuales por empleado",
+        "Aplicar condiciones y restricciones de rubro",
+        "Gestionar cambios retroactivos de rubros",
+        "Mantener histórico de cálculos",
+        "Validar coherencia de cálculos"
+      ],
+      "relatedEntities": [
+        "AvPyRubroslpreColab.java",
+        "AvPyRubroslpre.java",
+        "AvPyAcumulado.java",
+        "AvPyRubroslhis.java"
+      ],
+      "dataModel": {
+        "primary": "AvPyRubroslpreColab",
+        "details": "AvPyAcumulado, AvPyRubroslhis"
+      },
+      "restEndpoints": [
+        "POST /api/employees/{employeeId}/salary/calculate",
+        "GET /api/employees/{employeeId}/salary/components",
+        "GET /api/employees/{employeeId}/salary/history",
+        "PUT /api/employees/{employeeId}/salary/components/{rubroId}",
+        "POST /api/employees/{employeeId}/salary/retroactive"
+      ],
+      "dependencies": [
+        "SalaryComponentService",
+        "EmployeeService",
+        "ContractService"
+      ],
+      "criticality": "CRITICAL",
+      "complexity": "HIGH",
+      "suggestedPort": 8102
+    },
+    {
+      "name": "PayrollGenerationService",
+      "businessCapability": "Payroll Generation & Execution",
+      "description": "Orquesta y ejecuta el ciclo completo de generación de nómina para un período. Coordina cálculos, validaciones y aprobaciones",
+      "businessContext": "Proceso batch mensual/quincenal que genera la nómina para todos los empleados. Crítico para operaciones",
+      "coreResponsibilities": [
+        "Crear instancias de proceso de nómina",
+        "Ejecutar cálculos masivos por período",
+        "Validar integridad de datos pre-generación",
+        "Aplicar reglas de negocio de nómina",
+        "Registrar logs de procesos",
+        "Manejar errores y reconciliación",
+        "Bloquear modificaciones durante proceso"
+      ],
+      "relatedEntities": [
+        "AvPyProcesos.java",
+        "AvPyProcesosinstancias.java",
+        "AvPyProcesosl.java",
+        "AvPyLogRegistrosProceso.java",
+        "AvPyParametro.java"
+      ],
+      "dataModel": {
+        "primary": "AvPyProcesos, AvPyProcesosinstancias",
+        "details": "AvPyLogRegistrosProceso, AvPyParametro"
+      },
+      "restEndpoints": [
+        "POST /api/payroll/processes/start",
+        "POST /api/payroll/processes/{processId}/execute",
+        "GET /api/payroll/processes/{processId}/status",
+        "POST /api/payroll/processes/{processId}/validate",
+        "GET /api/payroll/processes/{processId}/logs",
+        "POST /api/payroll/processes/{processId}/approve",
+        "POST /api/payroll/processes/{processId}/rollback"
+      ],
+      "dependencies": [
+        "EmployeeSalaryCalculationService",
+        "PayrollValidationService",
+        "AccountingIntegrationService"
+      ],
+      "criticality": "CRITICAL",
+      "complexity": "VERY_HIGH",
+      "suggestedPort": 8103
+    },
+    {
+      "name": "PaymentDistributionService",
+      "businessCapability": "Payment Distribution & Allocation",
+      "description": "Distribuye montos de nómina calculados entre cuentas bancarias, disponibilidad, descuentos pendientes",
+      "businessContext": "Después de calcular, decide cómo se distribuye cada pago: cuenta principal, cuenta ahorros, descuentos, deudas",
+      "coreResponsibilities": [
+        "Distribuir montos de nómina entre conceptos",
+        "Asignar pagos a cuentas bancarias",
+        "Gestionar disponibilidad de fondos",
+        "Aplicar descuentos y retenciones",
+        "Balancear distribuciones",
+        "Auditar cambios de distribución"
+      ],
+      "relatedEntities": [
+        "AvPyDistribucion.java",
+        "AvPyDistribucionDet.java",
+        "AvPyDistribValesdif.java",
+        "AvPyDistribValesdifDet.java"
+      ],
+      "dataModel": {
+        "primary": "AvPyDistribucion, AvPyDistribucionDet",
+        "details": "AvPyDistribValesdif, AvPyDistribValesdifDet"
+      },
+      "restEndpoints": [
+        "POST /api/payroll/{payrollId}/distributions",
+        "GET /api/payroll/{payrollId}/distributions",
+        "PUT /api/payroll/{payrollId}/distributions/{distributionId}",
+        "POST /api/payroll/{payrollId}/distributions/calculate",
+        "GET /api/payroll/{payrollId}/distributions/deferred",
+        "POST /api/payroll/{payrollId}/distributions/validate"
+      ],
+      "dependencies": [
+        "EmployeeSalaryCalculationService",
+        "BankingIntegrationService",
+        "DebtManagementService"
+      ],
+      "criticality": "HIGH",
+      "complexity": "MEDIUM",
+      "suggestedPort": 8104
+    },
+    {
+      "name": "CostAllocationService",
+      "businessCapability": "Departmental Cost Allocation",
+      "description": "Distribuye costos de nómina entre departamentos, centros de costo y proyectos según estructura organizacional",
+      "businessContext": "Contabilidad de costos. Asigna gasto de nómina a unidades de negocio para análisis financiero",
+      "coreResponsibilities": [
+        "Distribuir costos por departamento/sucursal",
+        "Aplicar matrices de distribución de costos",
+        "Manejar distribuciones por proyecto",
+        "Generar análisis de costos por línea",
+        "Validar distribuciones contra presupuesto",
+        "Generar reportes de costo"
+      ],
+      "relatedEntities": [
+        "AvPyDistcosto.java",
+        "AvPyDistcostoscxpl.java",
+        "AvPyDistcostoslxpl.java"
+      ],
+      "dataModel": {
+        "primary": "AvPyDistcosto",
+        "details": "AvPyDistcostoscxpl, AvPyDistcostoslxpl"
+      },
+      "restEndpoints": [
+        "POST /api/payroll/{payrollId}/cost-allocation",
+        "GET /api/payroll/{payrollId}/cost-allocation",
+        "PUT /api/payroll/{payrollId}/cost-allocation/{allocationId}",
+        "POST /api/payroll/{payrollId}/cost-allocation/calculate",
+        "GET /api/departments/{departmentId}/salary-costs"
+      ],
+      "dependencies": [
+        "CompanyStructureService",
+        "PayrollGenerationService"
+      ],
+      "criticality": "HIGH",
+      "complexity": "MEDIUM",
+      "suggestedPort": 8105
+    },
+    {
+      "name": "DebtManagementService",
+      "businessCapability": "Employee Debt & Withholding Management",
+      "description": "Gestiona deudas de empleados, embargo de sueldos, descuentos pendientes y recuperos",
+      "businessContext": "Control de dinero adeudado por empleados (anticipos, préstamos incobrados). Autoriza retención de sueldos",
+      "coreResponsibilities": [
+        "Registrar deudas de empleados",
+        "Calcular embargos y descuentos",
+        "Aplicar retenciones a nómina",
+        "Autorizar sobregiros especiales",
+        "Generar reportes de deuda",
+        "Gestionar condonaciones y arreglos"
+      ],
+      "relatedEntities": [
+        "AvPyEndeudamiento.java",
+        "AvPyEndeudamientoDet.java",
+        "AvPyRubrosSobregiroHi.java",
+        "AvPyRubrosSobregiroHiPK.java"
+      ],
+      "dataModel": {
+        "primary": "AvPyEndeudamiento, AvPyEndeudamientoDet",
+        "details": "AvPyRubrosSobregiroHi"
+      },
+      "restEndpoints": [
+        "POST /api/employees/{employeeId}/debts",
+        "GET /api/employees/{employeeId}/debts",
+        "PUT /api/employees/{employeeId}/debts/{debtId}",
+        "POST /api/employees/{employeeId}/debts/{debtId}/payment",
+        "POST /api/employees/{employeeId}/overdraft-authorization",
+        "GET /api/payroll/{payrollId}/debts-collected"
+      ],
+      "dependencies": [
+        "EmployeeSalaryCalculationService",
+        "PaymentDistributionService"
+      ],
+      "criticality": "HIGH",
+      "complexity": "MEDIUM",
+      "suggestedPort": 8106
+    },
+    {
+      "name": "SpecialDeductionService",
+      "businessCapability": "Tax & Special Deductions",
+      "description": "Calcula y gestiona impuestos especiales (IESS, IDO, taxes). Mantén vigencia de tasas impositivas",
+      "businessContext": "Cumplimiento regulatorio. Calcula obligaciones tributarias y de seguridad social",
+      "coreResponsibilities": [
+        "Calcular aportes IESS para empleado/empresa",
+        "Calcular descuentos IDO (sindicales)",
+        "Mantener tasas de impuestos actualizadas",
+        "Aplicar reglas de deducción especiales",
+        "Generar reportes tributarios",
+        "Auditar cálculos de impuestos"
+      ],
+      "relatedEntities": [
+        "AvPyRubrosIess.java",
+        "AvPyRubrosIessl.java",
+        "AvPyRubrosIdo.java",
+        "AvPyRubrosIdoUp.java"
+      ],
+      "dataModel": {
+        "primary": "AvPyRubrosIess, AvPyRubrosIdo"
+      },
+      "restEndpoints": [
+        "GET /api/payroll/tax-rates",
+        "PUT /api/payroll/tax-rates/{taxTypeId}",
+        "POST /api/employees/{employeeId}/tax-calculation",
+        "GET /api/payroll/{payrollId}/tax-summary",
+        "POST /api/payroll/{payrollId}/tax-validation"
+      ],
+      "dependencies": [
+        "SalaryComponentService",
+        "EmployeeSalaryCalculationService"
+      ],
+      "criticality": "CRITICAL",
+      "complexity": "MEDIUM",
+      "suggestedPort": 8107
+    },
+    {
+      "name": "LoanManagementService",
+      "businessCapability": "Employee Loans & Credit Management",
+      "description": "Gestiona préstamos otorgados a empleados, pagos y saldos pendientes",
+      "businessContext": "Control de créditos: registra préstamos, calcula cuotas, descuenta de nómina",
+      "coreResponsibilities": [
+        "Crear y autorizar préstamos",
+        "Calcular cuotas de pago (amortización)",
+        "Descontar cuotas de nómina",
+        "Registrar pagos y abonos",
+        "Gestionar prepagos",
+        "Generar estado de deuda de préstamos"
+      ],
+      "relatedEntities": [
+        "AvPyRubrosPrestamo.java",
+        "AvPyRubrosPrestamoAbo.java",
+        "AvPyRubrosPrestamoAbonos.java",
+        "AvPyRubrosPrestamoCom.java",
+        "AvPyRubrosPrestamoComTmp.java",
+        "AvPyRubrosPrestamoDetAbono.java",
+        "AvPyRubrosPrestamoDimension.java",
+        "AvPyRubrosPrestamoAcre.java"
+      ],
+      "dataModel": {
+        "primary": "AvPyRubrosPrestamo, AvPyRubrosPrestamoAbo",
+        "details": "AvPyRubrosPrestamoAbonos, AvPyRubrosPrestamoCom"
+      },
+      "restEndpoints": [
+        "POST /api/employees/{employeeId}/loans",
+        "GET /api/employees/{employeeId}/loans",
+        "GET /api/employees/{employeeId}/loans/{loanId}/amortization",
+        "POST /api/employees/{employeeId}/loans/{loanId}/payment",
+        "PUT /api/employees/{employeeId}/loans/{loanId}",
+        "POST /api/employees/{employeeId}/loans/{loanId}/prepayment",
+        "GET /api/payroll/{payrollId}/loan-deductions"
+      ],
+      "dependencies": [
+        "EmployeeSalaryCalculationService",
+        "PaymentDistributionService"
+      ],
+      "criticality": "HIGH",
+      "complexity": "HIGH",
+      "suggestedPort": 8108
+    },
+    {
+      "name": "AccountingIntegrationService",
+      "businessCapability": "Accounting Export & Integration",
+      "description": "Exporta datos de nómina a sistema contable. Genera asientos y reportes para contabilidad",
+      "businessContext": "Interfaz contable. Traduce nómina a lenguaje de contabilidad para saldos",
+      "coreResponsibilities": [
+        "Generar asientos contables de nómina",
+        "Exportar a sistemas ERP contables",
+        "Mantener mapeo de cuentas contables",
+        "Validar equidad contable",
+        "Generar reportes de cuadre contable",
+        "Manejar reversiones contables"
+      ],
+      "relatedEntities": [
+        "AvPyCuadreprovcontable.java",
+        "AvPyCuadreprovcontableDet.java",
+        "AvPyCuadreprovcontableDetPK.java",
+        "AvPyCtasubctaAso.java",
+        "AvPyCtasubctaAsoPK.java",
+        "AvPyPlantillaContable.java"
+      ],
+      "dataModel": {
+        "primary": "AvPyCuadreprovcontable, AvPyCtasubctaAso",
+        "details": "AvPyPlantillaContable"
+      },
+      "restEndpoints": [
+        "POST /api/payroll/{payrollId}/accounting-export",
+        "GET /api/payroll/{payrollId}/accounting-entries",
+        "POST /api/accounting/account-mapping",
+        "GET /api/accounting/account-mapping",
+        "POST /api/payroll/{payrollId}/accounting-validation",
+        "POST /api/payroll/{payrollId}/accounting-reversal"
+      ],
+      "dependencies": [
+        "PayrollGenerationService",
+        "CostAllocationService"
+      ],
+      "criticality": "CRITICAL",
+      "complexity": "HIGH",
+      "suggestedPort": 8109
+    },
+    {
+      "name": "BankingIntegrationService",
+      "businessCapability": "Banking & Payment Interface",
+      "description": "Gestiona interfaz con bancos para transferencias masivas, archivos de pago ACH",
+      "businessContext": "Interfaz bancaria. Prepara y envía archivos de pago a bancos",
+      "coreResponsibilities": [
+        "Generar archivos de transferencia bancaria",
+        "Validar datos bancarios (IBAN, Swift)",
+        "Manejar diferentes formatos bancarios",
+        "Registrar confirmación de pagos",
+        "Procesar fallas de transferencia",
+        "Generar reportes de pagos ejecutados"
+      ],
+      "relatedEntities": [
+        "AvPyInterfas.java",
+        "AvPyInterfasarchivo.java",
+        "AvPyInterfasearchivoPrestamos.java"
+      ],
+      "dataModel": {
+        "primary": "AvPyInterfas",
+        "details": "AvPyInterfasarchivo, AvPyInterfasearchivoPrestamos"
+      },
+      "restEndpoints": [
+        "POST /api/payroll/{payrollId}/banking-file",
+        "GET /api/payroll/{payrollId}/banking-status",
+        "POST /api/payroll/{payrollId}/banking-confirmation",
+        "GET /api/banking/transfer-logs",
+        "POST /api/banking/retry-failed"
+      ],
+      "dependencies": [
+        "PaymentDistributionService",
+        "EmployeeService"
+      ],
+      "criticality": "CRITICAL",
+      "complexity": "HIGH",
+      "suggestedPort": 8110
+    },
+    {
+      "name": "PayrollReportingService",
+      "businessCapability": "Payroll Reports & Analytics",
+      "description": "Genera reportes analíticos de nómina: resúmenes, comparativas, auditorías y análisis de tendencias",
+      "businessContext": "Business Intelligence para nómina. Proporciona visibilidad a ejecutivos y controladores",
+      "coreResponsibilities": [
+        "Generar resumen general de nómina",
+        "Crear reportes comparativos (mes a mes)",
+        "Análisis de acumulados de período",
+        "Reportes por departamento/sucursal",
+        "Auditoría de cambios de rubros",
+        "Exportar a Excel/PDF"
+      ],
+      "relatedEntities": [
+        "AvPyComparativoNomina.java",
+        "AvPyAcumuladosV.java",
+        "AvPyDistcostoscxplV.java",
+        "AvPyDistcostoslxplV.java",
+        "AvPyPlantillaContableV.java",
+        "AvPyRubrosIdoUpV.java"
+      ],
+      "dataModel": {
+        "primary": "Database Views",
+        "details": "AvPyComparativoNomina (summary tables)"
+      },
+      "restEndpoints": [
+        "GET /api/payroll/{payrollId}/summary",
+        "GET /api/payroll/comparative?from={date}&to={date}",
+        "GET /api/payroll/accumulated?period={period}",
+        "GET /api/payroll/by-department",
+        "GET /api/payroll/audit-log",
+        "POST /api/payroll/export-report"
+      ],
+      "dependencies": [
+        "PayrollGenerationService",
+        "CostAllocationService",
+        "AccountingIntegrationService"
+      ],
+      "criticality": "MEDIUM",
+      "complexity": "MEDIUM",
+      "suggestedPort": 8111
+    }
+  ],
+  "serviceDependencies": {
+    "criticalities": {
+      "CRITICAL": [
+        "EmployeeSalaryCalculationService",
+        "PayrollGenerationService",
+        "SpecialDeductionService",
+        "AccountingIntegrationService",
+        "BankingIntegrationService"
+      ],
+      "HIGH": [
+        "SalaryComponentService",
+        "PaymentDistributionService",
+        "CostAllocationService",
+        "DebtManagementService",
+        "LoanManagementService"
+      ],
+      "MEDIUM": [
+        "PayrollReportingService"
+      ]
+    },
+    "processingOrder": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "dataFlow": "SalaryComponentService → EmployeeSalaryCalculationService → PayrollGenerationService → [PaymentDistributionService, CostAllocationService, SpecialDeductionService] → [AccountingIntegrationService, BankingIntegrationService] → PayrollReportingService"
+  },
+  "crossCuttingConcerns": [
+    {
+      "concern": "Audit & Compliance",
+      "affectedServices": [
+        "PayrollGenerationService",
+        "EmployeeSalaryCalculationService",
+        "SpecialDeductionService"
+      ],
+      "description": "Registro de cambios, quién hizo qué y cuándo"
+    },
+    {
+      "concern": "Data Validation",
+      "affectedServices": [
+        "EmployeeSalaryCalculationService",
+        "PaymentDistributionService",
+        "BankingIntegrationService"
+      ],
+      "description": "Validación de integridad de datos, formato, rango"
+    },
+    {
+      "concern": "Error Handling & Recovery",
+      "affectedServices": [
+        "PayrollGenerationService",
+        "BankingIntegrationService",
+        "AccountingIntegrationService"
+      ],
+      "description": "Manejo de excepciones, reintentos, rollbacks"
+    },
+    {
+      "concern": "Authorization & Security",
+      "affectedServices": [
+        "PaymentDistributionService",
+        "BankingIntegrationService",
+        "SpecialDeductionService"
+      ],
+      "description": "Control de acceso según rol (HR, Finance, Accounting)"
+    }
+  ],
+  "deploymentArchitecture": {
+    "pattern": "microservices-with-shared-database",
+    "rationale": "Al inicio, usar base de datos compartida para simplificar transacciones. Evolucionar a eventos/sagas cuando servicios sean independientes",
+    "transactionPattern": "Database Transactions + Saga Pattern for multi-service workflows",
+    "communicationPattern": "REST APIs + Message Queue for async operations (payments, exports)",
+    "sharedServices": [
+      "EmployeeService (external)",
+      "CompanyStructureService (external)",
+      "ContractService (external)",
+      "AuthenticationService (cross-cutting)"
+    ]
+  },
+  "developmentRoadmap": {
+    "phase1": {
+      "name": "Core Services",
+      "duration": "Months 1-2",
+      "services": [
+        "SalaryComponentService",
+        "EmployeeSalaryCalculationService",
+        "PayrollGenerationService"
+      ]
+    },
+    "phase2": {
+      "name": "Distribution & Integration",
+      "duration": "Months 3-4",
+      "services": [
+        "PaymentDistributionService",
+        "CostAllocationService",
+        "AccountingIntegrationService",
+        "BankingIntegrationService"
+      ]
+    },
+    "phase3": {
+      "name": "Advanced Features",
+      "duration": "Months 5-6",
+      "services": [
+        "DebtManagementService",
+        "SpecialDeductionService",
+        "LoanManagementService"
+      ]
+    },
+    "phase4": {
+      "name": "Analytics & Reporting",
+      "duration": "Months 7-8",
+      "services": [
+        "PayrollReportingService"
+      ]
+    }
+  },
+  "recommendations": [
+    "Implementar PayrollGenerationService como orquestador central que coordina cálculos masivos",
+    "EmployeeSalaryCalculationService debe ser stateless y altamente escalable para cálculos en paralelo",
+    "Usar Message Queue (RabbitMQ/Kafka) para BankingIntegrationService y AccountingIntegrationService para no bloquear nómina",
+    "SalaryComponentService debe tener caché distribuido (Redis) debido a acceso frecuente",
+    "Implementar Saga Pattern para transacciones distribuidas entre PayrollGenerationService y servicios de integración",
+    "Crear índices optimizados en tablas de AvPyRubroslpreColab y AvPyDistribucion para consultas rápidas",
+    "DebtManagementService y LoanManagementService podrían fusionarse con EmployeeSalaryCalculationService inicialmente",
+    "Considerar Event Sourcing para PayrollGenerationService para auditabilidad completa",
+    "Implementar feature flags para rollout gradual de lógica de cálculo",
+    "Todos los servicios deben implementar health checks y métricas para monitoreo"
+  ]
+}

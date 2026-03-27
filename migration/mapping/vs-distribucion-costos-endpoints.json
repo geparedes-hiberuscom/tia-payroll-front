@@ -1,0 +1,727 @@
+{
+  "endpoints": [
+    {
+      "screenName": "distribucionCostosList.zul",
+      "baseUrl": "/api/v1/distribucion-costos/perfiles",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/perfiles",
+          "summary": "Listar perfiles de distribución de costos",
+          "description": "Obtiene la lista paginada de perfiles de distribución de costos (av_py_distcostos) con datos de empresa, ID de perfil, nombre del perfil y estado. Columnas del listado: iidempresa, vidperfil, vperfil",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "perfilId", "type": "string", "required": false, "description": "Filtro por ID del perfil (vidperfil)"},
+            {"name": "perfil", "type": "string", "required": false, "description": "Búsqueda por nombre del perfil (vperfil)"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado (vstts)"}
+          ],
+          "responseDTO": {
+            "name": "PerfilDistribucionPageResponseDTO",
+            "description": "Lista paginada de perfiles de distribución de costos",
+            "fields": [
+              {"name": "content", "type": "array<PerfilDistribucionResponseDTO>", "required": true, "description": "Lista de perfiles de distribución"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/perfiles/{id}",
+          "summary": "Obtener perfil de distribución por ID",
+          "description": "Obtiene el detalle de un perfil de distribución de costos con ID de empresa, código de perfil y nombre del perfil",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "PerfilDistribucionResponseDTO",
+            "description": "Detalle de un perfil de distribución de costos (av_py_distcostos)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del perfil (iiddistcostos)"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa (iidempresa)"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa (denormalizado)"},
+              {"name": "perfilId", "type": "string", "required": true, "description": "Código del perfil (vidperfil, max 15 chars)"},
+              {"name": "perfil", "type": "string", "required": true, "description": "Nombre del perfil (vperfil, max 45 chars)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del perfil (vstts, 1 char)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso (usuarioingreso_au, max 20 chars)"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación (usuariomodificacion_au, max 20 chars)"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/distribucion-costos/perfiles",
+          "summary": "Crear perfil de distribución de costos",
+          "description": "Crea un nuevo perfil de distribución de costos con código, nombre y empresa. El ID se genera por secuencia (savpydistcostos)",
+          "requestDTO": {
+            "name": "PerfilDistribucionCreateDTO",
+            "description": "Datos para crear un perfil de distribución",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "perfilId", "type": "string", "required": true, "description": "Código del perfil (max 15 chars)"},
+              {"name": "perfil", "type": "string", "required": true, "description": "Nombre del perfil (max 45 chars)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del perfil (default activo)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PerfilDistribucionResponseDTO",
+            "description": "Perfil de distribución creado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/distribucion-costos/perfiles/{id}",
+          "summary": "Actualizar perfil de distribución de costos",
+          "description": "Actualiza el código, nombre o estado de un perfil de distribución de costos existente",
+          "requestDTO": {
+            "name": "PerfilDistribucionUpdateDTO",
+            "description": "Datos para actualizar un perfil de distribución",
+            "fields": [
+              {"name": "perfilId", "type": "string", "required": false, "description": "Código del perfil"},
+              {"name": "perfil", "type": "string", "required": false, "description": "Nombre del perfil"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del perfil"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PerfilDistribucionResponseDTO",
+            "description": "Perfil actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/distribucion-costos/perfiles/{id}",
+          "summary": "Eliminar perfil de distribución de costos",
+          "description": "Elimina un perfil de distribución de costos. Valida que no tenga colaboradores ni localidades asignadas antes de eliminar",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "distribucionCostosDialog.zul",
+      "baseUrl": "/api/v1/distribucion-costos/perfiles/{perfilId}/config",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/config",
+          "summary": "Obtener configuración del perfil de distribución",
+          "description": "Obtiene la configuración completa del perfil de distribución de costos incluyendo datos del perfil, empresa y resumen de colaboradores y localidades asignadas",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "PerfilDistribucionConfigDTO",
+            "description": "Configuración completa del perfil de distribución",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "ID del perfil (iiddistcostos)"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "perfilId", "type": "string", "required": true, "description": "Código del perfil"},
+              {"name": "perfil", "type": "string", "required": true, "description": "Nombre del perfil"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del perfil"},
+              {"name": "totalColaboradores", "type": "integer", "required": false, "description": "Total de colaboradores asignados al perfil"},
+              {"name": "totalLocalidades", "type": "integer", "required": false, "description": "Total de localidades asignadas al perfil"},
+              {"name": "colaboradores", "type": "array<ColaboradorPerfilResponseDTO>", "required": false, "description": "Lista de colaboradores asignados"},
+              {"name": "localidades", "type": "array<LocalidadPerfilResponseDTO>", "required": false, "description": "Lista de localidades con factores"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/config",
+          "summary": "Actualizar configuración del perfil de distribución",
+          "description": "Actualiza la configuración completa del perfil incluyendo datos básicos. Valida que la suma de factores de localidades sea coherente",
+          "requestDTO": {
+            "name": "PerfilDistribucionConfigUpdateDTO",
+            "description": "Datos para actualizar la configuración del perfil",
+            "fields": [
+              {"name": "perfilId", "type": "string", "required": false, "description": "Código del perfil"},
+              {"name": "perfil", "type": "string", "required": false, "description": "Nombre del perfil"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del perfil"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PerfilDistribucionConfigDTO",
+            "description": "Configuración actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/config/duplicar",
+          "summary": "Duplicar perfil de distribución",
+          "description": "Duplica un perfil de distribución existente con todos sus colaboradores y localidades asignadas, creando un nuevo perfil con nuevo nombre/código",
+          "requestDTO": {
+            "name": "DuplicarPerfilDTO",
+            "description": "Datos para duplicar el perfil",
+            "fields": [
+              {"name": "nuevoPerfilId", "type": "string", "required": true, "description": "Nuevo código de perfil"},
+              {"name": "nuevoPerfil", "type": "string", "required": true, "description": "Nuevo nombre del perfil"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PerfilDistribucionResponseDTO",
+            "description": "Nuevo perfil creado por duplicación",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/config",
+          "summary": "Eliminar configuración del perfil (con dependencias)",
+          "description": "Elimina el perfil con todas sus asignaciones de colaboradores y localidades (eliminación en cascada)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "distribucionCostosColabxPerfil.zul",
+      "baseUrl": "/api/v1/distribucion-costos/perfiles/{perfilId}/colaboradores",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/colaboradores",
+          "summary": "Listar colaboradores asignados al perfil",
+          "description": "Obtiene la lista paginada de colaboradores asignados a un perfil de distribución de costos (vista av_py_distcostoscxpl_v). Columnas del listado: colaborador (nombre), vcedula (cédula), iidcolaborador",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "cedula", "type": "string", "required": false, "description": "Filtro por cédula del colaborador"},
+            {"name": "nombre", "type": "string", "required": false, "description": "Búsqueda por nombre del colaborador"}
+          ],
+          "responseDTO": {
+            "name": "ColaboradorPerfilPageResponseDTO",
+            "description": "Lista paginada de colaboradores del perfil",
+            "fields": [
+              {"name": "content", "type": "array<ColaboradorPerfilResponseDTO>", "required": true, "description": "Lista de colaboradores del perfil"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/colaboradores/{id}",
+          "summary": "Obtener colaborador asignado al perfil por ID",
+          "description": "Obtiene el detalle de un colaborador asignado al perfil de distribución de costos, con nombre, cédula e ID de la asignación",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ColaboradorPerfilResponseDTO",
+            "description": "Detalle de un colaborador asignado al perfil (av_py_distcostoscxpl / av_py_distcostoscxpl_v)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la asignación (iiddistcostoscxpl)"},
+              {"name": "perfilDistribucionId", "type": "integer", "required": true, "description": "ID del perfil de distribución (iiddistcostos)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (iidcolaborador)"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador (max 152 chars, de la vista)"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador (max 152 chars, de la vista)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó la asignación (max 50 chars)"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación de la asignación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación (max 50 chars)"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/colaboradores",
+          "summary": "Asignar colaborador al perfil de distribución",
+          "description": "Asigna un colaborador existente al perfil de distribución de costos. Valida que el colaborador no esté ya asignado al mismo perfil. Usa búsqueda extendida de colaboradores (ColaboradoresExtendedSearchListBox)",
+          "requestDTO": {
+            "name": "ColaboradorPerfilCreateDTO",
+            "description": "Datos para asignar un colaborador al perfil",
+            "fields": [
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador a asignar"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ColaboradorPerfilResponseDTO",
+            "description": "Asignación de colaborador creada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/colaboradores/{id}",
+          "summary": "Actualizar asignación de colaborador al perfil",
+          "description": "Actualiza la asignación de un colaborador al perfil de distribución (por ejemplo, cambiar de colaborador)",
+          "requestDTO": {
+            "name": "ColaboradorPerfilUpdateDTO",
+            "description": "Datos para actualizar la asignación",
+            "fields": [
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "Nuevo ID del colaborador"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ColaboradorPerfilResponseDTO",
+            "description": "Asignación actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/colaboradores/{id}",
+          "summary": "Quitar colaborador del perfil de distribución",
+          "description": "Elimina la asignación de un colaborador del perfil de distribución de costos",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "distribucionCostosLocxPerfil.zul",
+      "baseUrl": "/api/v1/distribucion-costos/perfiles/{perfilId}/localidades",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/localidades",
+          "summary": "Listar localidades asignadas al perfil con factor",
+          "description": "Obtiene la lista paginada de localidades asignadas al perfil de distribución de costos (vista av_py_distcostoslxpl_v) con factor de distribución. Columnas: localidad, mfactor",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por ID de localidad (dimensión)"}
+          ],
+          "responseDTO": {
+            "name": "LocalidadPerfilPageResponseDTO",
+            "description": "Lista paginada de localidades del perfil con factor",
+            "fields": [
+              {"name": "content", "type": "array<LocalidadPerfilResponseDTO>", "required": true, "description": "Lista de localidades del perfil"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/localidades/{id}",
+          "summary": "Obtener localidad asignada al perfil por ID",
+          "description": "Obtiene el detalle de una localidad asignada al perfil de distribución con factor de distribución, nombre de localidad y ID de dimensión",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "LocalidadPerfilResponseDTO",
+            "description": "Detalle de localidad asignada al perfil (av_py_distcostoslxpl / av_py_distcostoslxpl_v)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la asignación (iiddistcostoslxpl)"},
+              {"name": "perfilDistribucionId", "type": "integer", "required": true, "description": "ID del perfil de distribución (iiddistcostos)"},
+              {"name": "localidadId", "type": "integer", "required": true, "description": "ID de la localidad/dimensión (iiddmlocalidad)"},
+              {"name": "localidad", "type": "string", "required": false, "description": "Nombre de la localidad (max 60 chars, de la vista)"},
+              {"name": "factor", "type": "number", "required": true, "description": "Factor de distribución (mfactor, precision 10,4)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó la asignación (max 20 chars)"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación (max 20 chars)"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/localidades",
+          "summary": "Asignar localidad al perfil con factor",
+          "description": "Asigna una localidad (dimensión) al perfil de distribución de costos con su factor de distribución. Valida que la localidad no esté ya asignada y que la suma de factores sea coherente. ID generado por secuencia (savpydistcostoslxpl)",
+          "requestDTO": {
+            "name": "LocalidadPerfilCreateDTO",
+            "description": "Datos para asignar localidad al perfil",
+            "fields": [
+              {"name": "localidadId", "type": "integer", "required": true, "description": "ID de la localidad/dimensión a asignar"},
+              {"name": "factor", "type": "number", "required": true, "description": "Factor de distribución (precision 10,4)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "LocalidadPerfilResponseDTO",
+            "description": "Asignación de localidad creada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/localidades/{id}",
+          "summary": "Actualizar factor de localidad en el perfil",
+          "description": "Actualiza el factor de distribución de una localidad asignada al perfil. Valida que la suma total de factores sea coherente",
+          "requestDTO": {
+            "name": "LocalidadPerfilUpdateDTO",
+            "description": "Datos para actualizar el factor de la localidad",
+            "fields": [
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad (si se cambia)"},
+              {"name": "factor", "type": "number", "required": false, "description": "Nuevo factor de distribución"}
+            ]
+          },
+          "responseDTO": {
+            "name": "LocalidadPerfilResponseDTO",
+            "description": "Asignación actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/distribucion-costos/perfiles/{perfilId}/localidades/{id}",
+          "summary": "Quitar localidad del perfil de distribución",
+          "description": "Elimina la asignación de una localidad del perfil de distribución de costos",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "ColaboradoresDistribucion.zul",
+      "baseUrl": "/api/v1/distribucion-costos/colaboradores",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}",
+          "summary": "Obtener distribución de costos de un colaborador",
+          "description": "Obtiene la distribución de costos asignada a un colaborador en una empresa (av_py_distribucion + av_py_distribucion_det). PK compuesto @EmbeddedId (iidempresa + iidcolaborador). Incluye tipo de distribución (del catálogo CAT_TIPODISTRIB), fecha de registro, total de venta, número de locales y detalle de localidades con factor y venta",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DistribucionColaboradorResponseDTO",
+            "description": "Distribución de costos de un colaborador (av_py_distribucion)",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa (parte del PK compuesto)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (parte del PK compuesto)"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador (denormalizado)"},
+              {"name": "colaboradorCedula", "type": "string", "required": false, "description": "Cédula del colaborador (denormalizado)"},
+              {"name": "tipoDistribucion", "type": "integer", "required": false, "description": "Tipo de distribución (itipoDistribucion, del catálogo)"},
+              {"name": "tipoDistribucionNombre", "type": "string", "required": false, "description": "Nombre del tipo de distribución (denormalizado del catálogo)"},
+              {"name": "totalVenta", "type": "number", "required": false, "description": "Total de venta (dtotalVenta)"},
+              {"name": "numLocales", "type": "integer", "required": false, "description": "Número de locales (inumLocales)"},
+              {"name": "fechaRegistro", "type": "datetime", "required": false, "description": "Fecha de registro (dfechaRegistro)"},
+              {"name": "usuarioRegistro", "type": "string", "required": false, "description": "Usuario que registró (vuserRegistro)"},
+              {"name": "detalles", "type": "array<DistribucionDetalleResponseDTO>", "required": false, "description": "Detalle de distribución por localidad"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}/detalle",
+          "summary": "Listar detalle de distribución por localidad del colaborador",
+          "description": "Obtiene la lista de localidades con factor y venta de la distribución de costos del colaborador (av_py_distribucion_det). PK compuesto @EmbeddedId (iiddimensionesl + iidempresa + iidcolaborador). Columnas del listado: localidad (vidditem), nombre localidad (vditem), factor (dfactor)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DistribucionDetalleListDTO",
+            "description": "Lista de detalle de distribución por localidad",
+            "fields": [
+              {"name": "items", "type": "array<DistribucionDetalleResponseDTO>", "required": true, "description": "Lista de localidades con factor"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de locales"},
+              {"name": "sumaFactores", "type": "number", "required": false, "description": "Suma total de factores de distribución"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}/detalle/{dimensionId}",
+          "summary": "Obtener detalle de distribución por localidad",
+          "description": "Obtiene el detalle de distribución de una localidad específica para el colaborador, con factor y venta. PK compuesto (iiddimensionesl + iidempresa + iidcolaborador)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DistribucionDetalleResponseDTO",
+            "description": "Detalle de distribución por localidad (av_py_distribucion_det)",
+            "fields": [
+              {"name": "dimensionId", "type": "integer", "required": true, "description": "ID de la dimensión/localidad (iiddimensionesl, parte del PK)"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa (iidempresa, parte del PK)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (iidcolaborador, parte del PK)"},
+              {"name": "localidadCodigo", "type": "string", "required": false, "description": "Código de la localidad (vidditem de AvDimensionesl)"},
+              {"name": "localidadNombre", "type": "string", "required": false, "description": "Nombre de la localidad (vditem de AvDimensionesl)"},
+              {"name": "factor", "type": "number", "required": true, "description": "Factor de distribución (dfactor, precision 10,2)"},
+              {"name": "venta", "type": "number", "required": false, "description": "Monto de venta de la localidad (dventa)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}",
+          "summary": "Crear distribución de costos para colaborador",
+          "description": "Crea la distribución de costos para un colaborador en una empresa, incluyendo el tipo de distribución, total de venta y detalles por localidad con factores. Precarga localidades a cargo del colaborador (getlocalidadesacargo) y plantilla contable si existe",
+          "requestDTO": {
+            "name": "DistribucionColaboradorCreateDTO",
+            "description": "Datos para crear la distribución del colaborador",
+            "fields": [
+              {"name": "tipoDistribucion", "type": "integer", "required": true, "description": "Tipo de distribución (del catálogo CAT_TIPODISTRIB)"},
+              {"name": "totalVenta", "type": "number", "required": false, "description": "Total de venta"},
+              {"name": "numLocales", "type": "integer", "required": false, "description": "Número de locales"},
+              {"name": "detalles", "type": "array<DistribucionDetalleCreateDTO>", "required": true, "description": "Detalle de localidades con factores"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DistribucionColaboradorResponseDTO",
+            "description": "Distribución creada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}",
+          "summary": "Actualizar distribución de costos del colaborador",
+          "description": "Actualiza la distribución de costos del colaborador incluyendo tipo de distribución, venta total y detalle de localidades con factores. Valida que la suma de factores no exceda el límite (flagerrorfactormayr). Actualiza la plantilla contable si aplica",
+          "requestDTO": {
+            "name": "DistribucionColaboradorUpdateDTO",
+            "description": "Datos para actualizar la distribución del colaborador",
+            "fields": [
+              {"name": "tipoDistribucion", "type": "integer", "required": false, "description": "Tipo de distribución"},
+              {"name": "totalVenta", "type": "number", "required": false, "description": "Total de venta"},
+              {"name": "numLocales", "type": "integer", "required": false, "description": "Número de locales"},
+              {"name": "detalles", "type": "array<DistribucionDetalleCreateDTO>", "required": false, "description": "Detalle actualizado de localidades con factores"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DistribucionColaboradorResponseDTO",
+            "description": "Distribución actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}",
+          "summary": "Eliminar distribución de costos del colaborador",
+          "description": "Elimina la distribución de costos del colaborador y todos sus detalles por localidad",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "ColaboradoresDistribucion.zul (detalle localidades)",
+      "baseUrl": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}/localidades",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}/localidades",
+          "summary": "Listar localidades de distribución del colaborador",
+          "description": "Obtiene la lista de localidades asignadas a la distribución del colaborador con código, nombre y factor. Usa el renderer DimensionesLLODistribListModelItemRenderer que muestra: vidditem (código localidad), vditem (nombre localidad), dfactor (factor)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DistribucionDetalleListDTO",
+            "description": "Lista de localidades de distribución",
+            "fields": [
+              {"name": "items", "type": "array<DistribucionDetalleResponseDTO>", "required": true, "description": "Lista de localidades con factor"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de locales"},
+              {"name": "sumaFactores", "type": "number", "required": false, "description": "Suma total de factores"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}/localidades",
+          "summary": "Agregar localidad a la distribución del colaborador",
+          "description": "Agrega una localidad (dimensión) a la distribución de costos del colaborador con su factor. Valida que la localidad no esté ya asignada y que la suma de factores sea menor o igual a 1. Selecciona la localidad desde el listbox de dimensiones (AvDimensionesl)",
+          "requestDTO": {
+            "name": "DistribucionDetalleCreateDTO",
+            "description": "Datos para agregar localidad a la distribución",
+            "fields": [
+              {"name": "dimensionId", "type": "integer", "required": true, "description": "ID de la dimensión/localidad a agregar"},
+              {"name": "factor", "type": "number", "required": true, "description": "Factor de distribución (precision 10,2, entre 0 y 1)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DistribucionDetalleResponseDTO",
+            "description": "Detalle de distribución agregado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}/localidades/{dimensionId}",
+          "summary": "Actualizar factor de localidad en distribución",
+          "description": "Actualiza el factor de distribución de una localidad en la distribución del colaborador. Valida la suma total de factores",
+          "requestDTO": {
+            "name": "DistribucionDetalleUpdateDTO",
+            "description": "Datos para actualizar el factor de la localidad",
+            "fields": [
+              {"name": "factor", "type": "number", "required": true, "description": "Nuevo factor de distribución"},
+              {"name": "venta", "type": "number", "required": false, "description": "Monto de venta (si aplica)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DistribucionDetalleResponseDTO",
+            "description": "Detalle actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/distribucion-costos/colaboradores/{empresaId}/{colaboradorId}/localidades/{dimensionId}",
+          "summary": "Quitar localidad de la distribución del colaborador",
+          "description": "Elimina una localidad de la distribución de costos del colaborador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Plantilla contable (referencia para distribución)",
+      "baseUrl": "/api/v1/distribucion-costos/plantillas-contables",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/plantillas-contables",
+          "summary": "Listar plantillas contables para distribución",
+          "description": "Obtiene la lista de plantillas contables (av_py_plantilla_contable) configuradas para la distribución de costos, con cuenta, subcuenta, auxiliar, tipo de distribución, flags de centro de costo y localidad, y agrupadores",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "procesoId", "type": "integer", "required": false, "description": "Filtro por ID del proceso de nómina"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID del rubro"},
+            {"name": "distribucionC", "type": "string", "required": false, "description": "Filtro por tipo de distribución contable (cdistribucionc)"}
+          ],
+          "responseDTO": {
+            "name": "PlantillaContableListDTO",
+            "description": "Lista de plantillas contables",
+            "fields": [
+              {"name": "items", "type": "array<PlantillaContableResponseDTO>", "required": true, "description": "Lista de plantillas contables"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de plantillas"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/distribucion-costos/plantillas-contables/{id}",
+          "summary": "Obtener plantilla contable por ID",
+          "description": "Obtiene el detalle de una plantilla contable para distribución de costos con datos de cuenta, subcuenta, auxiliar, distribución, flags, agrupadores y relaciones con proceso, rubro y dimensión custom",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "PlantillaContableResponseDTO",
+            "description": "Detalle de una plantilla contable (av_py_plantilla_contable)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la plantilla (iidplatillacontablel)"},
+              {"name": "cuenta", "type": "string", "required": false, "description": "Código de cuenta contable (vidcuenta)"},
+              {"name": "subcuenta", "type": "string", "required": false, "description": "Código de subcuenta contable (vidsubcuenta)"},
+              {"name": "auxiliar", "type": "string", "required": false, "description": "Código de auxiliar contable (cauxiliar)"},
+              {"name": "debitoHaber", "type": "string", "required": false, "description": "Débito/Haber (cdbhb)"},
+              {"name": "distribucionC", "type": "string", "required": false, "description": "Tipo de distribución contable (cdistribucionc)"},
+              {"name": "reporte", "type": "string", "required": false, "description": "Flag de reporte (crpt)"},
+              {"name": "tipoCentroCosto", "type": "string", "required": false, "description": "Tipo de centro de costo (ctc_dmccosto)"},
+              {"name": "tipoLocalidad", "type": "string", "required": false, "description": "Tipo de localidad (ctc_dmlocalidad)"},
+              {"name": "agrupadorCentroCosto", "type": "string", "required": false, "description": "Agrupador de centro de costo (vidagrupcc)"},
+              {"name": "agrupadorLocalidad", "type": "string", "required": false, "description": "Agrupador de localidad (vidagruploc)"},
+              {"name": "dimensionCustomId", "type": "integer", "required": false, "description": "ID de la dimensión custom (iiddmcustom → AvDimensionesl)"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina (iidpyproceso → AvPyProcesos)"},
+              {"name": "rubroId", "type": "string", "required": false, "description": "ID del rubro (vidrubro → AvPyRubro)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/distribucion-costos/plantillas-contables",
+          "summary": "Crear plantilla contable",
+          "description": "Crea una nueva plantilla contable para distribución de costos con cuenta, subcuenta, auxiliar, tipo de distribución, agrupadores y relaciones con proceso, rubro y dimensión. ID generado por secuencia (savpyplantillacontable)",
+          "requestDTO": {
+            "name": "PlantillaContableCreateDTO",
+            "description": "Datos para crear una plantilla contable",
+            "fields": [
+              {"name": "cuenta", "type": "string", "required": true, "description": "Código de cuenta contable"},
+              {"name": "subcuenta", "type": "string", "required": false, "description": "Código de subcuenta"},
+              {"name": "auxiliar", "type": "string", "required": false, "description": "Auxiliar contable"},
+              {"name": "debitoHaber", "type": "string", "required": true, "description": "Débito/Haber (D/H)"},
+              {"name": "distribucionC", "type": "string", "required": false, "description": "Tipo de distribución contable"},
+              {"name": "reporte", "type": "string", "required": false, "description": "Flag de reporte"},
+              {"name": "tipoCentroCosto", "type": "string", "required": false, "description": "Tipo de centro de costo"},
+              {"name": "tipoLocalidad", "type": "string", "required": false, "description": "Tipo de localidad"},
+              {"name": "agrupadorCentroCosto", "type": "string", "required": false, "description": "Agrupador de centro de costo"},
+              {"name": "agrupadorLocalidad", "type": "string", "required": false, "description": "Agrupador de localidad"},
+              {"name": "dimensionCustomId", "type": "integer", "required": false, "description": "ID de la dimensión custom"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "ID del proceso de nómina"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PlantillaContableResponseDTO",
+            "description": "Plantilla contable creada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/distribucion-costos/plantillas-contables/{id}",
+          "summary": "Actualizar plantilla contable",
+          "description": "Actualiza los datos de una plantilla contable existente",
+          "requestDTO": {
+            "name": "PlantillaContableUpdateDTO",
+            "description": "Datos para actualizar la plantilla contable",
+            "fields": [
+              {"name": "cuenta", "type": "string", "required": false, "description": "Cuenta contable"},
+              {"name": "subcuenta", "type": "string", "required": false, "description": "Subcuenta"},
+              {"name": "auxiliar", "type": "string", "required": false, "description": "Auxiliar"},
+              {"name": "debitoHaber", "type": "string", "required": false, "description": "D/H"},
+              {"name": "distribucionC", "type": "string", "required": false, "description": "Distribución contable"},
+              {"name": "tipoCentroCosto", "type": "string", "required": false, "description": "Tipo CC"},
+              {"name": "tipoLocalidad", "type": "string", "required": false, "description": "Tipo localidad"},
+              {"name": "agrupadorCentroCosto", "type": "string", "required": false, "description": "Agrupador CC"},
+              {"name": "agrupadorLocalidad", "type": "string", "required": false, "description": "Agrupador localidad"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PlantillaContableResponseDTO",
+            "description": "Plantilla actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/distribucion-costos/plantillas-contables/{id}",
+          "summary": "Eliminar plantilla contable",
+          "description": "Elimina una plantilla contable para distribución de costos",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

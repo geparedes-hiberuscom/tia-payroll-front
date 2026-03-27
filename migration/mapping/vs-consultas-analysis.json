@@ -1,0 +1,1307 @@
+{
+  "functionalities": [
+    {
+      "id": "func-consultas",
+      "name": "Consultas",
+      "description": "Consultas de nómina por colaborador, pre-cálculo, resúmenes generales por rubro y clasificación, comparativos entre nóminas, consulta de sueldos y acumulados históricos",
+      "screens": [
+        {
+          "name": "nominaxColabList.zul",
+          "description": "Listado paginado de nómina histórica por colaborador con totales de rubros calculados, filtros por instancia de proceso, empresa y colaborador, con exportación a Excel",
+          "actions": [
+            {
+              "name": "Listar nómina por colaborador",
+              "description": "Muestra la lista paginada de rubros históricos totalizados por colaborador con filtros por instancia de proceso",
+              "relatedClasses": [
+                {
+                  "className": "NominaxColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista ZK (extiende GFCBaseListCtrl<AvPyRubroslhisttotalesV>) que gestiona la consulta de nómina histórica por colaborador"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Interfaz de servicio GTH que provee operaciones de consulta de nómina y rubros históricos"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO JPA para acceso a datos de rubros de nómina históricos (liquidaciones cerradas)"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de colaboradores para los filtros de búsqueda"
+                },
+                {
+                  "className": "AvPyRubroslhisttotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA de totales de rubros históricos de nómina por colaborador"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia de proceso de nómina usada como filtro de búsqueda"
+                },
+                {
+                  "className": "AvPyRubroslhisvListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de lista de rubros históricos de nómina por colaborador"
+                }
+              ]
+            },
+            {
+              "name": "Buscar nómina",
+              "description": "Filtra la lista de nómina por colaborador según criterios de búsqueda (empresa, colaborador, instancia de proceso)",
+              "relatedClasses": [
+                {
+                  "className": "NominaxColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_search para aplicar filtros JPASearchObject por empresa, colaborador e instancia de proceso"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta filtrada de rubros históricos de nómina"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta los datos de nómina del colaborador consultado a formato Excel",
+              "relatedClasses": [
+                {
+                  "className": "NominaxColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_exportarexcel para generar exportación de nómina a Excel"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos de nómina para la exportación"
+                }
+              ]
+            },
+            {
+              "name": "Mostrar totales en pie de lista",
+              "description": "Calcula y muestra los totales de importe, cantidades y número de días en el footer del listbox",
+              "relatedClasses": [
+                {
+                  "className": "NominaxColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta dosetlistfooter() para calcular y mostrar totales acumulados en el pie de la lista"
+                },
+                {
+                  "className": "AvPyRubroslhisttotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista con los datos totalizados de rubros históricos"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "nominaxColabPreDialog.zul",
+          "description": "Diálogo modal que muestra el detalle de la nómina pre-cálculo de un colaborador con separación de rubros pre-liquidación y rubros históricos, totales y estado del proceso",
+          "actions": [
+            {
+              "name": "Mostrar detalle pre-cálculo",
+              "description": "Visualiza el detalle completo de rubros pre-liquidación e históricos del colaborador seleccionado con totales de importe y cantidades",
+              "relatedClasses": [
+                {
+                  "className": "NominaxColabPreDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de nómina pre-cálculo (extiende GFCBaseCtrl) que carga y muestra rubros pre-liquidación e históricos del colaborador"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de rubros pre-liquidación e históricos del colaborador"
+                },
+                {
+                  "className": "AvPyRubroslPreDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a datos de rubros pre-liquidación del colaborador"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a datos de rubros históricos del colaborador"
+                },
+                {
+                  "className": "AvPyRubroslpre.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de rubros de nómina pre-liquidación (cálculo pendiente)"
+                },
+                {
+                  "className": "AvPyRubroslhis.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de rubros de nómina históricos (liquidación cerrada)"
+                },
+                {
+                  "className": "AvPyRubroslpretotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA de totales de rubros pre-liquidación"
+                },
+                {
+                  "className": "AvPyRubroslhisttotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA de totales de rubros históricos"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador con datos personales y laborales"
+                },
+                {
+                  "className": "AvColaboradoresePK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta de la entidad de colaborador"
+                },
+                {
+                  "className": "AvPyRubroslpreDetallListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de detalle de rubros pre-liquidación"
+                },
+                {
+                  "className": "AvPyRubroslhisDetallListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de detalle de rubros históricos"
+                }
+              ]
+            },
+            {
+              "name": "Mostrar totales pre/históricos",
+              "description": "Calcula y muestra los totales separados para rubros pre-liquidación e históricos en el pie de la lista",
+              "relatedClasses": [
+                {
+                  "className": "NominaxColabPreDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta dosetlistfooter() y dosetlabellistfooter() para mostrar totales de importe y cantidades por tipo (pre/his)"
+                },
+                {
+                  "className": "AvPyRubroslpre.java",
+                  "type": "Modelo",
+                  "description": "Datos de rubros pre-liquidación para totalizar"
+                },
+                {
+                  "className": "AvPyRubroslhis.java",
+                  "type": "Modelo",
+                  "description": "Datos de rubros históricos para totalizar"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "nominaxColabPreList.zul",
+          "description": "Listado paginado de nómina pre-cálculo por colaborador con totales de rubros pendientes de liquidación, filtros por instancia de proceso y exportación a Excel",
+          "actions": [
+            {
+              "name": "Listar nómina pre-cálculo por colaborador",
+              "description": "Muestra la lista paginada de rubros pre-liquidación totalizados por colaborador con filtros por instancia de proceso",
+              "relatedClasses": [
+                {
+                  "className": "NominaxColabPreListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista ZK (extiende GFCBaseListCtrl<AvPyRubroslpretotalesV>) que gestiona la consulta de nómina pre-cálculo por colaborador"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de rubros pre-liquidación totalizados por colaborador"
+                },
+                {
+                  "className": "AvPyRubroslPreDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO JPA para acceso a datos de rubros pre-liquidación"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de colaboradores para los filtros"
+                },
+                {
+                  "className": "AvPyRubroslpretotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA de totales de rubros pre-liquidación por colaborador"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia de proceso usada como filtro de búsqueda"
+                },
+                {
+                  "className": "AvPyRubroslpreListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de lista de rubros pre-liquidación por colaborador"
+                }
+              ]
+            },
+            {
+              "name": "Buscar nómina pre-cálculo",
+              "description": "Filtra la lista de nómina pre-cálculo por colaborador según criterios de búsqueda",
+              "relatedClasses": [
+                {
+                  "className": "NominaxColabPreListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_search para aplicar filtros JPASearchObject"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta filtrada de rubros pre-liquidación"
+                },
+                {
+                  "className": "AvPyRubroslPreDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta los datos de nómina pre-cálculo del colaborador a formato Excel",
+              "relatedClasses": [
+                {
+                  "className": "NominaxColabPreListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_exportarexcel para generar exportación a Excel"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos de rubros pre-liquidación para la exportación"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "nominaresumenGeneral.zul",
+          "description": "Consulta de resumen general de nómina consolidado por instancia de proceso con totales de rubros y montos, mostrando datos de empresa y período",
+          "actions": [
+            {
+              "name": "Consultar resumen general",
+              "description": "Muestra el resumen general consolidado de nómina para una instancia de proceso seleccionada con totales por tipo de rubro",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGeneralCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de resumen general (extiende GFCBaseListCtrl) que muestra datos consolidados de nómina por instancia de proceso"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consulta de resumen general de nómina con datos consolidados"
+                },
+                {
+                  "className": "AvPyRubroslPreDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros pre-liquidación para el resumen"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros históricos para el resumen"
+                },
+                {
+                  "className": "AvPyProcesosinstanciasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de la instancia de proceso"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia de proceso con datos de período y empresa"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para datos del encabezado del resumen"
+                },
+                {
+                  "className": "AvPyRubroslResumenGeneralListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items del listado de resumen general de nómina"
+                }
+              ]
+            },
+            {
+              "name": "Buscar resumen general",
+              "description": "Filtra el resumen general por instancia de proceso seleccionada",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGeneralCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_search para aplicar filtros y recargar el resumen general"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta filtrada del resumen general"
+                }
+              ]
+            },
+            {
+              "name": "Mostrar totales del resumen",
+              "description": "Calcula y muestra los totales de importe, cantidades y número de días en el pie del resumen",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGeneralCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta dosetlistfooter() y dosetlabellistfooter() para mostrar totales consolidados"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos para cálculo de totales del resumen"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "nominaresumenGralCxRubro.zul",
+          "description": "Consulta de resumen general de nómina agrupado por clasificación de rubro con desglose de colaboradores, totales por clasificación y exportación a Excel (formato normal y fórmulas)",
+          "actions": [
+            {
+              "name": "Consultar resumen por clasificación de rubro",
+              "description": "Muestra el resumen de nómina agrupado por clasificación de rubro con desglose de colaboradores y montos",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGralCxRubroCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de resumen por clasificación de rubro (extiende GFCBaseListCtrl<AvPyRubroslhis>) con desglose por colaborador"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consulta de rubros históricos agrupados por clasificación"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros históricos por clasificación de rubro"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de colaboradores en el desglose"
+                },
+                {
+                  "className": "AvPyRubroslhis.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubros históricos de nómina con clasificación"
+                },
+                {
+                  "className": "AvPyRubroslpre.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubros pre-liquidación con clasificación"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de definición de rubro con clasificación asociada"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia de proceso usada como filtro de consulta"
+                },
+                {
+                  "className": "AvPyRubroslhisColabListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de lista de rubros históricos por colaborador y clasificación"
+                }
+              ]
+            },
+            {
+              "name": "Buscar por clasificación",
+              "description": "Filtra el resumen por instancia de proceso y clasificación de rubro",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGralCxRubroCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_search para aplicar filtros por instancia de proceso y clasificación"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta filtrada por clasificación de rubro"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada por clasificación"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta los datos del resumen por clasificación de rubro a formato Excel",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGralCxRubroCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_exportarexcel para generar exportación de datos a Excel"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos consolidados para la exportación"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel con fórmulas",
+              "description": "Exporta los datos del resumen a Excel con fórmulas de cálculo integradas",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGralCxRubroCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_exportarexcelF para generar exportación Excel con fórmulas de cálculo"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos y fórmulas para la exportación avanzada"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "nominaresumenGralxRubro.zul",
+          "description": "Consulta de resumen general de nómina agrupado por rubro individual con desglose de colaboradores, totales por rubro y exportación a Excel (formato normal y fórmulas)",
+          "actions": [
+            {
+              "name": "Consultar resumen por rubro",
+              "description": "Muestra el resumen de nómina agrupado por rubro individual con desglose de importes y cantidades por colaborador",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGralxRubroCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de resumen por rubro (extiende GFCBaseListCtrl<AvPyRubroslpre>) con desglose por colaborador"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consulta de rubros agrupados por rubro individual"
+                },
+                {
+                  "className": "AvPyRubroslPreDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros pre-liquidación por rubro"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de colaboradores en el desglose"
+                },
+                {
+                  "className": "AvPyRubroslpre.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubros pre-liquidación con datos por rubro individual"
+                },
+                {
+                  "className": "AvPyRubroslhis.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubros históricos con datos por rubro individual"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de definición de rubro para la agrupación"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Instancia de proceso usada como filtro de consulta"
+                },
+                {
+                  "className": "AvPyRubroslhisColabListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de rubros históricos por colaborador y rubro"
+                },
+                {
+                  "className": "AvPyRubroslpreColabListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de rubros pre-liquidación por colaborador y rubro"
+                }
+              ]
+            },
+            {
+              "name": "Buscar por rubro",
+              "description": "Filtra el resumen por instancia de proceso y rubro individual",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGralxRubroCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_search para aplicar filtros por instancia de proceso y rubro"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta filtrada por rubro individual"
+                },
+                {
+                  "className": "AvPyRubroslPreDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada por rubro"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta los datos del resumen por rubro a formato Excel",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGralxRubroCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_exportarexcel para generar exportación de datos a Excel"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos consolidados para la exportación"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel con fórmulas",
+              "description": "Exporta los datos del resumen por rubro a Excel con fórmulas de cálculo integradas",
+              "relatedClasses": [
+                {
+                  "className": "NominaResumenGralxRubroCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_exportarexcelF para generar exportación Excel avanzada con fórmulas"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos y fórmulas para la exportación avanzada"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ResumenGralNominaDialog.zul",
+          "description": "Diálogo modal de resumen general de nómina con selección de empresa, colaborador y clase de rubro, generación de reportes y exportación a Excel (formato normal y fórmulas)",
+          "actions": [
+            {
+              "name": "Consultar resumen por empresa y colaborador",
+              "description": "Muestra el resumen de nómina filtrado por empresa, colaborador específico y clase de rubro con vista consolidada",
+              "relatedClasses": [
+                {
+                  "className": "ResumenGralNominaDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de resumen general (extiende GFCBaseCtrl) con filtros por empresa, colaborador y clase de rubro"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de resumen de nómina con múltiples filtros"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener lista de empresas para el filtro"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de rubros y clasificaciones"
+                },
+                {
+                  "className": "AvRhColaboradoresdvacpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener localidades/divisiones del usuario"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para los filtros del resumen"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador seleccionado para el resumen"
+                },
+                {
+                  "className": "AvPyClasesrubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de clasificación de rubro para filtros de reportes"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro para filtros y agrupaciones"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                },
+                {
+                  "className": "AvColaboradoresCIListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de colaboradores por cédula/identificación"
+                },
+                {
+                  "className": "ClasesRubrosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de clases de rubro"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar clase de rubro para reporte",
+              "description": "Filtra los datos del resumen al seleccionar una clase de rubro del dropdown",
+              "relatedClasses": [
+                {
+                  "className": "ResumenGralNominaDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_ClaseRubroReport para filtrar datos según la clase de rubro seleccionada"
+                },
+                {
+                  "className": "AvPyClasesrubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de clase de rubro seleccionada para el filtro"
+                }
+              ]
+            },
+            {
+              "name": "Buscar colaborador avanzado",
+              "description": "Abre el buscador avanzado de colaboradores para seleccionar un colaborador específico",
+              "relatedClasses": [
+                {
+                  "className": "ResumenGralNominaDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSearchColaboradorExtended para abrir el buscador avanzado de colaboradores"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee búsqueda de colaboradores con filtros avanzados"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador encontrado y seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar colaborador del filtro",
+              "description": "Quita el colaborador seleccionado del filtro de consulta para mostrar resumen general sin filtro de persona",
+              "relatedClasses": [
+                {
+                  "className": "ResumenGralNominaDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDeleteColaborador para limpiar el filtro de colaborador"
+                }
+              ]
+            },
+            {
+              "name": "Exportar resumen a Excel",
+              "description": "Exporta los datos del resumen general a formato Excel",
+              "relatedClasses": [
+                {
+                  "className": "ResumenGralNominaDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnExportar para generar exportación de resumen a Excel"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos consolidados para la exportación"
+                }
+              ]
+            },
+            {
+              "name": "Exportar resumen a Excel con fórmulas",
+              "description": "Exporta los datos del resumen general a Excel con fórmulas de cálculo integradas",
+              "relatedClasses": [
+                {
+                  "className": "ResumenGralNominaDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnExportarF para generar exportación Excel avanzada con fórmulas"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos y fórmulas para la exportación avanzada"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "comparativoNominas.zul",
+          "description": "Pantalla de comparativo entre nóminas de diferentes períodos con filtros por empresa, localidad, región, zona, proceso y tipo de consulta, con exportación a Excel",
+          "actions": [
+            {
+              "name": "Consultar comparativo de nóminas",
+              "description": "Muestra el comparativo de nóminas entre diferentes períodos con agrupación por empresa, localidad, región, zona y proceso",
+              "relatedClasses": [
+                {
+                  "className": "ComparativoNominasListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de comparativo de nóminas (extiende GFCBaseListCtrl<AvPyComparativoNomina>) con múltiples filtros y períodos"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de comparativo de nóminas con datos de múltiples períodos"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener empresas para el filtro"
+                },
+                {
+                  "className": "AvDimensionesluserDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener localidades/dimensiones del usuario"
+                },
+                {
+                  "className": "AvCatalogosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener catálogos de tipos de consulta"
+                },
+                {
+                  "className": "AvRhColaboradoresdvacpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de localidades y divisiones del usuario"
+                },
+                {
+                  "className": "AvControlAsistenciaDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener períodos de control de asistencia para el comparativo"
+                },
+                {
+                  "className": "AvPyComparativoNomina.java",
+                  "type": "Modelo",
+                  "description": "Entidad con datos de comparativo de nóminas entre períodos"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtros del comparativo"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad para filtros del comparativo"
+                },
+                {
+                  "className": "AvRegion.java",
+                  "type": "Modelo",
+                  "description": "Entidad de región para filtros del comparativo"
+                },
+                {
+                  "className": "AvZona.java",
+                  "type": "Modelo",
+                  "description": "Entidad de zona para filtros del comparativo"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para tipos de consulta comparativa"
+                },
+                {
+                  "className": "AvCaPeriodosta.java",
+                  "type": "Modelo",
+                  "description": "Entidad de período de control/asistencia para filtro temporal"
+                },
+                {
+                  "className": "ComparativoNominasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items del listado de comparativo de nóminas"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                },
+                {
+                  "className": "AvDimensioneslloccontratacionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de localidades de contratación"
+                },
+                {
+                  "className": "RegionesLBListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de regiones"
+                },
+                {
+                  "className": "ZonasLBListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de zonas"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar empresa",
+              "description": "Filtra los datos del comparativo al seleccionar una empresa y recarga localidades, regiones y zonas",
+              "relatedClasses": [
+                {
+                  "className": "ComparativoNominasListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Empresas para recargar localidades, regiones y zonas según la empresa seleccionada"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene datos de la empresa seleccionada"
+                },
+                {
+                  "className": "AvDimensionesluserDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene localidades del usuario para la empresa seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar localidad/región/zona/proceso",
+              "description": "Aplica filtros adicionales de localidad, región, zona, proceso o tipo de consulta al comparativo",
+              "relatedClasses": [
+                {
+                  "className": "ComparativoNominasListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Localidades, onSelect$lbox_Regiones, onSelect$lbox_Zonas, onSelect$lbox_Procesos, onSelect$lbox_TipoConsulta para aplicar filtros jerárquicos"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad seleccionada"
+                },
+                {
+                  "className": "AvRegion.java",
+                  "type": "Modelo",
+                  "description": "Entidad de región seleccionada"
+                },
+                {
+                  "className": "AvZona.java",
+                  "type": "Modelo",
+                  "description": "Entidad de zona seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar comparativo",
+              "description": "Recarga el comparativo de nóminas con los filtros actuales",
+              "relatedClasses": [
+                {
+                  "className": "ComparativoNominasListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnRefresh para recargar los datos del comparativo con los filtros aplicados"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta actualizada del comparativo"
+                }
+              ]
+            },
+            {
+              "name": "Exportar comparativo a Excel",
+              "description": "Exporta los datos del comparativo de nóminas a formato Excel",
+              "relatedClasses": [
+                {
+                  "className": "ComparativoNominasListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnExportarExcel para generar la exportación del comparativo a Excel"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos del comparativo para la exportación"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "conSueldo.zul",
+          "description": "Consulta de sueldos de colaboradores con filtros por empresa, localidad, tipo de rol y búsqueda por colaborador, historiales de rubros de nómina y exportación a Excel",
+          "actions": [
+            {
+              "name": "Consultar sueldos de colaboradores",
+              "description": "Muestra la lista de colaboradores con sus sueldos vigentes filtrados por empresa, localidad y tipo de rol",
+              "relatedClasses": [
+                {
+                  "className": "ConSueldoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de consulta de sueldos (extiende GFCBaseListCtrl<AvColaboradorese>) con múltiples filtros y búsqueda de colaboradores"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de sueldos con filtros por empresa, localidad y rol"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener lista de empresas para el filtro"
+                },
+                {
+                  "className": "AvDimensioneslDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener localidades/dimensiones para el filtro"
+                },
+                {
+                  "className": "AvCatalogosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener catálogos de tipos de rol"
+                },
+                {
+                  "className": "AvCatalogosLDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener sub-catálogos de roles"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de colaboradores con sueldos"
+                },
+                {
+                  "className": "AvRhColaboradoresdvacpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener localidades y divisiones del usuario"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador con datos de sueldo, empresa y localidad"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtros de consulta"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad/dimensión para filtros"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para tipo de rol"
+                },
+                {
+                  "className": "AvCatalogosl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de sub-catálogo para clasificaciones de rol"
+                },
+                {
+                  "className": "AvEnEmpresaspatronal.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa patronal asociada al colaborador"
+                },
+                {
+                  "className": "AvPyRubroslhisttotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista de totales de rubros históricos por colaborador"
+                },
+                {
+                  "className": "AvEnDimensionesestV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista de dimensiones de estructura organizacional"
+                },
+                {
+                  "className": "ConSueldoListItemRendererImplements.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items del listado de sueldos de colaboradores"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                },
+                {
+                  "className": "AvDimensioneslListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de localidades"
+                },
+                {
+                  "className": "AvDimensioneslloccontratacionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de localidades de contratación"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar empresa",
+              "description": "Filtra sueldos al seleccionar una empresa y recarga localidades disponibles",
+              "relatedClasses": [
+                {
+                  "className": "ConSueldoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Empresas para recargar localidades y roles según la empresa seleccionada"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene datos de la empresa seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar localidad y rol",
+              "description": "Aplica filtros de localidad y tipo de rol a la consulta de sueldos",
+              "relatedClasses": [
+                {
+                  "className": "ConSueldoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Localidades y onSelect$lbox_Rol para aplicar filtros adicionales"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Localidad seleccionada como filtro"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Catálogo de tipo de rol seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Buscar colaborador",
+              "description": "Abre el buscador extendido de colaboradores para seleccionar un colaborador específico",
+              "relatedClasses": [
+                {
+                  "className": "ConSueldoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSearchColaborador para abrir el buscador avanzado de colaboradores"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee búsqueda de colaboradores"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la búsqueda de colaboradores"
+                }
+              ]
+            },
+            {
+              "name": "Limpiar filtros",
+              "description": "Limpia todos los filtros aplicados y restaura la vista inicial",
+              "relatedClasses": [
+                {
+                  "className": "ConSueldoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnLimpia para limpiar todos los filtros de búsqueda"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar consulta de sueldos",
+              "description": "Recarga la lista de sueldos con los filtros actuales",
+              "relatedClasses": [
+                {
+                  "className": "ConSueldoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnRefresh para recargar el listado de sueldos con los filtros aplicados"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta actualizada de sueldos"
+                }
+              ]
+            },
+            {
+              "name": "Exportar sueldos a Excel",
+              "description": "Exporta los datos de sueldos de colaboradores a formato Excel",
+              "relatedClasses": [
+                {
+                  "className": "ConSueldoListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnExportarExcel para generar la exportación de sueldos a Excel"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee los datos de sueldos para la exportación"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "acumulados.zul",
+          "description": "Pantalla principal de consulta de acumulados de nómina por colaborador con vista de listado, formulario de detalle y filtros por clase de rubro, con operaciones CRUD sobre registros de acumulados",
+          "actions": [
+            {
+              "name": "Listar acumulados",
+              "description": "Muestra la lista de acumulados de nómina por colaborador con filtros por clase de rubro y selección de vista",
+              "relatedClasses": [
+                {
+                  "className": "AcumuladosMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador principal de acumulados (extiende GFCBaseListCtrl<AvPyAcumuladosV>) con vista combinada lista+detalle y operaciones CRUD"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de acumulados con filtros por clase de rubro y colaborador"
+                },
+                {
+                  "className": "AvPyAcumuladosV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA de acumulados de nómina con datos consolidados por clase de rubro"
+                },
+                {
+                  "className": "AvPyAcumulado.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de acumulado de nómina con valor, período y clase de rubro"
+                },
+                {
+                  "className": "AvPyClasesrubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de clase de rubro para filtros y agrupaciones de acumulados"
+                },
+                {
+                  "className": "AvColaboradoresV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista de colaboradores con datos básicos para la búsqueda"
+                },
+                {
+                  "className": "ClasesRubrosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de clases de rubro"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar acumulado de lista",
+              "description": "Al seleccionar un acumulado de la lista, muestra sus datos en el formulario de detalle",
+              "relatedClasses": [
+                {
+                  "className": "AcumuladosMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Acumulados para cargar datos del acumulado seleccionado en el formulario de detalle"
+                },
+                {
+                  "className": "AvPyAcumuladosV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista del acumulado seleccionado con datos a mostrar en el formulario"
+                },
+                {
+                  "className": "AvPyAcumulado.java",
+                  "type": "Modelo",
+                  "description": "Entidad de acumulado cuyo detalle se muestra"
+                }
+              ]
+            },
+            {
+              "name": "Crear acumulado",
+              "description": "Permite crear un nuevo registro de acumulado para un colaborador con clase de rubro, valor y período",
+              "relatedClasses": [
+                {
+                  "className": "AcumuladosMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnNew para iniciar la creación de un nuevo acumulado y onClick$btnSave para persistirlo"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta saveObject() para persistir el nuevo acumulado"
+                },
+                {
+                  "className": "AvPyAcumulado.java",
+                  "type": "Modelo",
+                  "description": "Entidad de acumulado a crear con valor, período y clase de rubro"
+                }
+              ]
+            },
+            {
+              "name": "Editar acumulado",
+              "description": "Permite modificar un registro de acumulado existente",
+              "relatedClasses": [
+                {
+                  "className": "AcumuladosMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnEdit para activar edición y onClick$btnSave para persistir cambios"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta updateObject() para actualizar el acumulado existente"
+                },
+                {
+                  "className": "AvPyAcumulado.java",
+                  "type": "Modelo",
+                  "description": "Entidad de acumulado a editar"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar acumulado",
+              "description": "Permite eliminar un registro de acumulado existente con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "AcumuladosMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete con confirmación MultiLineMessageBox para eliminar el acumulado seleccionado"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar el acumulado"
+                },
+                {
+                  "className": "AvPyAcumulado.java",
+                  "type": "Modelo",
+                  "description": "Entidad de acumulado a eliminar"
+                }
+              ]
+            },
+            {
+              "name": "Mostrar diálogo de detalle",
+              "description": "Abre la vista de detalle del acumulado seleccionado para visualización o edición",
+              "relatedClasses": [
+                {
+                  "className": "AcumuladosMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta doShowDialog() para mostrar el formulario de detalle con datos del acumulado"
+                },
+                {
+                  "className": "AvPyAcumulado.java",
+                  "type": "Modelo",
+                  "description": "Entidad de acumulado cuyo detalle se muestra"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "relatedControllers": [
+        "NominaxColabListCtrl.java",
+        "NominaxColabPreDialogCtrl.java",
+        "NominaxColabPreListCtrl.java",
+        "NominaResumenGeneralCtrl.java",
+        "NominaResumenGralCxRubroCtrl.java",
+        "NominaResumenGralxRubroCtrl.java",
+        "ResumenGralNominaDialogCtrl.java",
+        "ComparativoNominasListCtrl.java",
+        "ConSueldoListCtrl.java",
+        "AcumuladosMainCtrl.java"
+      ]
+    }
+  ]
+}

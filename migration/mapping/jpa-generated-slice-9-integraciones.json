@@ -1,0 +1,200 @@
+{
+  "slice_id": "slice-9-integraciones",
+  "slice_nombre": "🔗 Integraciones Externas",
+  "moduleName": "integraciones",
+  "fullPackage": "com.tia.integraciones",
+  "target": "springboot",
+  "generatedAt": "2026-03-26T14:23:07.094Z",
+  "entities": [
+    {
+      "className": "AvPyInterfasEntity",
+      "tableName": "av_py_interfas",
+      "sourceFile": "AvPyInterfas.java",
+      "sourceDescription": "Entidad JPA de interfaz (tipo IESS) con configuración del proceso",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyInterfasEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyInterfasRepository.java"
+    },
+    {
+      "className": "AvPyInterfasarchivoEntity",
+      "tableName": "av_py_interfasarchivo",
+      "sourceFile": "AvPyInterfasarchivo.java",
+      "sourceDescription": "Entidad JPA de archivo generado por la interfaz IESS",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyInterfasarchivoEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyInterfasarchivoRepository.java"
+    },
+    {
+      "className": "AvPyProcesosinstanciasEntity",
+      "tableName": "av_py_procesosinstancias",
+      "sourceFile": "AvPyProcesosinstancias.java",
+      "sourceDescription": "Entidad de instancia de proceso de nómina vinculada a la interfaz",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyProcesosinstanciasEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyProcesosinstanciasRepository.java"
+    },
+    {
+      "className": "AvEnEmpresaspatronalEntity",
+      "tableName": "av_en_empresaspatronal",
+      "sourceFile": "AvEnEmpresaspatronal.java",
+      "sourceDescription": "Entidad de número patronal de la empresa ante el IESS",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvEnEmpresaspatronalEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvEnEmpresaspatronalRepository.java"
+    },
+    {
+      "className": "AvEmpresaEntity",
+      "tableName": "av_empresa",
+      "sourceFile": "AvEmpresa.java",
+      "sourceDescription": "Entidad de empresa para contexto de la interfaz",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvEmpresaEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvEmpresaRepository.java"
+    },
+    {
+      "className": "AvDimensioneslEntity",
+      "tableName": "av_dimensionesl",
+      "sourceFile": "AvDimensionesl.java",
+      "sourceDescription": "Entidad de dimensión/localidad para filtro de interfaz",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvDimensioneslEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvDimensioneslRepository.java"
+    },
+    {
+      "className": "AvCatalogosEntity",
+      "tableName": "av_catalogos",
+      "sourceFile": "AvCatalogos.java",
+      "sourceDescription": "Entidad de catálogos utilizada en la configuración de archivos",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvCatalogosEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvCatalogosRepository.java"
+    },
+    {
+      "className": "AvPyRubrosIesslEntity",
+      "tableName": "av_py_rubros_iessl",
+      "sourceFile": "AvPyRubrosIessl.java",
+      "sourceDescription": "Entidad JPA de línea de rubro IESS cargado",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyRubrosIesslEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyRubrosIesslRepository.java"
+    },
+    {
+      "className": "AvPyRubrosIessEntity",
+      "tableName": "av_py_rubros_iess",
+      "sourceFile": "AvPyRubrosIess.java",
+      "sourceDescription": "Entidad JPA de cabecera de rubros IESS",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyRubrosIessEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyRubrosIessRepository.java"
+    },
+    {
+      "className": "AvPyRubrosIdoEntity",
+      "tableName": "av_py_rubros_ido",
+      "sourceFile": "AvPyRubrosIdo.java",
+      "sourceDescription": "Entidad de rubros IDO vinculados al IESS",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyRubrosIdoEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyRubrosIdoRepository.java"
+    },
+    {
+      "className": "AvColaboradoresEntity",
+      "tableName": "av_colaboradores",
+      "sourceFile": "AvColaboradores.java",
+      "sourceDescription": "Entidad de colaborador para filtro de búsqueda",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvColaboradoresEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvColaboradoresRepository.java"
+    },
+    {
+      "className": "AvColaboradoreseEntity",
+      "tableName": "av_colaboradorese",
+      "sourceFile": "AvColaboradorese.java",
+      "sourceDescription": "Entidad de datos extendidos del colaborador",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvColaboradoreseEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvColaboradoreseRepository.java"
+    },
+    {
+      "className": "AvPyRubroEntity",
+      "tableName": "av_py_rubro",
+      "sourceFile": "AvPyRubro.java",
+      "sourceDescription": "Entidad de rubro de nómina vinculado al rubro IESS",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyRubroEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyRubroRepository.java"
+    },
+    {
+      "className": "AvPyParametroEntity",
+      "tableName": "av_py_parametro",
+      "sourceFile": "AvPyParametro.java",
+      "sourceDescription": "Entidad de parámetros de nómina",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyParametroEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyParametroRepository.java"
+    },
+    {
+      "className": "AvPyParametroEntity",
+      "tableName": "av_py_parametro",
+      "sourceFile": "AvPyParametroPK.java",
+      "sourceDescription": "Clave primaria compuesta de parámetros",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyParametroEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyParametroRepository.java"
+    },
+    {
+      "className": "DominiosEntity",
+      "tableName": "dominios",
+      "sourceFile": "Dominios.java",
+      "sourceDescription": "Entidad de dominios del sistema para categorización de datos",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/DominiosEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/DominiosRepository.java"
+    },
+    {
+      "className": "AvPyRubroslhisEntity",
+      "tableName": "av_py_rubroslhis",
+      "sourceFile": "AvPyRubroslhis.java",
+      "sourceDescription": "Entidad de historial de rubros con datos contables",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyRubroslhisEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyRubroslhisRepository.java"
+    },
+    {
+      "className": "AvPyPlantillaContableEntity",
+      "tableName": "av_py_plantilla_contable",
+      "sourceFile": "AvPyPlantillaContable.java",
+      "sourceDescription": "Entidad de plantilla contable para la configuración de asientos",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyPlantillaContableEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyPlantillaContableRepository.java"
+    },
+    {
+      "className": "AvPyCtasubctaAsoEntity",
+      "tableName": "av_py_ctasubcta_aso",
+      "sourceFile": "AvPyCtasubctaAso.java",
+      "sourceDescription": "Entidad de cuenta/subcuenta contable asociada",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyCtasubctaAsoEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyCtasubctaAsoRepository.java"
+    },
+    {
+      "className": "AvPyClasesrubroEntity",
+      "tableName": "av_py_clasesrubro",
+      "sourceFile": "AvPyClasesrubro.java",
+      "sourceDescription": "Entidad de clases de rubro para filtro por clasificación",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyClasesrubroEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyClasesrubroRepository.java"
+    },
+    {
+      "className": "AvPyCuadreprovcontableEntity",
+      "tableName": "av_py_cuadreprovcontable",
+      "sourceFile": "AvPyCuadreprovcontable.java",
+      "sourceDescription": "Entidad JPA de cuadre de provisiones contables con valores contabilizados vs calculados",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyCuadreprovcontableEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyCuadreprovcontableRepository.java"
+    },
+    {
+      "className": "AvPyRubroslpreEntity",
+      "tableName": "av_py_rubroslpre",
+      "sourceFile": "AvPyRubroslpre.java",
+      "sourceDescription": "Entidad de rubro de préstamo vinculado al cuadre",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyRubroslpreEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyRubroslpreRepository.java"
+    },
+    {
+      "className": "AvPyCuadreprovcontableDetEntity",
+      "tableName": "av_py_cuadreprovcontable_det",
+      "sourceFile": "AvPyCuadreprovcontableDet.java",
+      "sourceDescription": "Entidad JPA de detalle de cuadre contable por colaborador y rubro",
+      "entityPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/entities/AvPyCuadreprovcontableDetEntity.java",
+      "repositoryPath": "target-springboot/integraciones/src/main/java/com/tia/integraciones/infrastructure/output/adapter/persistence/repository/AvPyCuadreprovcontableDetRepository.java"
+    }
+  ],
+  "vistas_bd": [],
+  "resumen": {
+    "total_entities": 23,
+    "total_repositories": 23,
+    "total_vistas_bd": 0
+  }
+}

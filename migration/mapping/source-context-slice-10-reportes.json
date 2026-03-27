@@ -1,0 +1,190 @@
+{
+  "slice_id": "slice-10-reportes",
+  "slice_nombre": "📊 Reportes",
+  "slice_descripcion": "Reportes y análisis",
+  "projectName": "payrol",
+  "groupId": "com.tia",
+  "target": "springboot",
+  "modulo": "Roles de Pago / Nómina (AvPy)",
+  "generatedAt": "2026-03-25T20:58:32.522Z",
+  "funcionalidades_seleccionadas": [
+    "func-reportes"
+  ],
+  "funcionalidades_no_encontradas": [
+    "26_reportes_nomina",
+    "25_estadisticas"
+  ],
+  "source_context": [
+    {
+      "funcionalidad_id": "func-reportes",
+      "funcionalidad_nombre": "Reportes",
+      "entidades": [
+        {
+          "archivo": "AvEmpresa.java",
+          "descripcion": "Entidad de empresa para filtro de consulta",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvDimensionesl.java",
+          "descripcion": "Entidad de dimensión/localidad para filtro",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvColaboradorese.java",
+          "descripcion": "Entidad de datos extendidos de colaboradores consultados",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyRubro.java",
+          "descripcion": "Entidad de rubros de nómina del personal",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyRubrosPrestamo.java",
+          "descripcion": "Entidad de préstamos de nómina del personal",
+          "tipo": "Modelo"
+        },
+        {
+          "archivo": "AvPyRubrosPrestamoCom.java",
+          "descripcion": "Entidad de compromisos de préstamos de nómina",
+          "tipo": "Modelo"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "ConsultaEstadisticasPersonalCtrl.java",
+          "descripcion": "Controlador de estadísticas de personal (extiende GFCBaseCtrl) con carga de combos de empresa/localidad y lógica de consulta con JPAQuerys",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "EstadisticasPersonalItemRenderer",
+          "descripcion": "Clase interna que renderiza las filas del listado de estadísticas de personal con datos dinámicos",
+          "tipo": "Renderer (inner class)"
+        },
+        {
+          "archivo": "ConsultaEstadisticasHECtrl.java",
+          "descripcion": "Controlador de estadísticas de horas extras (extiende GFCBaseListCtrl<AvPyRubroslhisttotalesV>) con carga de combos empresa/localidad y consulta de totales",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "AvPyRubroslhisttotalesV.java",
+          "descripcion": "Vista JPA con totales acumulados de rubros del historial de nómina para horas extras",
+          "tipo": "Modelo (Vista)"
+        },
+        {
+          "archivo": "EstadisticasHoraExtrasItemRenderer",
+          "descripcion": "Clase interna que renderiza las filas del listado de estadísticas de horas extras con datos dinámicos",
+          "tipo": "Renderer (inner class)"
+        },
+        {
+          "archivo": "ConsultaEstadisticasRotacionCtrl.java",
+          "descripcion": "Controlador de estadísticas de rotación (extiende GFCBaseCtrl) con carga de combos empresa/localidad/tipo y filtros de fecha",
+          "tipo": "Controlador"
+        },
+        {
+          "archivo": "EstadisticasRotacionItemRenderer",
+          "descripcion": "Clase interna que renderiza las filas del listado de estadísticas de rotación con datos dinámicos de ingresos/salidas",
+          "tipo": "Renderer (inner class)"
+        }
+      ],
+      "servicios": [
+        {
+          "archivo": "AvanteGTHService.java",
+          "descripcion": "Servicio para consultar datos de colaboradores, rubros y préstamos",
+          "tipo": "Servicio"
+        }
+      ],
+      "daos": [
+        {
+          "archivo": "AvEmpresasDAOJpaImpl.java",
+          "descripcion": "DAO para cargar el combo de empresas",
+          "tipo": "DAO"
+        },
+        {
+          "archivo": "AvDimensioneslDAOJpaImpl.java",
+          "descripcion": "DAO para cargar el combo de localidades/dimensiones",
+          "tipo": "DAO"
+        }
+      ],
+      "renderers": [
+        {
+          "archivo": "AvEmpresasListModelItemRenderer.java",
+          "descripcion": "Renderizador del combo de empresas",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvDimensioneslListModelItemRenderer.java",
+          "descripcion": "Renderizador del combo de dimensiones/localidades",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvDimensioneslloccontratacionListModelItemRenderer.java",
+          "descripcion": "Renderizador de localidades de contratación para filtro",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "CuentaCteConsolidadoListModelItemRenderer.java",
+          "descripcion": "Renderizador de datos consolidados de cuenta corriente del personal",
+          "tipo": "Renderer"
+        },
+        {
+          "archivo": "AvPyRubroslhisvListModelItemRenderer.java",
+          "descripcion": "Renderizador de filas del listado de totales de historial de rubros",
+          "tipo": "Renderer"
+        }
+      ],
+      "pantallas_zul": [
+        {
+          "archivo": "consultaEstadisticasPersonal.zul",
+          "descripcion": "Pantalla de estadísticas de personal con filtros por empresa y localidad, visualización de datos de colaboradores con rubros, préstamos y compromisos, renderizado dinámico y exportación a Excel"
+        },
+        {
+          "archivo": "consultaEstadisticasHorasExtras.zul",
+          "descripcion": "Pantalla de estadísticas de horas extras con filtros por empresa y localidad, visualización de totales acumulados por colaborador y período, renderizado dinámico y exportación a Excel"
+        },
+        {
+          "archivo": "ConsultaEstadisticasRotacion.zul",
+          "descripcion": "Pantalla de estadísticas de rotación de personal con filtros por empresa, localidad, tipo de rotación y rango de fechas, visualización detallada de ingresos/salidas con renderizado dinámico y exportación a Excel"
+        }
+      ],
+      "vistas_bd": []
+    }
+  ],
+  "resumen": {
+    "total_funcionalidades": 1,
+    "total_entidades": 6,
+    "total_controladores": 7,
+    "total_servicios": 1,
+    "total_daos": 2,
+    "total_renderers": 5,
+    "total_pantallas_zul": 3,
+    "total_vistas_bd": 0,
+    "total_archivos_origen": 24,
+    "archivos_origen_unicos": [
+      "AvColaboradorese.java",
+      "AvDimensionesl.java",
+      "AvDimensioneslDAOJpaImpl.java",
+      "AvDimensioneslListModelItemRenderer.java",
+      "AvDimensioneslloccontratacionListModelItemRenderer.java",
+      "AvEmpresa.java",
+      "AvEmpresasDAOJpaImpl.java",
+      "AvEmpresasListModelItemRenderer.java",
+      "AvPyRubro.java",
+      "AvPyRubrosPrestamo.java",
+      "AvPyRubrosPrestamoCom.java",
+      "AvPyRubroslhisttotalesV.java",
+      "AvPyRubroslhisvListModelItemRenderer.java",
+      "AvanteGTHService.java",
+      "ConsultaEstadisticasHECtrl.java",
+      "ConsultaEstadisticasPersonalCtrl.java",
+      "ConsultaEstadisticasRotacion.zul",
+      "ConsultaEstadisticasRotacionCtrl.java",
+      "CuentaCteConsolidadoListModelItemRenderer.java",
+      "EstadisticasHoraExtrasItemRenderer",
+      "EstadisticasPersonalItemRenderer",
+      "EstadisticasRotacionItemRenderer",
+      "consultaEstadisticasHorasExtras.zul",
+      "consultaEstadisticasPersonal.zul"
+    ]
+  }
+}

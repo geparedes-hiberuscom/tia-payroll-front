@@ -1,0 +1,415 @@
+{
+  "functionalities": [
+    {
+      "id": "func-reportes",
+      "name": "Reportes",
+      "description": "Reportes estadísticos y de análisis de nómina: estadísticas de personal por localidad y empresa con préstamos y rubros, estadísticas de horas extras por período con totales acumulados, y estadísticas de rotación de personal por tipo, rango de fechas y localidad, todos con filtros avanzados y exportación a Excel",
+      "screens": [
+        {
+          "name": "consultaEstadisticasPersonal.zul",
+          "description": "Pantalla de estadísticas de personal con filtros por empresa y localidad, visualización de datos de colaboradores con rubros, préstamos y compromisos, renderizado dinámico y exportación a Excel",
+          "actions": [
+            {
+              "name": "Inicializar estadísticas de personal",
+              "description": "Carga la pantalla con combos de empresas y localidades, prepara los componentes de consulta (onCreate)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasPersonalCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de estadísticas de personal (extiende GFCBaseCtrl) con carga de combos de empresa/localidad y lógica de consulta con JPAQuerys"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar datos de colaboradores, rubros y préstamos"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de empresas"
+                },
+                {
+                  "className": "AvDimensioneslDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de localidades/dimensiones"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtro de consulta"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad para filtro"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas"
+                },
+                {
+                  "className": "AvDimensioneslListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de dimensiones/localidades"
+                },
+                {
+                  "className": "AvDimensioneslloccontratacionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de localidades de contratación para filtro"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por empresa",
+              "description": "Filtra las estadísticas al seleccionar una empresa, recarga las localidades disponibles (onSelect$lbox_Empresas)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasPersonalCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Empresas para recargar localidades y preparar filtro de consulta"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa seleccionada"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad recargada según empresa"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por localidad",
+              "description": "Filtra las estadísticas al seleccionar una localidad (onSelect$lbox_Localidades)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasPersonalCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Localidades para aplicar filtro de localidad"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Consultar estadísticas de personal",
+              "description": "Ejecuta la consulta de estadísticas de personal con filtros aplicados, obtiene datos de colaboradores con rubros, préstamos y compromisos usando JPAQuerys (onClick$btnRefresh)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasPersonalCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta onClick$btnRefresh con consultas complejas usando JPAQuerys para obtener datos de personal, rubros y préstamos"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar datos de nómina con filtros"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de datos extendidos de colaboradores consultados"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubros de nómina del personal"
+                },
+                {
+                  "className": "AvPyRubrosPrestamo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de préstamos de nómina del personal"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de compromisos de préstamos de nómina"
+                },
+                {
+                  "className": "EstadisticasPersonalItemRenderer",
+                  "type": "Renderer (inner class)",
+                  "description": "Clase interna que renderiza las filas del listado de estadísticas de personal con datos dinámicos"
+                },
+                {
+                  "className": "CuentaCteConsolidadoListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de datos consolidados de cuenta corriente del personal"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta las estadísticas de personal a un archivo Excel (onClick$btnExportarExcel)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasPersonalCtrl.java",
+                  "type": "Controlador",
+                  "description": "Genera y descarga el archivo Excel con estadísticas de personal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "consultaEstadisticasHorasExtras.zul",
+          "description": "Pantalla de estadísticas de horas extras con filtros por empresa y localidad, visualización de totales acumulados por colaborador y período, renderizado dinámico y exportación a Excel",
+          "actions": [
+            {
+              "name": "Inicializar estadísticas de horas extras",
+              "description": "Carga la pantalla con combos de empresas y localidades, prepara los componentes de consulta (onCreate)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasHECtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de estadísticas de horas extras (extiende GFCBaseListCtrl<AvPyRubroslhisttotalesV>) con carga de combos empresa/localidad y consulta de totales"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar datos de horas extras"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de empresas"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtro"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad para filtro"
+                },
+                {
+                  "className": "AvPyRubroslhisttotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA con totales acumulados de rubros del historial de nómina para horas extras"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas"
+                },
+                {
+                  "className": "AvDimensioneslloccontratacionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de localidades de contratación"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por empresa",
+              "description": "Filtra las estadísticas de horas extras al seleccionar una empresa (onSelect$lbox_Empresas)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasHECtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Empresas para recargar filtros y localidades"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por localidad",
+              "description": "Filtra las estadísticas al seleccionar una localidad (onSelect$lbox_Localidades)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasHECtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Localidades para aplicar filtro de localidad"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Consultar estadísticas de horas extras",
+              "description": "Ejecuta la consulta de estadísticas de horas extras con filtros aplicados, obtiene totales acumulados por colaborador y período usando JPAQuerys (onClick$btnRefresh)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasHECtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta onClick$btnRefresh con consultas de totales de horas extras por colaborador y período"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para obtener datos de horas extras con filtros"
+                },
+                {
+                  "className": "AvPyRubroslhisttotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista con totales acumulados de rubros de horas extras"
+                },
+                {
+                  "className": "AvPyRubrosPrestamoCom.java",
+                  "type": "Modelo",
+                  "description": "Entidad de compromisos de préstamos vinculados a horas extras"
+                },
+                {
+                  "className": "EstadisticasHoraExtrasItemRenderer",
+                  "type": "Renderer (inner class)",
+                  "description": "Clase interna que renderiza las filas del listado de estadísticas de horas extras con datos dinámicos"
+                },
+                {
+                  "className": "AvPyRubroslhisvListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de totales de historial de rubros"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta las estadísticas de horas extras a un archivo Excel (onClick$btnExportarExcel)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasHECtrl.java",
+                  "type": "Controlador",
+                  "description": "Genera y descarga el archivo Excel con estadísticas de horas extras"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ConsultaEstadisticasRotacion.zul",
+          "description": "Pantalla de estadísticas de rotación de personal con filtros por empresa, localidad, tipo de rotación y rango de fechas, visualización detallada de ingresos/salidas con renderizado dinámico y exportación a Excel",
+          "actions": [
+            {
+              "name": "Inicializar estadísticas de rotación",
+              "description": "Carga la pantalla con combos de empresas, localidades y tipos de rotación, prepara filtros de fecha (onCreate)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasRotacionCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de estadísticas de rotación (extiende GFCBaseCtrl) con carga de combos empresa/localidad/tipo y filtros de fecha"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar datos de rotación de personal"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de empresas"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtro"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad para filtro"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas"
+                },
+                {
+                  "className": "AvDimensioneslloccontratacionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de localidades de contratación"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por empresa",
+              "description": "Filtra las estadísticas de rotación al seleccionar una empresa (onSelect$lbox_Empresas)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasRotacionCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Empresas para recargar filtros y localidades"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por localidad",
+              "description": "Filtra las estadísticas al seleccionar una localidad (onSelect$lbox_Localidades)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasRotacionCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Localidades para aplicar filtro de localidad"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por tipo y fechas",
+              "description": "Filtra por tipo de rotación y rango de fechas inicio/fin (onSelect$lbox_Tipo, onChange$dbox_fechaI, onChange$dbox_fechaF)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasRotacionCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Tipo para tipo de rotación y onChange de dateboxes para rango de fechas"
+                }
+              ]
+            },
+            {
+              "name": "Consultar estadísticas de rotación",
+              "description": "Ejecuta la consulta de estadísticas de rotación de personal con todos los filtros aplicados, obtiene datos de ingresos y salidas usando JPAQuerys (onClick$btnRefresh)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasRotacionCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta onClick$btnRefresh con consultas complejas de rotación usando JPAQuerys para obtener ingresos, salidas y cálculos de rotación"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para obtener datos de rotación con filtros"
+                },
+                {
+                  "className": "EstadisticasRotacionItemRenderer",
+                  "type": "Renderer (inner class)",
+                  "description": "Clase interna que renderiza las filas del listado de estadísticas de rotación con datos dinámicos de ingresos/salidas"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta las estadísticas de rotación de personal a un archivo Excel (onClick$btnExportarExcel)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaEstadisticasRotacionCtrl.java",
+                  "type": "Controlador",
+                  "description": "Genera y descarga el archivo Excel con estadísticas de rotación"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

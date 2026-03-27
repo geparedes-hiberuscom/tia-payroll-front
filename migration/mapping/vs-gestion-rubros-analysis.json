@@ -1,0 +1,1155 @@
+{
+  "functionalities": [
+    {
+      "id": "func-gestion-rubros",
+      "name": "Gestión de Rubros",
+      "description": "Administración de rubros de nómina (conceptos de pago/descuento), configuración de cálculo, asignación a procesos, gestión de Ingresos/Deducciones/Otros (IDO) con carga masiva y consulta de rubros IDO por colaborador",
+      "screens": [
+        {
+          "name": "rubros.zul",
+          "description": "Listado principal paginado de rubros de nómina con filtros de búsqueda por ID de rubro, nombre y observaciones, y acceso al diálogo de creación/edición",
+          "actions": [
+            {
+              "name": "Listar rubros",
+              "description": "Muestra la lista paginada de rubros de nómina del sistema con ordenación por columnas (ID, nombre, valor)",
+              "relatedClasses": [
+                {
+                  "className": "RubrosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista ZK que gestiona el listado de rubros (extiende GFCBaseListCtrl<AvPyRubro>)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Interfaz de servicio GTH que provee operaciones CRUD genéricas y consultas de dominio"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO JPA para acceso a datos de la entidad AvPyRubro con métodos getRubroById(), getRubrosByEmpresa()"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA que representa un rubro de nómina (tabla av_py_rubro) con campos vidrubro, vrubro, etc."
+                },
+                {
+                  "className": "RubrosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de items de lista para la representación visual de rubros en el listbox"
+                }
+              ]
+            },
+            {
+              "name": "Buscar rubro por ID",
+              "description": "Filtra la lista de rubros por identificador de rubro (vidrubro)",
+              "relatedClasses": [
+                {
+                  "className": "RubrosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja el evento onClick$button_RubrosList_SearchIdRubro para aplicar filtro por ID con JPASearchObject"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee la consulta filtrada de rubros"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada por ID en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Buscar rubro por nombre",
+              "description": "Filtra la lista de rubros por nombre del rubro (vrubro) con búsqueda parcial ILIKE",
+              "relatedClasses": [
+                {
+                  "className": "RubrosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja el evento onClick$button_RubrosList_SearchRubro para aplicar filtro por nombre"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee búsqueda por nombre de rubro con ILIKE"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada por nombre en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Buscar rubro por observaciones",
+              "description": "Filtra la lista de rubros por campo de observaciones con búsqueda parcial",
+              "relatedClasses": [
+                {
+                  "className": "RubrosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja el evento onClick$button_RubrosList_SearchRubroObservaciones para filtrar por observaciones"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consulta con filtro ILIKE por observaciones"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Ejecuta la consulta filtrada por observaciones"
+                }
+              ]
+            },
+            {
+              "name": "Abrir diálogo de rubro (nuevo/editar)",
+              "description": "Abre el diálogo modal rubrosDialog.zul para crear o editar un rubro (doble clic en listado o botón nuevo)",
+              "relatedClasses": [
+                {
+                  "className": "RubrosListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Invoca Executions.createComponents para abrir rubrosDialog.zul con datos del rubro seleccionado o nuevo"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad del rubro que se pasa como argumento al diálogo"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosDialog.zul",
+          "description": "Formulario modal complejo para crear, editar y eliminar rubros de nómina con múltiples pestañas: datos generales, clases de rubro, configuración de cálculo, fórmulas de cálculo y dimensiones de préstamo",
+          "actions": [
+            {
+              "name": "Crear rubro",
+              "description": "Permite crear un nuevo rubro de nómina con datos generales, tipo (ingreso/egreso/provisión), decimales, fórmula, clases de rubro asociadas y procedimiento de cálculo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de rubros con creación/edición, maneja pestañas múltiples y doSave() con persist vía AvanteJPAPersistenceManager (extiende GFCBaseCtrl)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta saveObject() para persistir el nuevo rubro y sus relaciones"
+                },
+                {
+                  "className": "AvanteGTHServiceImpl.java",
+                  "type": "Servicio",
+                  "description": "Implementación del servicio GTH con lógica de persistencia"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Gestiona la inserción del rubro en la base de datos"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA principal del rubro de nómina"
+                },
+                {
+                  "className": "AvPyClasesrubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de clase de rubro (categorización de rubros)"
+                },
+                {
+                  "className": "AvPyClasesrubrosl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de relación entre rubro y clase de rubro (detalle)"
+                },
+                {
+                  "className": "AvPyClasesrubroslPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta de la relación rubro-clase"
+                }
+              ]
+            },
+            {
+              "name": "Editar rubro",
+              "description": "Permite modificar los datos de un rubro existente incluyendo nombre, tipo, decimales, fórmulas y clases asociadas",
+              "relatedClasses": [
+                {
+                  "className": "RubrosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnEdit y doSave() con merge del EntityManager para actualizar el rubro"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta updateObject() para actualizar el rubro existente"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Gestiona la actualización (merge) del rubro en la base de datos"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad rubro actualizada con los valores del formulario"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar rubro",
+              "description": "Permite eliminar un rubro existente con confirmación previa vía MultiLineMessageBox",
+              "relatedClasses": [
+                {
+                  "className": "RubrosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete con diálogo de confirmación y doDelete() con remove del EntityManager"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar el rubro"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Gestiona la eliminación (remove) del rubro en la base de datos"
+                }
+              ]
+            },
+            {
+              "name": "Configurar clases de rubro",
+              "description": "Permite asignar y gestionar las clases de rubro (categorización) con drag-and-drop entre listboxes",
+              "relatedClasses": [
+                {
+                  "className": "RubrosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja los eventos de drag-and-drop para asignar clases de rubro al rubro actual"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee operaciones de consulta y persistencia para clases de rubro"
+                },
+                {
+                  "className": "AvPyClasesrubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de clase de rubro para categorización"
+                },
+                {
+                  "className": "AvPyClasesrubrosl.java",
+                  "type": "Modelo",
+                  "description": "Relación entre rubro y clase de rubro"
+                },
+                {
+                  "className": "ClasesRubrosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para el listbox de clases de rubro disponibles"
+                },
+                {
+                  "className": "ClasesRubrosListModelItemRenderer2.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para el listbox de clases de rubro asignadas"
+                }
+              ]
+            },
+            {
+              "name": "Configurar procedimiento de cálculo",
+              "description": "Permite seleccionar el procedimiento almacenado (stored procedure) que define la lógica de cálculo del rubro",
+              "relatedClasses": [
+                {
+                  "className": "RubrosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Carga y gestiona el listbox de procedimientos disponibles"
+                },
+                {
+                  "className": "AvProcedimientoDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener la lista de procedimientos almacenados disponibles"
+                },
+                {
+                  "className": "AvProcedimiento.java",
+                  "type": "Modelo",
+                  "description": "Entidad que representa un procedimiento almacenado de cálculo"
+                },
+                {
+                  "className": "AvProcedimientoListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para el dropdown de procedimientos de cálculo"
+                }
+              ]
+            },
+            {
+              "name": "Configurar dimensiones de préstamo",
+              "description": "Permite configurar las dimensiones asociadas cuando el rubro es de tipo préstamo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona el panel de dimensiones de préstamo dentro del diálogo de rubro"
+                },
+                {
+                  "className": "AvPyRubrosPrestamodimension.java",
+                  "type": "Modelo",
+                  "description": "Entidad que relaciona un rubro de préstamo con sus dimensiones"
+                },
+                {
+                  "className": "DimensionesDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para el dropdown de dimensiones"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosxprocesoDialog.zul",
+          "description": "Diálogo modal para asignar rubros a procesos de nómina, gestionar el orden de cálculo y configurar la relación rubro-proceso con pestañas de rubros disponibles y rubros asignados",
+          "actions": [
+            {
+              "name": "Listar rubros por proceso",
+              "description": "Muestra los rubros asignados al proceso de nómina seleccionado con orden de cálculo",
+              "relatedClasses": [
+                {
+                  "className": "RubrosxProcesoDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de rubros por proceso (extiende GFCBaseListCtrl<AvPyProcesosl>) que carga rubros asignados y disponibles"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de procesos y rubros asignados"
+                },
+                {
+                  "className": "AvPyProcesosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener procesos de nómina y sus relaciones"
+                },
+                {
+                  "className": "AvPyProcesosl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de relación proceso-rubro (detalle del proceso con orden de cálculo)"
+                },
+                {
+                  "className": "AvPyProcesos.java",
+                  "type": "Modelo",
+                  "description": "Entidad del proceso de nómina padre"
+                },
+                {
+                  "className": "RubrosxProcesoListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para el listado de rubros asignados al proceso"
+                }
+              ]
+            },
+            {
+              "name": "Asignar rubro a proceso",
+              "description": "Permite agregar un rubro al proceso de nómina con su orden de cálculo y configuración específica",
+              "relatedClasses": [
+                {
+                  "className": "RubrosxProcesoDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnNew y doSave() para crear la asignación rubro-proceso vía persist"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta saveObject() para persistir la relación proceso-rubro"
+                },
+                {
+                  "className": "AvPyRubroseDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros de empresa disponibles (getRubrosEmpresa)"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos del rubro a asignar"
+                },
+                {
+                  "className": "AvPyProcesosl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle proceso-rubro que se crea"
+                },
+                {
+                  "className": "RubrosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para el listbox de rubros disponibles para asignar"
+                }
+              ]
+            },
+            {
+              "name": "Editar asignación rubro-proceso",
+              "description": "Permite modificar el orden de cálculo y la configuración de un rubro dentro del proceso",
+              "relatedClasses": [
+                {
+                  "className": "RubrosxProcesoDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnEdit y doSave() con updateObject() para la asignación"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la actualización de la relación proceso-rubro"
+                },
+                {
+                  "className": "AvPyProcesosl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle proceso-rubro actualizada"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar asignación rubro-proceso",
+              "description": "Permite desasignar un rubro de un proceso de nómina con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "RubrosxProcesoDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete con confirmación y doDelete() con remove"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar la asignación"
+                },
+                {
+                  "className": "AvPyProcesosl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle proceso-rubro a eliminar"
+                }
+              ]
+            },
+            {
+              "name": "Configurar procedimiento de rubro en proceso",
+              "description": "Permite seleccionar el procedimiento almacenado de cálculo específico para el rubro dentro del proceso",
+              "relatedClasses": [
+                {
+                  "className": "RubrosxProcesoDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Carga y gestiona el dropdown de procedimientos disponibles para la configuración del rubro"
+                },
+                {
+                  "className": "AvProcedimientoDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener la lista de procedimientos almacenados"
+                },
+                {
+                  "className": "DominiosDAOImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener dominios de tipo de liquidación"
+                },
+                {
+                  "className": "AvProcedimiento.java",
+                  "type": "Modelo",
+                  "description": "Entidad del procedimiento almacenado seleccionable"
+                },
+                {
+                  "className": "Dominios.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dominio para tipos de liquidación"
+                },
+                {
+                  "className": "AvProcedimientoListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para el dropdown de procedimientos"
+                },
+                {
+                  "className": "DominiosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para el dropdown de dominios de liquidación"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosIDOMain.zul",
+          "description": "Pantalla principal de gestión de Rubros IDO (Ingresos/Deducciones/Otros) con patrón master-detail que orquesta la lista y el detalle de registros IDO individuales por colaborador",
+          "actions": [
+            {
+              "name": "Inicializar pantalla IDO",
+              "description": "Orquesta la carga inicial de la pantalla IDO incluyendo sub-controladores de lista y detalle",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador principal (master) que coordina RubrosIDOListCtrl y RubrosIDODetailCtrl (extiende GFCBaseCtrl)"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee operaciones CRUD y consultas para rubros IDO"
+                },
+                {
+                  "className": "AvanteGTHServiceImpl.java",
+                  "type": "Servicio",
+                  "description": "Implementación del servicio con operaciones de persistencia para rubros IDO"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de rubro IDO individual (tabla av_py_rubrosido) con datos de colaborador, rubro, monto y período"
+                }
+              ]
+            },
+            {
+              "name": "Crear registro IDO",
+              "description": "Permite crear un nuevo registro IDO para un colaborador con rubro, monto, período y configuración",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnNew y doNew() coordinando la creación con el detalle, usa doSave() con persist vía AvanteJPAPersistenceManager"
+                },
+                {
+                  "className": "RubrosIDODetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del panel de detalle que muestra los campos del registro IDO para edición"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de negocio para crear el registro IDO"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad del registro IDO a crear con datos de colaborador, rubro, monto"
+                }
+              ]
+            },
+            {
+              "name": "Editar registro IDO",
+              "description": "Permite modificar un registro IDO existente (monto, período, estado)",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnEdit y doEdit() activando el modo de edición en el detalle, luego doSave() con merge del EntityManager"
+                },
+                {
+                  "className": "RubrosIDODetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona los campos del formulario de detalle en modo edición"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la actualización del registro IDO"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad IDO actualizada con los nuevos valores"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar registro IDO",
+              "description": "Permite eliminar un registro IDO existente con confirmación previa",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete y doDelete() con confirmación MultiLineMessageBox y remove del EntityManager"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta deleteObject() para eliminar el registro IDO"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad IDO localizada por iidRubrosidol y eliminada de la BD"
+                }
+              ]
+            },
+            {
+              "name": "Guardar registro IDO",
+              "description": "Persiste el registro IDO (nuevo o editado) con validación de datos y gestión transaccional",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta doSave() con transacción JPA: begin, doWriteComponentsToBean, persist/merge, commit con rollback en error"
+                },
+                {
+                  "className": "RubrosIDODetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Provee doWriteComponentsToBean() y doReadComponentsToBean() para la conversión formulario-entidad"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee operaciones de persistencia para el registro IDO"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad IDO con los datos validados a persistir"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosIDOList.zul",
+          "description": "Panel de listado de registros IDO dentro de la pantalla principal, con paginación, filtros y selección para ver el detalle",
+          "actions": [
+            {
+              "name": "Listar registros IDO",
+              "description": "Muestra la lista paginada de registros IDO (Ingresos/Deducciones/Otros) con columnas de rubro, colaborador, monto y estado",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista IDO (extiende GFCBaseListCtrl<AvPyRubrosIdoV>) con doFillListbox() y paginación"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee operaciones de consulta para registros IDO"
+                },
+                {
+                  "className": "AvPyRubrosIdoV.java",
+                  "type": "Modelo",
+                  "description": "Vista JPA (av_py_rubrosido_v) para el listado optimizado de registros IDO"
+                },
+                {
+                  "className": "AvPyRubrosIDOCargaListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de items de lista para registros IDO en el listbox"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar registro IDO",
+              "description": "Al seleccionar un registro IDO en la lista, carga sus datos en el panel de detalle",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$listBoxRubrosIDO para notificar al controlador principal del registro seleccionado"
+                },
+                {
+                  "className": "RubrosIDOMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Recibe la selección y coordina la actualización del panel de detalle"
+                },
+                {
+                  "className": "AvPyRubrosIdoV.java",
+                  "type": "Modelo",
+                  "description": "Vista del registro IDO seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Doble clic en registro IDO",
+              "description": "Al hacer doble clic abre el registro IDO en modo edición en el panel de detalle",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onDoubleClickedRubrosIDOItem para activar el modo edición"
+                },
+                {
+                  "className": "RubrosIDOMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Coordina el cambio a modo edición del detalle"
+                }
+              ]
+            },
+            {
+              "name": "Buscar IDO por ID/Nombre",
+              "description": "Filtra los registros IDO por identificador o nombre del rubro",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOMainCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$button_RubrosIDOList_SearchRubrosIDOID y onClick$button_RubrosIDOList_SearchName para filtrar"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta las consultas filtradas de registros IDO"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosIDODetail.zul",
+          "description": "Panel de detalle del registro IDO seleccionado con campos de colaborador, rubro, monto, periodo, estado y configuración de cálculo",
+          "actions": [
+            {
+              "name": "Mostrar detalle IDO",
+              "description": "Muestra los campos del registro IDO seleccionado: colaborador, rubro, monto, fecha inicio/fin, estado, banco, cuenta",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDODetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del panel de detalle IDO (extiende GFCBaseCtrl) que gestiona la visualización y edición de campos"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee datos de dominio para dropdowns (empresas, rubros, bancos)"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad del registro IDO con datos de colaborador, rubro, monto, fechas"
+                },
+                {
+                  "className": "AvPyRubrosIdoV.java",
+                  "type": "Modelo",
+                  "description": "Vista del registro IDO para lectura"
+                }
+              ]
+            },
+            {
+              "name": "Modo solo lectura",
+              "description": "Establece todos los campos del detalle en modo solo lectura",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDODetailCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja doReadOnlyMode(true) para deshabilitar todos los campos del formulario"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rubrosIDOcargaxProceso.zul",
+          "description": "Diálogo modal para buscar y cargar rubros IDO por proceso de nómina, permitiendo filtrar y seleccionar registros IDO asociados a un proceso específico",
+          "actions": [
+            {
+              "name": "Buscar rubros IDO por proceso",
+              "description": "Permite buscar y filtrar registros IDO asociados a un proceso de nómina específico",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOCargaxProcesoDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de carga por proceso (extiende GFCBaseCtrl) que gestiona la búsqueda y selección de registros IDO por proceso"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas de registros IDO filtrados por proceso de nómina"
+                },
+                {
+                  "className": "AvPyRubrosIdoDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a datos de rubros IDO con filtros por proceso"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad del registro IDO filtrada por proceso"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar y cargar IDO",
+              "description": "Permite seleccionar registros IDO del resultado de búsqueda para cargarlos al proceso",
+              "relatedClasses": [
+                {
+                  "className": "RubrosIDOCargaxProcesoDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btn_searchrbido para ejecutar la búsqueda y carga de registros IDO al proceso"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la lógica de carga de rubros IDO al proceso"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Registros IDO seleccionados para cargar al proceso"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cargaRubrosIDO.zul",
+          "description": "Pantalla de carga masiva de rubros IDO desde archivo Excel/CSV, con selección de empresa, ámbito, tipo de acción personal, banco, rubro y validación previa a la persistencia",
+          "actions": [
+            {
+              "name": "Cargar archivo IDO",
+              "description": "Permite subir un archivo Excel (.xls) o CSV con datos masivos de rubros IDO (colaborador, monto, período)",
+              "relatedClasses": [
+                {
+                  "className": "CargaRubrosIDOListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de carga masiva (extiende GFCBaseListCtrl<AvPyRubrosIdoUpV>) con Upload de archivo Excel/CSV y procesamiento POI/CsvReader"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee operaciones de persistencia masiva para registros IDO"
+                },
+                {
+                  "className": "AvPyRubrosIdoUplDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para gestión de registros de carga masiva IDO (upload lines)"
+                },
+                {
+                  "className": "AvPyRubrosIdoUp.java",
+                  "type": "Modelo",
+                  "description": "Entidad cabecera de carga masiva IDO (tabla av_py_rubrosido_up)"
+                },
+                {
+                  "className": "AvPyRubrosIdoUpl.java",
+                  "type": "Modelo",
+                  "description": "Entidad detalle/línea de carga masiva IDO (tabla av_py_rubrosido_upl)"
+                },
+                {
+                  "className": "AvPyRubrosIdoUplIni.java",
+                  "type": "Modelo",
+                  "description": "Entidad de registro inicial de carga masiva IDO para validación previa"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar empresa y filtros",
+              "description": "Permite seleccionar empresa, ámbito/localidad, tipo de acción personal, banco y rubro para la carga masiva",
+              "relatedClasses": [
+                {
+                  "className": "CargaRubrosIDOListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Empresas, onSelect$lbox_rubvIdAmbito, onSelect$lbox_tipoAP y onSelect$lbox_banco para configurar filtros"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener empresas disponibles para el usuario"
+                },
+                {
+                  "className": "AvCatalogosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener catálogos de bancos y otros datos de referencia"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogo para bancos y referencias"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                },
+                {
+                  "className": "CatalogosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de catálogos/bancos"
+                }
+              ]
+            },
+            {
+              "name": "Guardar carga masiva IDO",
+              "description": "Persiste los registros IDO cargados desde el archivo con validación y gestión transaccional mediante secuenciales",
+              "relatedClasses": [
+                {
+                  "className": "CargaRubrosIDOListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSave y doSave() con persistencia masiva usando doSaveRow() por cada fila del archivo"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la persistencia masiva de registros IDO"
+                },
+                {
+                  "className": "AvSecuencialesDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener secuenciales de numeración de carga"
+                },
+                {
+                  "className": "AvPyRubrosIdoUpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para gestión de cabeceras de carga masiva"
+                },
+                {
+                  "className": "AvPyRubrosIdoUplDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para gestión de líneas de carga masiva"
+                },
+                {
+                  "className": "AvSecuenciales.java",
+                  "type": "Modelo",
+                  "description": "Entidad de secuencial para numeración de lotes de carga"
+                }
+              ]
+            },
+            {
+              "name": "Aprobar carga masiva IDO",
+              "description": "Permite aprobar la carga masiva previamente guardada para hacerla efectiva en el sistema",
+              "relatedClasses": [
+                {
+                  "className": "CargaRubrosIDOListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnApprove para confirmar y ejecutar la aprobación de la carga masiva"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta el proceso de aprobación que convierte registros de upload en registros IDO definitivos"
+                },
+                {
+                  "className": "AvPyRubrosIdoUp.java",
+                  "type": "Modelo",
+                  "description": "Cabecera de carga masiva con estado de aprobación"
+                }
+              ]
+            },
+            {
+              "name": "Eliminar carga masiva IDO",
+              "description": "Permite eliminar una carga masiva pendiente de aprobación con todas sus líneas",
+              "relatedClasses": [
+                {
+                  "className": "CargaRubrosIDOListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnDelete y doDelete() con doDeleteCabecera() para eliminar cabecera y líneas de la carga"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la eliminación de la carga masiva y sus detalles"
+                },
+                {
+                  "className": "AvPyRubrosIdoUpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para eliminar la cabecera de carga masiva"
+                },
+                {
+                  "className": "AvPyRubrosIdoUplDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para eliminar las líneas de detalle de la carga masiva"
+                }
+              ]
+            },
+            {
+              "name": "Buscar rubro extendido",
+              "description": "Abre un buscador avanzado para seleccionar el rubro a cargar masivamente",
+              "relatedClasses": [
+                {
+                  "className": "CargaRubrosIDOListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSearchRubroExtended para abrir el buscador avanzado de rubros"
+                },
+                {
+                  "className": "RubrosExtendedSearchListBox.java",
+                  "type": "Controlador",
+                  "description": "Componente de búsqueda avanzada de rubros con filtros extendidos"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro retornada por el buscador"
+                }
+              ]
+            },
+            {
+              "name": "Listar cargas masivas",
+              "description": "Muestra las cargas masivas existentes con su estado (pendiente/aprobada) y resumen",
+              "relatedClasses": [
+                {
+                  "className": "CargaRubrosIDOListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona el listbox de cargas masivas con paginación y filtros"
+                },
+                {
+                  "className": "AvPyRubrosIdoUpV.java",
+                  "type": "Modelo",
+                  "description": "Vista JPA (av_py_rubrosido_up_v) para listado optimizado de cargas masivas"
+                },
+                {
+                  "className": "AvPyRubrosIdoUpListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para items de lista de cargas masivas IDO"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "consultaRubrosIdoList.zul",
+          "description": "Pantalla de consulta de rubros IDO con filtros avanzados por empresa, localidad, rubro, colaborador y fecha, mostrando los registros IDO vigentes",
+          "actions": [
+            {
+              "name": "Consultar rubros IDO con filtros",
+              "description": "Permite consultar registros IDO filtrando por empresa, localidad, rubro, colaborador y fecha",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaRubrosIDOCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de consulta IDO (extiende GFCBaseListCtrl<AvPyRubrosIdo>) con filtros de empresa, localidad, rubro, colaborador y fecha"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Provee consultas filtradas de registros IDO"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros disponibles para el filtro"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener empresas para el filtro"
+                },
+                {
+                  "className": "AvDimensionesluserDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener localidades/dimensiones del usuario para filtros"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de registro IDO consultada"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtro"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad para filtro"
+                },
+                {
+                  "className": "AvPyRubrosIdoItemRedererConsulta.java",
+                  "type": "Renderer",
+                  "description": "Renderizador específico para la consulta de registros IDO"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar empresa",
+              "description": "Filtra localidades y rubros disponibles al seleccionar una empresa",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaRubrosIDOCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Empresas para recargar localidades y rubros según la empresa seleccionada"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene datos de la empresa seleccionada"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de empresas"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar localidad",
+              "description": "Filtra los resultados IDO por la localidad seleccionada",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaRubrosIDOCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onSelect$lbox_Localidades para filtrar registros IDO por localidad"
+                },
+                {
+                  "className": "AvDimensionesluserDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "Obtiene localidades disponibles para el usuario"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de localidad/dimensión seleccionada"
+                },
+                {
+                  "className": "DimensioneslDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador para dropdown de localidades"
+                }
+              ]
+            },
+            {
+              "name": "Buscar colaborador",
+              "description": "Abre un buscador para seleccionar el colaborador cuyos registros IDO se desean consultar",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaRubrosIDOCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnSearchColaborador para abrir el buscador de colaboradores"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador para la búsqueda y filtro"
+                }
+              ]
+            },
+            {
+              "name": "Limpiar filtros",
+              "description": "Restablece todos los filtros de consulta a su estado inicial",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaRubrosIDOCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnLimpia para resetear todos los campos de filtro de la consulta"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar consulta",
+              "description": "Ejecuta la consulta con los filtros actuales y actualiza la lista de resultados",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaRubrosIDOCtrl.java",
+                  "type": "Controlador",
+                  "description": "Maneja onClick$btnRefresh para ejecutar la búsqueda y recargar el listbox de resultados"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Ejecuta la consulta filtrada de registros IDO"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Resultados de la consulta filtrada"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "relatedControllers": [
+        "RubrosListCtrl.java",
+        "RubrosDialogCtrl.java",
+        "RubrosxProcesoDialogCtrl.java",
+        "RubrosIDOMainCtrl.java",
+        "RubrosIDOListCtrl.java",
+        "RubrosIDODetailCtrl.java",
+        "RubrosIDOCargaxProcesoDialogCtrl.java",
+        "CargaRubrosIDOListCtrl.java",
+        "ConsultaRubrosIDOCtrl.java",
+        "RubrosIDOInterfasesDialogCtrl.java",
+        "RubrosExtendedSearchListBoxAdvance.java"
+      ]
+    }
+  ]
+}

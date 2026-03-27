@@ -1,0 +1,64 @@
+{
+  "slice_id": "slice-10-reportes",
+  "slice_nombre": "📊 Reportes",
+  "moduleName": "reportes",
+  "fullPackage": "com.tia.reportes",
+  "target": "springboot",
+  "generatedAt": "2026-03-25T20:58:32.533Z",
+  "entities": [
+    {
+      "className": "AvEmpresaEntity",
+      "tableName": "av_empresa",
+      "sourceFile": "AvEmpresa.java",
+      "sourceDescription": "Entidad de empresa para filtro de consulta",
+      "entityPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/entities/AvEmpresaEntity.java",
+      "repositoryPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/repository/AvEmpresaRepository.java"
+    },
+    {
+      "className": "AvDimensioneslEntity",
+      "tableName": "av_dimensionesl",
+      "sourceFile": "AvDimensionesl.java",
+      "sourceDescription": "Entidad de dimensión/localidad para filtro",
+      "entityPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/entities/AvDimensioneslEntity.java",
+      "repositoryPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/repository/AvDimensioneslRepository.java"
+    },
+    {
+      "className": "AvColaboradoreseEntity",
+      "tableName": "av_colaboradorese",
+      "sourceFile": "AvColaboradorese.java",
+      "sourceDescription": "Entidad de datos extendidos de colaboradores consultados",
+      "entityPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/entities/AvColaboradoreseEntity.java",
+      "repositoryPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/repository/AvColaboradoreseRepository.java"
+    },
+    {
+      "className": "AvPyRubroEntity",
+      "tableName": "av_py_rubro",
+      "sourceFile": "AvPyRubro.java",
+      "sourceDescription": "Entidad de rubros de nómina del personal",
+      "entityPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/entities/AvPyRubroEntity.java",
+      "repositoryPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/repository/AvPyRubroRepository.java"
+    },
+    {
+      "className": "AvPyRubrosPrestamoEntity",
+      "tableName": "av_py_rubros_prestamo",
+      "sourceFile": "AvPyRubrosPrestamo.java",
+      "sourceDescription": "Entidad de préstamos de nómina del personal",
+      "entityPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/entities/AvPyRubrosPrestamoEntity.java",
+      "repositoryPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/repository/AvPyRubrosPrestamoRepository.java"
+    },
+    {
+      "className": "AvPyRubrosPrestamoComEntity",
+      "tableName": "av_py_rubros_prestamo_com",
+      "sourceFile": "AvPyRubrosPrestamoCom.java",
+      "sourceDescription": "Entidad de compromisos de préstamos de nómina",
+      "entityPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/entities/AvPyRubrosPrestamoComEntity.java",
+      "repositoryPath": "target-springboot/reportes/src/main/java/com/tia/reportes/infrastructure/output/adapter/persistence/repository/AvPyRubrosPrestamoComRepository.java"
+    }
+  ],
+  "vistas_bd": [],
+  "resumen": {
+    "total_entities": 6,
+    "total_repositories": 6,
+    "total_vistas_bd": 0
+  }
+}

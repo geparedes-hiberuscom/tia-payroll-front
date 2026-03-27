@@ -1,0 +1,656 @@
+{
+  "functionalities": [
+    {
+      "id": "func-beneficios-especiales",
+      "name": "Beneficios Especiales",
+      "description": "Gestión de beneficios especiales de nómina: vales diferidos (detalle de préstamos/vales, rechazo con motivo y notificación por correo, rechazo en vista local) y provisiones (consulta de provisiones por colaborador con acumulados, detalle de provisiones, colaboradores por provisión con totales, y consulta de provisiones por rubro con exportación a Excel)",
+      "screens": [
+        {
+          "name": "detallePrestSolValDif.zul",
+          "description": "Diálogo de solo lectura que muestra el detalle de un préstamo o solicitud de vale diferido, incluyendo datos del colaborador, empresa, dimensión y detalle del asiento contable",
+          "actions": [
+            {
+              "name": "Mostrar detalle de préstamo/vale",
+              "description": "Inicializa y muestra los datos del préstamo o solicitud de vale diferido con su asiento contable asociado (onCreate)",
+              "relatedClasses": [
+                {
+                  "className": "detPrestSolValDifDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de detalle de préstamo/vale diferido (extiende GFCBaseListCtrl) con inicialización y carga de datos del vale y asiento contable"
+                },
+                {
+                  "className": "AvPyDistribValesdifDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a datos de distribución de vales diferidos"
+                },
+                {
+                  "className": "AvPyColaboradoressolValdif.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de solicitud de vale diferido por colaborador"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad asociada al vale diferido"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa asociada al contexto del vale"
+                },
+                {
+                  "className": "DetPrestSolValDifListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de detalle de préstamo/vale diferido"
+                },
+                {
+                  "className": "DetalleAsientoContableListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del detalle del asiento contable vinculado al vale"
+                }
+              ]
+            },
+            {
+              "name": "Cerrar diálogo",
+              "description": "Cierra el diálogo de detalle de préstamo/vale diferido (onClick$btnClose)",
+              "relatedClasses": [
+                {
+                  "className": "detPrestSolValDifDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona el cierre del diálogo y la limpieza de recursos"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rechazoSolValeDif.zul",
+          "description": "Diálogo para rechazar una solicitud de vale diferido con selección de motivo de rechazo, observaciones, configuración de parámetros y envío de notificación por correo electrónico",
+          "actions": [
+            {
+              "name": "Mostrar diálogo de rechazo",
+              "description": "Inicializa el diálogo de rechazo con datos del vale diferido, carga motivos de rechazo desde catálogos y prepara el detalle del asiento contable (onCreate)",
+              "relatedClasses": [
+                {
+                  "className": "rechazoSolValDifDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de rechazo de vale diferido (extiende GFCBaseListCtrl) con carga de catálogos de motivos, parámetros y detalle del vale"
+                },
+                {
+                  "className": "AvPyColaboradoressolValdif.java",
+                  "type": "Modelo",
+                  "description": "Entidad de solicitud de vale diferido a rechazar"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogos del sistema utilizada para motivos de rechazo"
+                },
+                {
+                  "className": "AvPyParametro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de parámetros de nómina asociados al proceso de rechazo"
+                },
+                {
+                  "className": "AvPyParametroPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta de la entidad de parámetros"
+                },
+                {
+                  "className": "CatalogosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del listbox de motivos de rechazo (catálogos)"
+                },
+                {
+                  "className": "DetPrestSolValDifListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del detalle del vale diferido en el diálogo de rechazo"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar motivo de rechazo",
+              "description": "Selecciona un motivo de rechazo del listbox de catálogos (onSelect$lbox_MotivoRechazo)",
+              "relatedClasses": [
+                {
+                  "className": "rechazoSolValDifDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_MotivoRechazo para registrar el motivo seleccionado"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad del motivo de rechazo seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Guardar rechazo",
+              "description": "Persiste el rechazo de la solicitud de vale diferido con motivo, observaciones, actualiza parámetros y envía notificación por correo electrónico (onClick$btn_save_reject_solvaldif)",
+              "relatedClasses": [
+                {
+                  "className": "rechazoSolValDifDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la lógica de rechazo: actualiza estado del vale, persiste motivo/observaciones, actualiza parámetros y envía email de notificación"
+                },
+                {
+                  "className": "AvPyDistribValesdifDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para actualizar la distribución del vale diferido rechazado"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para actualizar parámetros de nómina tras el rechazo"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia JPA con control transaccional (begin/commit/rollback)"
+                },
+                {
+                  "className": "Emailig.java",
+                  "type": "Utilidad",
+                  "description": "Clase utilitaria para envío de correo electrónico de notificación del rechazo"
+                },
+                {
+                  "className": "AvPyColaboradoressolValdif.java",
+                  "type": "Modelo",
+                  "description": "Entidad de solicitud de vale diferido actualizada con motivo de rechazo"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad del vale rechazado"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa del contexto del vale rechazado"
+                }
+              ]
+            },
+            {
+              "name": "Cerrar diálogo",
+              "description": "Cierra el diálogo de rechazo (onClick$btnClose)",
+              "relatedClasses": [
+                {
+                  "className": "rechazoSolValDifDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona el cierre del diálogo de rechazo"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rechazoSolValeDifVistaLocal.zul",
+          "description": "Diálogo de rechazo de vale diferido en vista local con lógica simplificada para gestión desde localidad, sin envío de notificación por correo",
+          "actions": [
+            {
+              "name": "Mostrar diálogo de rechazo local",
+              "description": "Inicializa el diálogo de rechazo local con datos del vale diferido y carga de catálogos de motivos (onCreate)",
+              "relatedClasses": [
+                {
+                  "className": "rechazoSolValDifLocalDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de rechazo local (extiende GFCBaseListCtrl) con carga de catálogos y datos del vale diferido"
+                },
+                {
+                  "className": "AvPyColaboradoressolValdif.java",
+                  "type": "Modelo",
+                  "description": "Entidad de solicitud de vale diferido a rechazar localmente"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogos para motivos de rechazo"
+                },
+                {
+                  "className": "CatalogosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del listbox de motivos de rechazo"
+                },
+                {
+                  "className": "DetPrestSolValDifListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del detalle del vale diferido"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad del vale"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa del contexto"
+                }
+              ]
+            },
+            {
+              "name": "Cerrar diálogo",
+              "description": "Cierra el diálogo de rechazo local (onClick$btnClose)",
+              "relatedClasses": [
+                {
+                  "className": "rechazoSolValDifLocalDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona el cierre del diálogo de rechazo local"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "provisionesxColaboradorList.zul",
+          "description": "Listado de provisiones por colaborador con filtros por empresa, selección de período, consulta con acumulados y pie de página con totales, y exportación a Excel",
+          "actions": [
+            {
+              "name": "Listar provisiones por colaborador",
+              "description": "Muestra la lista de provisiones agrupadas por colaborador con filtros de empresa y período, calcula totales en pie de página (onCreate, dowritebeantocomponent, dosetlistfooter)",
+              "relatedClasses": [
+                {
+                  "className": "ProvisionesxColaboradorListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista de provisiones por colaborador (extiende GFCBaseListCtrl) con paginación, filtros por empresa/período y cálculo de totales en footer"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar provisiones con filtros"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de colaboradores vinculados a provisiones"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de empresas"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso al historial de rubros de nómina para consulta de provisiones"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtro de consulta"
+                },
+                {
+                  "className": "SUsere.java",
+                  "type": "Modelo",
+                  "description": "Entidad de usuario del sistema para permisos y contexto de sesión"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas"
+                },
+                {
+                  "className": "ProvisionesxColaboradoresListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de provisiones por colaborador"
+                },
+                {
+                  "className": "ProvisionesAcumListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de provisiones acumuladas"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por empresa",
+              "description": "Filtra las provisiones al seleccionar una empresa del combo (onSelect$lbox_Empresacp)",
+              "relatedClasses": [
+                {
+                  "className": "ProvisionesxColaboradorListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Empresacp para recargar provisiones filtradas por empresa"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa seleccionada en el filtro"
+                }
+              ]
+            },
+            {
+              "name": "Consultar provisiones",
+              "description": "Ejecuta la consulta de provisiones con los filtros aplicados y actualiza la lista con totales (onClick$tbb_consultarf, onClick$btnRefresh)",
+              "relatedClasses": [
+                {
+                  "className": "ProvisionesxColaboradorListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la consulta de provisiones con filtros de empresa y período, actualiza la lista y recalcula totales en el footer"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para obtener provisiones con filtros"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar historial de rubros para el cálculo de provisiones"
+                }
+              ]
+            },
+            {
+              "name": "Ver detalle de provisión por colaborador",
+              "description": "Abre el diálogo de detalle de provisiones al hacer doble clic en un colaborador (onProvisionColaboradorItemDoubleClicked)",
+              "relatedClasses": [
+                {
+                  "className": "ProvisionesxColaboradorListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onProvisionColaboradorItemDoubleClicked para abrir el diálogo de detalle de provisiones del colaborador seleccionado"
+                },
+                {
+                  "className": "ColaboradoresxProvisionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de la lista de colaboradores para selección"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta el listado de provisiones por colaborador a un archivo Excel (onClick$btn_exportarexcel)",
+              "relatedClasses": [
+                {
+                  "className": "ProvisionesxColaboradorListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Genera y descarga el archivo Excel con los datos de provisiones por colaborador"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "provisionesxColaboradorDialog.zul",
+          "description": "Diálogo de solo lectura que muestra el detalle de provisiones de un colaborador específico con listado de rubros y totales en pie de página",
+          "actions": [
+            {
+              "name": "Mostrar detalle de provisiones",
+              "description": "Inicializa el diálogo con los datos de provisiones del colaborador seleccionado, carga listado de rubros y calcula totales (onCreate, dowritebeantocomponent, dosetlistfooter)",
+              "relatedClasses": [
+                {
+                  "className": "ProvisionesxColaboradorDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de detalle de provisiones (extiende GFCBaseCtrl) con carga de datos del colaborador, listado de provisiones por rubro y cálculo de totales"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para obtener el detalle de provisiones del colaborador"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos del colaborador"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar historial de rubros de provisiones del colaborador"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de datos del colaborador con información de provisiones"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa del contexto"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia de proceso de nómina vinculada al período de provisiones"
+                },
+                {
+                  "className": "SUsere.java",
+                  "type": "Modelo",
+                  "description": "Entidad de usuario del sistema para contexto de sesión"
+                },
+                {
+                  "className": "ProvisionesxColaboradoresDetallListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de detalle de provisiones por colaborador"
+                }
+              ]
+            },
+            {
+              "name": "Cerrar diálogo",
+              "description": "Cierra el diálogo de detalle de provisiones (onClick$btnClose)",
+              "relatedClasses": [
+                {
+                  "className": "ProvisionesxColaboradorDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona el cierre del diálogo de detalle de provisiones"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "colaboradoresxProvision.zul",
+          "description": "Listado de colaboradores por provisión/rubro con búsqueda, ordenamiento por centro de costo/puesto y exportación a Excel, incluyendo totales de provisiones y préstamos",
+          "actions": [
+            {
+              "name": "Listar colaboradores por provisión",
+              "description": "Muestra la lista de colaboradores asociados a una provisión/rubro con totales en pie de página y múltiples campos de búsqueda (onCreate, dosetlistfooter)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresxProvisionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista de colaboradores por provisión (extiende GFCBaseListCtrl) con búsqueda, cálculo de totales y ordenamiento"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar colaboradores por provisión"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de colaboradores"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar historial de rubros de provisiones y préstamos"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa del contexto"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia de proceso vinculada al período"
+                },
+                {
+                  "className": "SUsere.java",
+                  "type": "Modelo",
+                  "description": "Entidad de usuario para contexto de sesión"
+                },
+                {
+                  "className": "AvPyRubroslhisttotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA con totales de rubros del historial de nómina"
+                },
+                {
+                  "className": "AvPyRubroslpretotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA con totales de rubros de préstamos"
+                },
+                {
+                  "className": "ColaboradoresxProvisionListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de colaboradores por provisión"
+                },
+                {
+                  "className": "AvDMComparatorCEPO.java",
+                  "type": "Utilidad",
+                  "description": "Comparador para ordenamiento por centro de costo/puesto de colaboradores"
+                }
+              ]
+            },
+            {
+              "name": "Buscar colaboradores",
+              "description": "Filtra los colaboradores de la provisión por múltiples criterios de búsqueda (onClick$btn_search)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresxProvisionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la búsqueda de colaboradores aplicando filtros y actualizando la lista con totales"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar colaboradores con filtros"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta el listado de colaboradores por provisión a un archivo Excel (onClick$btn_exportarexcel)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresxProvisionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Genera y descarga el archivo Excel con los datos de colaboradores por provisión"
+                }
+              ]
+            },
+            {
+              "name": "Cerrar ventana",
+              "description": "Cierra la ventana de colaboradores por provisión (onClick$btnClose)",
+              "relatedClasses": [
+                {
+                  "className": "ColaboradoresxProvisionListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona el cierre de la ventana"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "consultaProvisionesxRubroList.zul",
+          "description": "Listado de consulta de provisiones agrupadas por rubro con filtros por empresa y período, acumulados, pie de página con totales y navegación a detalle de colaboradores por provisión",
+          "actions": [
+            {
+              "name": "Listar provisiones por rubro",
+              "description": "Muestra la lista de provisiones agrupadas por rubro con filtros de empresa y período, calcula totales acumulados en pie de página (onCreate, dowritebeantocomponent)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaProvisionesxRubroListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de lista de provisiones por rubro (extiende GFCBaseListCtrl) con filtros de empresa/período, cálculo de acumulados y totales"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar provisiones agrupadas por rubro"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para datos de colaboradores en provisiones"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de empresas"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar historial de rubros para provisiones"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtro de consulta"
+                },
+                {
+                  "className": "SUsere.java",
+                  "type": "Modelo",
+                  "description": "Entidad de usuario del sistema para permisos y contexto"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas"
+                },
+                {
+                  "className": "ProvisionesAcumListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de provisiones acumuladas por rubro"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por empresa",
+              "description": "Filtra las provisiones por rubro al seleccionar una empresa del combo (onSelect$lbox_Empresacp)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaProvisionesxRubroListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Empresacp para recargar provisiones filtradas por empresa"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa seleccionada en el filtro"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar consulta",
+              "description": "Refresca la consulta de provisiones por rubro con los filtros vigentes (onClick$btnRefresh)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaProvisionesxRubroListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la recarga de datos de provisiones por rubro"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para obtener provisiones actualizadas"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia JPA utilizado en consultas de provisiones"
+                }
+              ]
+            },
+            {
+              "name": "Ver colaboradores de provisión",
+              "description": "Abre la ventana de colaboradores por provisión al hacer doble clic en un rubro (onProvisionesItemDoubleClicked)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaProvisionesxRubroListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onProvisionesItemDoubleClicked para navegar al listado de colaboradores del rubro/provisión seleccionado"
+                },
+                {
+                  "className": "DetalleAsientoContableListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de detalle del asiento contable para la provisión seleccionada"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

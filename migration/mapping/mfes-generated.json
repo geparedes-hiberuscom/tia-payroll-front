@@ -1,0 +1,3440 @@
+[
+  {
+    "mfeId": "mfe-payroll-rubros-parametros",
+    "mfeName": "Payroll Rubros & Parametros Configuración",
+    "version": "1.0.0",
+    "description": "Micro Frontend para gestión de Rubros Salariales y Parámetros de Nómina",
+    "domain": "Finance / Payroll",
+  "relatedMicroservices": [
+    "SalaryComponentService",
+    "EmployeeSalaryCalculationService"
+  ],
+  "relatedFunctionalities": [
+    "PRL-F001",
+    "PRL-F002",
+    "PRL-F014",
+    "PRL-F030"
+  ],
+  "owner": "Payroll Team",
+  "developmentPhase": "Phase 1 - Core Services",
+  "status": "planned",
+  "generatedAt": "2026-03-04",
+  "screens": [
+    {
+      "screenId": "scr-001",
+      "screenName": "Parámetros - Listado",
+      "controllerClassName": "ParametrosListCtrl",
+      "screenType": "List",
+      "businessFunction": "Listar todos los parámetros de nómina configurados",
+      "businessContext": "Permite al administrador visualizar el catálogo completo de parámetros activos y su historial",
+      "zkFields": 19,
+      "zkComponents": [
+        "Window",
+        "Listbox",
+        "Paging",
+        "Listitem",
+        "Listheader",
+        "Button"
+      ],
+      "services": [],
+      "actions": [
+        "onParametrosListItemDoubleClicked"
+      ],
+      "businessActions": [
+        "Ver detalles de parámetro",
+        "Editar parámetro",
+        "Crear nuevo parámetro"
+      ],
+      "relatedFunctionality": "PRL-F014"
+    },
+    {
+      "screenId": "scr-002",
+      "screenName": "Parámetros - Editar/Crear",
+      "controllerClassName": "ParametrosDialogCtrl",
+      "screenType": "Dialog",
+      "businessFunction": "Crear o editar un parámetro de nómina",
+      "businessContext": "Formulario para configurar valores de parámetros como tasas de IESS, porcentajes de descuento, etc.",
+      "zkFields": 14,
+      "zkComponents": [
+        "Window",
+        "Textbox",
+        "Datebox",
+        "Decimalbox",
+        "Combobox",
+        "Button",
+        "Label",
+        "Groupbox"
+      ],
+      "services": [],
+      "actions": [
+        "onEvent",
+        "doReadOnly",
+        "doWriteBeanToComponents",
+        "doWriteComponentsToBean"
+      ],
+      "businessActions": [
+        "Guardar parámetro",
+        "Cancelar edición",
+        "Validar datos",
+        "Auditar cambio"
+      ],
+      "validationRules": [
+        "Código de parámetro único",
+        "Valor dentro de rango permitido",
+        "Fecha vigencia válida",
+        "Usuario autorizado"
+      ],
+      "relatedFunctionality": "PRL-F014"
+    },
+    {
+      "screenId": "scr-003",
+      "screenName": "Rubros - Listado",
+      "controllerClassName": "RubrosListCtrl",
+      "screenType": "List",
+      "businessFunction": "Listar todos los rubros salariales configurados",
+      "businessContext": "Visualización del catálogo completo de rubros (ingresos, deducciones, aportes) disponibles para asignación a empleados",
+      "zkFields": 16,
+      "zkComponents": [
+        "Window",
+        "Listbox",
+        "Listheader",
+        "Paging",
+        "Button",
+        "Toolbar"
+      ],
+      "services": [],
+      "actions": [
+        "onRubrosListItemDoubleClicked"
+      ],
+      "businessActions": [
+        "Ver detalle de rubro",
+        "Editar rubro",
+        "Crear nuevo rubro",
+        "Inactivar rubro",
+        "Ver historial"
+      ],
+      "relatedFunctionality": "PRL-F001"
+    },
+    {
+      "screenId": "scr-004",
+      "screenName": "Rubros - Editar/Crear",
+      "controllerClassName": "RubrosDialogCtrl",
+      "screenType": "Dialog",
+      "businessFunction": "Crear o editar un rubro salarial",
+      "businessContext": "Formulario completo para configurar rubros: nombre, descripción, tipo, clasificación, aplicabilidad según cargo, etc.",
+      "zkFields": 51,
+      "zkComponents": [
+        "Window",
+        "Textbox",
+        "Intbox",
+        "Decimalbox",
+        "Combobox",
+        "Checkbox",
+        "Datebox",
+        "Listbox",
+        "Button",
+        "Groupbox",
+        "Tabs",
+        "Tab"
+      ],
+      "services": [],
+      "actions": [
+        "doCargaDimensionCargosApr",
+        "doCargaDimensionCargosAprOficina",
+        "doCargaDimensionCargos",
+        "doCargaDimensionRoles",
+        "onDropListBox",
+        "onDropListBoxOficina",
+        "onEvent",
+        "doReadOnly",
+        "doWriteBeanToComponents",
+        "doSetValidationPOn1",
+        "validaordenaprobacion"
+      ],
+      "businessActions": [
+        "Guardar rubro",
+        "Cancelar edición",
+        "Validar orden de aprobación",
+        "Cargar dimensiones de cargos",
+        "Cargar roles",
+        "Auditar cambio"
+      ],
+      "validationRules": [
+        "Código de rubro único",
+        "Descripción no vacía",
+        "Clasificación válida",
+        "Orden de aprobación coherente",
+        "Vigencia válida"
+      ],
+      "relatedFunctionality": "PRL-F001"
+    },
+    {
+      "screenId": "scr-005",
+      "screenName": "Rubros x Proceso - Asignación",
+      "controllerClassName": "RubrosxProcesoDialogCtrl",
+      "screenType": "Dialog",
+      "businessFunction": "Asignar rubros a procesos de nómina específicos",
+      "businessContext": "Configurar qué rubros aplican en cada tipo de proceso (nómina normal, extraordinaria, etc.)",
+      "zkFields": 28,
+      "zkComponents": [
+        "Window",
+        "Listbox",
+        "Listheader",
+        "Button",
+        "Label",
+        "Textbox",
+        "Groupbox"
+      ],
+      "services": [],
+      "actions": [
+        "onEvent",
+        "doReadOnly",
+        "doWriteBeanToComponents",
+        "doWriteComponentsToBean",
+        "onDoubleClickedRubrosxProceso"
+      ],
+      "businessActions": [
+        "Guardar asignación",
+        "Cancelar",
+        "Ver detalles de rubro",
+        "Validar asignación",
+        "Auditar cambio"
+      ],
+      "validationRules": [
+        "Rubro y proceso únicos en combinación",
+        "Vigencia válida",
+        "Usuario autorizado"
+      ],
+      "relatedFunctionality": "PRL-F001, PRL-F003"
+    }
+  ],
+  "screenDependencies": [
+    {
+      "from": "ParametrosListCtrl",
+      "to": "ParametrosDialogCtrl",
+      "type": "navigation",
+      "action": "onParametrosListItemDoubleClicked"
+    },
+    {
+      "from": "RubrosListCtrl",
+      "to": "RubrosDialogCtrl",
+      "type": "navigation",
+      "action": "onRubrosListItemDoubleClicked"
+    },
+    {
+      "from": "RubrosDialogCtrl",
+      "to": "RubrosxProcesoDialogCtrl",
+      "type": "reference",
+      "description": "Un rubro puede asignarse a múltiples procesos"
+    }
+  ],
+  "sharedServices": [],
+  "sharedComponents": {
+    "buttonStatusCtrl": "Común para todos los CRUD",
+    "dataValidation": "Validación de datos común",
+    "auditLog": "Auditoría de cambios"
+  },
+  "mfeRoutes": [
+    {
+      "path": "/payroll/parametros",
+      "screenId": "scr-001",
+      "screenName": "Parámetros - Listado",
+      "component": "ParametrosListCtrl"
+    },
+    {
+      "path": "/payroll/parametros/:id",
+      "screenId": "scr-002",
+      "screenName": "Parámetros - Editar/Crear",
+      "component": "ParametrosDialogCtrl"
+    },
+    {
+      "path": "/payroll/rubros",
+      "screenId": "scr-003",
+      "screenName": "Rubros - Listado",
+      "component": "RubrosListCtrl"
+    },
+    {
+      "path": "/payroll/rubros/:id",
+      "screenId": "scr-004",
+      "screenName": "Rubros - Editar/Crear",
+      "component": "RubrosDialogCtrl"
+    },
+    {
+      "path": "/payroll/rubros/:rubroId/procesos",
+      "screenId": "scr-005",
+      "screenName": "Rubros x Proceso - Asignación",
+      "component": "RubrosxProcesoDialogCtrl"
+    }
+  ],
+  "mfeModules": [
+    {
+      "name": "ParametrosModule",
+      "loadingStrategy": "eager",
+      "components": [
+        "ParametrosListCtrl",
+        "ParametrosDialogCtrl"
+      ]
+    },
+    {
+      "name": "RubrosModule",
+      "loadingStrategy": "eager",
+      "components": [
+        "RubrosListCtrl",
+        "RubrosDialogCtrl",
+        "RubrosxProcesoDialogCtrl"
+      ]
+    }
+  ],
+  "mfeDependencies": {
+    "externalMicroservices": [
+      {
+        "serviceName": "SalaryComponentService",
+        "port": 8101,
+        "endpoints": [
+          "GET /api/payroll/components",
+          "POST /api/payroll/components",
+          "PUT /api/payroll/components/{id}",
+          "GET /api/payroll/parameters"
+        ]
+      }
+    ],
+    "sharedLibraries": [
+      "zk-common-lib",
+      "avante-data-binding",
+      "avante-validation"
+    ],
+    "externalData": [
+      "Employee master data",
+      "Organizational structure",
+      "Contract data"
+    ]
+  },
+  "dataModel": {
+    "primaryEntities": [
+      "AvPyRubro.java",
+      "AvPyRubrosl.java",
+      "AvPyParametro.java",
+      "AvPyParametroPK.java"
+    ],
+    "viewEntities": [],
+    "relatedEntities": [
+      "AvPyClasesrubro.java",
+      "AvPyClasesrubrosl.java",
+      "AvPyRubroslpre.java"
+    ]
+  },
+  "mfePermissions": [
+    {
+      "action": "VIEW_PARAMETROS",
+      "requiredRole": "PAYROLL_USER"
+    },
+    {
+      "action": "EDIT_PARAMETROS",
+      "requiredRole": "PAYROLL_ADMIN"
+    },
+    {
+      "action": "VIEW_RUBROS",
+      "requiredRole": "PAYROLL_USER"
+    },
+    {
+      "action": "EDIT_RUBROS",
+      "requiredRole": "PAYROLL_ADMIN"
+    },
+    {
+      "action": "AUDIT_CHANGES",
+      "requiredRole": "PAYROLL_AUDITOR"
+    }
+  ],
+  "mfeBuildConfig": {
+    "buildTool": "Maven",
+    "framework": "Spring Boot 2.7",
+    "frontend": "ZK 9.x",
+    "buildScript": "mvn clean package -DskipTests",
+    "outputFile": "mfe-payroll-rubros-parametros-1.0.0.jar"
+  },
+  "mfeDeploymentConfig": {
+    "deploymentType": "containerized",
+    "container": "Docker",
+    "baseImage": "openjdk:11-jre-slim",
+    "port": 8101,
+    "healthCheckEndpoint": "/actuator/health",
+    "scalable": true,
+    "loadBalancer": "nginx"
+  },
+  "mfeTestingConfig": {
+    "unitTests": "JUnit 5",
+    "integrationTests": "Spring Boot Test",
+    "e2eTests": "Selenium + ZK Test",
+    "coverageTarget": "80%"
+  },
+  "mfeMetrics": {
+    "estimatedComplexity": "MEDIUM",
+    "estimatedDevDays": 15,
+    "estimatedTestDays": 8,
+    "totalEstimatedDays": 23,
+    "team": ["Backend Developer (1)", "Frontend Developer (1)", "QA (1)"]
+  },
+  "mfeRisks": [
+    {
+      "risk": "Validación compleja de rubros por cargo",
+      "severity": "MEDIUM",
+      "mitigation": "Crear suite de validaciones exhaustiva, test data comprehensive"
+    },
+    {
+      "risk": "Auditoría de cambios de parámetros",
+      "severity": "HIGH",
+      "mitigation": "Implementar event sourcing, audit trail completo"
+    },
+    {
+      "risk": "Integración con múltiples procesos de nómina",
+      "severity": "MEDIUM",
+      "mitigation": "APIs bien definidas, integración tests early"
+    }
+  ],
+  "mfeDocumentation": {
+    "apiDocs": "Swagger/OpenAPI",
+    "userGuide": "Confluence page",
+    "designDoc": "Architecture ADR",
+    "deploymentGuide": "Docker Compose + K8s"
+  },
+  "nextSteps": [
+    "Crear repositorio en Git",
+    "Configurar Maven project",
+    "Implementar SalaryComponentService",
+    "Desarrollar controllers ZK",
+    "Crear tests unitarios",
+    "Integración con otros servicios",
+    "Testing end-to-end",
+    "Documentation completa",
+    "Deployment planning"
+  ],
+  "relatedMFEs": [
+    {
+      "mfeName": "Payroll Calculation Engine",
+      "status": "planned",
+      "sequence": 2
+    },
+    {
+      "mfeName": "Payroll Distributions",
+      "status": "planned",
+      "sequence": 3
+    },
+    {
+      "mfeName": "Payroll Reporting",
+      "status": "planned",
+      "sequence": 4
+    }
+  ]
+  },
+  {
+    "mfeId": "mfe-payroll-salary-calculation",
+    "mfeName": "Payroll Salary Calculation & Analysis",
+    "version": "1.0.0",
+    "description": "Micro Frontend para cálculo de salarios, análisis de acumulados y simulaciones de nómina",
+    "domain": "Finance / Payroll",
+    "relatedMicroservices": [
+      "EmployeeSalaryCalculationService",
+      "PayrollGenerationService",
+      "PayrollReportingService"
+    ],
+    "relatedFunctionalities": [
+      "PRL-F002",
+      "PRL-F018",
+      "PRL-F034",
+      "PRL-F011",
+      "PRL-F023"
+    ],
+    "owner": "Payroll Team",
+    "developmentPhase": "Phase 1 - Core Services",
+    "status": "planned",
+    "generatedAt": "2026-03-04",
+    "screens": [
+      {
+        "screenId": "scr-201",
+        "screenName": "Nómina - Resumen General",
+        "controllerClassName": "NominaResumenGeneralCtrl",
+        "screenType": "Summary",
+        "businessFunction": "Ver resumen general de nómina con desglose por tipo de rubro",
+        "businessContext": "Proporciona vista ejecutiva de nómina mensual con totales de ingresos, deducciones y aportes",
+        "zkFields": 38,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Label",
+          "Decimalbox",
+          "Panel",
+          "Grid",
+          "Column",
+          "Columns"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent",
+          "doReadOnly",
+          "dowritebeantocomponent",
+          "onRubroINGItemDoubleClicked",
+          "onRubroEGRItemDoubleClicked",
+          "onRubroNAItemDoubleClicked"
+        ],
+        "businessActions": [
+          "Ver detalles de rubro de ingresos",
+          "Ver detalles de rubro de egresos",
+          "Ver detalles de rubro de aportes",
+          "Exportar resumen",
+          "Imprimir resumen"
+        ],
+        "relatedFunctionality": "PRL-F002, PRL-F011"
+      },
+      {
+        "screenId": "scr-202",
+        "screenName": "Acumulados - Main",
+        "controllerClassName": "AcumuladosMainCtrl",
+        "screenType": "Main",
+        "businessFunction": "Vista general de acumulados de período para cada empleado",
+        "businessContext": "Muestra acumulado de los conceptos de nómina en el período seleccionado",
+        "zkFields": 23,
+        "zkComponents": [
+          "Window",
+          "Panel",
+          "Button",
+          "Listbox",
+          "Datebox",
+          "Combobox",
+          "Paging"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent",
+          "doWriteBeanToComponents"
+        ],
+        "businessActions": [
+          "Seleccionar período",
+          "Cargar acumulados",
+          "Ver análisis de acumulado",
+          "Comparar períodos"
+        ],
+        "relatedFunctionality": "PRL-F018"
+      },
+      {
+        "screenId": "scr-203",
+        "screenName": "Nómina - Resumen por Rubro",
+        "controllerClassName": "NominaResumenGralxRubroCtrl",
+        "screenType": "Summary",
+        "businessFunction": "Análisis de nómina agrupado por cada rubro",
+        "businessContext": "Proporciona desglose detallado de cada rubro mostrando cantidad de empleados y montos totales",
+        "zkFields": 15,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Label"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent"
+        ],
+        "businessActions": [
+          "Ver detalle por rubro",
+          "Filtrar por rango salarial",
+          "Exportar análisis"
+        ],
+        "relatedFunctionality": "PRL-F002, PRL-F023"
+      },
+      {
+        "screenId": "scr-204",
+        "screenName": "Nómina - Comparativo",
+        "controllerClassName": "ComparativoNominasListCtrl",
+        "screenType": "Comparison",
+        "businessFunction": "Comparar nóminas de diferentes períodos",
+        "businessContext": "Análisis comparativo mes a mes mostrando variaciones en rubros y totales",
+        "zkFields": 33,
+        "zkComponents": [
+          "Window",
+          "Grid",
+          "Column",
+          "Columns",
+          "Row",
+          "Rows",
+          "Button",
+          "Datebox",
+          "Combobox",
+          "Paging"
+        ],
+        "services": [],
+        "actions": [],
+        "businessActions": [
+          "Seleccionar períodos a comparar",
+          "Ver variación en rubros",
+          "Analizar tendencias",
+          "Exportar comparativo",
+          "Drilldown en diferencias"
+        ],
+        "relatedFunctionality": "PRL-F023"
+      },
+      {
+        "screenId": "scr-205",
+        "screenName": "Nómina - Resumen General x Rubro",
+        "controllerClassName": "NominaResumenGralCxRubroCtrl",
+        "screenType": "Summary",
+        "businessFunction": "Resumen consolidado de nómina con clasificación por rubro",
+        "businessContext": "Vista agregada mostrando totales por clasificación de rubro (ingresos, deducciones, aportes)",
+        "zkFields": 17,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Label",
+          "Panel"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent"
+        ],
+        "businessActions": [
+          "Ver totales por clasificación",
+          "Porcentaje sobre total ingresos",
+          "Análisis de composición"
+        ],
+        "relatedFunctionality": "PRL-F002, PRL-F011"
+      },
+      {
+        "screenId": "scr-206",
+        "screenName": "Nómina x Colaborador - Listado",
+        "controllerClassName": "NominaxColabListCtrl",
+        "screenType": "List",
+        "businessFunction": "Listado de nóminas procesadas por colaborador",
+        "businessContext": "Permite consultar la nómina individual de cada empleado para un período",
+        "zkFields": 19,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button",
+          "Textbox"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent",
+          "onNominaColabCerradoItemDoubleClicked"
+        ],
+        "businessActions": [
+          "Ver detalle nómina empleado",
+          "Descargar nómina en PDF",
+          "Enviar nómina por email",
+          "Ver histórico"
+        ],
+        "relatedFunctionality": "PRL-F002"
+      },
+      {
+        "screenId": "scr-207",
+        "screenName": "Nómina x Colaborador - Preview",
+        "controllerClassName": "NominaxColabPreListCtrl",
+        "screenType": "Preview",
+        "businessFunction": "Vista previa de nómina antes de procesar",
+        "businessContext": "Permite revisar la nómina calculada antes de cerrar el proceso",
+        "zkFields": 16,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Button",
+          "Label",
+          "Checkbox"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent",
+          "onNominaColabPreItemDoubleClicked"
+        ],
+        "businessActions": [
+          "Ver detalles de nómina individual",
+          "Validar antes de procesar",
+          "Hacer correcciones",
+          "Aprobar/Rechazar"
+        ],
+        "relatedFunctionality": "PRL-F003"
+      },
+      {
+        "screenId": "scr-208",
+        "screenName": "Nómina x Colaborador - Detalle",
+        "controllerClassName": "NominaxColabPreDialogCtrl",
+        "screenType": "Detail",
+        "businessFunction": "Detalle completo de nómina individual",
+        "businessContext": "Muestra todos los rubros calculados para un empleado en un período específico",
+        "zkFields": 41,
+        "zkComponents": [
+          "Window",
+          "Dialog",
+          "Grid",
+          "Column",
+          "Columns",
+          "Row",
+          "Rows",
+          "Label",
+          "Decimalbox",
+          "Checkbox",
+          "Button"
+        ],
+        "services": [],
+        "actions": [
+          "doReadOnly",
+          "dowritebeantocomponent",
+          "oncheckgeneral"
+        ],
+        "businessActions": [
+          "Ver desglose de rubros",
+          "Validar cálculos",
+          "Autorizar/Rechazar",
+          "Añadir notas",
+          "Auditar cambios"
+        ],
+        "validationRules": [
+          "Total ingresos >= 0",
+          "Total deducciones <= total ingresos",
+          "Consistencia de cálculos"
+        ],
+        "relatedFunctionality": "PRL-F002, PRL-F016"
+      },
+      {
+        "screenId": "scr-209",
+        "screenName": "Resumen Nómina - General",
+        "controllerClassName": "ResumenGralNominaDialogCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Resumen ejecutivo de nómina procesada",
+        "businessContext": "Proporciona vista consolidada de totales y permite generar archivos de interfaz",
+        "zkFields": 14,
+        "zkComponents": [
+          "Dialog",
+          "Button",
+          "Label",
+          "Decimalbox",
+          "Listbox",
+          "Paging"
+        ],
+        "services": [],
+        "actions": [
+          "generacionarchivo",
+          "generaRubrosXClasificacion"
+        ],
+        "businessActions": [
+          "Generar archivo de interfaz",
+          "Generar reporte por clasificación",
+          "Descargar totales",
+          "Exportar a contabilidad"
+        ],
+        "relatedFunctionality": "PRL-F009, PRL-F010, PRL-F011"
+      }
+    ],
+    "screenDependencies": [
+      {
+        "from": "NominaResumenGeneralCtrl",
+        "to": "NominaxColabListCtrl",
+        "type": "navigation",
+        "description": "Ver nómina individual desde resumen"
+      },
+      {
+        "from": "NominaxColabListCtrl",
+        "to": "NominaxColabPreDialogCtrl",
+        "type": "navigation",
+        "description": "Ver detalle de nómina de empleado"
+      },
+      {
+        "from": "AcumuladosMainCtrl",
+        "to": "NominaResumenGralxRubroCtrl",
+        "type": "reference",
+        "description": "Análisis de acumulados por rubro"
+      },
+      {
+        "from": "ComparativoNominasListCtrl",
+        "to": "NominaResumenGeneralCtrl",
+        "type": "reference",
+        "description": "Comparación vs períodos anteriores"
+      }
+    ],
+    "sharedServices": [],
+    "sharedComponents": {
+      "dataValidation": "Validación de sumas y consistencia",
+      "reportGeneration": "Generación de reportes en PDF/Excel",
+      "auditLog": "Auditoría de consultas sensibles"
+    },
+    "mfeRoutes": [
+      {
+        "path": "/payroll/salary/summary",
+        "screenId": "scr-201",
+        "screenName": "Nómina - Resumen General",
+        "component": "NominaResumenGeneralCtrl"
+      },
+      {
+        "path": "/payroll/accumulated",
+        "screenId": "scr-202",
+        "screenName": "Acumulados - Main",
+        "component": "AcumuladosMainCtrl"
+      },
+      {
+        "path": "/payroll/salary/by-rubro",
+        "screenId": "scr-203",
+        "screenName": "Nómina - Resumen por Rubro",
+        "component": "NominaResumenGralxRubroCtrl"
+      },
+      {
+        "path": "/payroll/salary/comparative",
+        "screenId": "scr-204",
+        "screenName": "Nómina - Comparativo",
+        "component": "ComparativoNominasListCtrl"
+      },
+      {
+        "path": "/payroll/salary/by-classification",
+        "screenId": "scr-205",
+        "screenName": "Nómina - Resumen General x Rubro",
+        "component": "NominaResumenGralCxRubroCtrl"
+      },
+      {
+        "path": "/payroll/employee/:employeeId/salary",
+        "screenId": "scr-206",
+        "screenName": "Nómina x Colaborador - Listado",
+        "component": "NominaxColabListCtrl"
+      },
+      {
+        "path": "/payroll/employee/:employeeId/salary/preview",
+        "screenId": "scr-207",
+        "screenName": "Nómina x Colaborador - Preview",
+        "component": "NominaxColabPreListCtrl"
+      },
+      {
+        "path": "/payroll/employee/:employeeId/salary/:payrollId/detail",
+        "screenId": "scr-208",
+        "screenName": "Nómina x Colaborador - Detalle",
+        "component": "NominaxColabPreDialogCtrl"
+      },
+      {
+        "path": "/payroll/summary",
+        "screenId": "scr-209",
+        "screenName": "Resumen Nómina - General",
+        "component": "ResumenGralNominaDialogCtrl"
+      }
+    ],
+    "mfeModules": [
+      {
+        "name": "SalaryCalculationModule",
+        "loadingStrategy": "eager",
+        "components": [
+          "NominaResumenGeneralCtrl",
+          "NominaxColabListCtrl",
+          "NominaxColabPreListCtrl",
+          "NominaxColabPreDialogCtrl"
+        ]
+      },
+      {
+        "name": "AccumulatedModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "AcumuladosMainCtrl"
+        ]
+      },
+      {
+        "name": "ReportingModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "NominaResumenGralxRubroCtrl",
+          "NominaResumenGralCxRubroCtrl",
+          "ComparativoNominasListCtrl",
+          "ResumenGralNominaDialogCtrl"
+        ]
+      }
+    ],
+    "mfeDependencies": {
+      "externalMicroservices": [
+        {
+          "serviceName": "EmployeeSalaryCalculationService",
+          "port": 8102,
+          "endpoints": [
+            "POST /api/employees/{employeeId}/salary/calculate",
+            "GET /api/employees/{employeeId}/salary/components",
+            "GET /api/employees/{employeeId}/salary/history"
+          ]
+        },
+        {
+          "serviceName": "PayrollGenerationService",
+          "port": 8103,
+          "endpoints": [
+            "GET /api/payroll/processes/{processId}/status",
+            "GET /api/payroll/processes/{processId}/logs"
+          ]
+        },
+        {
+          "serviceName": "PayrollReportingService",
+          "port": 8111,
+          "endpoints": [
+            "GET /api/payroll/{payrollId}/summary",
+            "GET /api/payroll/comparative",
+            "GET /api/payroll/accumulated"
+          ]
+        }
+      ],
+      "sharedLibraries": [
+        "zk-common-lib",
+        "avante-reporting",
+        "avante-validation"
+      ]
+    },
+    "dataModel": {
+      "primaryEntities": [
+        "AvPyRubroslpreColab.java",
+        "AvPyAcumulado.java",
+        "AvPyComparativoNomina.java"
+      ],
+      "viewEntities": [
+        "AvPyAcumuladosV.java",
+        "AvPyRubroslhisttotalesV.java"
+      ]
+    },
+    "mfePermissions": [
+      {
+        "action": "VIEW_SALARY_SUMMARY",
+        "requiredRole": "PAYROLL_USER"
+      },
+      {
+        "action": "VIEW_EMPLOYEE_SALARY",
+        "requiredRole": "HR_MANAGER"
+      },
+      {
+        "action": "EDIT_SALARY",
+        "requiredRole": "PAYROLL_ADMIN"
+      },
+      {
+        "action": "VIEW_ACCUMULATED",
+        "requiredRole": "PAYROLL_USER"
+      },
+      {
+        "action": "EXPORT_SALARY",
+        "requiredRole": "HR_MANAGER"
+      }
+    ],
+    "mfeBuildConfig": {
+      "buildTool": "Maven",
+      "framework": "Spring Boot 2.7",
+      "frontend": "ZK 9.x",
+      "buildScript": "mvn clean package -DskipTests",
+      "outputFile": "mfe-payroll-salary-calculation-1.0.0.jar"
+    },
+    "mfeDeploymentConfig": {
+      "deploymentType": "containerized",
+      "container": "Docker",
+      "baseImage": "openjdk:11-jre-slim",
+      "port": 8102,
+      "healthCheckEndpoint": "/actuator/health",
+      "scalable": true,
+      "loadBalancer": "nginx"
+    },
+    "mfeTestingConfig": {
+      "unitTests": "JUnit 5",
+      "integrationTests": "Spring Boot Test",
+      "e2eTests": "Selenium + ZK Test",
+      "coverageTarget": "85%"
+    },
+    "mfeMetrics": {
+      "estimatedComplexity": "HIGH",
+      "estimatedDevDays": 25,
+      "estimatedTestDays": 12,
+      "totalEstimatedDays": 37,
+      "team": ["Backend Developer (2)", "Frontend Developer (1)", "QA (2)"]
+    },
+    "relatedMFEs": [
+      {
+        "mfeName": "Payroll Rubros & Parametros",
+        "mfeId": "mfe-payroll-rubros-parametros",
+        "status": "Phase 1",
+        "sequence": 1,
+        "dependency": "prerequisite"
+      },
+      {
+        "mfeName": "Payroll Payment Distribution",
+        "status": "planned",
+        "sequence": 3
+      },
+      {
+        "mfeName": "Payroll Banking Integration",
+        "status": "planned",
+        "sequence": 4
+      }
+    ]
+  },
+  {
+    "mfeId": "mfe-payroll-distribution",
+    "mfeName": "Payroll Distribution & Payments",
+    "version": "1.0.0",
+    "description": "Micro Frontend para distribución de pagos y gestión de valores diferidos",
+    "domain": "Finance / Payroll",
+    "relatedMicroservices": [
+      "PaymentDistributionService",
+      "DebtManagementService",
+      "BankingIntegrationService"
+    ],
+    "relatedFunctionalities": [
+      "PRL-F004",
+      "PRL-F006",
+      "PRL-F020",
+      "PRL-F032"
+    ],
+    "owner": "Payroll Team",
+    "developmentPhase": "Phase 2 - Distribution & Integration",
+    "status": "planned",
+    "generatedAt": "2026-03-04",
+    "screens": [
+      {
+        "screenId": "scr-301",
+        "screenName": "Distribución de Pagos - Listado",
+        "controllerClassName": "DistribucionCostosListCtrl",
+        "screenType": "List",
+        "businessFunction": "Listar todas las distribuciones de pago configuradas",
+        "businessContext": "Visualiza distribuciones de salario entre cuentas bancarias, disponibilidad y descuentos",
+        "zkFields": 18,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button",
+          "Toolbar"
+        ],
+        "services": [],
+        "actions": [
+          "onDistribCostosListItemDoubleClicked",
+          "onCickMenuOption"
+        ],
+        "businessActions": [
+          "Ver detalle de distribución",
+          "Editar distribución",
+          "Crear nueva distribución",
+          "Validar distribución"
+        ],
+        "relatedFunctionality": "PRL-F004"
+      },
+      {
+        "screenId": "scr-302",
+        "screenName": "Distribución de Pagos - Editar/Crear",
+        "controllerClassName": "DistribucionCostosDialogCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Crear o editar una distribución de pago",
+        "businessContext": "Configurar cómo se distribuye cada pago entre diferentes cuentas y conceptos",
+        "zkFields": 14,
+        "zkComponents": [
+          "Dialog",
+          "Textbox",
+          "Decimalbox",
+          "Combobox",
+          "Button",
+          "Label",
+          "Groupbox"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent",
+          "doReadOnly",
+          "doWriteBeanToComponents",
+          "doWriteComponentsToBean"
+        ],
+        "businessActions": [
+          "Guardar distribución",
+          "Cancelar edición",
+          "Validar sumas",
+          "Auditar cambio"
+        ],
+        "validationRules": [
+          "Total de distribución = 100% o monto exacto",
+          "Cada cuenta debe tener valor positivo",
+          "Vigencia válida"
+        ],
+        "relatedFunctionality": "PRL-F004"
+      },
+      {
+        "screenId": "scr-303",
+        "screenName": "Distribución por Colaborador - Asignación",
+        "controllerClassName": "ColaboradoresDistribucionDialogCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Asignar distribuciones de pago a colaboradores específicos",
+        "businessContext": "Permite configurar distribuciones personalizadas para empleados con requisitos especiales",
+        "zkFields": 21,
+        "zkComponents": [
+          "Dialog",
+          "Listbox",
+          "Listheader",
+          "Button",
+          "Label",
+          "Textbox",
+          "Decimalbox"
+        ],
+        "services": [],
+        "actions": [
+          "doWriteBeanToComponents",
+          "onLocalDistribucionDoubleClicked",
+          "doReadOnly",
+          "doNew",
+          "doWriteComponentsToBeanFactorDistribTmp",
+          "encontrarrepetido",
+          "datoscambiaron"
+        ],
+        "businessActions": [
+          "Asignar distribución",
+          "Validar repetidos",
+          "Guardar asignación",
+          "Ver cambios"
+        ],
+        "relatedFunctionality": "PRL-F004"
+      },
+      {
+        "screenId": "scr-304",
+        "screenName": "Valores Diferidos - Listado",
+        "controllerClassName": "DistribValesDifListCtrl",
+        "screenType": "List",
+        "businessFunction": "Listar valores diferidos pendientes de aplicación",
+        "businessContext": "Gestiona descuentos que se aplican en períodos posteriores",
+        "zkFields": 23,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button",
+          "Toolbar",
+          "Checkbox"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent",
+          "onDistribValDifItemDoubleClicked",
+          "onClickMenuOption",
+          "inactivarDistribucion",
+          "inactivarDistribucionGeneral",
+          "verificainactivacion"
+        ],
+        "businessActions": [
+          "Ver detalle de valor diferido",
+          "Modificar valor",
+          "Inactivar distribución",
+          "Aún aplicar descuento",
+          "Auditar cambios"
+        ],
+        "relatedFunctionality": "PRL-F020"
+      },
+      {
+        "screenId": "scr-305",
+        "screenName": "Valores Diferidos - Editar/Crear",
+        "controllerClassName": "DistribValesDiferidosDialogCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Crear o editar un valor diferido",
+        "businessContext": "Configurar descuentos que se aplicarán en próximos períodos de nómina",
+        "zkFields": 16,
+        "zkComponents": [
+          "Dialog",
+          "Textbox",
+          "Decimalbox",
+          "Datebox",
+          "Button",
+          "Label"
+        ],
+        "services": [],
+        "actions": [
+          "doWriteBeanToComponents",
+          "onEvent",
+          "doWriteComponentsToBean"
+        ],
+        "businessActions": [
+          "Guardar valor diferido",
+          "Cancelar",
+          "Validar fechas",
+          "Auditar cambio"
+        ],
+        "relatedFunctionality": "PRL-F020"
+      },
+      {
+        "screenId": "scr-306",
+        "screenName": "Acreditaciones - Listado",
+        "controllerClassName": "ConsultaAcreditacionesListCtrl",
+        "screenType": "List",
+        "businessFunction": "Consultar acreditaciones procesadas",
+        "businessContext": "Visualiza confirmación de transferencias bancarias y acreditaciones realizadas",
+        "zkFields": 29,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button",
+          "Datebox"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent"
+        ],
+        "businessActions": [
+          "Ver detalles de acreditación",
+          "Validar acreditación",
+          "Descargar comprobante",
+          "Filtrar por fecha"
+        ],
+        "relatedFunctionality": "PRL-F010, PRL-F032"
+      },
+      {
+        "screenId": "scr-307",
+        "screenName": "Acreditación - Bonificaciones",
+        "controllerClassName": "AcreditacionBonificacionesCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Gestionar acreditación de bonificaciones y beneficios",
+        "businessContext": "Proceso de acreditación de pagos especiales y bonificaciones a colaboradores",
+        "zkFields": 14,
+        "zkComponents": [
+          "Dialog",
+          "Listbox",
+          "Button",
+          "Label",
+          "Checkbox"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent",
+          "onClickCbRoles"
+        ],
+        "businessActions": [
+          "Seleccionar colaboradores",
+          "Procesar acreditación",
+          "Validar roles",
+          "Auditar acreditación"
+        ],
+        "relatedFunctionality": "PRL-F004, PRL-F032"
+      },
+      {
+        "screenId": "scr-308",
+        "screenName": "Actualizar Pago Sugerido - Anticipos",
+        "controllerClassName": "ActualizarPagoSugeridoAnticiposDialogCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Actualizar cálculo de pago sugerido para anticipos",
+        "businessContext": "Recalcula pagos sugeridos cuando hay cambios en anticipos de sueldo",
+        "zkFields": 3,
+        "zkComponents": [
+          "Dialog",
+          "Button",
+          "Label"
+        ],
+        "services": [],
+        "actions": [
+          "ejecutarConsulta"
+        ],
+        "businessActions": [
+          "Ejecutar recálculo",
+          "Validar cambios",
+          "Confirmar actualización"
+        ],
+        "relatedFunctionality": "PRL-F012"
+      }
+    ],
+    "screenDependencies": [
+      {
+        "from": "DistribucionCostosListCtrl",
+        "to": "DistribucionCostosDialogCtrl",
+        "type": "navigation",
+        "action": "onDistribCostosListItemDoubleClicked"
+      },
+      {
+        "from": "DistribValesDifListCtrl",
+        "to": "DistribValesDiferidosDialogCtrl",
+        "type": "navigation",
+        "action": "onDistribValDifItemDoubleClicked"
+      }
+    ],
+    "mfeRoutes": [
+      {
+        "path": "/payroll/distribution/payments",
+        "screenId": "scr-301",
+        "screenName": "Distribución de Pagos - Listado",
+        "component": "DistribucionCostosListCtrl"
+      },
+      {
+        "path": "/payroll/distribution/payments/:id",
+        "screenId": "scr-302",
+        "screenName": "Distribución de Pagos - Editar/Crear",
+        "component": "DistribucionCostosDialogCtrl"
+      },
+      {
+        "path": "/payroll/distribution/employee/:employeeId",
+        "screenId": "scr-303",
+        "screenName": "Distribución por Colaborador",
+        "component": "ColaboradoresDistribucionDialogCtrl"
+      },
+      {
+        "path": "/payroll/distribution/deferred",
+        "screenId": "scr-304",
+        "screenName": "Valores Diferidos - Listado",
+        "component": "DistribValesDifListCtrl"
+      },
+      {
+        "path": "/payroll/distribution/deferred/:id",
+        "screenId": "scr-305",
+        "screenName": "Valores Diferidos - Editar/Crear",
+        "component": "DistribValesDiferidosDialogCtrl"
+      },
+      {
+        "path": "/payroll/acreditaciones",
+        "screenId": "scr-306",
+        "screenName": "Acreditaciones - Listado",
+        "component": "ConsultaAcreditacionesListCtrl"
+      },
+      {
+        "path": "/payroll/acreditaciones/bonificaciones",
+        "screenId": "scr-307",
+        "screenName": "Acreditación - Bonificaciones",
+        "component": "AcreditacionBonificacionesCtrl"
+      },
+      {
+        "path": "/payroll/payment/update-anticipated",
+        "screenId": "scr-308",
+        "screenName": "Actualizar Pago - Anticipos",
+        "component": "ActualizarPagoSugeridoAnticiposDialogCtrl"
+      }
+    ],
+    "mfeModules": [
+      {
+        "name": "PaymentDistributionModule",
+        "loadingStrategy": "eager",
+        "components": [
+          "DistribucionCostosListCtrl",
+          "DistribucionCostosDialogCtrl",
+          "ColaboradoresDistribucionDialogCtrl"
+        ]
+      },
+      {
+        "name": "DeferredValuesModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "DistribValesDifListCtrl",
+          "DistribValesDiferidosDialogCtrl"
+        ]
+      },
+      {
+        "name": "AccreditationModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "ConsultaAcreditacionesListCtrl",
+          "AcreditacionBonificacionesCtrl",
+          "ActualizarPagoSugeridoAnticiposDialogCtrl"
+        ]
+      }
+    ],
+    "mfeDependencies": {
+      "externalMicroservices": [
+        {
+          "serviceName": "PaymentDistributionService",
+          "port": 8104,
+          "endpoints": [
+            "POST /api/payroll/{payrollId}/distributions",
+            "GET /api/payroll/{payrollId}/distributions",
+            "PUT /api/payroll/{payrollId}/distributions/{distributionId}"
+          ]
+        },
+        {
+          "serviceName": "BankingIntegrationService",
+          "port": 8110,
+          "endpoints": [
+            "POST /api/payroll/{payrollId}/banking-file",
+            "GET /api/payroll/{payrollId}/banking-status",
+            "POST /api/payroll/{payrollId}/banking-confirmation"
+          ]
+        }
+      ]
+    },
+    "dataModel": {
+      "primaryEntities": [
+        "AvPyDistribucion.java",
+        "AvPyDistribucionDet.java",
+        "AvPyDistribValesdif.java",
+        "AvPyDistribValesdifDet.java"
+      ]
+    },
+    "mfePermissions": [
+      {
+        "action": "VIEW_DISTRIBUTIONS",
+        "requiredRole": "PAYROLL_USER"
+      },
+      {
+        "action": "EDIT_DISTRIBUTIONS",
+        "requiredRole": "PAYROLL_ADMIN"
+      },
+      {
+        "action": "APPROVE_PAYMENT",
+        "requiredRole": "TREASURER"
+      },
+      {
+        "action": "VIEW_ACREDITACIONES",
+        "requiredRole": "PAYROLL_USER"
+      }
+    ],
+    "mfeMetrics": {
+      "estimatedComplexity": "HIGH",
+      "estimatedDevDays": 20,
+      "estimatedTestDays": 10,
+      "totalEstimatedDays": 30,
+      "team": ["Backend Developer (1)", "Frontend Developer (1)", "QA (1)"]
+    },
+    "relatedMFEs": [
+      {
+        "mfeName": "Payroll Salary Calculation",
+        "mfeId": "mfe-payroll-salary-calculation",
+        "status": "Phase 1",
+        "sequence": 2,
+        "dependency": "prerequisite"
+      },
+      {
+        "mfeName": "Payroll Cost Allocation",
+        "mfeId": "mfe-payroll-cost-allocation",
+        "status": "Phase 2",
+        "sequence": 4
+      }
+    ]
+  },
+  {
+    "mfeId": "mfe-payroll-cost-allocation",
+    "mfeName": "Payroll Cost Allocation & Analysis",
+    "version": "1.0.0",
+    "description": "Micro Frontend para asignación de costos de nómina a departamentos y centros de costo",
+    "domain": "Finance / Payroll",
+    "relatedMicroservices": [
+      "CostAllocationService",
+      "PayrollGenerationService",
+      "PayrollReportingService"
+    ],
+    "relatedFunctionalities": [
+      "PRL-F005",
+      "PRL-F031"
+    ],
+    "owner": "Payroll Team",
+    "developmentPhase": "Phase 2 - Distribution & Integration",
+    "status": "planned",
+    "generatedAt": "2026-03-04",
+    "screens": [
+      {
+        "screenId": "scr-401",
+        "screenName": "Distribución de Costos - Listado",
+        "controllerClassName": "DistribucionCostosListCtrl",
+        "screenType": "List",
+        "businessFunction": "Listar todas las distribuciones de costo configuradas",
+        "businessContext": "Visualiza cómo se distribuyen los costos de nómina entre departamentos y centros de costo",
+        "zkFields": 18,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button",
+          "Toolbar"
+        ],
+        "services": [],
+        "actions": [
+          "onDistribCostosListItemDoubleClicked",
+          "onCickMenuOption"
+        ],
+        "businessActions": [
+          "Ver detalle de distribución",
+          "Editar distribución",
+          "Crear nueva distribución",
+          "Validar contra presupuesto"
+        ],
+        "relatedFunctionality": "PRL-F005"
+      },
+      {
+        "screenId": "scr-402",
+        "screenName": "Distribución de Costos - Editar/Crear",
+        "controllerClassName": "DistribucionCostosDialogCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Crear o editar una distribución de costo",
+        "businessContext": "Configurar cómo se distribuyen los costos de nómina entre unidades organizacionales",
+        "zkFields": 14,
+        "zkComponents": [
+          "Dialog",
+          "Textbox",
+          "Decimalbox",
+          "Combobox",
+          "Button",
+          "Label",
+          "Groupbox"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent",
+          "doReadOnly",
+          "doWriteBeanToComponents",
+          "doWriteComponentsToBean"
+        ],
+        "businessActions": [
+          "Guardar distribución",
+          "Cancelar edición",
+          "Validar porcentajes",
+          "Auditar cambio"
+        ],
+        "validationRules": [
+          "Total de distribución = 100%",
+          "Cada centro de costo debe tener valor positivo",
+          "Vigencia válida"
+        ],
+        "relatedFunctionality": "PRL-F005"
+      },
+      {
+        "screenId": "scr-403",
+        "screenName": "Distribución de Costos - Por Perfil",
+        "controllerClassName": "DistribucionCostosLocxPerfilListCtrl",
+        "screenType": "List",
+        "businessFunction": "Distribución de costos por perfil/localidad",
+        "businessContext": "Análisis de costos segmentado por perfil de empleado o localidad",
+        "zkFields": 17,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button"
+        ],
+        "services": [],
+        "actions": [
+          "onEvent",
+          "doWriteBeanToComponents"
+        ],
+        "businessActions": [
+          "Ver costos por perfil",
+          "Filtrar por localidad",
+          "Comparar perfiles",
+          "Exportar análisis"
+        ],
+        "relatedFunctionality": "PRL-F005, PRL-F031"
+      },
+      {
+        "screenId": "scr-404",
+        "screenName": "Distribución de Costos - Por Colaborador",
+        "controllerClassName": "DistribucionCostosColabxPerfilListCtrl",
+        "screenType": "List",
+        "businessFunction": "Análisis de costo por colaborador individual",
+        "businessContext": "Desglose del costo de nómina por cada empleado según dimensiones",
+        "zkFields": 6,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging"
+        ],
+        "services": [],
+        "actions": [],
+        "businessActions": [
+          "Ver costo individual",
+          "Comparar con promedio",
+          "Analizar por rango salarial"
+        ],
+        "relatedFunctionality": "PRL-F031"
+      }
+    ],
+    "screenDependencies": [
+      {
+        "from": "DistribucionCostosListCtrl",
+        "to": "DistribucionCostosDialogCtrl",
+        "type": "navigation",
+        "action": "onDistribCostosListItemDoubleClicked"
+      },
+      {
+        "from": "DistribucionCostosListCtrl",
+        "to": "DistribucionCostosLocxPerfilListCtrl",
+        "type": "analysis",
+        "description": "Análisis de costos por perfil"
+      }
+    ],
+    "mfeRoutes": [
+      {
+        "path": "/payroll/costs/allocation",
+        "screenId": "scr-401",
+        "screenName": "Distribución de Costos - Listado",
+        "component": "DistribucionCostosListCtrl"
+      },
+      {
+        "path": "/payroll/costs/allocation/:id",
+        "screenId": "scr-402",
+        "screenName": "Distribución de Costos - Editar/Crear",
+        "component": "DistribucionCostosDialogCtrl"
+      },
+      {
+        "path": "/payroll/costs/by-profile",
+        "screenId": "scr-403",
+        "screenName": "Distribución de Costos - Por Perfil",
+        "component": "DistribucionCostosLocxPerfilListCtrl"
+      },
+      {
+        "path": "/payroll/costs/by-employee",
+        "screenId": "scr-404",
+        "screenName": "Distribución de Costos - Por Colaborador",
+        "component": "DistribucionCostosColabxPerfilListCtrl"
+      }
+    ],
+    "mfeModules": [
+      {
+        "name": "CostAllocationModule",
+        "loadingStrategy": "eager",
+        "components": [
+          "DistribucionCostosListCtrl",
+          "DistribucionCostosDialogCtrl"
+        ]
+      },
+      {
+        "name": "CostAnalysisModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "DistribucionCostosLocxPerfilListCtrl",
+          "DistribucionCostosColabxPerfilListCtrl"
+        ]
+      }
+    ],
+    "mfeDependencies": {
+      "externalMicroservices": [
+        {
+          "serviceName": "CostAllocationService",
+          "port": 8105,
+          "endpoints": [
+            "POST /api/payroll/{payrollId}/cost-allocation",
+            "GET /api/payroll/{payrollId}/cost-allocation",
+            "PUT /api/payroll/{payrollId}/cost-allocation/{allocationId}"
+          ]
+        },
+        {
+          "serviceName": "PayrollReportingService",
+          "port": 8111,
+          "endpoints": [
+            "GET /api/payroll/by-department",
+            "GET /api/departments/{departmentId}/salary-costs"
+          ]
+        }
+      ]
+    },
+    "dataModel": {
+      "primaryEntities": [
+        "AvPyDistcosto.java",
+        "AvPyDistcostoscxpl.java",
+        "AvPyDistcostoslxpl.java"
+      ],
+      "viewEntities": [
+        "AvPyDistcostoscxplV.java",
+        "AvPyDistcostoslxplV.java"
+      ]
+    },
+    "mfePermissions": [
+      {
+        "action": "VIEW_COST_ALLOCATION",
+        "requiredRole": "PAYROLL_USER"
+      },
+      {
+        "action": "EDIT_COST_ALLOCATION",
+        "requiredRole": "PAYROLL_ADMIN"
+      },
+      {
+        "action": "VIEW_COST_ANALYSIS",
+        "requiredRole": "FINANCE_MANAGER"
+      },
+      {
+        "action": "VALIDATE_BUDGET",
+        "requiredRole": "CFO"
+      }
+    ],
+    "mfeMetrics": {
+      "estimatedComplexity": "MEDIUM",
+      "estimatedDevDays": 18,
+      "estimatedTestDays": 9,
+      "totalEstimatedDays": 27,
+      "team": ["Backend Developer (1)", "Frontend Developer (1)", "QA (1)"]
+    },
+    "relatedMFEs": [
+      {
+        "mfeName": "Payroll Salary Calculation",
+        "mfeId": "mfe-payroll-salary-calculation",
+        "status": "Phase 1",
+        "sequence": 2,
+        "dependency": "prerequisite"
+      },
+      {
+        "mfeName": "Payroll Distribution",
+        "mfeId": "mfe-payroll-distribution",
+        "status": "Phase 2",
+        "sequence": 3
+      }
+    ]
+  },
+  {
+    "mfeId": "mfe-payroll-loans-debts",
+    "mfeName": "Payroll Loans & Debts Management",
+    "version": "1.0.0",
+    "description": "Micro Frontend para gestión de préstamos y deudas de colaboradores",
+    "domain": "Finance / Payroll",
+    "relatedMicroservices": [
+      "LoanManagementService",
+      "DebtManagementService",
+      "PayrollGenerationService"
+    ],
+    "relatedFunctionalities": [
+      "PRL-F007",
+      "PRL-F008",
+      "PRL-F026",
+      "PRL-F027"
+    ],
+    "owner": "Payroll Team",
+    "developmentPhase": "Phase 3 - Advanced Features",
+    "status": "planned",
+    "generatedAt": "2026-03-04",
+    "screens": [
+      {
+        "screenId": "scr-501",
+        "screenName": "Préstamos - Listado",
+        "controllerClassName": "RubrosPrestamoListCtrl",
+        "screenType": "List",
+        "businessFunction": "Listar todos los préstamos de colaboradores",
+        "businessContext": "Visualiza datos resumidos de préstamos, montos, alícuotas, saldos y plazo",
+        "zkFields": 12,
+        "zkComponents": [
+          "Window",
+          "Borderlayout",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Textbox",
+          "Menuitem",
+          "Button"
+        ],
+        "services": [],
+        "actions": [
+          "onRubrosPrestamoListItemDoubleClicked",
+          "onClickMenuOption",
+          "onDarDeBaja",
+          "onReimprimirCarta"
+        ],
+        "businessActions": [
+          "Ver detalle de préstamo",
+          "Editar información de préstamo",
+          "Dar de baja préstamo",
+          "Reimprimir carta de préstamo",
+          "Crear nuevo préstamo"
+        ],
+        "relatedFunctionality": "PRL-F007"
+      },
+      {
+        "screenId": "scr-502",
+        "screenName": "Préstamos - Detalle",
+        "controllerClassName": "RubrosPrestamoDetailCtrl",
+        "screenType": "Form",
+        "businessFunction": "Ver detalle completo de un préstamo",
+        "businessContext": "Información detallada incluyendo términos, historial de pagos, acreencias",
+        "zkFields": 18,
+        "zkComponents": [
+          "Window",
+          "Groupbox",
+          "Label",
+          "Textbox",
+          "Decimalbox",
+          "Datebox",
+          "Button"
+        ],
+        "services": [],
+        "actions": [
+          "doWriteBeanToComponents",
+          "doReadOnly"
+        ],
+        "businessActions": [
+          "Ver detalles de préstamo",
+          "Ver acreencias",
+          "Ver plan de amortización"
+        ],
+        "relatedFunctionality": "PRL-F007"
+      },
+      {
+        "screenId": "scr-503",
+        "screenName": "Abonos a Préstamos",
+        "controllerClassName": "RubrosPrestamoAbonosCtrl",
+        "screenType": "Form",
+        "businessFunction": "Gestionar abonos/pagos de préstamos",
+        "businessContext": "Registra y controla pagos realizados a préstamos bancarios y de caja",
+        "zkFields": 16,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listitem",
+          "Textbox",
+          "Decimalbox",
+          "Datebox",
+          "Button"
+        ],
+        "services": [],
+        "actions": [
+          "onAbonoPrestamoDoubleClicked",
+          "doNew",
+          "doSave"
+        ],
+        "businessActions": [
+          "Registrar abono a préstamo",
+          "Actualizar estado de préstamo",
+          "Generar comprobante de pago"
+        ],
+        "relatedFunctionality": "PRL-F008"
+      },
+      {
+        "screenId": "scr-504",
+        "screenName": "Cancelación de Préstamos",
+        "controllerClassName": "RubrosPrestamoAbonosCancelCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Cancelar prestamocompletamente",
+        "businessContext": "Procesa la cancelación total de un préstamo y genera documentación",
+        "zkFields": 14,
+        "zkComponents": [
+          "Dialog",
+          "Listbox",
+          "Textbox",
+          "Decimalbox",
+          "Datebox",
+          "Button",
+          "Label"
+        ],
+        "services": [],
+        "actions": [
+          "onCancelarCtrl",
+          "doSave"
+        ],
+        "businessActions": [
+          "Confirmar cancelación",
+          "Validar saldo pendiente",
+          "Auditar cancelación"
+        ],
+        "relatedFunctionality": "PRL-F008"
+      },
+      {
+        "screenId": "scr-505",
+        "screenName": "Deudas - Endeudamiento",
+        "controllerClassName": "EndeudamientoMsgCtrl",
+        "screenType": "List",
+        "businessFunction": "Gestionar endeudamientos/deudas de colaboradores",
+        "businessContext": "Visualiza deudas acumuladas en nómina, casos de endeudamiento crítico",
+        "zkFields": 15,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button",
+          "Toolbar"
+        ],
+        "services": [],
+        "actions": [
+          "onEndeudamientoListItemDoubleClicked",
+          "onSearchEndeudamiento"
+        ],
+        "businessActions": [
+          "Ver endeudamiento",
+          "Crear acuerdo de pago",
+          "Aprobar endeudamiento",
+          "Rechazar solicitud"
+        ],
+        "relatedFunctionality": "PRL-F026"
+      }
+    ],
+    "screenDependencies": [
+      {
+        "from": "RubrosPrestamoListCtrl",
+        "to": "RubrosPrestamoDetailCtrl",
+        "type": "navigation",
+        "action": "onRubrosPrestamoListItemDoubleClicked"
+      },
+      {
+        "from": "RubrosPrestamoDetailCtrl",
+        "to": "RubrosPrestamoAbonosCtrl",
+        "type": "navigation",
+        "description": "Ver abonos del préstamo"
+      }
+    ],
+    "mfeRoutes": [
+      {
+        "path": "/payroll/loans",
+        "screenId": "scr-501",
+        "screenName": "Préstamos - Listado",
+        "component": "RubrosPrestamoListCtrl"
+      },
+      {
+        "path": "/payroll/loans/:id",
+        "screenId": "scr-502",
+        "screenName": "Préstamos - Detalle",
+        "component": "RubrosPrestamoDetailCtrl"
+      },
+      {
+        "path": "/payroll/loans/:id/payments",
+        "screenId": "scr-503",
+        "screenName": "Abonos a Préstamos",
+        "component": "RubrosPrestamoAbonosCtrl"
+      },
+      {
+        "path": "/payroll/loans/:id/cancel",
+        "screenId": "scr-504",
+        "screenName": "Cancelación de Préstamos",
+        "component": "RubrosPrestamoAbonosCancelCtrl"
+      },
+      {
+        "path": "/payroll/debts",
+        "screenId": "scr-505",
+        "screenName": "Deudas - Endeudamiento",
+        "component": "EndeudamientoMsgCtrl"
+      }
+    ],
+    "mfeModules": [
+      {
+        "name": "LoanManagementModule",
+        "loadingStrategy": "eager",
+        "components": [
+          "RubrosPrestamoListCtrl",
+          "RubrosPrestamoDetailCtrl"
+        ]
+      },
+      {
+        "name": "LoanPaymentModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "RubrosPrestamoAbonosCtrl",
+          "RubrosPrestamoAbonosCancelCtrl"
+        ]
+      },
+      {
+        "name": "DebtManagementModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "EndeudamientoMsgCtrl"
+        ]
+      }
+    ],
+    "mfeDependencies": {
+      "externalMicroservices": [
+        {
+          "serviceName": "LoanManagementService",
+          "port": 8106,
+          "endpoints": [
+            "GET /api/payroll/{payrollId}/loans",
+            "GET /api/payroll/{payrollId}/loans/{loanId}",
+            "POST /api/payroll/{payrollId}/loans/{loanId}/payments",
+            "PUT /api/payroll/{payrollId}/loans/{loanId}/cancel"
+          ]
+        },
+        {
+          "serviceName": "DebtManagementService",
+          "port": 8108,
+          "endpoints": [
+            "GET /api/payroll/{payrollId}/debts",
+            "POST /api/payroll/{payrollId}/debts/approval",
+            "GET /api/employee/{employeeId}/debt-status"
+          ]
+        }
+      ]
+    },
+    "dataModel": {
+      "primaryEntities": [
+        "AvPyRubrosPrestamo.java",
+        "AvPyRubroslpreColab.java",
+        "AvPyEndeudamiento.java"
+      ]
+    },
+    "mfePermissions": [
+      {
+        "action": "VIEW_LOANS",
+        "requiredRole": "PAYROLL_USER"
+      },
+      {
+        "action": "REGISTER_LOAN_PAYMENT",
+        "requiredRole": "PAYROLL_ADMIN"
+      },
+      {
+        "action": "CANCEL_LOAN",
+        "requiredRole": "PAYROLL_MANAGER"
+      },
+      {
+        "action": "APPROVE_DEBT",
+        "requiredRole": "FINANCE_MANAGER"
+      }
+    ],
+    "mfeMetrics": {
+      "estimatedComplexity": "HIGH",
+      "estimatedDevDays": 22,
+      "estimatedTestDays": 11,
+      "totalEstimatedDays": 33,
+      "team": ["Backend Developer (1)", "Frontend Developer (1)", "QA (1)"]
+    },
+    "relatedMFEs": [
+      {
+        "mfeName": "Payroll Salary Calculation",
+        "mfeId": "mfe-payroll-salary-calculation",
+        "status": "Phase 1",
+        "sequence": 2,
+        "dependency": "prerequisite"
+      },
+      {
+        "mfeName": "Payroll Distribution",
+        "mfeId": "mfe-payroll-distribution",
+        "status": "Phase 2",
+        "sequence": 3
+      }
+    ]
+  },
+  {
+    "mfeId": "mfe-payroll-advances-overdrafts",
+    "mfeName": "Payroll Advances & Overdrafts Management",
+    "version": "1.0.0",
+    "description": "Micro Frontend para solicitud y autorización de anticipos de sueldo y sobregiros",
+    "domain": "Finance / Payroll",
+    "relatedMicroservices": [
+      "AdvanceManagementService",
+      "OverdraftAuthorizationService",
+      "PayrollApprovalService"
+    ],
+    "relatedFunctionalities": [
+      "PRL-F012",
+      "PRL-F013",
+      "PRL-F028",
+      "PRL-F029"
+    ],
+    "owner": "Payroll Team",
+    "developmentPhase": "Phase 3 - Advanced Features",
+    "status": "planned",
+    "generatedAt": "2026-03-04",
+    "screens": [
+      {
+        "screenId": "scr-601",
+        "screenName": "Solicitud de Anticipos - Listado",
+        "controllerClassName": "SolicitudAnticipoSueldoListCtrl",
+        "screenType": "List",
+        "businessFunction": "Listar solicitudes de anticipo de sueldo",
+        "businessContext": "Visualiza estado de solicitudes, montos, aprobación, pago",
+        "zkFields": 17,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button",
+          "Toolbar",
+          "Datebox"
+        ],
+        "services": [],
+        "actions": [
+          "onSolicitudAnticipoListItemDoubleClicked",
+          "onSearchSolicitud",
+          "onFilterByStatus"
+        ],
+        "businessActions": [
+          "Ver solicitud de anticipo",
+          "Crear nueva solicitud",
+          "Aprobar solicitud",
+          "Rechazar solicitud",
+          "Marcar como pagado"
+        ],
+        "relatedFunctionality": "PRL-F012"
+      },
+      {
+        "screenId": "scr-602",
+        "screenName": "Solicitud de Anticipo - Crear/Editar",
+        "controllerClassName": "solicitudAnticipoDialogCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Crear o editar una solicitud de anticipo",
+        "businessContext": "Registra solicitud de anticipo con detalle de monto y descripción",
+        "zkFields": 12,
+        "zkComponents": [
+          "Dialog",
+          "Textbox",
+          "Decimalbox",
+          "Datebox",
+          "Button",
+          "Label",
+          "Groupbox"
+        ],
+        "services": [],
+        "actions": [
+          "doWriteBeanToComponents",
+          "doWriteComponentsToBean",
+          "onEvent"
+        ],
+        "businessActions": [
+          "Guardar solicitud",
+          "Cancelar",
+          "Validar disponibilidad de fondo"
+        ],
+        "relatedFunctionality": "PRL-F012"
+      },
+      {
+        "screenId": "scr-603",
+        "screenName": "Aprobación de Anticipos - Masiva",
+        "controllerClassName": "AprobacionMasivaAnticiposSueldoDialogCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Aprobar múltiples solicitudes de anticipo",
+        "businessContext": "Permite autorización batch de anticipos de sueldo",
+        "zkFields": 14,
+        "zkComponents": [
+          "Dialog",
+          "Listbox",
+          "Checkbox",
+          "Button",
+          "Label"
+        ],
+        "services": [],
+        "actions": [
+          "onAprobarMasivo",
+          "onSelectAll",
+          "onDeselectAll"
+        ],
+        "businessActions": [
+          "Seleccionar solicitudes",
+          "Aprobar masivamente",
+          "Generar archivo de nómina ajustado"
+        ],
+        "relatedFunctionality": "PRL-F013"
+      },
+      {
+        "screenId": "scr-604",
+        "screenName": "Autorización de Anticipos - Colaborador",
+        "controllerClassName": "ColaboradoresAutorizaAnticipoDialogCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Autorizar anticipos a nivel de colaborador",
+        "businessContext": "Configurar límites y condiciones de anticipos para empleados",
+        "zkFields": 11,
+        "zkComponents": [
+          "Dialog",
+          "Listbox",
+          "Textbox",
+          "Decimalbox",
+          "Button",
+          "Label"
+        ],
+        "services": [],
+        "actions": [
+          "onAutorizarAnticipo",
+          "doSave"
+        ],
+        "businessActions": [
+          "Autorizar anticipos",
+          "Definir límite de anticipo",
+          "Auditar autorización"
+        ],
+        "relatedFunctionality": "PRL-F012"
+      },
+      {
+        "screenId": "scr-605",
+        "screenName": "Archivo de Anticipos",
+        "controllerClassName": "ArchivoAnticipoSueldoListCtrl",
+        "screenType": "List",
+        "businessFunction": "Gestionar archivos de anticipos",
+        "businessContext": "control de cargas y procesamiento de archivos de anticipos",
+        "zkFields": 13,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Toolbar",
+          "Button"
+        ],
+        "services": [],
+        "actions": [
+          "onArchivoListItemDoubleClicked",
+          "onCargarArchivo"
+        ],
+        "businessActions": [
+          "Ver archivo de anticipos",
+          "Cargar archivo",
+          "Procesar archivo",
+          "Validar registros"
+        ],
+        "relatedFunctionality": "PRL-F013"
+      },
+      {
+        "screenId": "scr-606",
+        "screenName": "Sobregiros - Listado",
+        "controllerClassName": "SobregiroListCtrl",
+        "screenType": "List",
+        "businessFunction": "Listar sobregiros autorizados",
+        "businessContext": "Control de sobregiros de sueldo, montos adeudados, estado de pago",
+        "zkFields": 15,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Toolbar",
+          "Button"
+        ],
+        "services": [],
+        "actions": [
+          "onSobregiroListItemDoubleClicked",
+          "onSearchSobregiro",
+          "onFilterBySobregiroStatus"
+        ],
+        "businessActions": [
+          "Ver detalle de sobregiro",
+          "Crear sobregiro",
+          "Aprobar sobregiro",
+          "Rechazar solicitud",
+          "Cancelar sobregiro"
+        ],
+        "relatedFunctionality": "PRL-F028"
+      },
+      {
+        "screenId": "scr-607",
+        "screenName": "Sobregiros - Autorización",
+        "controllerClassName": "SobregiroDialogCtrl",
+        "screenType": "Dialog",
+        "businessFunction": "Autorizar o crear sobregiro",
+        "businessContext": "Registro de sobregiros con límites, plazo y condiciones especiales",
+        "zkFields": 16,
+        "zkComponents": [
+          "Dialog",
+          "Textbox",
+          "Decimalbox",
+          "Datebox",
+          "Combobox",
+          "Button",
+          "Label"
+        ],
+        "services": [],
+        "actions": [
+          "doWriteBeanToComponents",
+          "doWriteComponentsToBean",
+          "onAutorizarSobregiro"
+        ],
+        "businessActions": [
+          "Guardar sobregiro",
+          "Autorizar sobregiro",
+          "Validar límites",
+          "Auditar autorización"
+        ],
+        "validationRules": [
+          "Monto de sobregiro <= límite autorizado",
+          "Plazo de pago válido",
+          "Colaborador activo"
+        ],
+        "relatedFunctionality": "PRL-F028"
+      },
+      {
+        "screenId": "scr-608",
+        "screenName": "Reportes de Anticipos",
+        "controllerClassName": "ReportesAnticiposSueldoCtrl",
+        "screenType": "Report",
+        "businessFunction": "Visualizar reportes de anticipos",
+        "businessContext": "Reportes consolidados de solicitudes, aprobaciones, pagos",
+        "zkFields": 10,
+        "zkComponents": [
+          "Window",
+          "Datebox",
+          "Button",
+          "Menupopup",
+          "Menuitem"
+        ],
+        "services": [],
+        "actions": [
+          "onGenerateReport",
+          "onExportReport"
+        ],
+        "businessActions": [
+          "Generar reporte",
+          "Filtrar por rango de fechas",
+          "Exportar a Excel",
+          "Enviar por correo"
+        ],
+        "relatedFunctionality": "PRL-F012, PRL-F013"
+      }
+    ],
+    "screenDependencies": [
+      {
+        "from": "SolicitudAnticipoSueldoListCtrl",
+        "to": "solicitudAnticipoDialogCtrl",
+        "type": "navigation",
+        "action": "onSolicitudAnticipoListItemDoubleClicked"
+      },
+      {
+        "from": "SobregiroListCtrl",
+        "to": "SobregiroDialogCtrl",
+        "type": "navigation",
+        "action": "onSobregiroListItemDoubleClicked"
+      },
+      {
+        "from": "AprobacionMasivaAnticiposSueldoDialogCtrl",
+        "to": "ActualizarPagoSugeridoAnticiposDialogCtrl",
+        "type": "follows",
+        "description": "Después de aprobar, actualizar pago sugerido"
+      }
+    ],
+    "mfeRoutes": [
+      {
+        "path": "/payroll/advances/requests",
+        "screenId": "scr-601",
+        "screenName": "Solicitud de Anticipos - Listado",
+        "component": "SolicitudAnticipoSueldoListCtrl"
+      },
+      {
+        "path": "/payroll/advances/requests/:id",
+        "screenId": "scr-602",
+        "screenName": "Solicitud de Anticipo - Crear/Editar",
+        "component": "solicitudAnticipoDialogCtrl"
+      },
+      {
+        "path": "/payroll/advances/approval-batch",
+        "screenId": "scr-603",
+        "screenName": "Aprobación de Anticipos - Masiva",
+        "component": "AprobacionMasivaAnticiposSueldoDialogCtrl"
+      },
+      {
+        "path": "/payroll/advances/authorization/:employeeId",
+        "screenId": "scr-604",
+        "screenName": "Autorización de Anticipos - Colaborador",
+        "component": "ColaboradoresAutorizaAnticipoDialogCtrl"
+      },
+      {
+        "path": "/payroll/advances/files",
+        "screenId": "scr-605",
+        "screenName": "Archivo de Anticipos",
+        "component": "ArchivoAnticipoSueldoListCtrl"
+      },
+      {
+        "path": "/payroll/overdrafts",
+        "screenId": "scr-606",
+        "screenName": "Sobregiros - Listado",
+        "component": "SobregiroListCtrl"
+      },
+      {
+        "path": "/payroll/overdrafts/:id",
+        "screenId": "scr-607",
+        "screenName": "Sobregiros - Autorización",
+        "component": "SobregiroDialogCtrl"
+      },
+      {
+        "path": "/payroll/advances/reports",
+        "screenId": "scr-608",
+        "screenName": "Reportes de Anticipos",
+        "component": "ReportesAnticiposSueldoCtrl"
+      }
+    ],
+    "mfeModules": [
+      {
+        "name": "AdvanceRequestModule",
+        "loadingStrategy": "eager",
+        "components": [
+          "SolicitudAnticipoSueldoListCtrl",
+          "solicitudAnticipoDialogCtrl"
+        ]
+      },
+      {
+        "name": "AdvanceApprovalModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "AprobacionMasivaAnticiposSueldoDialogCtrl",
+          "ColaboradoresAutorizaAnticipoDialogCtrl",
+          "ArchivoAnticipoSueldoListCtrl"
+        ]
+      },
+      {
+        "name": "OverdraftManagementModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "SobregiroListCtrl",
+          "SobregiroDialogCtrl"
+        ]
+      },
+      {
+        "name": "AdvanceReportingModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "ReportesAnticiposSueldoCtrl"
+        ]
+      }
+    ],
+    "mfeDependencies": {
+      "externalMicroservices": [
+        {
+          "serviceName": "AdvanceManagementService",
+          "port": 8107,
+          "endpoints": [
+            "POST /api/payroll/{payrollId}/advances/request",
+            "GET /api/payroll/{payrollId}/advances",
+            "POST /api/payroll/{payrollId}/advances/{advanceId}/approve",
+            "GET /api/employee/{employeeId}/advance-limit"
+          ]
+        },
+        {
+          "serviceName": "OverdraftAuthorizationService",
+          "port": 8109,
+          "endpoints": [
+            "POST /api/payroll/{payrollId}/overdraft/authorize",
+            "GET /api/payroll/{payrollId}/overdrafts",
+            "GET /api/employee/{employeeId}/overdraft-status"
+          ]
+        }
+      ]
+    },
+    "dataModel": {
+      "primaryEntities": [
+        "AvRhSolicitudAnticipoSueldo.java",
+        "AvRhAutorizaAnticipoSueldo.java",
+        "AvRhAutorizaSobregiro.java"
+      ]
+    },
+    "mfePermissions": [
+      {
+        "action": "REQUEST_ADVANCE",
+        "requiredRole": "EMPLOYEE"
+      },
+      {
+        "action": "VIEW_ADVANCE_STATUS",
+        "requiredRole": "PAYROLL_USER"
+      },
+      {
+        "action": "APPROVE_ADVANCE",
+        "requiredRole": "DEPARTMENT_HEAD"
+      },
+      {
+        "action": "AUTHORIZE_OVERDRAFT",
+        "requiredRole": "TREASURY_CHIEF"
+      },
+      {
+        "action": "BATCH_APPROVE",
+        "requiredRole": "PAYROLL_MANAGER"
+      }
+    ],
+    "mfeMetrics": {
+      "estimatedComplexity": "VERY_HIGH",
+      "estimatedDevDays": 28,
+      "estimatedTestDays": 14,
+      "totalEstimatedDays": 42,
+      "team": ["Backend Developer (2)", "Frontend Developer (1)", "QA (1)"]
+    },
+    "relatedMFEs": [
+      {
+        "mfeName": "Payroll Salary Calculation",
+        "mfeId": "mfe-payroll-salary-calculation",
+        "status": "Phase 1",
+        "sequence": 2,
+        "dependency": "prerequisite"
+      },
+      {
+        "mfeName": "Payroll Loans & Debts",
+        "mfeId": "mfe-payroll-loans-debts",
+        "status": "Phase 3",
+        "sequence": 5,
+        "dependency": "related"
+      }
+    ]
+  },
+  {
+    "mfeId": "mfe-payroll-accounting-integration",
+    "mfeName": "Payroll Accounting Integration",
+    "version": "1.0.0",
+    "description": "Micro Frontend para integración de nómina con contabilidad, generación de asientos contables",
+    "domain": "Finance / Accounting Integration",
+    "relatedMicroservices": [
+      "AccountingIntegrationService",
+      "JournalEntryService",
+      "GLInterfaceService"
+    ],
+    "relatedFunctionalities": [
+      "PRL-F014",
+      "PRL-F015",
+      "PRL-F016",
+      "PRL-F018"
+    ],
+    "owner": "Finance & Accounting Team",
+    "developmentPhase": "Phase 4 - Integrations",
+    "status": "planned",
+    "generatedAt": "2026-03-05",
+    "screens": [
+      {
+        "screenId": "scr-701",
+        "screenName": "Consulta Contable - Asientos",
+        "controllerClassName": "ConsultaContableListCtrl",
+        "screenType": "List",
+        "businessFunction": "Consultar asientos contables generados desde nómina",
+        "businessContext": "Visualiza asientos contables, debe/haber, balances por rubro y proceso",
+        "zkFields": 19,
+        "zkComponents": [
+          "Window",
+          "Borderlayout",
+          "Listbox",
+          "Listheader",
+          "Listfooter",
+          "Paging",
+          "Button",
+          "Dropdown",
+          "Textbox"
+        ],
+        "services": [],
+        "actions": [
+          "onConsultar",
+          "onExportarExcel",
+          "onGenerarReportes",
+          "onRefresh"
+        ],
+        "businessActions": [
+          "Consultar asientos por proceso",
+          "Exportar a Excel",
+          "Generar reportes IR/INEC",
+          "Ver detalles de asiento",
+          "Validar balances"
+        ],
+        "relatedFunctionality": "PRL-F014, PRL-F016"
+      },
+      {
+        "screenId": "scr-702",
+        "screenName": "Consulta Contable Financiera",
+        "controllerClassName": "ConsultaContableFinancieraListCtrl",
+        "screenType": "Report",
+        "businessFunction": "Reportes contables financieros por cuenta y subcuenta",
+        "businessContext": "Análisis financiero de nómina: nomina contable, cuenta/subcuenta, GL",
+        "zkFields": 18,
+        "zkComponents": [
+          "Window",
+          "Borderlayout",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button",
+          "Datebox",
+          "Checkbox",
+          "Row"
+        ],
+        "services": [],
+        "actions": [
+          "onSelectReporte",
+          "onSelectCuenta",
+          "onGenerateReport",
+          "onExportReport"
+        ],
+        "businessActions": [
+          "Seleccionar tipo de reporte",
+          "Filtrar por cuenta/subcuenta",
+          "Filtrar por rubro",
+          "Filtrar por colaborador",
+          "Generar reporte",
+          "Exportar datos"
+        ],
+        "reportTypes": [
+          "Reporte Cuenta y SubCuenta",
+          "Reporte Nómina Contable"
+        ],
+        "relatedFunctionality": "PRL-F015, PRL-F018"
+      },
+      {
+        "screenId": "scr-703",
+        "screenName": "Plantilla Contable - Configuración",
+        "controllerClassName": "PlantillaContableListCtrl",
+        "screenType": "List",
+        "businessFunction": "Configurar plantillas contables para asentamientos",
+        "businessContext": "Mapeo de rubros de nómina a cuentas contables por proceso",
+        "zkFields": 16,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button",
+          "Toolbar"
+        ],
+        "services": [],
+        "actions": [
+          "onPlantillaListItemDoubleClicked",
+          "onNewPlantilla",
+          "onDeletePlantilla",
+          "onSearch"
+        ],
+        "businessActions": [
+          "Ver configuración de plantilla",
+          "Crear nueva plantilla",
+          "Editar plantilla",
+          "Eliminar plantilla",
+          "Validar plantilla"
+        ],
+        "relatedFunctionality": "PRL-F014"
+      }
+    ],
+    "screenDependencies": [
+      {
+        "from": "ConsultaContableListCtrl",
+        "to": "ConsultaContableFinancieraListCtrl",
+        "type": "navigation",
+        "description": "Análisis detallado de asientos"
+      },
+      {
+        "from": "ConsultaContableListCtrl",
+        "to": "PlantillaContableListCtrl",
+        "type": "configuration",
+        "description": "Ver plantilla que generó el asiento"
+      }
+    ],
+    "mfeRoutes": [
+      {
+        "path": "/payroll/accounting/entries",
+        "screenId": "scr-701",
+        "screenName": "Consulta Contable - Asientos",
+        "component": "ConsultaContableListCtrl"
+      },
+      {
+        "path": "/payroll/accounting/financial-reports",
+        "screenId": "scr-702",
+        "screenName": "Consulta Contable Financiera",
+        "component": "ConsultaContableFinancieraListCtrl"
+      },
+      {
+        "path": "/payroll/accounting/templates",
+        "screenId": "scr-703",
+        "screenName": "Plantilla Contable - Configuración",
+        "component": "PlantillaContableListCtrl"
+      }
+    ],
+    "mfeModules": [
+      {
+        "name": "AccountingEntriesModule",
+        "loadingStrategy": "eager",
+        "components": [
+          "ConsultaContableListCtrl"
+        ]
+      },
+      {
+        "name": "FinancialReportingModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "ConsultaContableFinancieraListCtrl"
+        ]
+      },
+      {
+        "name": "AccountingTemplateModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "PlantillaContableListCtrl"
+        ]
+      }
+    ],
+    "mfeDependencies": {
+      "externalMicroservices": [
+        {
+          "serviceName": "AccountingIntegrationService",
+          "port": 8112,
+          "endpoints": [
+            "GET /api/payroll/{payrollId}/gl-entries",
+            "POST /api/payroll/{payrollId}/post-entries",
+            "GET /api/payroll/{payrollId}/journals/{journalId}"
+          ]
+        },
+        {
+          "serviceName": "JournalEntryService",
+          "port": 8113,
+          "endpoints": [
+            "GET /api/journals",
+            "POST /api/journals/{journalId}/reverse",
+            "GET /api/journals/{journalId}/validation"
+          ]
+        }
+      ]
+    },
+    "dataModel": {
+      "primaryEntities": [
+        "AvPyPlantillaContable.java",
+        "AvPyRubroslhis.java",
+        "AvPyCtasubctaAso.java"
+      ]
+    },
+    "mfePermissions": [
+      {
+        "action": "VIEW_GL_ENTRIES",
+        "requiredRole": "ACCOUNTANT"
+      },
+      {
+        "action": "POST_ENTRIES",
+        "requiredRole": "CHIEF_ACCOUNTANT"
+      },
+      {
+        "action": "MODIFY_TEMPLATES",
+        "requiredRole": "CFO"
+      },
+      {
+        "action": "GENERATE_REPORTS",
+        "requiredRole": "AUDITOR"
+      }
+    ],
+    "mfeMetrics": {
+      "estimatedComplexity": "MEDIUM",
+      "estimatedDevDays": 18,
+      "estimatedTestDays": 9,
+      "totalEstimatedDays": 27,
+      "team": ["Backend Developer (1)", "Frontend Developer (1)", "QA (1)"]
+    },
+    "relatedMFEs": [
+      {
+        "mfeName": "Payroll Salary Calculation",
+        "mfeId": "mfe-payroll-salary-calculation",
+        "status": "Phase 1",
+        "sequence": 2,
+        "dependency": "prerequisite"
+      },
+      {
+        "mfeName": "Payroll Distribution",
+        "mfeId": "mfe-payroll-distribution",
+        "status": "Phase 2",
+        "sequence": 3
+      }
+    ]
+  },
+  {
+    "mfeId": "mfe-payroll-banking-data-integration",
+    "mfeName": "Payroll Banking & Data Integration",
+    "version": "1.0.0",
+    "description": "Micro Frontend para integración bancaria, generación de archivos ACH/SWIFT y exportación de datos",
+    "domain": "Finance / Banking & Data Integration",
+    "relatedMicroservices": [
+      "BankingIntegrationService",
+      "FileGenerationService",
+      "DataExportService"
+    ],
+    "relatedFunctionalities": [
+      "PRL-F009",
+      "PRL-F010",
+      "PRL-F011",
+      "PRL-F017"
+    ],
+    "owner": "Finance & IT Team",
+    "developmentPhase": "Phase 4 - Integrations",
+    "status": "planned",
+    "generatedAt": "2026-03-05",
+    "screens": [
+      {
+        "screenId": "scr-801",
+        "screenName": "Acreditaciones - Consulta",
+        "controllerClassName": "ConsultaAcreditacionesListCtrl",
+        "screenType": "List",
+        "businessFunction": "Consultar acreditaciones bancarias procesadas",
+        "businessContext": "Visualiza transferencias realizadas, bancos, tipos de cuenta, importes",
+        "zkFields": 20,
+        "zkComponents": [
+          "Window",
+          "Borderlayout",
+          "Listbox",
+          "Listheader",
+          "Listfooter",
+          "Paging",
+          "Button",
+          "Datebox",
+          "Textbox"
+        ],
+        "services": [],
+        "actions": [
+          "onConsultarAcreditaciones",
+          "onExportarExcel",
+          "onFiltrarPorBanco",
+          "onFiltrarPorFecha"
+        ],
+        "businessActions": [
+          "Consultar acreditaciones",
+          "Filtrar por banco",
+          "Filtrar por período",
+          "Exportar a Excel",
+          "Ver comprobante",
+          "Ver estado de transferencia"
+        ],
+        "relatedFunctionality": "PRL-F009, PRL-F010"
+      },
+      {
+        "screenId": "scr-802",
+        "screenName": "Generación de Archivo Bancario",
+        "controllerClassName": "GeneracionArchivoBancarioCtrl",
+        "screenType": "Form",
+        "businessFunction": "Generar archivo ACH/SWIFT para transferencias bancarias",
+        "businessContext": "Crea archivo de formato bancario (ACH, SWIFT) para envío a bancos",
+        "zkFields": 12,
+        "zkComponents": [
+          "Window",
+          "Groupbox",
+          "Label",
+          "Button",
+          "Datebox",
+          "Combobox",
+          "Checkbox"
+        ],
+        "services": [],
+        "actions": [
+          "onGenerarArchivoBancario",
+          "onDescargarArchivo",
+          "onValidarArchivo",
+          "onEnviarBanco"
+        ],
+        "businessActions": [
+          "Seleccionar período",
+          "Seleccionar banco",
+          "Validar data",
+          "Generar archivo",
+          "Descargar archivo",
+          "Enviar a banco"
+        ],
+        "bankFormats": [
+          "ACH (Automated Clearing House)",
+          "SWIFT (Society for Worldwide Interbank Financial Telecommunication)"
+        ],
+        "relatedFunctionality": "PRL-F010"
+      },
+      {
+        "screenId": "scr-803",
+        "screenName": "Exportación de Datos - CSV",
+        "controllerClassName": "GeneracionCSVContratosCtrl",
+        "screenType": "Form",
+        "businessFunction": "Exportar datos de nómina en formato CSV para sistemas externos",
+        "businessContext": "Genera archivo CSV con información de colaboradores, contratos, datos demográficos",
+        "zkFields": 14,
+        "zkComponents": [
+          "Window",
+          "Borderlayout",
+          "Panel",
+          "Button",
+          "Listbox",
+          "Listheader",
+          "Checkbox",
+          "Textbox"
+        ],
+        "services": [],
+        "actions": [
+          "onGenerarCSV",
+          "onDescargarArchivo",
+          "onValidarDatos",
+          "onSeleccionarCampos"
+        ],
+        "businessActions": [
+          "Seleccionar empresa",
+          "Seleccionar zona",
+          "Seleccionar campos a exportar",
+          "Validar datos",
+          "Generar CSV",
+          "Descargar archivo"
+        ],
+        "exportFields": [
+          "Identificación",
+          "Nombres",
+          "Cargo",
+          "Datos de Banco",
+          "Datos de Contacto",
+          "Información de Contrato"
+        ],
+        "relatedFunctionality": "PRL-F017"
+      },
+      {
+        "screenId": "scr-804",
+        "screenName": "Gestión de Archivos de Interfaz",
+        "controllerClassName": "GestionArchivosInterfazCtrl",
+        "screenType": "List",
+        "businessFunction": "Gestionar archivos de interfaz generados y sus estados",
+        "businessContext": "Control de archivos ACH, SWIFT, CSV, estados de envío, validaciones",
+        "zkFields": 15,
+        "zkComponents": [
+          "Window",
+          "Listbox",
+          "Listheader",
+          "Paging",
+          "Button",
+          "Toolbar",
+          "Datebox"
+        ],
+        "services": [],
+        "actions": [
+          "onArchivoDoubleClicked",
+          "onDescargarArchivo",
+          "onReenviarArchivo",
+          "onVerEstado"
+        ],
+        "businessActions": [
+          "Ver detalles de archivo",
+          "Ver estado de envío",
+          "Descargar archivo",
+          "Reenviar archivo",
+          "Validar confirmación",
+          "Consultar en banco"
+        ],
+        "relatedFunctionality": "PRL-F010, PRL-F017"
+      }
+    ],
+    "screenDependencies": [
+      {
+        "from": "GeneracionArchivoBancarioCtrl",
+        "to": "ConsultaAcreditacionesListCtrl",
+        "type": "follows",
+        "description": "Después de generar, consultar acreditaciones"
+      },
+      {
+        "from": "GeneracionArchivoBancarioCtrl",
+        "to": "GestionArchivosInterfazCtrl",
+        "type": "follows",
+        "description": "Registrar archivo generado"
+      }
+    ],
+    "mfeRoutes": [
+      {
+        "path": "/payroll/banking/acreditaciones",
+        "screenId": "scr-801",
+        "screenName": "Acreditaciones - Consulta",
+        "component": "ConsultaAcreditacionesListCtrl"
+      },
+      {
+        "path": "/payroll/banking/generate-file",
+        "screenId": "scr-802",
+        "screenName": "Generación de Archivo Bancario",
+        "component": "GeneracionArchivoBancarioCtrl"
+      },
+      {
+        "path": "/payroll/data/export-csv",
+        "screenId": "scr-803",
+        "screenName": "Exportación de Datos - CSV",
+        "component": "GeneracionCSVContratosCtrl"
+      },
+      {
+        "path": "/payroll/integration/file-management",
+        "screenId": "scr-804",
+        "screenName": "Gestión de Archivos de Interfaz",
+        "component": "GestionArchivosInterfazCtrl"
+      }
+    ],
+    "mfeModules": [
+      {
+        "name": "BankingAccreditationModule",
+        "loadingStrategy": "eager",
+        "components": [
+          "ConsultaAcreditacionesListCtrl"
+        ]
+      },
+      {
+        "name": "BankingFileGenerationModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "GeneracionArchivoBancarioCtrl"
+        ]
+      },
+      {
+        "name": "DataExportModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "GeneracionCSVContratosCtrl"
+        ]
+      },
+      {
+        "name": "InterfaceManagementModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "GestionArchivosInterfazCtrl"
+        ]
+      }
+    ],
+    "mfeDependencies": {
+      "externalMicroservices": [
+        {
+          "serviceName": "BankingIntegrationService",
+          "port": 8110,
+          "endpoints": [
+            "POST /api/payroll/{payrollId}/banking-file",
+            "GET /api/payroll/{payrollId}/banking-status",
+            "POST /api/payroll/{payrollId}/banking-confirmation",
+            "GET /api/payroll/{payrollId}/acreditaciones"
+          ]
+        },
+        {
+          "serviceName": "FileGenerationService",
+          "port": 8114,
+          "endpoints": [
+            "POST /api/files/generate-ach",
+            "POST /api/files/generate-swift",
+            "POST /api/files/validate",
+            "GET /api/files/{fileId}"
+          ]
+        },
+        {
+          "serviceName": "DataExportService",
+          "port": 8115,
+          "endpoints": [
+            "POST /api/export/csv",
+            "POST /api/export/validate",
+            "GET /api/export/fields",
+            "POST /api/export/schedule"
+          ]
+        }
+      ]
+    },
+    "dataModel": {
+      "primaryEntities": [
+        "AvPyInterfas.java",
+        "AvPyInterfasarchivo.java",
+        "AvRhContratoscsv.java"
+      ]
+    },
+    "mfePermissions": [
+      {
+        "action": "VIEW_ACREDITACIONES",
+        "requiredRole": "TREASURER"
+      },
+      {
+        "action": "GENERATE_BANKING_FILE",
+        "requiredRole": "BANKING_OFFICER"
+      },
+      {
+        "action": "SEND_TO_BANK",
+        "requiredRole": "TREASURY_CHIEF"
+      },
+      {
+        "action": "EXPORT_DATA",
+        "requiredRole": "PAYROLL_MANAGER"
+      },
+      {
+        "action": "MANAGE_INTERFACES",
+        "requiredRole": "IT_ADMIN"
+      }
+    ],
+    "mfeMetrics": {
+      "estimatedComplexity": "VERY_HIGH",
+      "estimatedDevDays": 26,
+      "estimatedTestDays": 13,
+      "totalEstimatedDays": 39,
+      "team": ["Backend Developer (2)", "Frontend Developer (1)", "QA (1)"]
+    },
+    "relatedMFEs": [
+      {
+        "mfeName": "Payroll Distribution & Payments",
+        "mfeId": "mfe-payroll-distribution",
+        "status": "Phase 2",
+        "sequence": 3,
+        "dependency": "prerequisite"
+      },
+      {
+        "mfeName": "Payroll Accounting Integration",
+        "mfeId": "mfe-payroll-accounting-integration",
+        "status": "Phase 4",
+        "sequence": 7,
+        "dependency": "related"
+      }
+    ]
+  },
+  {
+    "mfeId": "mfe-payroll-reports-analytics",
+    "mfeName": "Payroll Reports, Analytics & Export",
+    "version": "1.0.0",
+    "description": "Micro Frontend para reportes, comparativas, análisis y exportación de datos de nómina",
+    "domain": "Finance / Reporting & Analytics",
+    "relatedMicroservices": [
+      "PayrollReportingService",
+      "AnalyticsService",
+      "DataExportService",
+      "QueryService"
+    ],
+    "relatedFunctionalities": [
+      "PRL-F018",
+      "PRL-F019",
+      "PRL-F021",
+      "PRL-F022",
+      "PRL-F023",
+      "PRL-F024",
+      "PRL-F025",
+      "PRL-F030"
+    ],
+    "owner": "Finance & Business Intelligence Team",
+    "developmentPhase": "Phase 5 - Reporting & Analytics",
+    "status": "planned",
+    "generatedAt": "2026-03-05",
+    "screens": [
+      {
+        "screenId": "scr-901",
+        "screenName": "Reportes - Catálogo",
+        "controllerClassName": "ReportsListCtrl",
+        "screenType": "List",
+        "businessFunction": "Acceder al catálogo de reportes disponibles",
+        "businessContext": "Central de reportes con todas las opciones: nómina, gastos, beneficios, análisis",
+        "zkFields": 14,
+        "zkComponents": [
+          "Window",
+          "Borderlayout",
+          "Tree",
+          "Treeitem",
+          "Button",
+          "Textbox",
+          "Toolbar",
+          "Panel"
+        ],
+        "services": [],
+        "actions": [
+          "onReportSelected",
+          "onReportDoubleClicked",
+          "onGenerateReport",
+          "onPreviewReport",
+          "onScheduleReport"
+        ],
+        "businessActions": [
+          "Seleccionar reporte",
+          "Ver descripción",
+          "Abrir configuración",
+          "Generar reporte",
+          "Programar reporte",
+          "Descargar últimas versiones"
+        ],
+        "reportCategories": [
+          "Nómina",
+          "Gastos",
+          "Beneficios",
+          "Proveedores",
+          "Análisis",
+          "Cumplimiento"
+        ],
+        "relatedFunctionality": "PRL-F018, PRL-F019"
+      },
+      {
+        "screenId": "scr-902",
+        "screenName": "Comparativa de Nóminas",
+        "controllerClassName": "ComparativoNominasListCtrl",
+        "screenType": "List",
+        "businessFunction": "Comparar nóminas entre períodos y dimensiones",
+        "businessContext": "Análisis comparativo: localidad, sucursal, roles, períodos de nómina",
+        "zkFields": 20,
+        "zkComponents": [
+          "Window",
+          "Borderlayout",
+          "Listbox",
+          "Listheader",
+          "Listfooter",
+          "Paging",
+          "Button",
+          "Datebox",
+          "Checkbox",
+          "Dropdown"
+        ],
+        "services": [],
+        "actions": [
+          "onComparativoDoubleClicked",
+          "onExportarExcel",
+          "onGenerarComparativa",
+          "onFiltrar"
+        ],
+        "businessActions": [
+          "Seleccionar períodos a comparar",
+          "Comparar por localidad",
+          "Comparar por sucursal",
+          "Comparar por rol",
+          "Ver variaciones",
+          "Exportar comparativa"
+        ],
+        "comparisonDimensions": [
+          "Período a Período",
+          "Localidad vs Localidad",
+          "Sucursal vs Sucursal",
+          "Rol vs Rol"
+        ],
+        "relatedFunctionality": "PRL-F021, PRL-F022"
+      },
+      {
+        "screenId": "scr-903",
+        "screenName": "Reportes Especiales - IR/INEC",
+        "controllerClassName": "ReporteIRINECDialogCtrl",
+        "screenType": "Report",
+        "businessFunction": "Generar reportes tributarios IR e INEC",
+        "businessContext": "Genera reportes de cumplimiento fiscal para autoridades tributarias",
+        "zkFields": 12,
+        "zkComponents": [
+          "Dialog",
+          "Groupbox",
+          "Label",
+          "Button",
+          "Datebox",
+          "Dropdown",
+          "Checkbox"
+        ],
+        "services": [],
+        "actions": [
+          "onGenerarReporteIR",
+          "onGenerarReporteINEC",
+          "onDescargarReporte",
+          "onValidarDatos"
+        ],
+        "businessActions": [
+          "Generar reporte IR",
+          "Generar reporte INEC",
+          "Validar información",
+          "Descargar archivo",
+          "Enviar a autoridades"
+        ],
+        "reportTypes": [
+          "Reporte IR (Impuesto a la Renta)",
+          "Reporte INEC (Instituto Estadístico Nacional)"
+        ],
+        "relatedFunctionality": "PRL-F023, PRL-F024"
+      },
+      {
+        "screenId": "scr-904",
+        "screenName": "Análisis de Nómina - Dashboards",
+        "controllerClassName": "PayrollAnalyticsDashboardCtrl",
+        "screenType": "Dashboard",
+        "businessFunction": "Dashboard de análisis y KPIs de nómina",
+        "businessContext": "Visualización de métricas clave: costo, distribución, tendencias, anomalías",
+        "zkFields": 18,
+        "zkComponents": [
+          "Window",
+          "Borderlayout",
+          "Chart",
+          "Grid",
+          "Label",
+          "Button",
+          "Datebox",
+          "Groupbox"
+        ],
+        "services": [],
+        "actions": [
+          "onLoadDashboard",
+          "onFilterByDimension",
+          "onDrillDown",
+          "onExportChart"
+        ],
+        "businessActions": [
+          "Ver KPIs por período",
+          "Analizar tendencias",
+          "Comparar presupuesto vs real",
+          "Identificar anomalías",
+          "Descargar gráficos",
+          "Exportar análisis"
+        ],
+        "metrics": [
+          "Nómina Total",
+          "Costo por Empleado",
+          "Distribución por Rubro",
+          "Variaciones Período a Período",
+          "Top Rubros",
+          "Análisis por Dimensión"
+        ],
+        "relatedFunctionality": "PRL-F025, PRL-F030"
+      },
+      {
+        "screenId": "scr-905",
+        "screenName": "Exportación de Reportes",
+        "controllerClassName": "ReportExportCtrl",
+        "screenType": "Form",
+        "businessFunction": "Exportar reportes a múltiples formatos",
+        "businessContext": "Genera archivos en Excel, PDF, CSV con formato personalizable",
+        "zkFields": 16,
+        "zkComponents": [
+          "Window",
+          "Groupbox",
+          "Listbox",
+          "Checkbox",
+          "Combobox",
+          "Button",
+          "Label"
+        ],
+        "services": [],
+        "actions": [
+          "onSelectReport",
+          "onSelectFormat",
+          "onSelectFields",
+          "onExport"
+        ],
+        "businessActions": [
+          "Seleccionar reporte",
+          "Elegir formato de salida",
+          "Seleccionar campos",
+          "Personalizar formato",
+          "Generar archivo",
+          "Descargar"
+        ],
+        "exportFormats": [
+          "Excel (.xlsx)",
+          "PDF",
+          "CSV",
+          "XML",
+          "JSON"
+        ],
+        "relatedFunctionality": "PRL-F019"
+      }
+    ],
+    "screenDependencies": [
+      {
+        "from": "ReportsListCtrl",
+        "to": "ReporteIRINECDialogCtrl",
+        "type": "navigation",
+        "description": "Generar reportes especiales"
+      },
+      {
+        "from": "ReportsListCtrl",
+        "to": "ComparativoNominasListCtrl",
+        "type": "navigation",
+        "description": "Análisis comparativo"
+      },
+      {
+        "from": "PayrollAnalyticsDashboardCtrl",
+        "to": "ReportExportCtrl",
+        "type": "navigation",
+        "description": "Exportar visualización"
+      }
+    ],
+    "mfeRoutes": [
+      {
+        "path": "/payroll/reports/catalog",
+        "screenId": "scr-901",
+        "screenName": "Reportes - Catálogo",
+        "component": "ReportsListCtrl"
+      },
+      {
+        "path": "/payroll/reports/comparative",
+        "screenId": "scr-902",
+        "screenName": "Comparativa de Nóminas",
+        "component": "ComparativoNominasListCtrl"
+      },
+      {
+        "path": "/payroll/reports/special/ir-inec",
+        "screenId": "scr-903",
+        "screenName": "Reportes Especiales - IR/INEC",
+        "component": "ReporteIRINECDialogCtrl"
+      },
+      {
+        "path": "/payroll/analytics/dashboard",
+        "screenId": "scr-904",
+        "screenName": "Análisis de Nómina - Dashboards",
+        "component": "PayrollAnalyticsDashboardCtrl"
+      },
+      {
+        "path": "/payroll/reports/export",
+        "screenId": "scr-905",
+        "screenName": "Exportación de Reportes",
+        "component": "ReportExportCtrl"
+      }
+    ],
+    "mfeModules": [
+      {
+        "name": "ReportingCatalogModule",
+        "loadingStrategy": "eager",
+        "components": [
+          "ReportsListCtrl"
+        ]
+      },
+      {
+        "name": "ComparativeAnalysisModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "ComparativoNominasListCtrl"
+        ]
+      },
+      {
+        "name": "SpecialReportsModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "ReporteIRINECDialogCtrl"
+        ]
+      },
+      {
+        "name": "AnalyticsModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "PayrollAnalyticsDashboardCtrl"
+        ]
+      },
+      {
+        "name": "DataExportModule",
+        "loadingStrategy": "lazy",
+        "components": [
+          "ReportExportCtrl"
+        ]
+      }
+    ],
+    "mfeDependencies": {
+      "externalMicroservices": [
+        {
+          "serviceName": "PayrollReportingService",
+          "port": 8111,
+          "endpoints": [
+            "GET /api/payroll/{payrollId}/reports",
+            "GET /api/payroll/{payrollId}/reports/{reportId}",
+            "POST /api/payroll/{payrollId}/reports/{reportId}/generate",
+            "GET /api/payroll/{payrollId}/reports/special/ir",
+            "GET /api/payroll/{payrollId}/reports/special/inec"
+          ]
+        },
+        {
+          "serviceName": "AnalyticsService",
+          "port": 8116,
+          "endpoints": [
+            "GET /api/analytics/dashboard/{payrollId}",
+            "GET /api/analytics/metrics/{payrollId}",
+            "GET /api/analytics/trends/{payrollId}",
+            "GET /api/analytics/anomalies/{payrollId}"
+          ]
+        },
+        {
+          "serviceName": "QueryService",
+          "port": 8117,
+          "endpoints": [
+            "POST /api/query/comparative",
+            "POST /api/query/aggregate",
+            "GET /api/query/dimensions",
+            "POST /api/query/custom"
+          ]
+        }
+      ]
+    },
+    "dataModel": {
+      "primaryEntities": [
+        "AvPyComparativoNomina.java",
+        "AvPyRubroslhis.java",
+        "AvCaPeriodosta.java"
+      ],
+      "views": [
+        "AvPyComparativoNominaV.java"
+      ]
+    },
+    "mfePermissions": [
+      {
+        "action": "VIEW_REPORTS",
+        "requiredRole": "PAYROLL_USER"
+      },
+      {
+        "action": "GENERATE_REPORTS",
+        "requiredRole": "PAYROLL_MANAGER"
+      },
+      {
+        "action": "EXPORT_REPORTS",
+        "requiredRole": "PAYROLL_MANAGER"
+      },
+      {
+        "action": "VIEW_ANALYTICS",
+        "requiredRole": "FINANCE_MANAGER"
+      },
+      {
+        "action": "GENERATE_STATUTORY_REPORTS",
+        "requiredRole": "CFO"
+      },
+      {
+        "action": "GENERATE_COMPARATIVE",
+        "requiredRole": "PAYROLL_ANALYST"
+      }
+    ],
+    "mfeMetrics": {
+      "estimatedComplexity": "HIGH",
+      "estimatedDevDays": 24,
+      "estimatedTestDays": 12,
+      "totalEstimatedDays": 36,
+      "team": ["Backend Developer (1)", "Frontend Developer (1)", "BI Developer (1)", "QA (1)"]
+    },
+    "relatedMFEs": [
+      {
+        "mfeName": "Payroll Salary Calculation",
+        "mfeId": "mfe-payroll-salary-calculation",
+        "status": "Phase 1",
+        "sequence": 2,
+        "dependency": "prerequisite"
+      },
+      {
+        "mfeName": "Payroll Cost Allocation",
+        "mfeId": "mfe-payroll-cost-allocation",
+        "status": "Phase 2",
+        "sequence": 4
+      },
+      {
+        "mfeName": "Payroll Accounting Integration",
+        "mfeId": "mfe-payroll-accounting-integration",
+        "status": "Phase 4",
+        "sequence": 7
+      }
+    ]
+  }
+]

@@ -1,0 +1,1522 @@
+{
+  "endpoints": [
+    {
+      "screenName": "procesos.zul / procesosDialog.zul",
+      "baseUrl": "/api/v1/procesos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos",
+          "summary": "Listar procesos de nómina",
+          "description": "Obtiene la lista paginada de definiciones de procesos de nómina con datos denormalizados de la vista av_py_procesos_v (nombre de proceso, rol, empresa)",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por identificador de empresa"},
+            {"name": "tipoProceso", "type": "string", "required": false, "description": "Filtro por tipo de proceso (quincena, mensual, etc.)"},
+            {"name": "frecuencia", "type": "string", "required": false, "description": "Filtro por frecuencia de ejecución"},
+            {"name": "rolId", "type": "integer", "required": false, "description": "Filtro por dimensión rol"}
+          ],
+          "responseDTO": {
+            "name": "ProcesoPageResponseDTO",
+            "description": "Lista paginada de definiciones de procesos de nómina",
+            "fields": [
+              {"name": "content", "type": "array<ProcesoResponseDTO>", "required": true, "description": "Lista de procesos"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos/{id}",
+          "summary": "Obtener proceso por ID",
+          "description": "Obtiene una definición de proceso de nómina por su identificador con datos de empresa, rol, stored procedures de ejecución, reversión y contabilización",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ProcesoResponseDTO",
+            "description": "Detalle completo de un proceso de nómina",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único del proceso (iidpyproceso)"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "tipoProceso", "type": "string", "required": true, "description": "Tipo de proceso (ctipoproceso)"},
+              {"name": "frecuencia", "type": "string", "required": false, "description": "Frecuencia de ejecución del proceso (vidfrecuencia)"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "Identificador de la dimensión rol"},
+              {"name": "rolNombre", "type": "string", "required": false, "description": "Nombre del rol (denormalizado)"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso (de vista av_py_procesos_v)"},
+              {"name": "spEjecucion", "type": "string", "required": false, "description": "Stored procedure de ejecución (vspejecucion)"},
+              {"name": "spReversion", "type": "string", "required": false, "description": "Stored procedure de reversión (vspreversion)"},
+              {"name": "spContabilizacion", "type": "string", "required": false, "description": "Stored procedure de contabilización (vspcontabilizacion)"},
+              {"name": "spSalvarHistoricos", "type": "string", "required": false, "description": "SP para salvar datos históricos (vspsalvarhistoricos)"},
+              {"name": "busquedaCpr", "type": "string", "required": false, "description": "Criterio de búsqueda CPR (vbusquedacpr)"},
+              {"name": "procesoSecurityId", "type": "integer", "required": false, "description": "ID de derecho de seguridad asociado (iidproceso → SecRight)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/procesos",
+          "summary": "Crear proceso de nómina",
+          "description": "Crea una nueva definición de proceso de nómina con sus stored procedures de ejecución, reversión y contabilización",
+          "requestDTO": {
+            "name": "ProcesoCreateDTO",
+            "description": "Datos para crear un nuevo proceso de nómina",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "tipoProceso", "type": "string", "required": true, "description": "Tipo de proceso (quincena, mensual, etc.)"},
+              {"name": "frecuencia", "type": "string", "required": false, "description": "Frecuencia de ejecución"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "ID de dimensión rol"},
+              {"name": "spEjecucion", "type": "string", "required": false, "description": "SP de ejecución"},
+              {"name": "spReversion", "type": "string", "required": false, "description": "SP de reversión"},
+              {"name": "spContabilizacion", "type": "string", "required": false, "description": "SP de contabilización"},
+              {"name": "spSalvarHistoricos", "type": "string", "required": false, "description": "SP para salvar históricos"},
+              {"name": "busquedaCpr", "type": "string", "required": false, "description": "Criterio de búsqueda CPR"},
+              {"name": "procesoSecurityId", "type": "integer", "required": false, "description": "ID de derecho de seguridad"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ProcesoResponseDTO",
+            "description": "Proceso creado con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único del proceso (iidpyproceso)"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "tipoProceso", "type": "string", "required": true, "description": "Tipo de proceso (ctipoproceso)"},
+              {"name": "frecuencia", "type": "string", "required": false, "description": "Frecuencia de ejecución del proceso"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "Identificador de la dimensión rol"},
+              {"name": "rolNombre", "type": "string", "required": false, "description": "Nombre del rol"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "spEjecucion", "type": "string", "required": false, "description": "SP de ejecución"},
+              {"name": "spReversion", "type": "string", "required": false, "description": "SP de reversión"},
+              {"name": "spContabilizacion", "type": "string", "required": false, "description": "SP de contabilización"},
+              {"name": "spSalvarHistoricos", "type": "string", "required": false, "description": "SP para salvar históricos"},
+              {"name": "busquedaCpr", "type": "string", "required": false, "description": "Criterio de búsqueda CPR"},
+              {"name": "procesoSecurityId", "type": "integer", "required": false, "description": "ID de derecho de seguridad"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/procesos/{id}",
+          "summary": "Actualizar proceso de nómina",
+          "description": "Actualiza una definición de proceso de nómina existente con nuevos stored procedures o configuración",
+          "requestDTO": {
+            "name": "ProcesoUpdateDTO",
+            "description": "Datos para actualizar un proceso de nómina",
+            "fields": [
+              {"name": "tipoProceso", "type": "string", "required": false, "description": "Tipo de proceso"},
+              {"name": "frecuencia", "type": "string", "required": false, "description": "Frecuencia de ejecución"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "ID de dimensión rol"},
+              {"name": "spEjecucion", "type": "string", "required": false, "description": "SP de ejecución"},
+              {"name": "spReversion", "type": "string", "required": false, "description": "SP de reversión"},
+              {"name": "spContabilizacion", "type": "string", "required": false, "description": "SP de contabilización"},
+              {"name": "spSalvarHistoricos", "type": "string", "required": false, "description": "SP para salvar históricos"},
+              {"name": "busquedaCpr", "type": "string", "required": false, "description": "Criterio de búsqueda CPR"},
+              {"name": "procesoSecurityId", "type": "integer", "required": false, "description": "ID de derecho de seguridad"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ProcesoResponseDTO",
+            "description": "Proceso actualizado con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único del proceso"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "Identificador de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "tipoProceso", "type": "string", "required": true, "description": "Tipo de proceso"},
+              {"name": "frecuencia", "type": "string", "required": false, "description": "Frecuencia de ejecución"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "Identificador de la dimensión rol"},
+              {"name": "rolNombre", "type": "string", "required": false, "description": "Nombre del rol"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "spEjecucion", "type": "string", "required": false, "description": "SP de ejecución"},
+              {"name": "spReversion", "type": "string", "required": false, "description": "SP de reversión"},
+              {"name": "spContabilizacion", "type": "string", "required": false, "description": "SP de contabilización"},
+              {"name": "spSalvarHistoricos", "type": "string", "required": false, "description": "SP para salvar históricos"},
+              {"name": "busquedaCpr", "type": "string", "required": false, "description": "Criterio de búsqueda CPR"},
+              {"name": "procesoSecurityId", "type": "integer", "required": false, "description": "ID de derecho de seguridad"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/procesos/{id}",
+          "summary": "Eliminar proceso de nómina",
+          "description": "Elimina una definición de proceso de nómina. Valida que no existan instancias ejecutadas, rubros asignados o plantillas contables vinculadas",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "procesosEjecucion.zul / procesosEjecDialog.zul",
+      "baseUrl": "/api/v1/procesos-ejecucion",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-ejecucion",
+          "summary": "Listar instancias de ejecución",
+          "description": "Obtiene la lista paginada de instancias de ejecución de procesos de nómina con filtros por proceso, año, mes, estado de cierre y entorno de ejecución",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "procesoId", "type": "integer", "required": false, "description": "Filtro por identificador de proceso"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año de ejecución"},
+            {"name": "mes", "type": "integer", "required": false, "description": "Filtro por mes de ejecución"},
+            {"name": "cerrado", "type": "integer", "required": false, "description": "Filtro por estado de cierre (1=cerrado, 0=abierto)"},
+            {"name": "entornoEjecucion", "type": "integer", "required": false, "description": "Filtro por ID del entorno de ejecución"}
+          ],
+          "responseDTO": {
+            "name": "EjecucionProcesoPageResponseDTO",
+            "description": "Lista paginada de instancias de ejecución de procesos",
+            "fields": [
+              {"name": "content", "type": "array<EjecucionProcesoResponseDTO>", "required": true, "description": "Lista de instancias de ejecución"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-ejecucion/{id}",
+          "summary": "Obtener instancia de ejecución por ID",
+          "description": "Obtiene una instancia de ejecución de proceso de nómina con fechas, período, estado de cierre y log de registros procesados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "EjecucionProcesoResponseDTO",
+            "description": "Detalle completo de una instancia de ejecución de proceso",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la instancia de ejecución (iidejecproceso)"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "Identificador del proceso de nómina"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso (denormalizado)"},
+              {"name": "instancia", "type": "string", "required": false, "description": "Nombre o código de la instancia (vinstancia)"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período de ejecución"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período de ejecución"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "anioCo", "type": "integer", "required": false, "description": "Año contable"},
+              {"name": "mesCo", "type": "integer", "required": false, "description": "Mes contable"},
+              {"name": "cerrado", "type": "integer", "required": false, "description": "Estado de cierre (1=cerrado, 0=abierto)"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indica si es la ejecución final del período"},
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución"},
+              {"name": "reversar", "type": "integer", "required": false, "description": "Indicador de reversión (1=reversado)"},
+              {"name": "ultimaEjecucion", "type": "integer", "required": false, "description": "Indicador de última ejecución"},
+              {"name": "generaInstancia", "type": "integer", "required": false, "description": "Indicador de generación de instancia"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/procesos-ejecucion",
+          "summary": "Crear instancia de ejecución",
+          "description": "Crea una nueva instancia de ejecución de proceso de nómina con período, fechas y entorno de ejecución",
+          "requestDTO": {
+            "name": "EjecucionProcesoCreateDTO",
+            "description": "Datos para crear una instancia de ejecución de proceso",
+            "fields": [
+              {"name": "procesoId", "type": "integer", "required": true, "description": "Identificador del proceso de nómina"},
+              {"name": "instancia", "type": "string", "required": false, "description": "Nombre o código de la instancia"},
+              {"name": "fechaInicio", "type": "datetime", "required": true, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": true, "description": "Fecha de fin del período"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes de ejecución"},
+              {"name": "anioCo", "type": "integer", "required": false, "description": "Año contable"},
+              {"name": "mesCo", "type": "integer", "required": false, "description": "Mes contable"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indica si es la ejecución final"},
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución"},
+              {"name": "generaInstancia", "type": "integer", "required": false, "description": "Indicador de generación de instancia"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EjecucionProcesoResponseDTO",
+            "description": "Instancia de ejecución creada con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la instancia de ejecución"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "Identificador del proceso de nómina"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "instancia", "type": "string", "required": false, "description": "Nombre o código de la instancia"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "anioCo", "type": "integer", "required": false, "description": "Año contable"},
+              {"name": "mesCo", "type": "integer", "required": false, "description": "Mes contable"},
+              {"name": "cerrado", "type": "integer", "required": false, "description": "Estado de cierre"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indicador de ejecución final"},
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución"},
+              {"name": "generaInstancia", "type": "integer", "required": false, "description": "Indicador de generación de instancia"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/procesos-ejecucion/{id}/ejecutar",
+          "summary": "Ejecutar cálculo de nómina",
+          "description": "Ejecuta el cálculo de nómina para una instancia de ejecución invocando el stored procedure configurado en el proceso (vspejecucion). Registra el log de procesamiento en av_py_log_registros_procesos",
+          "requestDTO": {
+            "name": "EjecutarCalculoDTO",
+            "description": "Parámetros para la ejecución del cálculo de nómina",
+            "fields": [
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución (sobreescribe el configurado)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de empresa para filtrar la ejecución"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de localidad para filtrar la ejecución"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EjecucionResultadoDTO",
+            "description": "Resultado de la ejecución del cálculo de nómina",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la ejecución fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "instanciaId", "type": "integer", "required": true, "description": "ID de la instancia ejecutada"},
+              {"name": "registrosProcesados", "type": "integer", "required": false, "description": "Cantidad de registros de nómina procesados"},
+              {"name": "ejecuto", "type": "string", "required": false, "description": "Indicador de ejecución (cejecuto del log)"},
+              {"name": "tipoProceso", "type": "string", "required": false, "description": "Tipo de proceso ejecutado"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/procesos-ejecucion/{id}",
+          "summary": "Actualizar instancia de ejecución",
+          "description": "Actualiza los datos de una instancia de ejecución de proceso de nómina (fechas, período, estado)",
+          "requestDTO": {
+            "name": "EjecucionProcesoUpdateDTO",
+            "description": "Datos para actualizar una instancia de ejecución",
+            "fields": [
+              {"name": "instancia", "type": "string", "required": false, "description": "Nombre o código de la instancia"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "anioCo", "type": "integer", "required": false, "description": "Año contable"},
+              {"name": "mesCo", "type": "integer", "required": false, "description": "Mes contable"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indicador de ejecución final"},
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución"},
+              {"name": "generaInstancia", "type": "integer", "required": false, "description": "Indicador de generación de instancia"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EjecucionProcesoResponseDTO",
+            "description": "Instancia de ejecución actualizada",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la instancia"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "Identificador del proceso"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "instancia", "type": "string", "required": false, "description": "Nombre o código de la instancia"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "anioCo", "type": "integer", "required": false, "description": "Año contable"},
+              {"name": "mesCo", "type": "integer", "required": false, "description": "Mes contable"},
+              {"name": "cerrado", "type": "integer", "required": false, "description": "Estado de cierre"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indicador de ejecución final"},
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución"},
+              {"name": "generaInstancia", "type": "integer", "required": false, "description": "Indicador de generación de instancia"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/procesos-ejecucion/{id}",
+          "summary": "Eliminar instancia de ejecución",
+          "description": "Elimina una instancia de ejecución de proceso. Valida que no esté cerrada ni tenga rubros preliquidados activos",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "procesosejeccolaboradores.zul",
+      "baseUrl": "/api/v1/procesos-ejecucion/{ejecucionId}/colaboradores",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-ejecucion/{ejecucionId}/colaboradores",
+          "summary": "Listar colaboradores de ejecución",
+          "description": "Obtiene la lista paginada de colaboradores incluidos en una instancia de ejecución de proceso con sus totales de rubros preliquidados (ingresos, egresos, neto) desde la vista av_py_rubroslpretotales_v",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "cedula", "type": "string", "required": false, "description": "Filtro por cédula del colaborador"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"}
+          ],
+          "responseDTO": {
+            "name": "ColaboradorEjecucionPageResponseDTO",
+            "description": "Lista paginada de colaboradores en la ejecución con totales de nómina",
+            "fields": [
+              {"name": "content", "type": "array<ColaboradorEjecucionResponseDTO>", "required": true, "description": "Lista de colaboradores con totales"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-ejecucion/{ejecucionId}/colaboradores/{colaboradorId}",
+          "summary": "Obtener detalle de colaborador en ejecución",
+          "description": "Obtiene el detalle de un colaborador específico en la ejecución del proceso con todos sus rubros preliquidados y valores calculados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ColaboradorEjecucionResponseDTO",
+            "description": "Detalle de colaborador en la ejecución con rubros y totales",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "apellidosNombres", "type": "string", "required": false, "description": "Apellidos y nombres concatenados"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "totalIngresos", "type": "number", "required": false, "description": "Total de ingresos calculados"},
+              {"name": "totalEgresos", "type": "number", "required": false, "description": "Total de egresos calculados"},
+              {"name": "totalNeto", "type": "number", "required": false, "description": "Total neto (ingresos - egresos)"},
+              {"name": "totalRb", "type": "number", "required": false, "description": "Total de rubros calculados"},
+              {"name": "totalNoDeducible", "type": "number", "required": false, "description": "Total no deducible"},
+              {"name": "rubros", "type": "array<RubroPreLiquidadoDTO>", "required": false, "description": "Lista de rubros preliquidados del colaborador"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-ejecucion/{ejecucionId}/colaboradores/{colaboradorId}/rubros",
+          "summary": "Listar rubros preliquidados de colaborador",
+          "description": "Obtiene todos los rubros preliquidados de un colaborador en una instancia de ejecución con fechas y valores de cálculo",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroPreLiquidadoListDTO",
+            "description": "Lista de rubros preliquidados del colaborador en la ejecución",
+            "fields": [
+              {"name": "items", "type": "array<RubroPreLiquidadoDTO>", "required": true, "description": "Lista de rubros preliquidados"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de rubros"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/procesos-ejecucion/{ejecucionId}/ejecutar-colaborador",
+          "summary": "Ejecutar cálculo por colaborador",
+          "description": "Ejecuta el cálculo de nómina para un colaborador específico dentro de una instancia de ejecución. Permite ejecutar rubros de forma individual",
+          "requestDTO": {
+            "name": "EjecutarColaboradorDTO",
+            "description": "Parámetros para ejecutar cálculo por colaborador",
+            "fields": [
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador a ejecutar"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa del colaborador"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EjecucionResultadoDTO",
+            "description": "Resultado de la ejecución por colaborador",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la ejecución fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "registrosProcesados", "type": "integer", "required": false, "description": "Cantidad de rubros procesados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/procesos-ejecucion/{ejecucionId}/colaboradores/{colaboradorId}",
+          "summary": "Eliminar colaborador de ejecución",
+          "description": "Elimina un colaborador y sus rubros preliquidados de una instancia de ejecución",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "procesosEjecucionReversion.zul / procesosEjecucionReversionDialog.zul",
+      "baseUrl": "/api/v1/procesos-reversion",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-reversion",
+          "summary": "Listar instancias para reversión",
+          "description": "Obtiene la lista paginada de instancias de ejecución de procesos que pueden ser revertidas, con datos de sobregiro histórico",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "procesoId", "type": "integer", "required": false, "description": "Filtro por identificador de proceso"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año de ejecución"},
+            {"name": "mes", "type": "integer", "required": false, "description": "Filtro por mes de ejecución"},
+            {"name": "reversado", "type": "integer", "required": false, "description": "Filtro por estado de reversión (1=reversado, 0=no reversado)"}
+          ],
+          "responseDTO": {
+            "name": "ReversionPageResponseDTO",
+            "description": "Lista paginada de instancias de ejecución para reversión",
+            "fields": [
+              {"name": "content", "type": "array<ReversionResponseDTO>", "required": true, "description": "Lista de instancias para revertir"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-reversion/{id}",
+          "summary": "Obtener detalle de reversión",
+          "description": "Obtiene el detalle de una instancia de ejecución para reversión con rubros de sobregiro histórico (av_py_rubros_sobregiro_his) y valores originales",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ReversionResponseDTO",
+            "description": "Detalle de instancia de ejecución con datos de reversión y sobregiro",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "ID del proceso de nómina"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "instancia", "type": "string", "required": false, "description": "Código de la instancia"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "reversado", "type": "integer", "required": false, "description": "Indicador de reversión (0=no reversado, 1=reversado)"},
+              {"name": "cerrado", "type": "integer", "required": false, "description": "Estado de cierre"},
+              {"name": "sobregiros", "type": "array<SobreGiroResponseDTO>", "required": false, "description": "Lista de rubros con sobregiro histórico"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/procesos-reversion/{id}/revertir",
+          "summary": "Ejecutar reversión de proceso",
+          "description": "Ejecuta la reversión de una instancia de ejecución de proceso de nómina invocando el stored procedure de reversión (vspreversion). Restaura los rubros preliquidados y actualiza el indicador ireversar",
+          "requestDTO": {
+            "name": "RevertirProcesoDTO",
+            "description": "Parámetros para la reversión del proceso",
+            "fields": [
+              {"name": "motivo", "type": "string", "required": false, "description": "Motivo de la reversión"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de empresa (si la reversión es parcial)"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de localidad (si la reversión es parcial)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ReversionResultadoDTO",
+            "description": "Resultado de la ejecución de la reversión",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la reversión fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "instanciaId", "type": "integer", "required": true, "description": "ID de la instancia revertida"},
+              {"name": "registrosRevertidos", "type": "integer", "required": false, "description": "Cantidad de registros revertidos"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-reversion/{id}/sobregiros",
+          "summary": "Listar sobregiros de la instancia",
+          "description": "Obtiene los rubros con sobregiro histórico generados en la instancia de ejecución (av_py_rubros_sobregiro_his) con valores originales y valores calculados",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID de rubro"}
+          ],
+          "responseDTO": {
+            "name": "SobreGiroListResponseDTO",
+            "description": "Lista de rubros con sobregiro histórico",
+            "fields": [
+              {"name": "items", "type": "array<SobreGiroResponseDTO>", "required": true, "description": "Lista de sobregiros"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/procesos-reversion/{id}",
+          "summary": "Eliminar reversión",
+          "description": "Elimina el registro de reversión de una instancia de ejecución. Solo permite eliminar reversiones no procesadas",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "procesosEjecAbrirLQ.zul",
+      "baseUrl": "/api/v1/liquidaciones/apertura",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/liquidaciones/apertura",
+          "summary": "Listar colaboradores para apertura de liquidación",
+          "description": "Obtiene la lista paginada de colaboradores con preliquidación disponible para apertura desde av_py_rubroslpre_colab, con estado, XML de referencia y datos de transferencia",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "cerrado", "type": "string", "required": false, "description": "Filtro por estado de cierre"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado de la preliquidación"}
+          ],
+          "responseDTO": {
+            "name": "AperturaLQPageResponseDTO",
+            "description": "Lista paginada de colaboradores para apertura de liquidación",
+            "fields": [
+              {"name": "content", "type": "array<AperturaLQResponseDTO>", "required": true, "description": "Lista de preliquidaciones para abrir"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/liquidaciones/apertura/{ejecucionId}/{colaboradorId}",
+          "summary": "Obtener detalle de apertura de liquidación",
+          "description": "Obtiene el detalle de la preliquidación de un colaborador para apertura, con datos de cierre, XML de referencia, neto a recibir y datos de pago en caja",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "AperturaLQResponseDTO",
+            "description": "Detalle de preliquidación de colaborador para apertura",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "cerrado", "type": "string", "required": false, "description": "Estado de cierre de la preliquidación"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la preliquidación (vssts)"},
+              {"name": "referenciaXml", "type": "string", "required": false, "description": "Referencia XML generada"},
+              {"name": "valorTransferenciaLQ", "type": "string", "required": false, "description": "Valor de transferencia de liquidación"},
+              {"name": "netoRecibir", "type": "number", "required": false, "description": "Monto neto a recibir"},
+              {"name": "cobradoEnCaja", "type": "string", "required": false, "description": "Indicador de cobro en caja"},
+              {"name": "usuarioCaja", "type": "string", "required": false, "description": "Usuario de caja que registró el cobro"},
+              {"name": "fechaCaja", "type": "datetime", "required": false, "description": "Fecha/hora de cobro en caja"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/liquidaciones/apertura",
+          "summary": "Abrir liquidación de colaborador",
+          "description": "Abre la liquidación de uno o más colaboradores en una instancia de ejecución, cambiando su estado de cerrado a abierto para permitir edición de rubros preliquidados",
+          "requestDTO": {
+            "name": "AbrirLiquidacionDTO",
+            "description": "Datos para abrir liquidación de colaboradores",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "colaboradorIds", "type": "array<integer>", "required": true, "description": "Lista de IDs de colaboradores a abrir"},
+              {"name": "motivo", "type": "string", "required": false, "description": "Motivo de la apertura"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ProcesoResultadoDTO",
+            "description": "Resultado de la apertura de liquidaciones",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la apertura fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "registrosProcesados", "type": "integer", "required": false, "description": "Cantidad de liquidaciones abiertas"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/liquidaciones/apertura/{ejecucionId}/{colaboradorId}",
+          "summary": "Actualizar estado de apertura",
+          "description": "Actualiza el estado y datos de la preliquidación de un colaborador en una instancia de ejecución",
+          "requestDTO": {
+            "name": "ActualizarAperturaLQDTO",
+            "description": "Datos para actualizar la apertura de liquidación",
+            "fields": [
+              {"name": "cerrado", "type": "string", "required": false, "description": "Nuevo estado de cierre"},
+              {"name": "estado", "type": "string", "required": false, "description": "Nuevo estado de la preliquidación"},
+              {"name": "cobradoEnCaja", "type": "string", "required": false, "description": "Indicador de cobro en caja"},
+              {"name": "netoRecibir", "type": "number", "required": false, "description": "Monto neto a recibir"}
+            ]
+          },
+          "responseDTO": {
+            "name": "AperturaLQResponseDTO",
+            "description": "Preliquidación actualizada",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "cerrado", "type": "string", "required": false, "description": "Estado de cierre actualizado"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la preliquidación actualizado"},
+              {"name": "referenciaXml", "type": "string", "required": false, "description": "Referencia XML"},
+              {"name": "valorTransferenciaLQ", "type": "string", "required": false, "description": "Valor de transferencia"},
+              {"name": "netoRecibir", "type": "number", "required": false, "description": "Monto neto a recibir"},
+              {"name": "cobradoEnCaja", "type": "string", "required": false, "description": "Indicador de cobro en caja"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/liquidaciones/apertura/{ejecucionId}/{colaboradorId}",
+          "summary": "Cerrar apertura de liquidación",
+          "description": "Cierra la apertura de liquidación de un colaborador, restaurando el estado de cierre original",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de cierre de apertura",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si el cierre fue exitoso"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "procesosEjecAprobarLQ.zul",
+      "baseUrl": "/api/v1/liquidaciones/aprobacion",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/liquidaciones/aprobacion",
+          "summary": "Listar colaboradores para aprobación de liquidación",
+          "description": "Obtiene la lista paginada de colaboradores con preliquidación pendiente de aprobación desde av_py_rubroslpre_colab con datos de neto a recibir y estado",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado de la preliquidación"}
+          ],
+          "responseDTO": {
+            "name": "AprobacionLQPageResponseDTO",
+            "description": "Lista paginada de colaboradores para aprobación de liquidación",
+            "fields": [
+              {"name": "content", "type": "array<AprobacionLQResponseDTO>", "required": true, "description": "Lista de preliquidaciones para aprobar"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/liquidaciones/aprobacion/{ejecucionId}/{colaboradorId}",
+          "summary": "Obtener detalle de aprobación de liquidación",
+          "description": "Obtiene el detalle de la preliquidación de un colaborador pendiente de aprobación con datos de neto, estado y referencia",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "AprobacionLQResponseDTO",
+            "description": "Detalle de preliquidación de colaborador para aprobación",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "cerrado", "type": "string", "required": false, "description": "Estado de cierre"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la preliquidación"},
+              {"name": "referenciaXml", "type": "string", "required": false, "description": "Referencia XML"},
+              {"name": "valorTransferenciaLQ", "type": "string", "required": false, "description": "Valor de transferencia"},
+              {"name": "netoRecibir", "type": "number", "required": false, "description": "Monto neto a recibir"},
+              {"name": "cobradoEnCaja", "type": "string", "required": false, "description": "Indicador de cobro en caja"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/liquidaciones/aprobacion",
+          "summary": "Aprobar liquidaciones de colaboradores",
+          "description": "Aprueba las liquidaciones de uno o más colaboradores en una instancia de ejecución, cerrando su estado para pago",
+          "requestDTO": {
+            "name": "AprobarLiquidacionDTO",
+            "description": "Datos para aprobar liquidaciones",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "colaboradorIds", "type": "array<integer>", "required": true, "description": "Lista de IDs de colaboradores a aprobar"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observación de aprobación"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ProcesoResultadoDTO",
+            "description": "Resultado de la aprobación de liquidaciones",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la aprobación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "registrosProcesados", "type": "integer", "required": false, "description": "Cantidad de liquidaciones aprobadas"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/liquidaciones/aprobacion/rechazar",
+          "summary": "Rechazar liquidaciones de colaboradores",
+          "description": "Rechaza las liquidaciones de colaboradores seleccionados, devolviendo su estado para revisión o corrección",
+          "requestDTO": {
+            "name": "RechazarLiquidacionDTO",
+            "description": "Datos para rechazar liquidaciones",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "colaboradorIds", "type": "array<integer>", "required": true, "description": "Lista de IDs de colaboradores a rechazar"},
+              {"name": "motivo", "type": "string", "required": true, "description": "Motivo del rechazo"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ProcesoResultadoDTO",
+            "description": "Resultado del rechazo",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si el rechazo fue procesado"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "registrosProcesados", "type": "integer", "required": false, "description": "Cantidad de liquidaciones rechazadas"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/liquidaciones/aprobacion/{ejecucionId}/{colaboradorId}",
+          "summary": "Revocar aprobación de liquidación",
+          "description": "Revoca la aprobación de liquidación de un colaborador, restaurándola a estado pendiente",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de revocación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la revocación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "EjecucionProcCierre.zul",
+      "baseUrl": "/api/v1/procesos-cierre",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-cierre",
+          "summary": "Listar procesos para cierre",
+          "description": "Obtiene la lista de instancias de ejecución de procesos de nómina pendientes de cierre con datos de empresa, dimensiones y novedades",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por identificador de empresa"},
+            {"name": "procesoId", "type": "integer", "required": false, "description": "Filtro por ID del proceso"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año"},
+            {"name": "mes", "type": "integer", "required": false, "description": "Filtro por mes"},
+            {"name": "cerrado", "type": "integer", "required": false, "description": "Filtro por estado de cierre (0=abierto, 1=cerrado)"}
+          ],
+          "responseDTO": {
+            "name": "CierreProcesoListDTO",
+            "description": "Lista de procesos pendientes de cierre",
+            "fields": [
+              {"name": "items", "type": "array<CierreProcesoResponseDTO>", "required": true, "description": "Lista de procesos para cierre"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-cierre/{id}",
+          "summary": "Obtener detalle de cierre de proceso",
+          "description": "Obtiene el detalle de un proceso de cierre con datos de empresa, dimensiones, novedades y estado actual",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CierreProcesoResponseDTO",
+            "description": "Detalle de proceso para cierre",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "ID del proceso de nómina"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "instancia", "type": "string", "required": false, "description": "Código de la instancia"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período"},
+              {"name": "cerrado", "type": "integer", "required": false, "description": "Estado de cierre (0=abierto, 1=cerrado)"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indicador de ejecución final"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/procesos-cierre/{id}/cerrar",
+          "summary": "Ejecutar cierre de proceso",
+          "description": "Ejecuta el cierre de un proceso de nómina: salva datos históricos (vspsalvarhistoricos), ejecuta contabilización (vspcontabilizacion), marca la instancia como cerrada y genera novedades (AvCaNovedades)",
+          "requestDTO": {
+            "name": "CerrarProcesoDTO",
+            "description": "Parámetros para el cierre del proceso de nómina",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa para el cierre"},
+              {"name": "contabilizar", "type": "boolean", "required": false, "description": "Indica si se debe ejecutar la contabilización"},
+              {"name": "salvarHistoricos", "type": "boolean", "required": false, "description": "Indica si se deben salvar datos históricos"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observación del cierre"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CierreResultadoDTO",
+            "description": "Resultado del cierre del proceso",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si el cierre fue exitoso"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"},
+              {"name": "instanciaId", "type": "integer", "required": true, "description": "ID de la instancia cerrada"},
+              {"name": "contabilizacionEjecutada", "type": "boolean", "required": false, "description": "Indica si se ejecutó la contabilización"},
+              {"name": "historicosGuardados", "type": "boolean", "required": false, "description": "Indica si se guardaron datos históricos"},
+              {"name": "registrosProcesados", "type": "integer", "required": false, "description": "Cantidad de registros procesados en el cierre"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/procesos-cierre/{id}/reabrir",
+          "summary": "Reabrir proceso cerrado",
+          "description": "Reabre un proceso de nómina previamente cerrado para permitir correcciones. Restaura el estado icerrado a 0",
+          "requestDTO": {
+            "name": "ReabrirProcesoDTO",
+            "description": "Datos para reabrir un proceso cerrado",
+            "fields": [
+              {"name": "motivo", "type": "string", "required": true, "description": "Motivo de la reapertura"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ProcesoResultadoDTO",
+            "description": "Resultado de la reapertura",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la reapertura fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje descriptivo del resultado"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/procesos-cierre/{id}",
+          "summary": "Cancelar cierre de proceso",
+          "description": "Cancela un proceso de cierre pendiente, eliminando registros de contabilización y novedades generadas",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de cancelación de cierre",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la cancelación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "ejecucionbot.zul",
+      "baseUrl": "/api/v1/ejecucion-bot",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/ejecucion-bot",
+          "summary": "Listar ejecuciones de bot",
+          "description": "Obtiene la lista paginada de ejecuciones de bot de nómina con datos de colaboradores, tipo de pago y estado de la ejecución legal",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "tipoPago", "type": "string", "required": false, "description": "Filtro por tipo de pago"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado de la ejecución"}
+          ],
+          "responseDTO": {
+            "name": "EjecucionBotPageResponseDTO",
+            "description": "Lista paginada de ejecuciones de bot de nómina",
+            "fields": [
+              {"name": "content", "type": "array<EjecucionBotResponseDTO>", "required": true, "description": "Lista de ejecuciones de bot"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/ejecucion-bot/{id}",
+          "summary": "Obtener ejecución de bot por ID",
+          "description": "Obtiene el detalle de una ejecución de bot de nómina con datos de colaborador, código de acta, tipo de pago, fecha y estado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "EjecucionBotResponseDTO",
+            "description": "Detalle de una ejecución de bot de nómina",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la ejecución legal (iidejeclegali)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador (denormalizado)"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "codigoActa", "type": "string", "required": false, "description": "Código del acta de la ejecución legal"},
+              {"name": "tipoPago", "type": "string", "required": false, "description": "Tipo de pago (transferencia, cheque, etc.)"},
+              {"name": "usuario", "type": "string", "required": false, "description": "Usuario que ejecutó el bot"},
+              {"name": "fechaPago", "type": "datetime", "required": false, "description": "Fecha del pago"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la ejecución (vssts)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/ejecucion-bot",
+          "summary": "Crear ejecución de bot",
+          "description": "Crea una nueva ejecución de bot de nómina para un colaborador con datos de acta, tipo de pago y fecha",
+          "requestDTO": {
+            "name": "EjecucionBotCreateDTO",
+            "description": "Datos para crear una ejecución de bot de nómina",
+            "fields": [
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "codigoActa", "type": "string", "required": false, "description": "Código del acta"},
+              {"name": "tipoPago", "type": "string", "required": true, "description": "Tipo de pago"},
+              {"name": "fechaPago", "type": "datetime", "required": true, "description": "Fecha del pago"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EjecucionBotResponseDTO",
+            "description": "Ejecución de bot creada con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la ejecución legal"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "codigoActa", "type": "string", "required": false, "description": "Código del acta"},
+              {"name": "tipoPago", "type": "string", "required": false, "description": "Tipo de pago"},
+              {"name": "usuario", "type": "string", "required": false, "description": "Usuario que ejecutó el bot"},
+              {"name": "fechaPago", "type": "datetime", "required": false, "description": "Fecha del pago"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la ejecución"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/ejecucion-bot/{id}",
+          "summary": "Actualizar ejecución de bot",
+          "description": "Actualiza los datos de una ejecución de bot de nómina existente",
+          "requestDTO": {
+            "name": "EjecucionBotUpdateDTO",
+            "description": "Datos para actualizar la ejecución de bot",
+            "fields": [
+              {"name": "codigoActa", "type": "string", "required": false, "description": "Código del acta"},
+              {"name": "tipoPago", "type": "string", "required": false, "description": "Tipo de pago"},
+              {"name": "fechaPago", "type": "datetime", "required": false, "description": "Fecha del pago"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la ejecución"}
+            ]
+          },
+          "responseDTO": {
+            "name": "EjecucionBotResponseDTO",
+            "description": "Ejecución de bot actualizada",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la ejecución legal"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "codigoActa", "type": "string", "required": false, "description": "Código del acta"},
+              {"name": "tipoPago", "type": "string", "required": false, "description": "Tipo de pago"},
+              {"name": "usuario", "type": "string", "required": false, "description": "Usuario que ejecutó el bot"},
+              {"name": "fechaPago", "type": "datetime", "required": false, "description": "Fecha del pago"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la ejecución"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/ejecucion-bot/{id}",
+          "summary": "Eliminar ejecución de bot",
+          "description": "Elimina una ejecución de bot de nómina y sus registros asociados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "instanciasProcesos.zul / instanciasProcesosDialog.zul",
+      "baseUrl": "/api/v1/instancias-procesos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/instancias-procesos",
+          "summary": "Listar instancias de procesos",
+          "description": "Obtiene la lista paginada de todas las instancias de procesos de nómina con filtros avanzados por proceso, año, mes, estado de cierre y período contable",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "procesoId", "type": "integer", "required": false, "description": "Filtro por identificador de proceso"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año de ejecución"},
+            {"name": "mes", "type": "integer", "required": false, "description": "Filtro por mes de ejecución"},
+            {"name": "cerrado", "type": "integer", "required": false, "description": "Filtro por estado de cierre"},
+            {"name": "esFinal", "type": "integer", "required": false, "description": "Filtro por ejecución final"},
+            {"name": "reversado", "type": "integer", "required": false, "description": "Filtro por estado de reversión"}
+          ],
+          "responseDTO": {
+            "name": "InstanciaProcesoPageResponseDTO",
+            "description": "Lista paginada de instancias de procesos de nómina",
+            "fields": [
+              {"name": "content", "type": "array<InstanciaProcesoResponseDTO>", "required": true, "description": "Lista de instancias"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/instancias-procesos/{id}",
+          "summary": "Obtener instancia de proceso por ID",
+          "description": "Obtiene el detalle completo de una instancia de proceso de nómina con datos del proceso padre, período, fechas, estado de cierre, reversión y relaciones con rubros preliquidados e históricos",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "InstanciaProcesoResponseDTO",
+            "description": "Detalle completo de una instancia de proceso de nómina",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la instancia (iidejecproceso)"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "ID del proceso de nómina padre"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso (denormalizado)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa (del proceso padre)"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "instancia", "type": "string", "required": false, "description": "Nombre o código de la instancia"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período de ejecución"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período de ejecución"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "anioCo", "type": "integer", "required": false, "description": "Año contable"},
+              {"name": "mesCo", "type": "integer", "required": false, "description": "Mes contable"},
+              {"name": "cerrado", "type": "integer", "required": false, "description": "Estado de cierre (1=cerrado, 0=abierto)"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indicador de ejecución final"},
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución"},
+              {"name": "reversado", "type": "integer", "required": false, "description": "Indicador de reversión (1=reversado)"},
+              {"name": "ultimaEjecucion", "type": "integer", "required": false, "description": "Indicador de última ejecución"},
+              {"name": "generaInstancia", "type": "integer", "required": false, "description": "Indicador de generación de instancia"},
+              {"name": "totalColaboradores", "type": "integer", "required": false, "description": "Cantidad de colaboradores procesados"},
+              {"name": "totalRubrosPre", "type": "integer", "required": false, "description": "Cantidad de rubros preliquidados"},
+              {"name": "totalRubrosHis", "type": "integer", "required": false, "description": "Cantidad de rubros históricos"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/instancias-procesos",
+          "summary": "Crear instancia de proceso",
+          "description": "Crea manualmente una nueva instancia de proceso de nómina con período, fechas y configuración de entorno",
+          "requestDTO": {
+            "name": "InstanciaProcesoCreateDTO",
+            "description": "Datos para crear una instancia de proceso de nómina",
+            "fields": [
+              {"name": "procesoId", "type": "integer", "required": true, "description": "ID del proceso de nómina"},
+              {"name": "instancia", "type": "string", "required": false, "description": "Nombre o código de la instancia"},
+              {"name": "fechaInicio", "type": "datetime", "required": true, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": true, "description": "Fecha de fin del período"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes de ejecución"},
+              {"name": "anioCo", "type": "integer", "required": false, "description": "Año contable"},
+              {"name": "mesCo", "type": "integer", "required": false, "description": "Mes contable"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indicador de ejecución final (0 o 1)"},
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución"},
+              {"name": "generaInstancia", "type": "integer", "required": false, "description": "Indicador de generación de instancia"}
+            ]
+          },
+          "responseDTO": {
+            "name": "InstanciaProcesoResponseDTO",
+            "description": "Instancia de proceso creada con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la instancia"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "ID del proceso de nómina padre"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "instancia", "type": "string", "required": false, "description": "Nombre o código de la instancia"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "anioCo", "type": "integer", "required": false, "description": "Año contable"},
+              {"name": "mesCo", "type": "integer", "required": false, "description": "Mes contable"},
+              {"name": "cerrado", "type": "integer", "required": false, "description": "Estado de cierre"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indicador de ejecución final"},
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución"},
+              {"name": "generaInstancia", "type": "integer", "required": false, "description": "Indicador de generación de instancia"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/instancias-procesos/{id}",
+          "summary": "Actualizar instancia de proceso",
+          "description": "Actualiza una instancia de proceso de nómina existente con nuevas fechas, período o configuración",
+          "requestDTO": {
+            "name": "InstanciaProcesoUpdateDTO",
+            "description": "Datos para actualizar una instancia de proceso",
+            "fields": [
+              {"name": "instancia", "type": "string", "required": false, "description": "Nombre o código de la instancia"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "anioCo", "type": "integer", "required": false, "description": "Año contable"},
+              {"name": "mesCo", "type": "integer", "required": false, "description": "Mes contable"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indicador de ejecución final"},
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución"},
+              {"name": "generaInstancia", "type": "integer", "required": false, "description": "Indicador de generación de instancia"}
+            ]
+          },
+          "responseDTO": {
+            "name": "InstanciaProcesoResponseDTO",
+            "description": "Instancia actualizada con datos completos",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador único de la instancia"},
+              {"name": "procesoId", "type": "integer", "required": true, "description": "ID del proceso de nómina padre"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "instancia", "type": "string", "required": false, "description": "Nombre o código de la instancia"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "cerrado", "type": "integer", "required": false, "description": "Estado de cierre"},
+              {"name": "esFinal", "type": "integer", "required": false, "description": "Indicador de ejecución final"},
+              {"name": "entornoEjecucionId", "type": "integer", "required": false, "description": "ID del entorno de ejecución"},
+              {"name": "generaInstancia", "type": "integer", "required": false, "description": "Indicador de generación de instancia"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/instancias-procesos/{id}",
+          "summary": "Eliminar instancia de proceso",
+          "description": "Elimina una instancia de proceso de nómina. Valida que no esté cerrada ni tenga rubros preliquidados o históricos activos",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Log de registros de proceso (subrecurso)",
+      "baseUrl": "/api/v1/procesos-ejecucion/{ejecucionId}/log",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-ejecucion/{ejecucionId}/log",
+          "summary": "Listar log de registros de proceso",
+          "description": "Obtiene la lista de registros del log de ejecución de un proceso de nómina (av_py_log_registros_procesos) con datos de empresa, colaborador, localidad y resultado de ejecución",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 50)"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por empresa"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por colaborador"},
+            {"name": "tipoProceso", "type": "string", "required": false, "description": "Filtro por tipo de proceso"},
+            {"name": "ejecuto", "type": "string", "required": false, "description": "Filtro por resultado de ejecución"}
+          ],
+          "responseDTO": {
+            "name": "LogProcesoPageResponseDTO",
+            "description": "Lista paginada de registros del log de ejecución",
+            "fields": [
+              {"name": "content", "type": "array<LogProcesoResponseDTO>", "required": true, "description": "Lista de registros del log"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/procesos-ejecucion/{ejecucionId}/log/{id}",
+          "summary": "Obtener registro del log por ID",
+          "description": "Obtiene un registro específico del log de ejecución de proceso",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "LogProcesoResponseDTO",
+            "description": "Detalle de un registro del log de ejecución de proceso",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "ID del registro de log (iilogprocesos)"},
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "ID del colaborador"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad"},
+              {"name": "tipoProceso", "type": "string", "required": false, "description": "Tipo de proceso ejecutado"},
+              {"name": "ejecuto", "type": "string", "required": false, "description": "Indicador de resultado de ejecución"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que generó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de generación del log"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/procesos-ejecucion/{ejecucionId}/log",
+          "summary": "Limpiar log de proceso",
+          "description": "Elimina todos los registros del log de una instancia de ejecución de proceso",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de limpieza del log",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la limpieza fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"},
+              {"name": "registrosEliminados", "type": "integer", "required": false, "description": "Cantidad de registros de log eliminados"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Rubros preliquidados (subrecurso)",
+      "baseUrl": "/api/v1/rubros-preliquidados",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-preliquidados",
+          "summary": "Listar rubros preliquidados",
+          "description": "Obtiene la lista de rubros preliquidados (av_py_rubroslpre) con filtros por instancia de ejecución, colaborador y rubro. Incluye los 5 valores de salida del cálculo y fechas de aplicación",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID de rubro"},
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 50)"}
+          ],
+          "responseDTO": {
+            "name": "RubroPreLiquidadoPageResponseDTO",
+            "description": "Lista paginada de rubros preliquidados",
+            "fields": [
+              {"name": "content", "type": "array<RubroPreLiquidadoDTO>", "required": true, "description": "Lista de rubros preliquidados"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/rubros-preliquidados/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "summary": "Obtener rubro preliquidado",
+          "description": "Obtiene un rubro preliquidado específico por su clave compuesta (ejecucionId + colaboradorId + rubroId) con valores de salida y fechas",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroPreLiquidadoDTO",
+            "description": "Detalle de un rubro preliquidado de nómina",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución (parte del PK compuesto)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (parte del PK compuesto)"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro (parte del PK compuesto)"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador (denormalizado)"},
+              {"name": "valorSalida01", "type": "number", "required": false, "description": "Valor de salida 01 del cálculo (mvlrout01)"},
+              {"name": "valorSalida02", "type": "number", "required": false, "description": "Valor de salida 02 del cálculo (mvlrout02)"},
+              {"name": "valorSalida03", "type": "number", "required": false, "description": "Valor de salida 03 del cálculo (mvlrout03)"},
+              {"name": "valorSalida04", "type": "number", "required": false, "description": "Valor de salida 04 del cálculo (mvlrout04)"},
+              {"name": "valorSalida05", "type": "number", "required": false, "description": "Valor de salida 05 del cálculo (mvlrout05)"},
+              {"name": "fechaInicioSalida", "type": "datetime", "required": false, "description": "Fecha inicio de salida (dfiniout)"},
+              {"name": "fechaFinSalida", "type": "datetime", "required": false, "description": "Fecha fin de salida (dffinout)"},
+              {"name": "rubrosIdoUplId", "type": "number", "required": false, "description": "ID del rubro IDO upload asociado"},
+              {"name": "flagEnvio", "type": "integer", "required": false, "description": "Flag de envío del rubro preliquidado"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/rubros-preliquidados/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "summary": "Actualizar rubro preliquidado",
+          "description": "Actualiza los valores de un rubro preliquidado manualmente (solo si la liquidación está abierta)",
+          "requestDTO": {
+            "name": "RubroPreLiquidadoUpdateDTO",
+            "description": "Datos para actualizar un rubro preliquidado",
+            "fields": [
+              {"name": "valorSalida01", "type": "number", "required": false, "description": "Valor de salida 01"},
+              {"name": "valorSalida02", "type": "number", "required": false, "description": "Valor de salida 02"},
+              {"name": "valorSalida03", "type": "number", "required": false, "description": "Valor de salida 03"},
+              {"name": "valorSalida04", "type": "number", "required": false, "description": "Valor de salida 04"},
+              {"name": "valorSalida05", "type": "number", "required": false, "description": "Valor de salida 05"},
+              {"name": "fechaInicioSalida", "type": "datetime", "required": false, "description": "Fecha inicio de salida"},
+              {"name": "fechaFinSalida", "type": "datetime", "required": false, "description": "Fecha fin de salida"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RubroPreLiquidadoDTO",
+            "description": "Rubro preliquidado actualizado",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador"},
+              {"name": "valorSalida01", "type": "number", "required": false, "description": "Valor de salida 01 actualizado"},
+              {"name": "valorSalida02", "type": "number", "required": false, "description": "Valor de salida 02 actualizado"},
+              {"name": "valorSalida03", "type": "number", "required": false, "description": "Valor de salida 03 actualizado"},
+              {"name": "valorSalida04", "type": "number", "required": false, "description": "Valor de salida 04 actualizado"},
+              {"name": "valorSalida05", "type": "number", "required": false, "description": "Valor de salida 05 actualizado"},
+              {"name": "fechaInicioSalida", "type": "datetime", "required": false, "description": "Fecha inicio de salida"},
+              {"name": "fechaFinSalida", "type": "datetime", "required": false, "description": "Fecha fin de salida"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/rubros-preliquidados/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "summary": "Eliminar rubro preliquidado",
+          "description": "Elimina un rubro preliquidado específico de un colaborador en una instancia de ejecución",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Sobregiros históricos (subrecurso)",
+      "baseUrl": "/api/v1/sobregiros-historicos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/sobregiros-historicos",
+          "summary": "Listar sobregiros históricos",
+          "description": "Obtiene la lista de rubros con sobregiro histórico (av_py_rubros_sobregiro_his) con filtros por instancia de ejecución, colaborador y rubro",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por ID de rubro"}
+          ],
+          "responseDTO": {
+            "name": "SobreGiroListResponseDTO",
+            "description": "Lista de sobregiros históricos",
+            "fields": [
+              {"name": "items", "type": "array<SobreGiroResponseDTO>", "required": true, "description": "Lista de sobregiros"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/sobregiros-historicos/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "summary": "Obtener sobregiro histórico",
+          "description": "Obtiene un registro específico de sobregiro histórico por su clave compuesta con valores originales y valores de cálculo",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "SobreGiroResponseDTO",
+            "description": "Detalle de un sobregiro histórico",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución (parte del PK)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (parte del PK)"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro (parte del PK)"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombre del colaborador (denormalizado)"},
+              {"name": "valorOriginal", "type": "number", "required": false, "description": "Valor original del rubro (mvalor02)"},
+              {"name": "valorSalida01", "type": "number", "required": false, "description": "Valor de salida calculado (mvlrout01)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que generó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de generación"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/sobregiros-historicos/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "summary": "Eliminar sobregiro histórico",
+          "description": "Elimina un registro de sobregiro histórico por su clave compuesta",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

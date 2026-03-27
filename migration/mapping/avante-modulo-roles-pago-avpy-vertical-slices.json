@@ -1,0 +1,424 @@
+{
+  "modulo": "Roles de Pago / Nómina (AvPy)",
+  "version": "1.0.0",
+  "generatedAt": "2026-03-18T21:35:18.120Z",
+  "total_funcionalidades": 26,
+  "total_pantallas": 90,
+  "vertical_slices": [
+    {
+      "id": "slice-1-setup",
+      "nombre": "🔧 Setup y Configuración",
+      "descripcion": "Parámetros, tabla IR, plantillas contables",
+      "funcionalidades_incluidas": [
+        "12_parametros_nomina",
+        "13_tabla_impuesto_renta",
+        "11_plantilla_contable"
+      ],
+      "pantallas_zul": [
+        "parametros.zul - Listado de parámetros",
+        "parametrosDialog.zul - Formulario de parámetros",
+        "gestionTablaIR.zul - Listado de tablas IR",
+        "gestionTablaIRDialog.zul - Formulario tabla IR",
+        "GastosPersonalesDialog.zul - Gastos personales",
+        "genIngProyectados.zul - Ingresos proyectados",
+        "ReporteIRINECDialog.zul - Reporte INEC",
+        "plantillaContable.zul - Listado de plantillas",
+        "plantillaContableDialog.zul - Diálogo de plantilla",
+        "rubroplantillaContableDialog.zul - Rubro a plantilla",
+        "contratoPlantilla.zul - Plantillas por contrato",
+        "contratoPlantillaDialog.zul - Diálogo contrato-plantilla"
+      ],
+      "casos_uso_principales": [
+        "Config inicial",
+        "Tabla de IR",
+        "Mapeo contable"
+      ],
+      "data_flow": [
+        "12 parametros nomina",
+        "13 tabla impuesto renta",
+        "11 plantilla contable"
+      ],
+      "complejidad": "High",
+      "estimado_desarrollo_dias": 20
+    },
+    {
+      "id": "slice-2-rubros",
+      "nombre": "📋 Gestión de Rubros",
+      "descripcion": "Rubros, conceptos e IDO",
+      "funcionalidades_incluidas": [
+        "1_rubros_nomina",
+        "8_rubros_ido"
+      ],
+      "pantallas_zul": [
+        "rubros.zul - Listado principal de rubros",
+        "rubrosDialog.zul - Formulario de rubro",
+        "rubrosxprocesoDialog.zul - Asignación de rubros por proceso",
+        "rubrosIDOMain.zul - Pantalla principal",
+        "rubrosIDOList.zul - Listado",
+        "rubrosIDODetail.zul - Detalle",
+        "rubrosIDOcargaxProceso.zul - Carga por proceso",
+        "cargaRubrosIDO.zul - Carga masiva",
+        "consultaRubrosIdoList.zul - Consulta"
+      ],
+      "casos_uso_principales": [
+        "Crear rubros",
+        "Rubros IDO",
+        "Config cálculo"
+      ],
+      "data_flow": [
+        "1 rubros nomina",
+        "8 rubros ido"
+      ],
+      "complejidad": "High",
+      "estimado_desarrollo_dias": 20
+    },
+    {
+      "id": "slice-3-procesos",
+      "nombre": "⚙️ Procesos de Nómina",
+      "descripcion": "Ejecutar procesos (quincena, mensual, etc)",
+      "funcionalidades_incluidas": [
+        "2_procesos_nomina"
+      ],
+      "pantallas_zul": [
+        "procesos.zul - Listado de definición de procesos",
+        "procesosDialog.zul - Formulario de proceso",
+        "procesosEjecucion.zul - Pantalla principal de ejecución",
+        "procesosEjecDialog.zul - Diálogo de parámetros de ejecución",
+        "procesosejeccolaboradores.zul - Ejecución por colaboradores",
+        "procesosEjecucionReversion.zul - Listado de reversiones",
+        "procesosEjecucionReversionDialog.zul - Diálogo de reversión",
+        "procesosEjecAbrirLQ.zul - Apertura de liquidaciones",
+        "procesosEjecAprobarLQ.zul - Aprobación de liquidaciones",
+        "EjecucionProcCierre.zul - Proceso de cierre",
+        "ejecucionbot.zul - Ejecución de bot",
+        "instanciasProcesos.zul - Instancias de procesos",
+        "instanciasProcesosDialog.zul - Detalle de instancia"
+      ],
+      "casos_uso_principales": [
+        "Definir procesos",
+        "Ejecutar cálculo",
+        "Revertir"
+      ],
+      "data_flow": [
+        "2 procesos nomina"
+      ],
+      "complejidad": "High",
+      "estimado_desarrollo_dias": 20
+    },
+    {
+      "id": "slice-4-consultas",
+      "nombre": "👤 Consultas",
+      "descripcion": "Nómina por colaborador, acumulados",
+      "funcionalidades_incluidas": [
+        "3_consulta_nomina_colaborador",
+        "6_acumulados"
+      ],
+      "pantallas_zul": [
+        "nominaxColabList.zul - Nómina por colaborador",
+        "nominaxColabPreDialog.zul - Nómina pre-cálculo diálogo",
+        "nominaxColabPreList.zul - Nómina pre-cálculo listado",
+        "nominaresumenGeneral.zul - Resumen general",
+        "nominaresumenGralCxRubro.zul - Resumen por clasificación de rubro",
+        "nominaresumenGralxRubro.zul - Resumen por rubro",
+        "ResumenGralNominaDialog.zul - Diálogo de resumen",
+        "comparativoNominas.zul - Comparativo de nóminas",
+        "conSueldo.zul - Consulta de sueldos",
+        "acumulados.zul - Consulta de acumulados"
+      ],
+      "casos_uso_principales": [
+        "Ver nómina",
+        "Acumulados",
+        "Comparativas"
+      ],
+      "data_flow": [
+        "3 consulta nomina colaborador",
+        "6 acumulados"
+      ],
+      "complejidad": "High",
+      "estimado_desarrollo_dias": 20
+    },
+    {
+      "id": "slice-5-pago",
+      "nombre": "🏦 Pago y Acreditación",
+      "descripcion": "Acreditaciones bancarias",
+      "funcionalidades_incluidas": [
+        "7_acreditaciones"
+      ],
+      "pantallas_zul": [
+        "acreditacion.zul - Acreditación general",
+        "acreditacionBonificaciones.zul - Acreditación bonificaciones",
+        "AcreditacionRubrosIdo.zul - Acreditación rubros IDO",
+        "consultaAcreditacionesList.zul - Consulta de acreditaciones"
+      ],
+      "casos_uso_principales": [
+        "Generar acreditación",
+        "Validar"
+      ],
+      "data_flow": [
+        "7 acreditaciones"
+      ],
+      "complejidad": "Medium",
+      "estimado_desarrollo_dias": 10
+    },
+    {
+      "id": "slice-6-prestamos",
+      "nombre": "💰 Préstamos",
+      "descripcion": "Préstamos, anticipos, sobregiros, endeudamiento",
+      "funcionalidades_incluidas": [
+        "4_prestamos",
+        "14_endeudamiento",
+        "15_anticipos_sueldo",
+        "16_sobregiros"
+      ],
+      "pantallas_zul": [
+        "rubrosPrestamoList.zul - Listado de préstamos",
+        "rubrosPrestamoMain.zul - Pantalla principal",
+        "rubrosPrestamoDetail.zul - Detalle",
+        "rubrosPrestamoCoDialog.zul - Préstamos por colaborador",
+        "rubrosPrestamoAbonos.zul - Abonos",
+        "rubrosPrestamoAbonosCancel.zul - Cancelación",
+        "rubrosPrestamoBaja.zul - Baja",
+        "CuotasComprometDialog.zul - Cuotas comprometidas",
+        "sobregiro.zul - Listado de sobregiros",
+        "sobregiroDialog.zul - Formulario de sobregiro"
+      ],
+      "casos_uso_principales": [
+        "Préstamos",
+        "Anticipos",
+        "Control deuda"
+      ],
+      "data_flow": [
+        "4 prestamos",
+        "14 endeudamiento",
+        "15 anticipos sueldo",
+        "16 sobregiros"
+      ],
+      "complejidad": "High",
+      "estimado_desarrollo_dias": 20
+    },
+    {
+      "id": "slice-7-costos",
+      "nombre": "💼 Distribución de Costos",
+      "descripcion": "Distribución por centro de costo",
+      "funcionalidades_incluidas": [
+        "5_distribucion_costos"
+      ],
+      "pantallas_zul": [
+        "distribucionCostosList.zul - Listado",
+        "distribucionCostosDialog.zul - Diálogo de configuración",
+        "distribucionCostosColabxPerfil.zul - Por colaborador y perfil",
+        "distribucionCostosLocxPerfil.zul - Por localidad y perfil",
+        "ColaboradoresDistribucion.zul - Asignación al colaborador"
+      ],
+      "casos_uso_principales": [
+        "Perfiles",
+        "Asignación",
+        "Distribución"
+      ],
+      "data_flow": [
+        "5 distribucion costos"
+      ],
+      "complejidad": "Medium",
+      "estimado_desarrollo_dias": 10
+    },
+    {
+      "id": "slice-8-beneficios",
+      "nombre": "🎁 Beneficios Especiales",
+      "descripcion": "Vales, provisiones, CrediTIA",
+      "funcionalidades_incluidas": [
+        "17_vales_diferidos",
+        "19_provisiones",
+        "18_carga_creditia"
+      ],
+      "pantallas_zul": [
+        "detallePrestSolValDif.zul - Detalle préstamo/vale",
+        "rechazoSolValeDif.zul - Rechazo de vale",
+        "rechazoSolValeDifVistaLocal.zul - Rechazo local",
+        "provisionesxColaboradorList.zul - Provisiones por colaborador",
+        "provisionesxColaboradorDialog.zul - Detalle de provisiones",
+        "colaboradoresxProvision.zul - Colaboradores por provisión",
+        "consultaProvisionesxRubroList.zul - Provisiones por rubro"
+      ],
+      "casos_uso_principales": [
+        "Vales diferidos",
+        "Provisiones"
+      ],
+      "data_flow": [
+        "17 vales diferidos",
+        "19 provisiones",
+        "18 carga creditia"
+      ],
+      "complejidad": "High",
+      "estimado_desarrollo_dias": 20
+    },
+    {
+      "id": "slice-9-integraciones",
+      "nombre": "🔗 Integraciones Externas",
+      "descripcion": "IESS y Contable",
+      "funcionalidades_incluidas": [
+        "9_interfases_iess",
+        "10_interfases_contables"
+      ],
+      "pantallas_zul": [
+        "interfazIESS.zul - Pantalla de interfases IESS",
+        "cargaRubrosIESS.zul - Carga de rubros IESS",
+        "interfasContable.zul - Interfaz contable",
+        "contabilizacionDialogCtrl.zul - Contabilización",
+        "consultaContableList.zul - Consulta contable",
+        "reporteContableFinanciero.zul - Reporte contable-financiero",
+        "consultaCuadreContableList.zul - Cuadre contable",
+        "consultaCuadreContablexColabList.zul - Cuadre por colaborador"
+      ],
+      "casos_uso_principales": [
+        "Interfaz IESS",
+        "Contabilización"
+      ],
+      "data_flow": [
+        "9 interfases iess",
+        "10 interfases contables"
+      ],
+      "complejidad": "High",
+      "estimado_desarrollo_dias": 20
+    },
+    {
+      "id": "slice-10-reportes",
+      "nombre": "📊 Reportes",
+      "descripcion": "Reportes y análisis",
+      "funcionalidades_incluidas": [
+        "26_reportes_nomina",
+        "25_estadisticas"
+      ],
+      "pantallas_zul": [
+        "consultaEstadisticasPersonal.zul - Estadísticas de personal",
+        "consultaEstadisticasHorasExtras.zul - Estadísticas de horas extras",
+        "ConsultaEstadisticasRotacion.zul - Estadísticas de rotación"
+      ],
+      "casos_uso_principales": [
+        "Reportes",
+        "Estadísticas"
+      ],
+      "data_flow": [
+        "26 reportes nomina",
+        "25 estadisticas"
+      ],
+      "complejidad": "Low",
+      "estimado_desarrollo_dias": 5
+    }
+  ],
+  "pantalla_a_slice": {
+    "parametros.zul - Listado de parámetros": "slice-1-setup",
+    "parametrosDialog.zul - Formulario de parámetros": "slice-1-setup",
+    "gestionTablaIR.zul - Listado de tablas IR": "slice-1-setup",
+    "gestionTablaIRDialog.zul - Formulario tabla IR": "slice-1-setup",
+    "GastosPersonalesDialog.zul - Gastos personales": "slice-1-setup",
+    "genIngProyectados.zul - Ingresos proyectados": "slice-1-setup",
+    "ReporteIRINECDialog.zul - Reporte INEC": "slice-1-setup",
+    "plantillaContable.zul - Listado de plantillas": "slice-1-setup",
+    "plantillaContableDialog.zul - Diálogo de plantilla": "slice-1-setup",
+    "rubroplantillaContableDialog.zul - Rubro a plantilla": "slice-1-setup",
+    "contratoPlantilla.zul - Plantillas por contrato": "slice-1-setup",
+    "contratoPlantillaDialog.zul - Diálogo contrato-plantilla": "slice-1-setup",
+    "rubros.zul - Listado principal de rubros": "slice-2-rubros",
+    "rubrosDialog.zul - Formulario de rubro": "slice-2-rubros",
+    "rubrosxprocesoDialog.zul - Asignación de rubros por proceso": "slice-2-rubros",
+    "rubrosIDOMain.zul - Pantalla principal": "slice-2-rubros",
+    "rubrosIDOList.zul - Listado": "slice-2-rubros",
+    "rubrosIDODetail.zul - Detalle": "slice-2-rubros",
+    "rubrosIDOcargaxProceso.zul - Carga por proceso": "slice-2-rubros",
+    "cargaRubrosIDO.zul - Carga masiva": "slice-2-rubros",
+    "consultaRubrosIdoList.zul - Consulta": "slice-2-rubros",
+    "procesos.zul - Listado de definición de procesos": "slice-3-procesos",
+    "procesosDialog.zul - Formulario de proceso": "slice-3-procesos",
+    "procesosEjecucion.zul - Pantalla principal de ejecución": "slice-3-procesos",
+    "procesosEjecDialog.zul - Diálogo de parámetros de ejecución": "slice-3-procesos",
+    "procesosejeccolaboradores.zul - Ejecución por colaboradores": "slice-3-procesos",
+    "procesosEjecucionReversion.zul - Listado de reversiones": "slice-3-procesos",
+    "procesosEjecucionReversionDialog.zul - Diálogo de reversión": "slice-3-procesos",
+    "procesosEjecAbrirLQ.zul - Apertura de liquidaciones": "slice-3-procesos",
+    "procesosEjecAprobarLQ.zul - Aprobación de liquidaciones": "slice-3-procesos",
+    "EjecucionProcCierre.zul - Proceso de cierre": "slice-3-procesos",
+    "ejecucionbot.zul - Ejecución de bot": "slice-3-procesos",
+    "instanciasProcesos.zul - Instancias de procesos": "slice-3-procesos",
+    "instanciasProcesosDialog.zul - Detalle de instancia": "slice-3-procesos",
+    "nominaxColabList.zul - Nómina por colaborador": "slice-4-consultas",
+    "nominaxColabPreDialog.zul - Nómina pre-cálculo diálogo": "slice-4-consultas",
+    "nominaxColabPreList.zul - Nómina pre-cálculo listado": "slice-4-consultas",
+    "nominaresumenGeneral.zul - Resumen general": "slice-4-consultas",
+    "nominaresumenGralCxRubro.zul - Resumen por clasificación de rubro": "slice-4-consultas",
+    "nominaresumenGralxRubro.zul - Resumen por rubro": "slice-4-consultas",
+    "ResumenGralNominaDialog.zul - Diálogo de resumen": "slice-4-consultas",
+    "comparativoNominas.zul - Comparativo de nóminas": "slice-4-consultas",
+    "conSueldo.zul - Consulta de sueldos": "slice-4-consultas",
+    "acumulados.zul - Consulta de acumulados": "slice-4-consultas",
+    "acreditacion.zul - Acreditación general": "slice-5-pago",
+    "acreditacionBonificaciones.zul - Acreditación bonificaciones": "slice-5-pago",
+    "AcreditacionRubrosIdo.zul - Acreditación rubros IDO": "slice-5-pago",
+    "consultaAcreditacionesList.zul - Consulta de acreditaciones": "slice-5-pago",
+    "rubrosPrestamoList.zul - Listado de préstamos": "slice-6-prestamos",
+    "rubrosPrestamoMain.zul - Pantalla principal": "slice-6-prestamos",
+    "rubrosPrestamoDetail.zul - Detalle": "slice-6-prestamos",
+    "rubrosPrestamoCoDialog.zul - Préstamos por colaborador": "slice-6-prestamos",
+    "rubrosPrestamoAbonos.zul - Abonos": "slice-6-prestamos",
+    "rubrosPrestamoAbonosCancel.zul - Cancelación": "slice-6-prestamos",
+    "rubrosPrestamoBaja.zul - Baja": "slice-6-prestamos",
+    "CuotasComprometDialog.zul - Cuotas comprometidas": "slice-6-prestamos",
+    "sobregiro.zul - Listado de sobregiros": "slice-6-prestamos",
+    "sobregiroDialog.zul - Formulario de sobregiro": "slice-6-prestamos",
+    "distribucionCostosList.zul - Listado": "slice-7-costos",
+    "distribucionCostosDialog.zul - Diálogo de configuración": "slice-7-costos",
+    "distribucionCostosColabxPerfil.zul - Por colaborador y perfil": "slice-7-costos",
+    "distribucionCostosLocxPerfil.zul - Por localidad y perfil": "slice-7-costos",
+    "ColaboradoresDistribucion.zul - Asignación al colaborador": "slice-7-costos",
+    "detallePrestSolValDif.zul - Detalle préstamo/vale": "slice-8-beneficios",
+    "rechazoSolValeDif.zul - Rechazo de vale": "slice-8-beneficios",
+    "rechazoSolValeDifVistaLocal.zul - Rechazo local": "slice-8-beneficios",
+    "provisionesxColaboradorList.zul - Provisiones por colaborador": "slice-8-beneficios",
+    "provisionesxColaboradorDialog.zul - Detalle de provisiones": "slice-8-beneficios",
+    "colaboradoresxProvision.zul - Colaboradores por provisión": "slice-8-beneficios",
+    "consultaProvisionesxRubroList.zul - Provisiones por rubro": "slice-8-beneficios",
+    "interfazIESS.zul - Pantalla de interfases IESS": "slice-9-integraciones",
+    "cargaRubrosIESS.zul - Carga de rubros IESS": "slice-9-integraciones",
+    "interfasContable.zul - Interfaz contable": "slice-9-integraciones",
+    "contabilizacionDialogCtrl.zul - Contabilización": "slice-9-integraciones",
+    "consultaContableList.zul - Consulta contable": "slice-9-integraciones",
+    "reporteContableFinanciero.zul - Reporte contable-financiero": "slice-9-integraciones",
+    "consultaCuadreContableList.zul - Cuadre contable": "slice-9-integraciones",
+    "consultaCuadreContablexColabList.zul - Cuadre por colaborador": "slice-9-integraciones",
+    "consultaEstadisticasPersonal.zul - Estadísticas de personal": "slice-10-reportes",
+    "consultaEstadisticasHorasExtras.zul - Estadísticas de horas extras": "slice-10-reportes",
+    "ConsultaEstadisticasRotacion.zul - Estadísticas de rotación": "slice-10-reportes"
+  },
+  "slice_dependencias": {
+    "slice-1-setup": [],
+    "slice-2-rubros": [
+      "slice-1-setup"
+    ],
+    "slice-3-procesos": [
+      "slice-1-setup",
+      "slice-2-rubros"
+    ],
+    "slice-4-consultas": [
+      "slice-3-procesos"
+    ],
+    "slice-5-pago": [
+      "slice-3-procesos"
+    ],
+    "slice-6-prestamos": [
+      "slice-4-consultas"
+    ],
+    "slice-7-costos": [
+      "slice-2-rubros",
+      "slice-3-procesos"
+    ],
+    "slice-8-beneficios": [
+      "slice-3-procesos"
+    ],
+    "slice-9-integraciones": [
+      "slice-3-procesos"
+    ],
+    "slice-10-reportes": [
+      "slice-3-procesos",
+      "slice-4-consultas"
+    ]
+  }
+}

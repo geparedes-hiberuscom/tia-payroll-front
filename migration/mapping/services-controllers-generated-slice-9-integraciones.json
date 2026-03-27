@@ -1,0 +1,69 @@
+{
+  "slice_id": "slice-9-integraciones",
+  "slice_nombre": "🔗 Integraciones Externas",
+  "moduleName": "integraciones",
+  "fullPackage": "com.tia.integraciones",
+  "target": "springboot",
+  "generatedAt": "2026-03-26T14:44:46.187Z",
+  "api_file": "vs-integraciones-externas-endpoints.json",
+  "api_endpoints_count": 62,
+  "api_schemas_count": 0,
+  "source_context": {
+    "funcionalidades": [
+      "interfazIESS",
+      "ArchivosdeinterfazgeneradossubrecursoIESS_Contable",
+      "NmeropatronalcatlogodereferenciaparaIESS",
+      "cargaRubrosIESS",
+      "DetallelneasIESSsubrecursocargarubrosIESS",
+      "cargaRubrosIESS-Exportacin",
+      "interfasContable",
+      "contabilizacionDialogCtrl",
+      "consultaContableList",
+      "reporteContableFinanciero",
+      "Cuenta_SubcuentaasociadaDTOcompartidoparareportes",
+      "consultaCuadreContableList",
+      "consultaCuadreContablexColabList"
+    ],
+    "total_controladores": 62,
+    "total_servicios": 0,
+    "total_entidades": 58,
+    "total_daos": 0
+  },
+  "generated": {
+    "application_services": [
+      "InterfaziessApplicationService",
+      "ArchivosdeinterfazgeneradossubrecursoiessContableApplicationService",
+      "NmeropatronalcatlogodereferenciaparaiessApplicationService",
+      "CargarubrosiessApplicationService",
+      "DetallelneasiesssubrecursocargarubrosiessApplicationService",
+      "CargarubrosiessExportacinApplicationService",
+      "InterfascontableApplicationService",
+      "ContabilizaciondialogctrlApplicationService",
+      "ConsultacontablelistApplicationService",
+      "ReportecontablefinancieroApplicationService",
+      "CuentaSubcuentaasociadadtocompartidoparareportesApplicationService",
+      "ConsultacuadrecontablelistApplicationService",
+      "ConsultacuadrecontablexcolablistApplicationService"
+    ],
+    "rest_controllers": [
+      "InterfaziessController",
+      "ArchivosdeinterfazgeneradossubrecursoiessContableController",
+      "NmeropatronalcatlogodereferenciaparaiessController",
+      "CargarubrosiessController",
+      "DetallelneasiesssubrecursocargarubrosiessController",
+      "CargarubrosiessExportacinController",
+      "InterfascontableController",
+      "ContabilizaciondialogctrlController",
+      "ConsultacontablelistController",
+      "ReportecontablefinancieroController",
+      "CuentaSubcuentaasociadadtocompartidoparareportesController",
+      "ConsultacuadrecontablelistController",
+      "ConsultacuadrecontablexcolablistController"
+    ]
+  },
+  "resumen": {
+    "total_services_generated": 13,
+    "total_controllers_generated": 13,
+    "total_api_endpoints": 62
+  }
+}

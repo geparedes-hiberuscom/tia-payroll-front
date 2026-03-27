@@ -1,0 +1,46 @@
+{
+  "projectName": "RemoteSystemsTempFiles",
+  "scannedAt": "2026-03-18T03:25:56.900Z",
+  "modules": [
+    {
+      "originalName": "avante",
+      "displayName": "Avante",
+      "type": "java-package",
+      "description": "Módulo Java: avante (22 clases)",
+      "basedOn": [
+        "Common",
+        "ConfigurationAWS",
+        "SenderAWS",
+        "ClassPathModifier",
+        "AvEstructurasDMTreeRootNode",
+        "AvGReportsTreeRootNode",
+        "AvPuntaje",
+        "AvTreeModel",
+        "AvTreeNode",
+        "AvTreeUtil",
+        "AvUGeogTreeRootNode",
+        "AvUtil",
+        "AvanteBaseCtrl",
+        "AvanteCooperation",
+        "AvanteException",
+        "CsvReader",
+        "CsvWriter",
+        "DateUtil",
+        "JasperReportWindowDialogCtrl",
+        "MediaDTO",
+        "PreviewJasperReport",
+        "PluginsLoader"
+      ]
+    },
+    {
+      "originalName": "src",
+      "displayName": "Src",
+      "type": "java-project",
+      "description": "Módulo Java: src",
+      "basedOn": [
+        "src"
+      ]
+    }
+  ],
+  "status": "analyzing"
+}

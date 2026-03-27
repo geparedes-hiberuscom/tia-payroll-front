@@ -1,0 +1,270 @@
+{
+  "slice_id": "slice-10-reportes",
+  "slice_nombre": "📊 Reportes",
+  "slice_descripcion": "Reportes y análisis",
+  "projectName": "payrol",
+  "groupId": "com.tia",
+  "target": "springboot",
+  "modulo": "Roles de Pago / Nómina (AvPy)",
+  "generatedAt": "2026-03-25T21:14:08.106Z",
+  "funcionalidades_seleccionadas": [
+    "consultaEstadisticasPersonal",
+    "consultaEstadisticasHorasExtras",
+    "ConsultaEstadisticasRotacion",
+    "Tablasnapshotmensualreferenciatcnica"
+  ],
+  "funcionalidades_no_encontradas": [
+    "26_reportes_nomina",
+    "25_estadisticas"
+  ],
+  "source_context": [
+    {
+      "funcionalidad_id": "consultaEstadisticasPersonal",
+      "funcionalidad_nombre": "consultaEstadisticasPersonal.zul",
+      "entidades": [
+        {
+          "archivo": "EstadisticasPersonalListDTO",
+          "descripcion": "Lista de estadísticas de personal por localidad con totales"
+        },
+        {
+          "archivo": "EstadisticaPersonalDTO",
+          "descripcion": "Estadística de personal de una localidad (native SQL Object[])"
+        },
+        {
+          "archivo": "ExportarEstadisticasPersonalDTO",
+          "descripcion": "Filtros para la exportación"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "AjusteEstadisticaPersonalDTO",
+          "descripcion": "Datos del ajuste"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/estadisticas/personal",
+          "descripcion": "GET /api/v1/estadisticas/personal — Consultar estadísticas de personal"
+        },
+        {
+          "archivo": "GET /api/v1/estadisticas/personal/{localidadId}",
+          "descripcion": "GET /api/v1/estadisticas/personal/{localidadId} — Obtener estadística de personal de una localidad"
+        },
+        {
+          "archivo": "POST /api/v1/estadisticas/personal/exportar/excel",
+          "descripcion": "POST /api/v1/estadisticas/personal/exportar/excel — Exportar estadísticas de personal a Excel"
+        },
+        {
+          "archivo": "PUT /api/v1/estadisticas/personal/{localidadId}",
+          "descripcion": "PUT /api/v1/estadisticas/personal/{localidadId} — Actualizar ajuste de estadística de personal"
+        },
+        {
+          "archivo": "DELETE /api/v1/estadisticas/personal/{localidadId}",
+          "descripcion": "DELETE /api/v1/estadisticas/personal/{localidadId} — Eliminar ajuste de estadística de personal"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "consultaEstadisticasPersonal.zul",
+          "descripcion": "Pantalla fuente: consultaEstadisticasPersonal.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "consultaEstadisticasHorasExtras",
+      "funcionalidad_nombre": "consultaEstadisticasHorasExtras.zul",
+      "entidades": [
+        {
+          "archivo": "EstadisticasHorasExtrasListDTO",
+          "descripcion": "Lista de estadísticas de horas extras con totales"
+        },
+        {
+          "archivo": "EstadisticaHorasExtrasDTO",
+          "descripcion": "Detalle de horas extras de un colaborador (native SQL UNION Object[])"
+        },
+        {
+          "archivo": "ExportarEstadisticasHEDTO",
+          "descripcion": "Filtros para la exportación"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "AjusteHorasExtrasDTO",
+          "descripcion": "Datos del ajuste"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/estadisticas/horas-extras",
+          "descripcion": "GET /api/v1/estadisticas/horas-extras — Consultar estadísticas de horas extras"
+        },
+        {
+          "archivo": "GET /api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId}",
+          "descripcion": "GET /api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId} — Obtener detalle de horas extras de un colaborador por rubro"
+        },
+        {
+          "archivo": "POST /api/v1/estadisticas/horas-extras/exportar/excel",
+          "descripcion": "POST /api/v1/estadisticas/horas-extras/exportar/excel — Exportar estadísticas de horas extras a Excel"
+        },
+        {
+          "archivo": "PUT /api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId}",
+          "descripcion": "PUT /api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId} — Actualizar ajuste de horas extras"
+        },
+        {
+          "archivo": "DELETE /api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId}",
+          "descripcion": "DELETE /api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId} — Eliminar ajuste de horas extras"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "consultaEstadisticasHorasExtras.zul",
+          "descripcion": "Pantalla fuente: consultaEstadisticasHorasExtras.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "ConsultaEstadisticasRotacion",
+      "funcionalidad_nombre": "ConsultaEstadisticasRotacion.zul",
+      "entidades": [
+        {
+          "archivo": "EstadisticasRotacionListDTO",
+          "descripcion": "Lista de estadísticas de rotación por localidad con totales"
+        },
+        {
+          "archivo": "EstadisticaRotacionDTO",
+          "descripcion": "Estadística de rotación de una localidad (native SQL Object[])"
+        },
+        {
+          "archivo": "ExportarEstadisticasRotacionDTO",
+          "descripcion": "Filtros para la exportación"
+        },
+        {
+          "archivo": "ExportarResponseDTO",
+          "descripcion": "Resultado de la exportación"
+        },
+        {
+          "archivo": "AjusteRotacionDTO",
+          "descripcion": "Datos del ajuste"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/estadisticas/rotacion",
+          "descripcion": "GET /api/v1/estadisticas/rotacion — Consultar estadísticas de rotación de personal"
+        },
+        {
+          "archivo": "GET /api/v1/estadisticas/rotacion/{localidadId}",
+          "descripcion": "GET /api/v1/estadisticas/rotacion/{localidadId} — Obtener estadística de rotación de una localidad"
+        },
+        {
+          "archivo": "POST /api/v1/estadisticas/rotacion/exportar/excel",
+          "descripcion": "POST /api/v1/estadisticas/rotacion/exportar/excel — Exportar estadísticas de rotación a Excel"
+        },
+        {
+          "archivo": "PUT /api/v1/estadisticas/rotacion/{localidadId}",
+          "descripcion": "PUT /api/v1/estadisticas/rotacion/{localidadId} — Actualizar ajuste de rotación"
+        },
+        {
+          "archivo": "DELETE /api/v1/estadisticas/rotacion/{localidadId}",
+          "descripcion": "DELETE /api/v1/estadisticas/rotacion/{localidadId} — Eliminar ajuste de rotación"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "ConsultaEstadisticasRotacion.zul",
+          "descripcion": "Pantalla fuente: ConsultaEstadisticasRotacion.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "Tablasnapshotmensualreferenciatcnica",
+      "funcionalidad_nombre": "Tabla snapshot mensual (referencia técnica)",
+      "entidades": [],
+      "controladores": [],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "Tabla snapshot mensual (referencia técnica)",
+          "descripcion": "Pantalla fuente: Tabla snapshot mensual (referencia técnica)"
+        }
+      ],
+      "vistas_bd": []
+    }
+  ],
+  "resumen": {
+    "total_funcionalidades": 4,
+    "total_entidades": 18,
+    "total_controladores": 15,
+    "total_servicios": 0,
+    "total_daos": 0,
+    "total_renderers": 0,
+    "total_pantallas_zul": 4,
+    "total_vistas_bd": 0,
+    "total_archivos_origen": 33,
+    "archivos_origen_unicos": [
+      "AjusteEstadisticaPersonalDTO",
+      "AjusteHorasExtrasDTO",
+      "AjusteRotacionDTO",
+      "ConsultaEstadisticasRotacion.zul",
+      "DELETE /api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId}",
+      "DELETE /api/v1/estadisticas/personal/{localidadId}",
+      "DELETE /api/v1/estadisticas/rotacion/{localidadId}",
+      "DeleteResponseDTO",
+      "EstadisticaHorasExtrasDTO",
+      "EstadisticaPersonalDTO",
+      "EstadisticaRotacionDTO",
+      "EstadisticasHorasExtrasListDTO",
+      "EstadisticasPersonalListDTO",
+      "EstadisticasRotacionListDTO",
+      "ExportarEstadisticasHEDTO",
+      "ExportarEstadisticasPersonalDTO",
+      "ExportarEstadisticasRotacionDTO",
+      "ExportarResponseDTO",
+      "GET /api/v1/estadisticas/horas-extras",
+      "GET /api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId}",
+      "GET /api/v1/estadisticas/personal",
+      "GET /api/v1/estadisticas/personal/{localidadId}",
+      "GET /api/v1/estadisticas/rotacion",
+      "GET /api/v1/estadisticas/rotacion/{localidadId}",
+      "POST /api/v1/estadisticas/horas-extras/exportar/excel",
+      "POST /api/v1/estadisticas/personal/exportar/excel",
+      "POST /api/v1/estadisticas/rotacion/exportar/excel",
+      "PUT /api/v1/estadisticas/horas-extras/{empresaId}/{colaboradorId}/{rubroId}",
+      "PUT /api/v1/estadisticas/personal/{localidadId}",
+      "PUT /api/v1/estadisticas/rotacion/{localidadId}",
+      "Tabla snapshot mensual (referencia técnica)",
+      "consultaEstadisticasHorasExtras.zul",
+      "consultaEstadisticasPersonal.zul"
+    ]
+  }
+}

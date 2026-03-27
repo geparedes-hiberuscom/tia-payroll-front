@@ -1,0 +1,1313 @@
+{
+  "endpoints": [
+    {
+      "screenName": "Solicitud de Vales Diferidos (recurso principal)",
+      "baseUrl": "/api/v1/vales-diferidos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/vales-diferidos",
+          "summary": "Listar solicitudes de vales diferidos",
+          "description": "Obtiene la lista paginada de solicitudes de vales diferidos (av_py_colaboradoressol_valdif) con datos de motivo, sucursal, cédula, colaborador, montos (monto, utilidad, D4, D3), número de meses, estado, monto prestado y motivo de rechazo",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "distribucionId", "type": "integer", "required": false, "description": "Filtro por ID de distribución de vales diferidos"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por ID de localidad/sucursal"},
+            {"name": "estadoId", "type": "integer", "required": false, "description": "Filtro por ID de estado (catálogo AvCatalogos)"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID del colaborador"},
+            {"name": "cedula", "type": "string", "required": false, "description": "Filtro por cédula del colaborador"}
+          ],
+          "responseDTO": {
+            "name": "SolicitudValeDifPageResponseDTO",
+            "description": "Lista paginada de solicitudes de vales diferidos",
+            "fields": [
+              {"name": "content", "type": "array<SolicitudValeDifResponseDTO>", "required": true, "description": "Lista de solicitudes de vales diferidos"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/vales-diferidos/{id}",
+          "summary": "Obtener solicitud de vale diferido por ID",
+          "description": "Obtiene el detalle completo de una solicitud de vale diferido con datos del colaborador, empresa, distribución, montos, estado actual, motivo de rechazo, fechas de registro/aprobación/acreditación y observaciones",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "SolicitudValeDifResponseDTO",
+            "description": "Detalle de una solicitud de vale diferido (tabla av_py_colaboradoressol_valdif)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la solicitud (iidcolabsolvaldif)"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "ID del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "colaboradorNombre", "type": "string", "required": false, "description": "Nombres del colaborador (denormalizado de AvColaboradores.vapellidosnombres)"},
+              {"name": "colaboradorCedula", "type": "string", "required": false, "description": "Cédula del colaborador (denormalizado de AvColaboradores.vcedula)"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa (denormalizado)"},
+              {"name": "distribucionId", "type": "integer", "required": false, "description": "ID de distribución de vales diferidos (iiddistribvalesdif)"},
+              {"name": "distribucionDetId", "type": "integer", "required": false, "description": "ID de detalle de distribución (iiddistribvalesdifdet)"},
+              {"name": "estadoId", "type": "integer", "required": false, "description": "ID del estado (catálogo AvCatalogos, FK iidestado)"},
+              {"name": "estadoNombre", "type": "string", "required": false, "description": "Nombre del estado (denormalizado de AvCatalogos.vdttxt01)"},
+              {"name": "generoCarta", "type": "string", "required": false, "description": "Flag si genera carta (cgenerocarta, S/N)"},
+              {"name": "numMeses", "type": "integer", "required": false, "description": "Número de meses del vale (inummeses)"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto del vale (mmonto)"},
+              {"name": "montoUtil", "type": "number", "required": false, "description": "Monto utilidades (mmontoutil)"},
+              {"name": "montoD4", "type": "number", "required": false, "description": "Monto D4 - décimo cuarto (mmontod4)"},
+              {"name": "montoD3", "type": "number", "required": false, "description": "Monto D3 - décimo tercero (mmontod3)"},
+              {"name": "promedioNeto", "type": "number", "required": false, "description": "Promedio neto del colaborador (mpromedioneto)"},
+              {"name": "cuota", "type": "number", "required": false, "description": "Valor de la cuota (mcuota)"},
+              {"name": "montoRechazo", "type": "number", "required": false, "description": "Monto de rechazo (mmontorechazo)"},
+              {"name": "motivoRechazoId", "type": "integer", "required": false, "description": "ID del motivo de rechazo (catálogo, FK imotivorech)"},
+              {"name": "motivoRechazoNombre", "type": "string", "required": false, "description": "Nombre del motivo de rechazo (denormalizado de AvCatalogos.vdttxt01)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones (vobservacion)"},
+              {"name": "fechaRegistro", "type": "datetime", "required": false, "description": "Fecha de registro (dfregistro)"},
+              {"name": "fechaAprobacion", "type": "datetime", "required": false, "description": "Fecha de aprobación (dfaprobacion)"},
+              {"name": "fechaAcreditacion", "type": "datetime", "required": false, "description": "Fecha de acreditación (dfacreditacion)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso (usuarioingreso_au)"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso (horaingreso_au)"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación (usuariomodificacion_au)"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación (horamodificacion_au)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/vales-diferidos",
+          "summary": "Crear solicitud de vale diferido",
+          "description": "Crea una nueva solicitud de vale diferido para un colaborador, asociándola a una distribución de vales diferidos vigente. Calcula automáticamente cuota, promedio neto y valida montos contra los porcentajes configurados en la distribución (descuento mensual, utilidades, D4, D3)",
+          "requestDTO": {
+            "name": "SolicitudValeDifCreateDTO",
+            "description": "Datos para crear una solicitud de vale diferido",
+            "fields": [
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "distribucionId", "type": "integer", "required": true, "description": "ID de distribución de vales diferidos (AvPyDistribValesdif)"},
+              {"name": "distribucionDetId", "type": "integer", "required": false, "description": "ID de detalle de distribución (AvPyDistribValesdifDet)"},
+              {"name": "monto", "type": "number", "required": true, "description": "Monto solicitado del vale"},
+              {"name": "montoUtil", "type": "number", "required": false, "description": "Monto en utilidades"},
+              {"name": "montoD4", "type": "number", "required": false, "description": "Monto en D4 (décimo cuarto)"},
+              {"name": "montoD3", "type": "number", "required": false, "description": "Monto en D3 (décimo tercero)"},
+              {"name": "numMeses", "type": "integer", "required": true, "description": "Número de meses para pago"},
+              {"name": "generoCarta", "type": "string", "required": false, "description": "Flag si genera carta (S/N)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "SolicitudValeDifResponseDTO",
+            "description": "Solicitud de vale diferido creada con cuota y promedio neto calculados",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/vales-diferidos/{id}",
+          "summary": "Actualizar solicitud de vale diferido",
+          "description": "Actualiza los datos de una solicitud de vale diferido existente (monto, meses, observaciones). Recalcula cuota si cambian las condiciones. Solo permite actualización si estado es pendiente",
+          "requestDTO": {
+            "name": "SolicitudValeDifUpdateDTO",
+            "description": "Datos para actualizar la solicitud de vale diferido",
+            "fields": [
+              {"name": "monto", "type": "number", "required": false, "description": "Monto del vale"},
+              {"name": "montoUtil", "type": "number", "required": false, "description": "Monto en utilidades"},
+              {"name": "montoD4", "type": "number", "required": false, "description": "Monto en D4"},
+              {"name": "montoD3", "type": "number", "required": false, "description": "Monto en D3"},
+              {"name": "numMeses", "type": "integer", "required": false, "description": "Número de meses"},
+              {"name": "generoCarta", "type": "string", "required": false, "description": "Flag carta (S/N)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "SolicitudValeDifResponseDTO",
+            "description": "Solicitud actualizada con datos recalculados",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/vales-diferidos/{id}",
+          "summary": "Eliminar solicitud de vale diferido",
+          "description": "Elimina una solicitud de vale diferido. Solo se puede eliminar si está en estado pendiente (no aprobada ni acreditada)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación de la solicitud",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "detallePrestSolValDif.zul - Detalle préstamo/vale",
+      "baseUrl": "/api/v1/vales-diferidos/{solicitudId}/prestamos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/prestamos",
+          "summary": "Listar préstamos de una solicitud de vale diferido",
+          "description": "Obtiene la lista de préstamos generados a partir de la solicitud de vale diferido (av_py_rubros_prestamo filtrados por iidcolabsolvaldif). Datos obtenidos vía AvPyDistribValesdifDAOJpaImpl.getDetallePrestamosSolValDif(). Columnas: Concepto (rubro), Monto, Saldo, Cuota, NumCuotasPendientes, FechaDescuento",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado del préstamo (vstts)"}
+          ],
+          "responseDTO": {
+            "name": "PrestamoValeDifListDTO",
+            "description": "Lista de préstamos del vale diferido",
+            "fields": [
+              {"name": "items", "type": "array<PrestamoValeDifResponseDTO>", "required": true, "description": "Lista de préstamos del vale"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de préstamos"},
+              {"name": "montoTotalPrestado", "type": "number", "required": false, "description": "Suma total de montos prestados"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/prestamos/{prestamoId}",
+          "summary": "Obtener préstamo del vale diferido por ID",
+          "description": "Obtiene el detalle de un préstamo generado por el vale diferido con datos de concepto/rubro, monto, saldo, cuota, cuotas pendientes, fecha de descuento, estado y relación con carga CrediTIA",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "PrestamoValeDifResponseDTO",
+            "description": "Detalle de un préstamo del vale diferido (tabla av_py_rubros_prestamo, FK iidcolabsolvaldif)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "ID del préstamo (iidrubroprestamo)"},
+              {"name": "solicitudId", "type": "integer", "required": true, "description": "ID de la solicitud de vale diferido (iidcolabsolvaldif)"},
+              {"name": "rubroId", "type": "string", "required": false, "description": "ID del rubro/concepto (vidrubro)"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto del préstamo (mmonto)"},
+              {"name": "saldo", "type": "number", "required": false, "description": "Saldo pendiente (msaldo)"},
+              {"name": "cuota", "type": "number", "required": false, "description": "Valor de la cuota/alícuota (malicuota)"},
+              {"name": "numCuotas", "type": "integer", "required": false, "description": "Número de cuotas (inroalicuotas)"},
+              {"name": "numCuotasPendientes", "type": "integer", "required": false, "description": "Número de cuotas pendientes (calculado)"},
+              {"name": "fechaDescuento", "type": "datetime", "required": false, "description": "Fecha de inicio del descuento (dfiniciodsc)"},
+              {"name": "fechaPrestamo", "type": "datetime", "required": false, "description": "Fecha del préstamo (dfprestamo)"},
+              {"name": "abono", "type": "number", "required": false, "description": "Total abonado (mabono)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del préstamo (vstts)"},
+              {"name": "accion", "type": "string", "required": false, "description": "Acción (vaccion)"},
+              {"name": "cargaCreditiaId", "type": "integer", "required": false, "description": "ID de carga CrediTIA (iidcargacreditia)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/prestamos",
+          "summary": "Crear préstamo desde vale diferido",
+          "description": "Crea un préstamo a partir de una solicitud de vale diferido aprobada, generando compromisos de cuotas mensuales (av_py_rubros_prestamo_com) y actualizando el estado de la solicitud",
+          "requestDTO": {
+            "name": "PrestamoValeDifCreateDTO",
+            "description": "Datos para crear el préstamo del vale diferido",
+            "fields": [
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro/concepto del préstamo"},
+              {"name": "monto", "type": "number", "required": true, "description": "Monto del préstamo"},
+              {"name": "cuota", "type": "number", "required": true, "description": "Valor de la cuota/alícuota mensual"},
+              {"name": "numCuotas", "type": "integer", "required": true, "description": "Número de cuotas"},
+              {"name": "fechaDescuento", "type": "datetime", "required": true, "description": "Fecha de inicio del descuento"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PrestamoValeDifResponseDTO",
+            "description": "Préstamo creado con compromisos generados",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/prestamos/{prestamoId}",
+          "summary": "Actualizar préstamo del vale diferido",
+          "description": "Actualiza datos del préstamo generado por el vale diferido (cuota, número de cuotas, fecha de descuento). Recalcula compromisos si cambian las condiciones",
+          "requestDTO": {
+            "name": "PrestamoValeDifUpdateDTO",
+            "description": "Datos para actualizar el préstamo del vale diferido",
+            "fields": [
+              {"name": "cuota", "type": "number", "required": false, "description": "Nueva cuota (malicuota)"},
+              {"name": "numCuotas", "type": "integer", "required": false, "description": "Nuevo número de cuotas (inroalicuotas)"},
+              {"name": "fechaDescuento", "type": "datetime", "required": false, "description": "Nueva fecha de descuento (dfiniciodsc)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "PrestamoValeDifResponseDTO",
+            "description": "Préstamo actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/prestamos/{prestamoId}",
+          "summary": "Eliminar préstamo del vale diferido",
+          "description": "Elimina un préstamo generado por el vale diferido y actualiza el saldo de la solicitud. Valida que no tenga abonos registrados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación del préstamo",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rechazoSolValeDif.zul - Rechazo de vale",
+      "baseUrl": "/api/v1/vales-diferidos/{solicitudId}/rechazo",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/rechazo",
+          "summary": "Obtener datos de rechazo de solicitud",
+          "description": "Obtiene los datos del rechazo de una solicitud de vale diferido: motivo de rechazo (del catálogo AvCatalogos CAT_TIPOS_RECH_VALEDIF), monto de rechazo y estado actual de la solicitud",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RechazoValeDifResponseDTO",
+            "description": "Datos de rechazo de la solicitud de vale diferido",
+            "fields": [
+              {"name": "solicitudId", "type": "integer", "required": true, "description": "ID de la solicitud (iidcolabsolvaldif)"},
+              {"name": "estadoId", "type": "integer", "required": false, "description": "ID del estado actual (catálogo AvCatalogos)"},
+              {"name": "estadoNombre", "type": "string", "required": false, "description": "Nombre del estado actual"},
+              {"name": "motivoRechazoId", "type": "integer", "required": false, "description": "ID del motivo de rechazo (catálogo AvCatalogos, FK imotivorech)"},
+              {"name": "motivoRechazoNombre", "type": "string", "required": false, "description": "Nombre del motivo de rechazo (AvCatalogos.vdttxt01)"},
+              {"name": "montoRechazo", "type": "number", "required": false, "description": "Monto de rechazo (mmontorechazo)"},
+              {"name": "montoOriginal", "type": "number", "required": false, "description": "Monto original de la solicitud (mmonto)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones (vobservacion)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/rechazo",
+          "summary": "Rechazar solicitud de vale diferido",
+          "description": "Ejecuta el rechazo de una solicitud de vale diferido, registrando motivo de rechazo (del catálogo), monto de rechazo y cambiando estado. Actualiza parámetros de nómina (AvPyParametro) y envía notificación por correo electrónico vía Emailig. Permite rechazo total o parcial (si montoRechazo < monto original)",
+          "requestDTO": {
+            "name": "RechazoValeDifDTO",
+            "description": "Datos para rechazar la solicitud de vale diferido",
+            "fields": [
+              {"name": "motivoRechazoId", "type": "integer", "required": true, "description": "ID del motivo de rechazo (del catálogo AvCatalogos CAT_TIPOS_RECH_VALEDIF)"},
+              {"name": "montoRechazo", "type": "number", "required": false, "description": "Monto de rechazo (si es parcial; si no se envía, rechazo total)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones del rechazo"},
+              {"name": "enviarNotificacion", "type": "boolean", "required": false, "description": "Flag para enviar email de notificación (default: true)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RechazoValeDifResponseDTO",
+            "description": "Resultado del rechazo con estado actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/rechazo",
+          "summary": "Actualizar rechazo de solicitud",
+          "description": "Actualiza los datos de rechazo de una solicitud ya rechazada (motivo, monto) si se necesita corregir",
+          "requestDTO": {
+            "name": "RechazoValeDifUpdateDTO",
+            "description": "Datos para actualizar el rechazo existente",
+            "fields": [
+              {"name": "motivoRechazoId", "type": "integer", "required": false, "description": "Nuevo motivo de rechazo"},
+              {"name": "montoRechazo", "type": "number", "required": false, "description": "Nuevo monto de rechazo"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones actualizadas"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RechazoValeDifResponseDTO",
+            "description": "Rechazo actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/rechazo",
+          "summary": "Reversar rechazo de solicitud",
+          "description": "Revierte el rechazo de una solicitud de vale diferido, restaurando el estado y montos previos al rechazo",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de reversión del rechazo",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la reversión fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "rechazoSolValeDifVistaLocal.zul - Rechazo local",
+      "baseUrl": "/api/v1/vales-diferidos/{solicitudId}/rechazo-local",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/rechazo-local",
+          "summary": "Obtener datos de rechazo local de solicitud",
+          "description": "Obtiene los datos del rechazo a nivel local (sucursal/localidad) de una solicitud de vale diferido. Vista de solo lectura del motivo de rechazo (AvCatalogos CAT_TIPOS_RECH_VALEDIF), monto y estado. No incluye envío de correo",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RechazoLocalValeDifResponseDTO",
+            "description": "Datos de rechazo local de la solicitud",
+            "fields": [
+              {"name": "solicitudId", "type": "integer", "required": true, "description": "ID de la solicitud (iidcolabsolvaldif)"},
+              {"name": "estadoId", "type": "integer", "required": false, "description": "ID del estado actual"},
+              {"name": "estadoNombre", "type": "string", "required": false, "description": "Nombre del estado"},
+              {"name": "motivoRechazoId", "type": "integer", "required": false, "description": "ID del motivo de rechazo local (imotivorech)"},
+              {"name": "motivoRechazoNombre", "type": "string", "required": false, "description": "Nombre del motivo de rechazo (AvCatalogos.vdttxt01)"},
+              {"name": "montoRechazo", "type": "number", "required": false, "description": "Monto de rechazo (mmontorechazo)"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad que rechaza (AvDimensionesl)"},
+              {"name": "localidadNombre", "type": "string", "required": false, "description": "Nombre de la localidad (AvDimensionesl.vidditem)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones del rechazo local"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/rechazo-local",
+          "summary": "Rechazar solicitud a nivel local",
+          "description": "Ejecuta el rechazo a nivel de sucursal/localidad de una solicitud de vale diferido. Se registra motivo de rechazo local y monto, cambiando el estado a rechazado local. Lógica simplificada sin envío de notificación por correo",
+          "requestDTO": {
+            "name": "RechazoLocalValeDifDTO",
+            "description": "Datos para el rechazo local de la solicitud",
+            "fields": [
+              {"name": "motivoRechazoId", "type": "integer", "required": true, "description": "ID del motivo de rechazo (catálogo AvCatalogos)"},
+              {"name": "montoRechazo", "type": "number", "required": false, "description": "Monto de rechazo"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones del rechazo local"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RechazoLocalValeDifResponseDTO",
+            "description": "Resultado del rechazo local con estado actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/rechazo-local",
+          "summary": "Actualizar rechazo local de solicitud",
+          "description": "Actualiza los datos del rechazo local (motivo, monto, observaciones)",
+          "requestDTO": {
+            "name": "RechazoLocalValeDifUpdateDTO",
+            "description": "Datos para actualizar el rechazo local",
+            "fields": [
+              {"name": "motivoRechazoId", "type": "integer", "required": false, "description": "Motivo de rechazo"},
+              {"name": "montoRechazo", "type": "number", "required": false, "description": "Monto de rechazo"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "RechazoLocalValeDifResponseDTO",
+            "description": "Rechazo local actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/vales-diferidos/{solicitudId}/rechazo-local",
+          "summary": "Reversar rechazo local de solicitud",
+          "description": "Revierte el rechazo local de una solicitud, restaurando su estado anterior",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de reversión del rechazo local",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la reversión fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Distribución de vales diferidos (catálogo padre)",
+      "baseUrl": "/api/v1/distribuciones-vales-diferidos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/distribuciones-vales-diferidos",
+          "summary": "Listar distribuciones de vales diferidos",
+          "description": "Obtiene la lista de distribuciones de vales diferidos (av_py_distrib_valesdif) con datos de período (inicio/fin), fecha de descuento, empresa, localidad, motivo, tipo de contrato, año y estado",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por ID de localidad (AvDimensionesl)"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año (ianio)"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado (vstts)"}
+          ],
+          "responseDTO": {
+            "name": "DistribValeDifListDTO",
+            "description": "Lista de distribuciones de vales diferidos",
+            "fields": [
+              {"name": "items", "type": "array<DistribValeDifResponseDTO>", "required": true, "description": "Lista de distribuciones"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/distribuciones-vales-diferidos/{id}",
+          "summary": "Obtener distribución de vale diferido por ID",
+          "description": "Obtiene el detalle de una distribución de vales diferidos con empresa, localidad, motivo, tipo de contrato, período, fecha de descuento, año, estado y observaciones",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DistribValeDifResponseDTO",
+            "description": "Detalle de una distribución de vales diferidos (tabla av_py_distrib_valesdif)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador (iiddistribvalesdif)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa (iidempresa)"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa (denormalizado)"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad (AvDimensionesl, FK iiddmlocalidad)"},
+              {"name": "localidadNombre", "type": "string", "required": false, "description": "Nombre de la localidad (denormalizado)"},
+              {"name": "motivoId", "type": "integer", "required": false, "description": "ID del motivo (catálogo AvCatalogos, FK iidmotivo)"},
+              {"name": "motivoNombre", "type": "string", "required": false, "description": "Nombre del motivo (AvCatalogos.vdttxt01)"},
+              {"name": "tipoContratoId", "type": "integer", "required": false, "description": "ID del tipo de contrato (catálogo AvCatalogos, FK iidtipocontrato)"},
+              {"name": "tipoContratoNombre", "type": "string", "required": false, "description": "Nombre del tipo de contrato"},
+              {"name": "tipoContratoCodigo", "type": "string", "required": false, "description": "Código del tipo de contrato (ctipocontrato)"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período (dfinicio)"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período (dffin)"},
+              {"name": "fechaDescuento", "type": "datetime", "required": false, "description": "Fecha de inicio del descuento (dfdescuento)"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año (ianio)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado (vstts)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones (vobservacion)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/distribuciones-vales-diferidos",
+          "summary": "Crear distribución de vales diferidos",
+          "description": "Crea una nueva distribución de vales diferidos con empresa, localidad, motivo, tipo de contrato, período, fecha de descuento y año",
+          "requestDTO": {
+            "name": "DistribValeDifCreateDTO",
+            "description": "Datos para crear una distribución de vales diferidos",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "localidadId", "type": "integer", "required": true, "description": "ID de la localidad (AvDimensionesl)"},
+              {"name": "motivoId", "type": "integer", "required": true, "description": "ID del motivo (catálogo AvCatalogos)"},
+              {"name": "tipoContratoId", "type": "integer", "required": false, "description": "ID del tipo de contrato (catálogo)"},
+              {"name": "tipoContratoCodigo", "type": "string", "required": false, "description": "Código del tipo de contrato"},
+              {"name": "fechaInicio", "type": "datetime", "required": true, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": true, "description": "Fecha de fin del período"},
+              {"name": "fechaDescuento", "type": "datetime", "required": true, "description": "Fecha de inicio del descuento"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DistribValeDifResponseDTO",
+            "description": "Distribución creada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/distribuciones-vales-diferidos/{id}",
+          "summary": "Actualizar distribución de vales diferidos",
+          "description": "Actualiza los datos de una distribución de vales diferidos existente (localidad, motivo, fechas, año, estado, observaciones)",
+          "requestDTO": {
+            "name": "DistribValeDifUpdateDTO",
+            "description": "Datos para actualizar la distribución",
+            "fields": [
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad"},
+              {"name": "motivoId", "type": "integer", "required": false, "description": "ID del motivo"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin"},
+              {"name": "fechaDescuento", "type": "datetime", "required": false, "description": "Fecha de descuento"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado (vstts)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DistribValeDifResponseDTO",
+            "description": "Distribución actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/distribuciones-vales-diferidos/{id}",
+          "summary": "Eliminar distribución de vales diferidos",
+          "description": "Elimina una distribución de vales diferidos. Valida que no tenga solicitudes activas asociadas (AvPyColaboradoressolValdif)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Detalle de distribución vales diferidos (subrecurso)",
+      "baseUrl": "/api/v1/distribuciones-vales-diferidos/{distribucionId}/detalles",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/distribuciones-vales-diferidos/{distribucionId}/detalles",
+          "summary": "Listar detalles de distribución de vales diferidos",
+          "description": "Obtiene la lista de detalles de configuración de la distribución (av_py_distrib_valesdif_det) con porcentajes de descuento por meses, utilidades, D4, D3 y flags de aplicación",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DistribValeDifDetListDTO",
+            "description": "Lista de detalles de configuración de la distribución",
+            "fields": [
+              {"name": "items", "type": "array<DistribValeDifDetResponseDTO>", "required": true, "description": "Lista de detalles de distribución"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de detalles"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/distribuciones-vales-diferidos/{distribucionId}/detalles/{id}",
+          "summary": "Obtener detalle de distribución por ID",
+          "description": "Obtiene un detalle de configuración de distribución con número de meses, porcentajes de descuento (mensual, utilidades, D4, D3), flags de aplicación y relación con dimensión custom (rol)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DistribValeDifDetResponseDTO",
+            "description": "Detalle de distribución de vales diferidos (tabla av_py_distrib_valesdif_det)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del detalle (iiddistribvalesdifdet)"},
+              {"name": "distribucionId", "type": "integer", "required": true, "description": "ID de la distribución padre (iiddistribvalesdif)"},
+              {"name": "dimensionCustomId", "type": "integer", "required": false, "description": "ID de dimensión custom/rol (AvDimensionesl, FK iiddmcustom)"},
+              {"name": "dimensionCustomNombre", "type": "string", "required": false, "description": "Nombre de la dimensión custom (denormalizado)"},
+              {"name": "compromisoUtil", "type": "string", "required": false, "description": "Compromiso utilidades (ccompromutil, S/N)"},
+              {"name": "numMeses", "type": "integer", "required": false, "description": "Número de meses (inummeses)"},
+              {"name": "numMesesDescuento", "type": "integer", "required": false, "description": "Número de meses de descuento (inummesesdesct)"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto (mmonto)"},
+              {"name": "porcentajeDesctoMeses", "type": "number", "required": false, "description": "Porcentaje de descuento mensual (mporcentaje_dscto_meses)"},
+              {"name": "porcentajeDesctoUtil", "type": "number", "required": false, "description": "Porcentaje de descuento utilidades (mporcentaje_dscto_utilidades)"},
+              {"name": "aplicaDesctoMensual", "type": "string", "required": false, "description": "Flag aplica descuento mensual (caplicadesctcm, S/N)"},
+              {"name": "aplicaDesctoUtil", "type": "string", "required": false, "description": "Flag aplica descuento utilidades (caplicadesctutil, S/N)"},
+              {"name": "aplicaMeses", "type": "string", "required": false, "description": "Flag aplica meses (caplicameses, S/N)"},
+              {"name": "compromisoD4", "type": "string", "required": false, "description": "Compromiso D4 (ccompromd4, S/N)"},
+              {"name": "aplicaDesctoD4", "type": "string", "required": false, "description": "Flag aplica descuento D4 (caplicadesctd4, S/N)"},
+              {"name": "porcentajeDesctoD4", "type": "number", "required": false, "description": "Porcentaje descuento D4 (mporcentaje_dscto_d4)"},
+              {"name": "valorPorcD4", "type": "number", "required": false, "description": "Valor porcentual D4 (mvalporc_d4)"},
+              {"name": "aplicaValPorcD4", "type": "string", "required": false, "description": "Flag aplica valor porcentual D4 (caplicavalporcd4, S/N)"},
+              {"name": "compromisoD3", "type": "string", "required": false, "description": "Compromiso D3 (ccompromd3, S/N)"},
+              {"name": "aplicaDesctoD3", "type": "string", "required": false, "description": "Flag aplica descuento D3 (caplicadesctd3, S/N)"},
+              {"name": "porcentajeDesctoD3", "type": "number", "required": false, "description": "Porcentaje descuento D3 (mporcentaje_dscto_d3)"},
+              {"name": "valorPorcD3", "type": "number", "required": false, "description": "Valor porcentual D3 (mvalporc_d3)"},
+              {"name": "aplicaValPorcD3", "type": "string", "required": false, "description": "Flag aplica valor porcentual D3 (caplicavalporcd3, S/N)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado (vstts)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/distribuciones-vales-diferidos/{distribucionId}/detalles",
+          "summary": "Crear detalle de distribución",
+          "description": "Crea un nuevo detalle de configuración de distribución con porcentajes y flags de aplicación para descuentos mensuales, utilidades, D4 y D3",
+          "requestDTO": {
+            "name": "DistribValeDifDetCreateDTO",
+            "description": "Datos para crear un detalle de configuración de distribución",
+            "fields": [
+              {"name": "dimensionCustomId", "type": "integer", "required": false, "description": "ID de dimensión custom/rol (AvDimensionesl)"},
+              {"name": "numMeses", "type": "integer", "required": true, "description": "Número de meses"},
+              {"name": "numMesesDescuento", "type": "integer", "required": false, "description": "Meses de descuento"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto"},
+              {"name": "porcentajeDesctoMeses", "type": "number", "required": false, "description": "% descuento meses"},
+              {"name": "porcentajeDesctoUtil", "type": "number", "required": false, "description": "% descuento utilidades"},
+              {"name": "aplicaDesctoMensual", "type": "string", "required": false, "description": "Aplica descuento mensual (S/N)"},
+              {"name": "aplicaDesctoUtil", "type": "string", "required": false, "description": "Aplica descuento utilidades (S/N)"},
+              {"name": "aplicaMeses", "type": "string", "required": false, "description": "Aplica meses (S/N)"},
+              {"name": "compromisoUtil", "type": "string", "required": false, "description": "Compromiso utilidades (S/N)"},
+              {"name": "compromisoD4", "type": "string", "required": false, "description": "Compromiso D4 (S/N)"},
+              {"name": "aplicaDesctoD4", "type": "string", "required": false, "description": "Aplica descuento D4 (S/N)"},
+              {"name": "porcentajeDesctoD4", "type": "number", "required": false, "description": "% descuento D4"},
+              {"name": "compromisoD3", "type": "string", "required": false, "description": "Compromiso D3 (S/N)"},
+              {"name": "aplicaDesctoD3", "type": "string", "required": false, "description": "Aplica descuento D3 (S/N)"},
+              {"name": "porcentajeDesctoD3", "type": "number", "required": false, "description": "% descuento D3"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DistribValeDifDetResponseDTO",
+            "description": "Detalle de distribución creado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/distribuciones-vales-diferidos/{distribucionId}/detalles/{id}",
+          "summary": "Actualizar detalle de distribución",
+          "description": "Actualiza los porcentajes y flags de configuración de un detalle de distribución de vales diferidos",
+          "requestDTO": {
+            "name": "DistribValeDifDetUpdateDTO",
+            "description": "Datos para actualizar el detalle de distribución",
+            "fields": [
+              {"name": "numMeses", "type": "integer", "required": false, "description": "Número de meses"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto"},
+              {"name": "porcentajeDesctoMeses", "type": "number", "required": false, "description": "% descuento meses"},
+              {"name": "porcentajeDesctoUtil", "type": "number", "required": false, "description": "% descuento utilidades"},
+              {"name": "aplicaDesctoMensual", "type": "string", "required": false, "description": "Aplica mensual (S/N)"},
+              {"name": "aplicaDesctoUtil", "type": "string", "required": false, "description": "Aplica utilidades (S/N)"},
+              {"name": "compromisoD4", "type": "string", "required": false, "description": "Compromiso D4 (S/N)"},
+              {"name": "aplicaDesctoD4", "type": "string", "required": false, "description": "Aplica D4 (S/N)"},
+              {"name": "porcentajeDesctoD4", "type": "number", "required": false, "description": "% D4"},
+              {"name": "compromisoD3", "type": "string", "required": false, "description": "Compromiso D3 (S/N)"},
+              {"name": "aplicaDesctoD3", "type": "string", "required": false, "description": "Aplica D3 (S/N)"},
+              {"name": "porcentajeDesctoD3", "type": "number", "required": false, "description": "% D3"}
+            ]
+          },
+          "responseDTO": {
+            "name": "DistribValeDifDetResponseDTO",
+            "description": "Detalle actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/distribuciones-vales-diferidos/{distribucionId}/detalles/{id}",
+          "summary": "Eliminar detalle de distribución",
+          "description": "Elimina un detalle de configuración de distribución. Valida que no tenga solicitudes asociadas (AvPyColaboradoressolValdif)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación del detalle",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "provisionesxColaboradorList.zul - Provisiones por colaborador",
+      "baseUrl": "/api/v1/provisiones/por-colaborador",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/provisiones/por-colaborador",
+          "summary": "Listar provisiones por colaborador",
+          "description": "Obtiene la lista de provisiones acumuladas por colaborador para una empresa y período. Los datos se calculan vía función de base de datos Av_F_AcumProvisiones() y query nativa getprovisionesxcolaborador(). Columnas: Cédula, Nombres, TotProvAcum, BaseProvAcum, TotProvMes, BaseProvMes",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "procesoId", "type": "integer", "required": false, "description": "ID de la instancia de proceso de nómina"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "ID de la ejecución del proceso"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por rubro de provisión"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por colaborador"},
+            {"name": "cedula", "type": "string", "required": false, "description": "Filtro por cédula"},
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"}
+          ],
+          "responseDTO": {
+            "name": "ProvisionColaboradorPageResponseDTO",
+            "description": "Lista paginada de provisiones por colaborador",
+            "fields": [
+              {"name": "content", "type": "array<ProvisionColaboradorResponseDTO>", "required": true, "description": "Lista de provisiones por colaborador"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/provisiones/por-colaborador/{empresaId}/{colaboradorId}",
+          "summary": "Obtener provisiones de un colaborador",
+          "description": "Obtiene el detalle de provisiones acumuladas de un colaborador específico con cédula, nombres, total provisiones acumulado, base provisiones acumulada, total provisiones mes y base provisiones mes. Calculados desde función de base de datos Av_F_AcumProvisiones()",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "procesoId", "type": "integer", "required": false, "description": "ID de la instancia de proceso"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "ID de la ejecución"}
+          ],
+          "responseDTO": {
+            "name": "ProvisionColaboradorResponseDTO",
+            "description": "Provisiones acumuladas de un colaborador",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador (índice [7] del Object[])"},
+              {"name": "nombres", "type": "string", "required": false, "description": "Apellidos y nombres del colaborador (índice [8])"},
+              {"name": "totalProvisionAcumulado", "type": "number", "required": false, "description": "Total provisiones acumulado (índice [5])"},
+              {"name": "baseProvisionAcumulada", "type": "number", "required": false, "description": "Base de provisiones acumulada (índice [6])"},
+              {"name": "totalProvisionMes", "type": "number", "required": false, "description": "Total provisiones del mes (índice [0])"},
+              {"name": "baseProvisionMes", "type": "number", "required": false, "description": "Base de provisiones del mes (índice [1])"},
+              {"name": "detalleRubros", "type": "array<ProvisionDetalleRubroDTO>", "required": false, "description": "Detalle de provisiones por rubro (cargado bajo demanda)"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/provisiones/por-colaborador/{empresaId}/{colaboradorId}/detalle",
+          "summary": "Listar detalle de provisiones por rubro de un colaborador",
+          "description": "Obtiene el desglose de provisiones por rubro de un colaborador vía query nativa getprovisionesxcolaboradorxid(). Columnas: Rubro, ValorAcum, BaseAcum, ValorMes, BaseMes. Incluye totales al pie (totvalacum, totbaseacum, totvalmes, totbasemes)",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "procesoId", "type": "integer", "required": false, "description": "ID de la instancia de proceso"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "ID de la ejecución"}
+          ],
+          "responseDTO": {
+            "name": "ProvisionDetalleRubroListDTO",
+            "description": "Lista de provisiones por rubro del colaborador con totales",
+            "fields": [
+              {"name": "items", "type": "array<ProvisionDetalleRubroDTO>", "required": true, "description": "Lista de rubros de provisión"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de rubros"},
+              {"name": "totalValorAcumulado", "type": "number", "required": false, "description": "Total valor acumulado (totvalacum)"},
+              {"name": "totalBaseAcumulada", "type": "number", "required": false, "description": "Total base acumulada (totbaseacum)"},
+              {"name": "totalValorMes", "type": "number", "required": false, "description": "Total valor mensual (totvalmes)"},
+              {"name": "totalBaseMes", "type": "number", "required": false, "description": "Total base mensual (totbasemes)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/provisiones/por-colaborador/exportar",
+          "summary": "Exportar provisiones por colaborador",
+          "description": "Exporta la consulta de provisiones por colaborador a archivo Excel/CSV para descarga",
+          "requestDTO": {
+            "name": "ExportarProvisionesColaboradorDTO",
+            "description": "Filtros para la exportación de provisiones por colaborador",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"},
+              {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por rubro"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato de exportación (XLSX, CSV)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo generado"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/provisiones/por-colaborador/{empresaId}/{colaboradorId}",
+          "summary": "Eliminar provisiones de un colaborador",
+          "description": "Elimina las provisiones calculadas de un colaborador para un proceso específico",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación de provisiones",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "provisionesxColaboradorDialog.zul - Detalle de provisiones",
+      "baseUrl": "/api/v1/provisiones/por-colaborador/{empresaId}/{colaboradorId}/detalle",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/provisiones/por-colaborador/{empresaId}/{colaboradorId}/detalle",
+          "summary": "Listar detalle de provisiones por rubro (diálogo)",
+          "description": "Obtiene el desglose de provisiones por rubro para un colaborador (pantalla de diálogo). Misma lógica que el endpoint de detalle del listado, vía query nativa getprovisionesxcolaboradorxid(). Incluye totales al pie",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "procesoId", "type": "integer", "required": false, "description": "ID de la instancia de proceso"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "ID de la ejecución"}
+          ],
+          "responseDTO": {
+            "name": "ProvisionDetalleRubroListDTO",
+            "description": "Lista de provisiones por rubro del colaborador (diálogo de detalle)",
+            "fields": [
+              {"name": "items", "type": "array<ProvisionDetalleRubroDTO>", "required": true, "description": "Lista de rubros de provisión"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de rubros"},
+              {"name": "totalValorAcumulado", "type": "number", "required": false, "description": "Total valor acumulado (totvalacum)"},
+              {"name": "totalBaseAcumulada", "type": "number", "required": false, "description": "Total base acumulada (totbaseacum)"},
+              {"name": "totalValorMes", "type": "number", "required": false, "description": "Total valor mensual (totvalmes)"},
+              {"name": "totalBaseMes", "type": "number", "required": false, "description": "Total base mensual (totbasemes)"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/provisiones/por-colaborador/{empresaId}/{colaboradorId}/detalle/{rubroId}",
+          "summary": "Obtener provisión de un colaborador por rubro",
+          "description": "Obtiene el detalle de provisión de un rubro específico para un colaborador con valor acumulado, base acumulada, valor mes y base mes",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ProvisionDetalleRubroDTO",
+            "description": "Detalle de provisión por rubro para un colaborador (calculado vía Av_F_AcumProvisiones)",
+            "fields": [
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro de provisión (índice [7] del Object[])"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro"},
+              {"name": "valorAcumulado", "type": "number", "required": false, "description": "Valor acumulado de provisión (índice [5])"},
+              {"name": "baseAcumulada", "type": "number", "required": false, "description": "Base acumulada de provisión (índice [6])"},
+              {"name": "valorMes", "type": "number", "required": false, "description": "Valor de provisión del mes (índice [0])"},
+              {"name": "baseMes", "type": "number", "required": false, "description": "Base de provisión del mes (índice [1])"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/provisiones/por-colaborador/{empresaId}/{colaboradorId}/detalle/exportar",
+          "summary": "Exportar detalle de provisiones de un colaborador",
+          "description": "Exporta el detalle de provisiones por rubro de un colaborador a archivo Excel/CSV",
+          "requestDTO": {
+            "name": "ExportarDetalleProvisionesDTO",
+            "description": "Parámetros de exportación del detalle",
+            "fields": [
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato de exportación (XLSX, CSV)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/provisiones/por-colaborador/{empresaId}/{colaboradorId}/detalle/{rubroId}",
+          "summary": "Eliminar provisión de un rubro para un colaborador",
+          "description": "Elimina la provisión calculada de un rubro específico para un colaborador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "colaboradoresxProvision.zul - Colaboradores por provisión",
+      "baseUrl": "/api/v1/provisiones/por-provision",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/provisiones/por-provision",
+          "summary": "Listar colaboradores por provisión",
+          "description": "Obtiene la lista de colaboradores agrupados por provisión/rubro, mostrando totales acumulados y del mes. Datos vía query nativa getcolaboradoresxprovisiones() que usa función Av_F_AcumProvisiones(). Columnas: Cédula, Nombres, TotProvAcum, BaseProvAcum, TotProvMes, BaseProvMes. Incluye totales al pie (totalcolab, totprovacum, totbaseprovacum, totprovmes, totbaseprovmes)",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "ID de la ejecución"},
+            {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro de provisión"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por colaborador"},
+            {"name": "rol", "type": "string", "required": false, "description": "Filtro por rol"},
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"}
+          ],
+          "responseDTO": {
+            "name": "ColaboradoresProvisionPageResponseDTO",
+            "description": "Lista paginada de colaboradores por provisión con totales",
+            "fields": [
+              {"name": "content", "type": "array<ColaboradorProvisionResponseDTO>", "required": true, "description": "Lista de colaboradores con sus provisiones"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"},
+              {"name": "totalColaboradores", "type": "integer", "required": false, "description": "Total de colaboradores (totalcolab)"},
+              {"name": "totalProvisionAcumulado", "type": "number", "required": false, "description": "Suma total provisión acumulada (totprovacum)"},
+              {"name": "totalBaseProvisionAcumulada", "type": "number", "required": false, "description": "Suma total base acumulada (totbaseprovacum)"},
+              {"name": "totalProvisionMes", "type": "number", "required": false, "description": "Suma total provisión mes (totprovmes)"},
+              {"name": "totalBaseProvisionMes", "type": "number", "required": false, "description": "Suma total base mes (totbaseprovmes)"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/provisiones/por-provision/{empresaId}/{rubroId}/{colaboradorId}",
+          "summary": "Obtener provisión de un colaborador para un rubro",
+          "description": "Obtiene el detalle de provisión de un colaborador para un rubro específico con valores acumulados y del mes, base acumulada y base del mes",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ColaboradorProvisionResponseDTO",
+            "description": "Detalle de provisión de un colaborador por rubro",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro de provisión"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador (índice [7])"},
+              {"name": "nombres", "type": "string", "required": false, "description": "Apellidos y nombres (índice [8])"},
+              {"name": "totalProvisionAcumulado", "type": "number", "required": false, "description": "Total provisión acumulado (índice [5])"},
+              {"name": "baseProvisionAcumulada", "type": "number", "required": false, "description": "Base provisión acumulada (índice [6])"},
+              {"name": "totalProvisionMes", "type": "number", "required": false, "description": "Total provisión del mes (índice [0])"},
+              {"name": "baseProvisionMes", "type": "number", "required": false, "description": "Base provisión del mes (índice [1])"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/provisiones/por-provision/exportar",
+          "summary": "Exportar colaboradores por provisión",
+          "description": "Exporta la consulta de colaboradores por provisión a archivo Excel/CSV",
+          "requestDTO": {
+            "name": "ExportarColaboradoresProvisionDTO",
+            "description": "Filtros para la exportación de colaboradores por provisión",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Localidad"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato (XLSX, CSV)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/provisiones/por-provision/{empresaId}/{rubroId}/{colaboradorId}",
+          "summary": "Eliminar provisión de colaborador por rubro",
+          "description": "Elimina la provisión calculada de un colaborador para un rubro específico",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "consultaProvisionesxRubroList.zul - Provisiones por rubro",
+      "baseUrl": "/api/v1/provisiones/por-rubro",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/provisiones/por-rubro",
+          "summary": "Listar provisiones acumuladas por rubro",
+          "description": "Obtiene la lista de provisiones acumuladas agrupadas por rubro para una empresa y período. Datos vía query nativa getvalmesacumprovisionesxrubro() que usa función Av_F_AcumProvisiones(). Columnas: Rubro, NumColab, AcumValor, AcumBase, ValorMes, BaseMes. Doble clic abre colaboradoresxProvision.zul",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "ID de la ejecución"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"},
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"}
+          ],
+          "responseDTO": {
+            "name": "ProvisionRubroPageResponseDTO",
+            "description": "Lista paginada de provisiones acumuladas por rubro",
+            "fields": [
+              {"name": "content", "type": "array<ProvisionRubroResponseDTO>", "required": true, "description": "Lista de provisiones por rubro"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/provisiones/por-rubro/{empresaId}/{rubroId}",
+          "summary": "Obtener provisión acumulada por rubro",
+          "description": "Obtiene el detalle de provisión acumulada para un rubro específico con número de colaboradores, valor acumulado, base acumulada, valor del mes y base del mes",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso"},
+            {"name": "ejecucionId", "type": "integer", "required": false, "description": "ID de la ejecución"}
+          ],
+          "responseDTO": {
+            "name": "ProvisionRubroResponseDTO",
+            "description": "Detalle de provisión acumulada por rubro (calculado vía Av_F_AcumProvisiones)",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro de provisión (índice [0] del Object[])"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "numColaboradores", "type": "integer", "required": false, "description": "Número de colaboradores con esta provisión (índice [1])"},
+              {"name": "acumuladoValor", "type": "number", "required": false, "description": "Valor acumulado de provisión (índice [4])"},
+              {"name": "acumuladoBase", "type": "number", "required": false, "description": "Base acumulada de provisión (índice [5])"},
+              {"name": "valorMes", "type": "number", "required": false, "description": "Valor de provisión del mes (índice [2])"},
+              {"name": "baseMes", "type": "number", "required": false, "description": "Base de provisión del mes (índice [3])"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/provisiones/por-rubro/exportar",
+          "summary": "Exportar provisiones por rubro",
+          "description": "Exporta la consulta de provisiones acumuladas por rubro a archivo Excel/CSV para descarga",
+          "requestDTO": {
+            "name": "ExportarProvisionesRubroDTO",
+            "description": "Filtros para la exportación de provisiones por rubro",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Localidad"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato de exportación (XLSX, CSV)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/provisiones/por-rubro/{empresaId}/{rubroId}",
+          "summary": "Eliminar provisiones de un rubro",
+          "description": "Elimina las provisiones calculadas de un rubro específico para una empresa y proceso",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Cargas CrediTIA (catálogo de referencia)",
+      "baseUrl": "/api/v1/cargas-creditia",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/cargas-creditia",
+          "summary": "Listar cargas CrediTIA",
+          "description": "Obtiene la lista de cargas de crédito TIA (av_py_cargacreditia) con fecha de carga, empresa, nombre de archivo, estado y observaciones",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado (vstts)"},
+            {"name": "fechaDesde", "type": "datetime", "required": false, "description": "Filtro fecha desde"},
+            {"name": "fechaHasta", "type": "datetime", "required": false, "description": "Filtro fecha hasta"}
+          ],
+          "responseDTO": {
+            "name": "CargaCreditiaListDTO",
+            "description": "Lista de cargas CrediTIA",
+            "fields": [
+              {"name": "items", "type": "array<CargaCreditiaResponseDTO>", "required": true, "description": "Lista de cargas CrediTIA"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de cargas"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/cargas-creditia/{id}",
+          "summary": "Obtener carga CrediTIA por ID",
+          "description": "Obtiene el detalle de una carga CrediTIA con fecha, empresa, nombre de archivo, estado y observaciones",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CargaCreditiaResponseDTO",
+            "description": "Detalle de una carga CrediTIA (tabla av_py_cargacreditia)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador de la carga (iidcargacreditia)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa (FK iidempresa)"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa (denormalizado)"},
+              {"name": "fechaCarga", "type": "datetime", "required": false, "description": "Fecha de la carga (dfcarga)"},
+              {"name": "nombreArchivo", "type": "string", "required": false, "description": "Nombre del archivo cargado (vnombrearch)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado de la carga (vstts)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones (vobservacion)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso (usuarioingreso_au)"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso (horaingreso_au)"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación (usuariomodificacion_au)"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación (horamodificacion_au)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/cargas-creditia",
+          "summary": "Crear carga CrediTIA",
+          "description": "Crea una nueva carga de crédito TIA subiendo un archivo con los datos de préstamos a importar. Procesa el archivo y genera los detalles en av_py_cargacreditia_det con cédula, rubro, monto, alícuota, fecha de descuento y estado de cada línea",
+          "requestDTO": {
+            "name": "CargaCreditiaCreateDTO",
+            "description": "Datos para crear una carga CrediTIA",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "fechaCarga", "type": "datetime", "required": true, "description": "Fecha de la carga"},
+              {"name": "nombreArchivo", "type": "string", "required": true, "description": "Nombre del archivo"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CargaCreditiaResponseDTO",
+            "description": "Carga CrediTIA creada",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/cargas-creditia/{id}",
+          "summary": "Actualizar carga CrediTIA",
+          "description": "Actualiza los datos de una carga CrediTIA (estado, observaciones)",
+          "requestDTO": {
+            "name": "CargaCreditiaUpdateDTO",
+            "description": "Datos para actualizar la carga CrediTIA",
+            "fields": [
+              {"name": "estado", "type": "string", "required": false, "description": "Estado (vstts)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CargaCreditiaResponseDTO",
+            "description": "Carga actualizada",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/cargas-creditia/{id}",
+          "summary": "Eliminar carga CrediTIA",
+          "description": "Elimina una carga CrediTIA y sus detalles (av_py_cargacreditia_det). Valida que no tenga préstamos generados asociados (AvPyRubrosPrestamo.iidcargacreditia)",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación de la carga",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "Detalle carga CrediTIA (subrecurso)",
+      "baseUrl": "/api/v1/cargas-creditia/{cargaId}/detalles",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/cargas-creditia/{cargaId}/detalles",
+          "summary": "Listar detalles de carga CrediTIA",
+          "description": "Obtiene la lista de líneas del archivo de carga CrediTIA (av_py_cargacreditia_det) con cédula, rubro, monto total, alícuota, fecha de descuento, estado y observaciones",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "cedula", "type": "string", "required": false, "description": "Filtro por cédula del colaborador (vcedula)"},
+            {"name": "rubroId", "type": "string", "required": false, "description": "Filtro por rubro (vidrubroh)"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado (vstts)"}
+          ],
+          "responseDTO": {
+            "name": "CargaCreditiaDetListDTO",
+            "description": "Lista de detalles de carga CrediTIA",
+            "fields": [
+              {"name": "items", "type": "array<CargaCreditiaDetResponseDTO>", "required": true, "description": "Lista de líneas de detalle"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de registros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/cargas-creditia/{cargaId}/detalles/{id}",
+          "summary": "Obtener detalle de carga CrediTIA por ID",
+          "description": "Obtiene una línea de detalle de la carga CrediTIA con datos de cédula, rubro, monto, alícuota, fecha de descuento, estado y relación con el colaborador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "CargaCreditiaDetResponseDTO",
+            "description": "Detalle de una línea de carga CrediTIA (tabla av_py_cargacreditia_det)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del detalle (iidcargacreditiadet)"},
+              {"name": "cargaId", "type": "integer", "required": true, "description": "ID de la carga padre (iidcargacreditia)"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "ID del colaborador (FK compuesta iidcolaborador)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa (FK compuesta iidempresa)"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador (vcedula)"},
+              {"name": "rubroId", "type": "string", "required": false, "description": "ID del rubro del préstamo (vidrubroh)"},
+              {"name": "montoTotal", "type": "number", "required": false, "description": "Monto total del préstamo (mtotal)"},
+              {"name": "alicuota", "type": "number", "required": false, "description": "Valor de la alícuota/cuota (malicuota)"},
+              {"name": "fechaDescuento", "type": "datetime", "required": false, "description": "Fecha de inicio de descuento (dfdescuento)"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del detalle (vstts)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones (vobservacion)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario de ingreso (usuarioingreso_au)"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de ingreso (horaingreso_au)"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de modificación (usuariomodificacion_au)"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de modificación (horamodificacion_au)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/cargas-creditia/{cargaId}/detalles",
+          "summary": "Crear detalle de carga CrediTIA",
+          "description": "Agrega una línea de detalle a la carga CrediTIA con cédula, rubro, monto, alícuota y fecha de descuento. Valida que la cédula corresponda a un colaborador activo de la empresa (AvColaboradorese)",
+          "requestDTO": {
+            "name": "CargaCreditiaDetCreateDTO",
+            "description": "Datos para crear un detalle de carga CrediTIA",
+            "fields": [
+              {"name": "cedula", "type": "string", "required": true, "description": "Cédula del colaborador"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro del préstamo (vidrubroh)"},
+              {"name": "montoTotal", "type": "number", "required": true, "description": "Monto total del préstamo"},
+              {"name": "alicuota", "type": "number", "required": true, "description": "Valor de la alícuota/cuota"},
+              {"name": "fechaDescuento", "type": "datetime", "required": true, "description": "Fecha de inicio de descuento"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CargaCreditiaDetResponseDTO",
+            "description": "Detalle de carga CrediTIA creado",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/cargas-creditia/{cargaId}/detalles/{id}",
+          "summary": "Actualizar detalle de carga CrediTIA",
+          "description": "Actualiza los datos de una línea de detalle de carga (rubro, monto, alícuota, fecha, estado, observaciones)",
+          "requestDTO": {
+            "name": "CargaCreditiaDetUpdateDTO",
+            "description": "Datos para actualizar detalle de carga CrediTIA",
+            "fields": [
+              {"name": "rubroId", "type": "string", "required": false, "description": "ID del rubro"},
+              {"name": "montoTotal", "type": "number", "required": false, "description": "Monto total"},
+              {"name": "alicuota", "type": "number", "required": false, "description": "Alícuota"},
+              {"name": "fechaDescuento", "type": "datetime", "required": false, "description": "Fecha de descuento"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado (vstts)"},
+              {"name": "observacion", "type": "string", "required": false, "description": "Observaciones"}
+            ]
+          },
+          "responseDTO": {
+            "name": "CargaCreditiaDetResponseDTO",
+            "description": "Detalle actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/cargas-creditia/{cargaId}/detalles/{id}",
+          "summary": "Eliminar detalle de carga CrediTIA",
+          "description": "Elimina una línea de detalle de la carga CrediTIA. Valida que no tenga préstamo generado asociado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación del detalle",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación o error"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

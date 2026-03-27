@@ -1,0 +1,26 @@
+{
+  "projectName": "Proyecto",
+  "scannedAt": "2026-03-05T02:13:35.060Z",
+  "totalAvailable": 8,
+  "totalSelected": 1,
+  "selectedAt": "2026-03-05T02:13:35.060Z",
+  "modules": [
+    {
+      "name": "PayrollManagement",
+      "domain": "Finance",
+      "type": "domain-module",
+      "description": "Gestión completa de nómina, rubros, distribuciones salariales, anticipos y procesos de pago a colaboradores",
+      "businessContext": "Módulo crítico para gestionar el ciclo de pago: cálculo de rubros, distribución de valores, deudas, liquidaciones y exportación contable",
+      "basedOn": [
+        "AvPyDistribucionPK.java",
+        "AvPyRubroslpreColabPK.java",
+        "AvPyLogRegistrosProceso.java",
+        "AvPyEndeudamientoDAO.java",
+        "ResumenGralNominaDialogCtrl.java"
+      ],
+      "packagePrefix": "com.avante.py",
+      "isConfirmed": true,
+      "numberOfClasses": 55
+    }
+  ]
+}

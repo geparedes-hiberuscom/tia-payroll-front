@@ -1,0 +1,258 @@
+{
+  "slice_id": "slice-4-consultas",
+  "slice_nombre": "👤 Consultas",
+  "moduleName": "consultas",
+  "target": "react",
+  "generatedAt": "2026-03-27T16:49:54.316Z",
+  "detected_screens": [
+    {
+      "name": "nominaxColabList.zul",
+      "description": "Pantalla fuente: nominaxColabList.zul",
+      "funcionalidad": "nominaxColabList",
+      "actions": 0
+    },
+    {
+      "name": "nominaxColabPreList.zul",
+      "description": "Pantalla fuente: nominaxColabPreList.zul",
+      "funcionalidad": "nominaxColabPreList_nominaxColabPreDialog",
+      "actions": 0
+    },
+    {
+      "name": "nominaxColabPreDialog.zul",
+      "description": "Pantalla fuente: nominaxColabPreDialog.zul",
+      "funcionalidad": "nominaxColabPreList_nominaxColabPreDialog",
+      "actions": 0
+    },
+    {
+      "name": "nominaresumenGeneral.zul",
+      "description": "Pantalla fuente: nominaresumenGeneral.zul",
+      "funcionalidad": "nominaresumenGeneral_ResumenGralNominaDialog",
+      "actions": 0
+    },
+    {
+      "name": "ResumenGralNominaDialog.zul",
+      "description": "Pantalla fuente: ResumenGralNominaDialog.zul",
+      "funcionalidad": "nominaresumenGeneral_ResumenGralNominaDialog",
+      "actions": 0
+    },
+    {
+      "name": "nominaresumenGralxRubro.zul",
+      "description": "Pantalla fuente: nominaresumenGralxRubro.zul",
+      "funcionalidad": "nominaresumenGralxRubro",
+      "actions": 0
+    },
+    {
+      "name": "nominaresumenGralCxRubro.zul",
+      "description": "Pantalla fuente: nominaresumenGralCxRubro.zul",
+      "funcionalidad": "nominaresumenGralCxRubro",
+      "actions": 0
+    },
+    {
+      "name": "comparativoNominas.zul",
+      "description": "Pantalla fuente: comparativoNominas.zul",
+      "funcionalidad": "comparativoNominas",
+      "actions": 0
+    },
+    {
+      "name": "conSueldo.zul",
+      "description": "Pantalla fuente: conSueldo.zul",
+      "funcionalidad": "conSueldo",
+      "actions": 0
+    },
+    {
+      "name": "acumulados.zul",
+      "description": "Pantalla fuente: acumulados.zul",
+      "funcionalidad": "acumulados",
+      "actions": 0
+    },
+    {
+      "name": "DTOs compartidos (subrecursos)",
+      "description": "Pantalla fuente: DTOs compartidos (subrecursos)",
+      "funcionalidad": "DTOscompartidossubrecursos",
+      "actions": 0
+    }
+  ],
+  "existing_layers": {
+    "models": [
+      "Acumulados.ts",
+      "Comparativonominas.ts",
+      "Consueldo.ts",
+      "Consultas.ts",
+      "Dtoscompartidossubrecursos.ts",
+      "NominaresumengeneralResumengralnominadialog.ts",
+      "Nominaresumengralcxrubro.ts",
+      "Nominaresumengralxrubro.ts",
+      "Nominaxcolablist.ts",
+      "NominaxcolabprelistNominaxcolabpredialog.ts"
+    ],
+    "dtos": [
+      "AcumuladosDto.ts",
+      "ComparativonominasDto.ts",
+      "ConsueldoDto.ts",
+      "ConsultasDto.ts",
+      "DtoscompartidossubrecursosDto.ts",
+      "NominaresumengeneralResumengralnominadialogDto.ts",
+      "NominaresumengralcxrubroDto.ts",
+      "NominaresumengralcxrubroDto2.ts",
+      "NominaresumengralxrubroDto.ts",
+      "NominaxcolablistDto.ts",
+      "NominaxcolabprelistNominaxcolabpredialogDto.ts"
+    ],
+    "hooks": [
+      "useAcumulados.ts",
+      "useComparativonominas.ts",
+      "useConsueldo.ts",
+      "useConsultas.ts",
+      "useDtoscompartidossubrecursos.ts",
+      "useNominaresumengeneralResumengralnominadialog.ts",
+      "useNominaresumengralcxrubro.ts",
+      "useNominaresumengralxrubro.ts",
+      "useNominaxcolablist.ts",
+      "useNominaxcolabprelistNominaxcolabpredialog.ts"
+    ],
+    "input_ports": [
+      "AcumuladosUseCase.ts",
+      "ComparativonominasUseCase.ts",
+      "ConsueldoUseCase.ts",
+      "ConsultasInputPort.ts",
+      "DtoscompartidossubrecursosUseCase.ts",
+      "NominaresumengeneralResumengralnominadialogUseCase.ts",
+      "NominaresumengralcxrubroUseCase.ts",
+      "NominaresumengralxrubroUseCase.ts",
+      "NominaxcolablistUseCase.ts",
+      "NominaxcolabprelistNominaxcolabpredialogUseCase.ts"
+    ],
+    "app_services": [
+      "AcumuladosApplicationService.ts",
+      "AcumuladosService.ts",
+      "ComparativonominasApplicationService.ts",
+      "ComparativonominasService.ts",
+      "ConsueldoApplicationService.ts",
+      "ConsueldoService.ts",
+      "ConsultasService.ts",
+      "DtoscompartidossubrecursosApplicationService.ts",
+      "DtoscompartidossubrecursosService.ts",
+      "NominaresumengeneralResumengralnominadialogApplicationService.ts",
+      "NominaresumengeneralResumengralnominadialogService.ts",
+      "NominaresumengralcxrubroApplicationService.ts",
+      "NominaresumengralcxrubroService.ts",
+      "NominaresumengralxrubroApplicationService.ts",
+      "NominaresumengralxrubroService.ts",
+      "NominaxcolablistApplicationService.ts",
+      "NominaxcolablistService.ts",
+      "NominaxcolabprelistNominaxcolabpredialogApplicationService.ts",
+      "NominaxcolabprelistNominaxcolabpredialogService.ts"
+    ],
+    "gateway_ports": [
+      "AcumuladosGatewayPort.ts",
+      "ComparativonominasGatewayPort.ts",
+      "ConsueldoGatewayPort.ts",
+      "ConsultasOutputPort.ts",
+      "DtoscompartidossubrecursosGatewayPort.ts",
+      "NominaresumengeneralResumengralnominadialogGatewayPort.ts",
+      "NominaresumengralcxrubroGatewayPort.ts",
+      "NominaresumengralxrubroGatewayPort.ts",
+      "NominaxcolablistGatewayPort.ts",
+      "NominaxcolabprelistNominaxcolabpredialogGatewayPort.ts"
+    ],
+    "gateway_adapters": [
+      "AcumuladosGatewayAdapter.ts",
+      "ComparativonominasGatewayAdapter.ts",
+      "ConsueldoGatewayAdapter.ts",
+      "ConsultasApiAdapter.ts",
+      "DtoscompartidossubrecursosGatewayAdapter.ts",
+      "NominaresumengeneralResumengralnominadialogGatewayAdapter.ts",
+      "NominaresumengralcxrubroGatewayAdapter.ts",
+      "NominaresumengralxrubroGatewayAdapter.ts",
+      "NominaxcolablistGatewayAdapter.ts",
+      "NominaxcolabprelistNominaxcolabpredialogGatewayAdapter.ts"
+    ],
+    "view_mappers": [
+      "AcumuladosViewMapper.ts",
+      "ComparativonominasViewMapper.ts",
+      "ConsueldoViewMapper.ts",
+      "ConsultasViewMapper.ts",
+      "DtoscompartidossubrecursosViewMapper.ts",
+      "NominaresumengeneralResumengralnominadialogViewMapper.ts",
+      "NominaresumengralcxrubroViewMapper.ts",
+      "NominaresumengralxrubroViewMapper.ts",
+      "NominaxcolablistViewMapper.ts",
+      "NominaxcolabprelistNominaxcolabpredialogViewMapper.ts"
+    ]
+  },
+  "generated": {
+    "components": [
+      "NominaxcolablistList.tsx",
+      "NominaxcolablistForm.tsx",
+      "NominaxcolablistDetail.tsx",
+      "NominaxcolablistCard.tsx",
+      "NominaxcolabprelistNominaxcolabpredialogList.tsx",
+      "NominaxcolabprelistNominaxcolabpredialogForm.tsx",
+      "NominaxcolabprelistNominaxcolabpredialogDetail.tsx",
+      "NominaxcolabprelistNominaxcolabpredialogCard.tsx",
+      "NominaresumengeneralResumengralnominadialogList.tsx",
+      "NominaresumengeneralResumengralnominadialogForm.tsx",
+      "NominaresumengeneralResumengralnominadialogDetail.tsx",
+      "NominaresumengeneralResumengralnominadialogCard.tsx",
+      "NominaresumengralxrubroList.tsx",
+      "NominaresumengralxrubroForm.tsx",
+      "NominaresumengralxrubroDetail.tsx",
+      "NominaresumengralxrubroCard.tsx",
+      "NominaresumengralcxrubroList.tsx",
+      "NominaresumengralcxrubroForm.tsx",
+      "NominaresumengralcxrubroDetail.tsx",
+      "NominaresumengralcxrubroCard.tsx",
+      "ComparativonominasList.tsx",
+      "ComparativonominasForm.tsx",
+      "ComparativonominasDetail.tsx",
+      "ComparativonominasCard.tsx",
+      "ConsueldoList.tsx",
+      "ConsueldoForm.tsx",
+      "ConsueldoDetail.tsx",
+      "ConsueldoCard.tsx",
+      "AcumuladosList.tsx",
+      "AcumuladosForm.tsx",
+      "AcumuladosDetail.tsx",
+      "AcumuladosCard.tsx",
+      "DtoscompartidossubrecursosList.tsx",
+      "DtoscompartidossubrecursosForm.tsx",
+      "DtoscompartidossubrecursosDetail.tsx",
+      "DtoscompartidossubrecursosCard.tsx"
+    ],
+    "pages": [
+      "NominaxcolablistPage.tsx",
+      "NominaxcolablistDetailPage.tsx",
+      "NominaxcolablistCreatePage.tsx",
+      "NominaxcolabprelistNominaxcolabpredialogPage.tsx",
+      "NominaxcolabprelistNominaxcolabpredialogDetailPage.tsx",
+      "NominaxcolabprelistNominaxcolabpredialogCreatePage.tsx",
+      "NominaresumengeneralResumengralnominadialogPage.tsx",
+      "NominaresumengeneralResumengralnominadialogDetailPage.tsx",
+      "NominaresumengeneralResumengralnominadialogCreatePage.tsx",
+      "NominaresumengralxrubroPage.tsx",
+      "NominaresumengralxrubroDetailPage.tsx",
+      "NominaresumengralxrubroCreatePage.tsx",
+      "NominaresumengralcxrubroPage.tsx",
+      "NominaresumengralcxrubroDetailPage.tsx",
+      "NominaresumengralcxrubroCreatePage.tsx",
+      "ComparativonominasPage.tsx",
+      "ComparativonominasDetailPage.tsx",
+      "ComparativonominasCreatePage.tsx",
+      "ConsueldoPage.tsx",
+      "ConsueldoDetailPage.tsx",
+      "ConsueldoCreatePage.tsx",
+      "AcumuladosPage.tsx",
+      "AcumuladosDetailPage.tsx",
+      "AcumuladosCreatePage.tsx",
+      "DtoscompartidossubrecursosPage.tsx",
+      "DtoscompartidossubrecursosDetailPage.tsx",
+      "DtoscompartidossubrecursosCreatePage.tsx",
+      "ConsultasIndexPage.tsx"
+    ]
+  },
+  "resumen": {
+    "total_components_generated": 36,
+    "total_pages_generated": 28,
+    "total_screens_detected": 11
+  }
+}

@@ -1,0 +1,1205 @@
+{
+  "functionalities": [
+    {
+      "id": "func-integraciones-externas",
+      "name": "Integraciones Externas",
+      "description": "Gestión de integraciones externas de nómina: interfaz con IESS (carga/descarga de archivos, planillas, rubros IESS, bot de automatización), interfaz contable (generación de archivos contables y financieros), contabilización de nómina, y consultas/cuadres contables con provisiones y detalle por colaborador",
+      "screens": [
+        {
+          "name": "interfazIESS.zul",
+          "description": "Pantalla principal de interfases IESS con selección de procesos, empresa, número patronal, generación y descarga de archivos de interfaz IESS, y acceso al bot de carga/descarga automatizada",
+          "actions": [
+            {
+              "name": "Listar interfases IESS",
+              "description": "Inicializa la pantalla con la lista de interfases IESS disponibles, carga combos de empresas y números patronales (onCreate, onSelect$tab_SeleccionProcesos)",
+              "relatedClasses": [
+                {
+                  "className": "InterfasIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador principal de interfases IESS (extiende GFCBaseListCtrl<InterfasIESSListCtrl>) con gestión de procesos, empresas, patronales y archivos de interfaz"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar interfases, procesos e instancias de nómina"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de empresas"
+                },
+                {
+                  "className": "AvDimensioneslDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener dimensiones/localidades asociadas a la interfaz"
+                },
+                {
+                  "className": "AvPyInterfas.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de interfaz (tipo IESS) con configuración del proceso"
+                },
+                {
+                  "className": "AvPyInterfasarchivo.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de archivo generado por la interfaz IESS"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia de proceso de nómina vinculada a la interfaz"
+                },
+                {
+                  "className": "AvEnEmpresaspatronal.java",
+                  "type": "Modelo",
+                  "description": "Entidad de número patronal de la empresa ante el IESS"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para contexto de la interfaz"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad para filtro de interfaz"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas"
+                },
+                {
+                  "className": "AvDimensioneslListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de dimensiones/localidades"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar interfaz IESS",
+              "description": "Selecciona una interfaz IESS de la lista y carga sus datos y archivos asociados (onSelect$lbxInterfas)",
+              "relatedClasses": [
+                {
+                  "className": "InterfasIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbxInterfas para cargar detalle de la interfaz seleccionada con archivos y parámetros"
+                },
+                {
+                  "className": "AvPyInterfas.java",
+                  "type": "Modelo",
+                  "description": "Entidad de la interfaz IESS seleccionada"
+                },
+                {
+                  "className": "AvPyInterfasarchivo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de archivos asociados a la interfaz"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar empresa y patronal",
+              "description": "Filtra la interfaz por empresa y número patronal (onSelect$lbox_Empresas, onSelect$lbox_NroPatronal)",
+              "relatedClasses": [
+                {
+                  "className": "InterfasIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Empresas y onSelect$lbox_NroPatronal para filtrar por empresa y número patronal"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa seleccionada"
+                },
+                {
+                  "className": "AvEnEmpresaspatronal.java",
+                  "type": "Modelo",
+                  "description": "Entidad de número patronal seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar y generar archivos",
+              "description": "Refresca los datos de la interfaz y genera/regenera los archivos IESS (onClick$btnRefresh)",
+              "relatedClasses": [
+                {
+                  "className": "InterfasIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la regeneración de archivos de interfaz IESS con queries y persistencia directa"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para obtener datos de nómina para generación de archivos"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia JPA con queries nativos y control transaccional"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogos utilizada en la configuración de archivos"
+                }
+              ]
+            },
+            {
+              "name": "Abrir bot IESS",
+              "description": "Abre el diálogo del bot de carga/descarga automatizada de archivos IESS (onClick$btnBotIESSAvante)",
+              "relatedClasses": [
+                {
+                  "className": "InterfasIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onClick$btnBotIESSAvante para abrir el diálogo del bot de automatización IESS"
+                },
+                {
+                  "className": "InterfasIESSBotCargaDescargaDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo del bot de carga/descarga IESS (extiende GFCBaseCtrl) con procesamiento automatizado y eventos de carga"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogos para configuración del bot"
+                },
+                {
+                  "className": "CatalogosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de opciones del bot desde catálogos"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cargaRubrosIESS.zul",
+          "description": "Pantalla de carga, cuadre y aprobación de rubros IESS con búsqueda por agencia/estado/colaborador, carga de archivos, enceramiento, cuadre de valores, generación de reportes Jasper y envío a AWS",
+          "actions": [
+            {
+              "name": "Listar rubros IESS",
+              "description": "Muestra la lista paginada de rubros IESS cargados con filtros por agencia, estado y colaborador (onCreate, dowritebeantocomponent)",
+              "relatedClasses": [
+                {
+                  "className": "cargaRubrosIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de carga de rubros IESS (extiende GFCBaseListCtrl<AvPyRubrosIessl>) con paginación, filtros múltiples, cuadre y aprobación"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar rubros IESS con filtros"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de empresas"
+                },
+                {
+                  "className": "AvPyRubrosIessDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso directo a rubros IESS"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar historial de rubros de nómina"
+                },
+                {
+                  "className": "AvPyRubrosIessl.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de línea de rubro IESS cargado"
+                },
+                {
+                  "className": "AvPyRubrosIess.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de cabecera de rubros IESS"
+                },
+                {
+                  "className": "AvPyRubrosIdo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubros IDO vinculados al IESS"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtro"
+                },
+                {
+                  "className": "AvEnEmpresaspatronal.java",
+                  "type": "Modelo",
+                  "description": "Entidad de número patronal de la empresa"
+                },
+                {
+                  "className": "AvPyRubrosIesslListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de líneas de rubros IESS"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas"
+                }
+              ]
+            },
+            {
+              "name": "Buscar por agencia / estado / colaborador",
+              "description": "Filtra rubros IESS por agencia, estado o colaborador (onClick$button_Agencia, onClick$button_Estado, onClick$button_Colaborador)",
+              "relatedClasses": [
+                {
+                  "className": "cargaRubrosIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona búsquedas con onClick$button_Agencia, button_Estado y button_Colaborador"
+                },
+                {
+                  "className": "AvColaboradores.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador para filtro de búsqueda"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de datos extendidos del colaborador"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad para filtro de agencia"
+                }
+              ]
+            },
+            {
+              "name": "Consultar rubros IESS",
+              "description": "Ejecuta la consulta de rubros IESS con filtros aplicados y período (doConsultar, onOK$tbox_anio, onOK$tbox_mes)",
+              "relatedClasses": [
+                {
+                  "className": "cargaRubrosIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta doConsultar con validación de año/mes y filtros, carga listbox con datos"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para obtener rubros IESS filtrados"
+                },
+                {
+                  "className": "AvPyRubrosIessDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consulta de rubros IESS"
+                }
+              ]
+            },
+            {
+              "name": "Cargar archivo de rubros IESS",
+              "description": "Carga un archivo de rubros IESS desde disco para procesamiento (onClick$btnFileUploadCargaArchivo)",
+              "relatedClasses": [
+                {
+                  "className": "cargaRubrosIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona la carga de archivo con onClick$btnFileUploadCargaArchivo, lectura y parseo del archivo"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia JPA para guardar registros cargados desde el archivo"
+                },
+                {
+                  "className": "AvPyRubrosIessl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de línea de rubro IESS creada desde el archivo"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro de nómina vinculado al rubro IESS"
+                }
+              ]
+            },
+            {
+              "name": "Encerar rubros y archivo",
+              "description": "Encera (limpia) los rubros IESS cargados o el archivo para nueva carga (onClick$btnEncerarRubros, onClick$btnEncerarArchivo)",
+              "relatedClasses": [
+                {
+                  "className": "cargaRubrosIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona el enceramiento de rubros y archivos cargados"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia para eliminar registros encerados"
+                }
+              ]
+            },
+            {
+              "name": "Guardar rubros IESS",
+              "description": "Persiste los rubros IESS cargados y validados (onClick$btnSave)",
+              "relatedClasses": [
+                {
+                  "className": "cargaRubrosIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la persistencia de rubros IESS validados"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para persistir datos (saveObject/updateObject)"
+                },
+                {
+                  "className": "AvPyParametroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para actualizar parámetros de nómina tras guardar"
+                },
+                {
+                  "className": "AvPyParametro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de parámetros de nómina"
+                },
+                {
+                  "className": "AvPyParametroPK.java",
+                  "type": "Modelo",
+                  "description": "Clave primaria compuesta de parámetros"
+                }
+              ]
+            },
+            {
+              "name": "Cuadrar rubros IESS",
+              "description": "Ejecuta el proceso de cuadre de rubros IESS contra la nómina para validar consistencia (doCuadrar)",
+              "relatedClasses": [
+                {
+                  "className": "cargaRubrosIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta doCuadrar para comparar rubros IESS cargados contra valores de nómina y generar diferencias"
+                },
+                {
+                  "className": "AvPyRubrosIessDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener rubros IESS para cuadre"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener historial de rubros de nómina para comparación"
+                },
+                {
+                  "className": "AvPyRubrosIessl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de línea de rubro IESS a cuadrar"
+                },
+                {
+                  "className": "AvPyRubroCuadreIessListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del resultado de cuadre IESS"
+                }
+              ]
+            },
+            {
+              "name": "Aprobar rubros IESS",
+              "description": "Aprueba los rubros IESS cuadrados para su aplicación en nómina con confirmación y posible envío a AWS (onClick$btnApprove, doAprobar)",
+              "relatedClasses": [
+                {
+                  "className": "cargaRubrosIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta doAprobar con confirmación, actualiza estado de rubros y envía notificación a AWS"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para persistir la aprobación de rubros"
+                },
+                {
+                  "className": "SenderAWS.java",
+                  "type": "Integración",
+                  "description": "Clase de envío de mensajes a AWS para notificación de aprobación"
+                },
+                {
+                  "className": "AvPyRubrosIess.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubros IESS con estado de aprobación"
+                },
+                {
+                  "className": "AvPyRubrosIesslListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador actualizado tras la aprobación"
+                }
+              ]
+            },
+            {
+              "name": "Generar reportes y bot de planillas",
+              "description": "Genera reportes Jasper de rubros IESS y accede al bot de planillas (onClickMenuOption, onClick$btn_bot_planillas)",
+              "relatedClasses": [
+                {
+                  "className": "cargaRubrosIESSListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona generación de reportes Jasper y acceso al bot de planillas IESS"
+                },
+                {
+                  "className": "PreviewJasperReport.java",
+                  "type": "Utilidad",
+                  "description": "Clase utilitaria para previsualización de reportes Jasper"
+                },
+                {
+                  "className": "JaspersByUserListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de lista de reportes Jasper disponibles"
+                },
+                {
+                  "className": "RubrosExtendedSearchListBox.java",
+                  "type": "Componente",
+                  "description": "Diálogo de búsqueda extendida de rubros"
+                },
+                {
+                  "className": "AvPyRubrosIessListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del listado principal de rubros IESS"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "interfasContable.zul",
+          "description": "Diálogo de interfaz contable para configurar y generar archivos de interfaz contable y financiera, con selección de formato, tipo de archivo y modo de operación",
+          "actions": [
+            {
+              "name": "Mostrar diálogo de interfaz contable",
+              "description": "Inicializa el diálogo con configuración de interfaz contable: archivos disponibles, formatos, dominios y modo de operación (onCreate, doShowDialog)",
+              "relatedClasses": [
+                {
+                  "className": "InterfasContableDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de interfaz contable (extiende GFCBaseCtrl) con carga de archivos, formatos y dominios"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar interfases y archivos contables"
+                },
+                {
+                  "className": "AvPyInterfasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a interfases contables"
+                },
+                {
+                  "className": "AvCatalogosDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener catálogos de formatos y tipos"
+                },
+                {
+                  "className": "AvRhColaboradoresdvacpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar datos de colaboradores asociados a la interfaz"
+                },
+                {
+                  "className": "AvPyInterfas.java",
+                  "type": "Modelo",
+                  "description": "Entidad de interfaz contable con configuración"
+                },
+                {
+                  "className": "AvPyInterfasarchivo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de archivos de la interfaz contable"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogos para formatos y tipos de archivo"
+                },
+                {
+                  "className": "Dominios.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dominios del sistema para categorización de datos"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia de proceso vinculada a la contabilización"
+                },
+                {
+                  "className": "AvPyInterfasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de la lista de archivos de interfaz"
+                },
+                {
+                  "className": "DominiosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del listbox de dominios"
+                }
+              ]
+            },
+            {
+              "name": "Seleccionar archivo y formato",
+              "description": "Selecciona un archivo de interfaz y su formato de exportación (onSelect$lbox_Archivo, onSelect$lbox_Formato, doselectmode)",
+              "relatedClasses": [
+                {
+                  "className": "InterfasContableDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Archivo y onSelect$lbox_Formato para configurar el modo de exportación"
+                },
+                {
+                  "className": "AvPyInterfasarchivo.java",
+                  "type": "Modelo",
+                  "description": "Entidad de archivo de interfaz seleccionado"
+                }
+              ]
+            },
+            {
+              "name": "Generar archivo contable",
+              "description": "Genera y descarga el archivo de interfaz contable según la configuración seleccionada (onClick$btnArchivo)",
+              "relatedClasses": [
+                {
+                  "className": "InterfasContableDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la generación del archivo contable con queries de extracción y formateo según dominio/formato"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia JPA para ejecutar queries de extracción de datos contables"
+                },
+                {
+                  "className": "AvPyInterfas.java",
+                  "type": "Modelo",
+                  "description": "Entidad de interfaz con los queries y configuración de generación"
+                }
+              ]
+            },
+            {
+              "name": "Generar archivo financiero",
+              "description": "Genera y descarga el archivo de interfaz financiera (onClick$btnArchivoFinancial)",
+              "relatedClasses": [
+                {
+                  "className": "InterfasContableDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la generación del archivo financiero con formato específico para integración con sistema contable"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia JPA para queries de datos financieros"
+                }
+              ]
+            },
+            {
+              "name": "Adjuntar archivo adicional",
+              "description": "Adjunta un archivo adicional a la interfaz contable (onClick$btnArchivoAdd)",
+              "relatedClasses": [
+                {
+                  "className": "InterfasContableDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona la adición de archivos complementarios a la interfaz contable"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "contabilizacionDialogCtrl.zul",
+          "description": "Diálogo para ejecutar el proceso de contabilización de nómina con confirmación y monitoreo del progreso",
+          "actions": [
+            {
+              "name": "Mostrar diálogo de contabilización",
+              "description": "Inicializa el diálogo de contabilización con datos de la empresa, proceso y período de nómina (onCreate)",
+              "relatedClasses": [
+                {
+                  "className": "ContabilizacionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador del diálogo de contabilización (extiende GFCBaseCtrl) con inicialización de empresa, proceso e instancia"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para obtener datos de la instancia de proceso para contabilización"
+                },
+                {
+                  "className": "AvPyContabilizacionpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso a datos de parametrización de contabilización"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar historial de rubros a contabilizar"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa del contexto de contabilización"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia de proceso de nómina a contabilizar"
+                }
+              ]
+            },
+            {
+              "name": "Ejecutar contabilización",
+              "description": "Ejecuta el proceso de contabilización de nómina con confirmación y mensaje de progreso (onClick$btnContabilizar)",
+              "relatedClasses": [
+                {
+                  "className": "ContabilizacionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta onClick$btnContabilizar con confirmación del usuario, invoca el proceso de contabilización y muestra progreso"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para ejecutar la contabilización de la nómina"
+                },
+                {
+                  "className": "AvPyContabilizacionpDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para generar asientos contables desde datos de nómina"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia JPA con control transaccional para el proceso de contabilización"
+                }
+              ]
+            },
+            {
+              "name": "Cerrar diálogo y ayuda",
+              "description": "Cierra el diálogo de contabilización o muestra ayuda (onClick$btnClose, onClick$btnHelp)",
+              "relatedClasses": [
+                {
+                  "className": "ContabilizacionDialogCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona cierre del diálogo y visualización de ayuda"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "consultaContableList.zul",
+          "description": "Listado de consulta contable con filtros por empresa y período, visualización de asientos contables por rubro, generación de reportes IR e INEC, y exportación a Excel",
+          "actions": [
+            {
+              "name": "Listar asientos contables",
+              "description": "Muestra la lista de asientos contables con filtros por empresa y período, carga combos y calcula totales (onCreate, dowritebeantocomponent)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de consulta contable (extiende GFCBaseListCtrl) con paginación, filtros por empresa/período y generación de reportes"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar asientos contables con filtros"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de empresas"
+                },
+                {
+                  "className": "AvPyRubroslHisDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar historial de rubros contabilizados"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtro"
+                },
+                {
+                  "className": "AvPyRubroslhis.java",
+                  "type": "Modelo",
+                  "description": "Entidad de historial de rubros con datos contables"
+                },
+                {
+                  "className": "AvPyPlantillaContable.java",
+                  "type": "Modelo",
+                  "description": "Entidad de plantilla contable para la configuración de asientos"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogos para filtros y clasificación"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas"
+                },
+                {
+                  "className": "DetalleAsientoContableListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del detalle de asientos contables"
+                },
+                {
+                  "className": "CatalogosDropDownListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de combos dropdown de catálogos"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por empresa",
+              "description": "Filtra los asientos contables por empresa seleccionada (onSelect$lbox_Empresacp)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Empresacp para recargar asientos filtrados por empresa"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Consultar asientos contables",
+              "description": "Ejecuta la consulta de asientos contables con filtros de empresa y período (onClick$tbb_consultar, onClick$btnRefresh)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la consulta con filtros aplicados y actualiza la lista con queries nativos"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para ejecutar la consulta contable"
+                },
+                {
+                  "className": "AvanteJPAPersistenceManager.java",
+                  "type": "Persistencia",
+                  "description": "Gestor de persistencia para ejecutar queries nativos de consulta contable"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta el listado de asientos contables a un archivo Excel (onClick$btn_exportarexcel)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Genera y descarga el archivo Excel con datos de asientos contables"
+                }
+              ]
+            },
+            {
+              "name": "Generar reporte IR / INEC",
+              "description": "Genera reportes de impuesto a la renta (IR) y reporte INEC (onClick$btn_reporteIR, onClick$btn_reporteINEC)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona la generación de reportes IR e INEC desde los datos contables"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "reporteContableFinanciero.zul",
+          "description": "Pantalla de consulta y reporte contable-financiero con filtros avanzados por empresa, cuenta contable, rango de fechas, clase de rubro y colaborador, con exportación a Excel",
+          "actions": [
+            {
+              "name": "Inicializar consulta financiera",
+              "description": "Carga la pantalla con combos de empresas, reportes, cuentas contables, clases de rubro y filtros (onCreate)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaContableFinancieraListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de consulta contable-financiera (extiende GFCBaseCtrl) con filtros avanzados y exportación"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar datos contables y financieros con filtros múltiples"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de empresas"
+                },
+                {
+                  "className": "AvPyCtasubctaAsoDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar cuentas y subcuentas contables asociadas"
+                },
+                {
+                  "className": "AvPyRubroDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para consultar rubros asociados a la consulta financiera"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtro"
+                },
+                {
+                  "className": "AvPyCtasubctaAso.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuenta/subcuenta contable asociada"
+                },
+                {
+                  "className": "AvPyClasesrubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de clases de rubro para filtro por clasificación"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro de nómina"
+                },
+                {
+                  "className": "AvCatalogos.java",
+                  "type": "Modelo",
+                  "description": "Entidad de catálogos para tipos de reportes"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas"
+                },
+                {
+                  "className": "ClasesRubrosListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de clases de rubro"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por empresa / reporte / cuenta / clase",
+              "description": "Aplica filtros de empresa, tipo de reporte, cuenta contable y clase de rubro (onSelect$lbox_Empresas, onSelect$lbox_Reportes, onSelect$lbox_Cuenta, onSelect$lbox_ClaseRubroReport)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaContableFinancieraListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona selecciones de filtros múltiples para actualizar la consulta contable-financiera"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa seleccionada en filtro"
+                },
+                {
+                  "className": "AvPyCtasubctaAso.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuenta contable seleccionada"
+                },
+                {
+                  "className": "AvPyClasesrubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de clase de rubro seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por rango de fechas",
+              "description": "Filtra la consulta por rango de fechas inicio y fin (onChange$db_FechaInicio, onChange$db_FechaFin)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaContableFinancieraListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onChange de datebox para filtrar por rango de fechas"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por rubros y colaborador",
+              "description": "Activa/desactiva filtros por rubros y colaborador con checkboxes y búsqueda extendida (onCheck$chbox_FiltroRubros, onCheck$chbox_FiltroColaborador, onClick$btnSearchColaboradorExtended, onClick$btnDeleteColaborador)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaContableFinancieraListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona filtros opcionales de rubros y colaborador con búsqueda extendida de colaboradores"
+                },
+                {
+                  "className": "AvColaboradorese.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador para filtro"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad del colaborador"
+                },
+                {
+                  "className": "AvColaboradoresCIListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de la lista de búsqueda de colaboradores por CI"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta el resultado de la consulta contable-financiera a Excel (onClick$btn_ExportarExcel)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaContableFinancieraListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Genera y descarga el archivo Excel con datos de la consulta contable-financiera"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "consultaCuadreContableList.zul",
+          "description": "Listado de cuadre contable de provisiones con filtros por empresa, visualización de diferencias entre provisiones contabilizadas y calculadas, navegación a detalle por colaborador y exportación a Excel",
+          "actions": [
+            {
+              "name": "Listar cuadre contable",
+              "description": "Muestra la lista de cuadre contable de provisiones con filtros de empresa y cálculo de totales (onCreate, dowritebeantocomponent)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaCuadreContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de cuadre contable (extiende GFCBaseListCtrl<AvPyCuadreprovcontable>) con paginación, filtros por empresa y cálculo de diferencias"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para consultar cuadres de provisiones contables"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos de colaboradores del cuadre"
+                },
+                {
+                  "className": "AvDimensionesluserDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener dimensiones/localidades del usuario para filtros de acceso"
+                },
+                {
+                  "className": "AvEmpresasDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para cargar el combo de empresas"
+                },
+                {
+                  "className": "AvPyCuadreprovcontableDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para acceso directo a datos de cuadre de provisiones contables"
+                },
+                {
+                  "className": "AvPyCuadreprovcontable.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de cuadre de provisiones contables con valores contabilizados vs calculados"
+                },
+                {
+                  "className": "AvPyProcesosinstancias.java",
+                  "type": "Modelo",
+                  "description": "Entidad de instancia de proceso de nómina"
+                },
+                {
+                  "className": "AvPyRubro.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro de nómina en el cuadre"
+                },
+                {
+                  "className": "AvPyRubroslpre.java",
+                  "type": "Modelo",
+                  "description": "Entidad de rubro de préstamo vinculado al cuadre"
+                },
+                {
+                  "className": "AvColaboradores.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador en el cuadre"
+                },
+                {
+                  "className": "AvDimensionesl.java",
+                  "type": "Modelo",
+                  "description": "Entidad de dimensión/localidad para filtros"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa para filtro"
+                },
+                {
+                  "className": "AvColaboradoresV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista de colaboradores para datos básicos"
+                },
+                {
+                  "className": "AvEmpresasListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador del combo de empresas"
+                },
+                {
+                  "className": "AvPyCuadreprovcontableListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de cuadre contable"
+                },
+                {
+                  "className": "ProvisionesAcumListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de provisiones acumuladas en el cuadre"
+                }
+              ]
+            },
+            {
+              "name": "Filtrar por empresa",
+              "description": "Filtra el cuadre contable por empresa seleccionada (onSelect$lbox_Empresafcc)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaCuadreContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onSelect$lbox_Empresafcc para recargar cuadre contable filtrado por empresa"
+                },
+                {
+                  "className": "AvEmpresa.java",
+                  "type": "Modelo",
+                  "description": "Entidad de empresa seleccionada"
+                }
+              ]
+            },
+            {
+              "name": "Refrescar cuadre contable",
+              "description": "Recarga los datos de cuadre contable con filtros vigentes (onClick$btnRefresh)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaCuadreContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la recarga de datos de cuadre contable"
+                },
+                {
+                  "className": "AvanteGTHService.java",
+                  "type": "Servicio",
+                  "description": "Servicio para obtener cuadres actualizados"
+                }
+              ]
+            },
+            {
+              "name": "Ver detalle por colaborador",
+              "description": "Abre la ventana de cuadre contable por colaborador al hacer doble clic en una línea (onCaudreContListItemDoubleClicked)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaCuadreContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona onCaudreContListItemDoubleClicked para navegar al detalle de cuadre por colaborador"
+                },
+                {
+                  "className": "AvPyCuadreprovcontable.java",
+                  "type": "Modelo",
+                  "description": "Entidad de cuadre seleccionada para ver detalle"
+                },
+                {
+                  "className": "AvColaboradoresModificadoListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de colaboradores modificados en el cuadre"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta el listado de cuadre contable a un archivo Excel (onClick$btn_exportarexcel)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaCuadreContableListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Genera y descarga el archivo Excel con datos de cuadre contable"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "consultaCuadreContablexColabList.zul",
+          "description": "Listado de detalle de cuadre contable por colaborador con búsqueda, visualización de diferencias de rubros y totales de historial, y exportación a Excel",
+          "actions": [
+            {
+              "name": "Listar cuadre por colaborador",
+              "description": "Muestra el detalle de cuadre contable del colaborador con rubros, diferencias y totales del historial (onCreate)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaCuadreContablexColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Controlador de cuadre contable por colaborador (extiende GFCBaseListCtrl<AvPyCuadreprovcontableDet>) con detalle de rubros y totales"
+                },
+                {
+                  "className": "AvColaboradoresDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener datos del colaborador"
+                },
+                {
+                  "className": "AvPyCuadreprovcontableDAOJpaImpl.java",
+                  "type": "DAO",
+                  "description": "DAO para obtener detalle de cuadre por colaborador"
+                },
+                {
+                  "className": "AvPyCuadreprovcontableDet.java",
+                  "type": "Modelo",
+                  "description": "Entidad JPA de detalle de cuadre contable por colaborador y rubro"
+                },
+                {
+                  "className": "AvPyCuadreprovcontable.java",
+                  "type": "Modelo",
+                  "description": "Entidad padre de cuadre de provisiones contables"
+                },
+                {
+                  "className": "AvColaboradores.java",
+                  "type": "Modelo",
+                  "description": "Entidad de colaborador del cuadre"
+                },
+                {
+                  "className": "AvPyRubroslhisttotalesV.java",
+                  "type": "Modelo (Vista)",
+                  "description": "Vista JPA con totales de rubros del historial de nómina para el cuadre"
+                },
+                {
+                  "className": "AvPyCuadreprovcontableDetListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del detalle de cuadre por colaborador"
+                },
+                {
+                  "className": "AvPyRubroslhisvListModelItemRenderer.java",
+                  "type": "Renderer",
+                  "description": "Renderizador de filas del listado de totales de historial de rubros"
+                }
+              ]
+            },
+            {
+              "name": "Buscar en cuadre por colaborador",
+              "description": "Filtra el detalle de cuadre del colaborador por criterio de búsqueda (onClick$btn_search)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaCuadreContablexColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Ejecuta la búsqueda dentro del detalle de cuadre del colaborador"
+                },
+                {
+                  "className": "AvPyCuadreprovcontableDet.java",
+                  "type": "Modelo",
+                  "description": "Entidad de detalle filtrada"
+                }
+              ]
+            },
+            {
+              "name": "Exportar a Excel",
+              "description": "Exporta el detalle de cuadre contable por colaborador a un archivo Excel (onClick$btn_exportarexcel)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaCuadreContablexColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Genera y descarga el archivo Excel con datos de cuadre por colaborador"
+                }
+              ]
+            },
+            {
+              "name": "Cerrar ventana",
+              "description": "Cierra la ventana de cuadre contable por colaborador (onClick$btnClose)",
+              "relatedClasses": [
+                {
+                  "className": "ConsultaCuadreContablexColabListCtrl.java",
+                  "type": "Controlador",
+                  "description": "Gestiona el cierre de la ventana"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

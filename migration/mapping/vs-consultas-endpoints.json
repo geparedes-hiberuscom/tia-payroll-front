@@ -1,0 +1,1092 @@
+{
+  "endpoints": [
+    {
+      "screenName": "nominaxColabList.zul",
+      "baseUrl": "/api/v1/nomina-colaborador/historico",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/historico",
+          "summary": "Listar nómina histórica por colaborador",
+          "description": "Obtiene la lista paginada de totales de nómina histórica por colaborador desde la vista av_py_rubroslhisttotales_v, con ingresos, egresos, neto, no deducibles y total de rubros por instancia de ejecución",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución del proceso"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "cedula", "type": "string", "required": false, "description": "Filtro por cédula del colaborador"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"}
+          ],
+          "responseDTO": {
+            "name": "NominaHistoricoColabPageResponseDTO",
+            "description": "Lista paginada de totales de nómina histórica por colaborador",
+            "fields": [
+              {"name": "content", "type": "array<NominaHistoricoColabResponseDTO>", "required": true, "description": "Lista de totales por colaborador"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId}",
+          "summary": "Obtener nómina histórica de un colaborador",
+          "description": "Obtiene los totales de nómina histórica de un colaborador específico en una instancia de ejecución, con desglose de ingresos, egresos, neto y rubros no deducibles",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "NominaHistoricoColabResponseDTO",
+            "description": "Totales de nómina histórica de un colaborador (vista av_py_rubroslhisttotales_v)",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución (parte del PK compuesto)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (parte del PK compuesto)"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "apellidosNombres", "type": "string", "required": false, "description": "Apellidos y nombres concatenados"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "totalIngresos", "type": "number", "required": false, "description": "Total de ingresos históricos (totalingreso)"},
+              {"name": "totalEgresos", "type": "number", "required": false, "description": "Total de egresos históricos (totalegresos)"},
+              {"name": "totalNeto", "type": "number", "required": false, "description": "Total neto histórico (totalneto)"},
+              {"name": "totalRubros", "type": "number", "required": false, "description": "Total de rubros calculados (totalrb)"},
+              {"name": "totalNoDeducible", "type": "number", "required": false, "description": "Total no deducible (totnodeduc)"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId}/rubros",
+          "summary": "Listar rubros históricos de un colaborador",
+          "description": "Obtiene la lista detallada de rubros históricos de un colaborador en una instancia de ejecución (av_py_rubroslhis), con los 5 valores de salida, fechas y rubro IDO asociado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroHistoricoListDTO",
+            "description": "Lista de rubros históricos de un colaborador",
+            "fields": [
+              {"name": "items", "type": "array<RubroHistoricoDTO>", "required": true, "description": "Lista de rubros históricos"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de rubros"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/nomina-colaborador/historico/exportar",
+          "summary": "Exportar nómina histórica por colaborador",
+          "description": "Exporta los totales de nómina histórica por colaborador a un archivo Excel/CSV con los filtros aplicados",
+          "requestDTO": {
+            "name": "ExportarNominaHistoricoDTO",
+            "description": "Filtros para la exportación de nómina histórica",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por empresa"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato de exportación (XLSX, CSV, PDF)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la exportación fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/nomina-colaborador/historico/{ejecucionId}/{colaboradorId}",
+          "summary": "Eliminar nómina histórica de colaborador",
+          "description": "Elimina los rubros históricos de un colaborador en una instancia de ejecución específica",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "nominaxColabPreList.zul / nominaxColabPreDialog.zul",
+      "baseUrl": "/api/v1/nomina-colaborador/preliquidacion",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/preliquidacion",
+          "summary": "Listar nómina preliquidada por colaborador",
+          "description": "Obtiene la lista paginada de totales de nómina preliquidada por colaborador desde la vista av_py_rubroslpretotales_v, con ingresos, egresos, neto y rubros no deducibles",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución del proceso"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "cedula", "type": "string", "required": false, "description": "Filtro por cédula del colaborador"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"}
+          ],
+          "responseDTO": {
+            "name": "NominaPreColabPageResponseDTO",
+            "description": "Lista paginada de totales de nómina preliquidada por colaborador",
+            "fields": [
+              {"name": "content", "type": "array<NominaPreColabResponseDTO>", "required": true, "description": "Lista de totales preliquidados por colaborador"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}",
+          "summary": "Obtener nómina preliquidada de un colaborador",
+          "description": "Obtiene los totales de nómina preliquidada de un colaborador específico en una instancia de ejecución con desglose de ingresos, egresos, neto, rubros y no deducibles",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "NominaPreColabResponseDTO",
+            "description": "Totales de nómina preliquidada de un colaborador (vista av_py_rubroslpretotales_v)",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución (parte del PK compuesto)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (parte del PK compuesto)"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "apellidosNombres", "type": "string", "required": false, "description": "Apellidos y nombres concatenados"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "totalIngresos", "type": "number", "required": false, "description": "Total de ingresos preliquidados"},
+              {"name": "totalEgresos", "type": "number", "required": false, "description": "Total de egresos preliquidados"},
+              {"name": "totalNeto", "type": "number", "required": false, "description": "Total neto preliquidado"},
+              {"name": "totalRubros", "type": "number", "required": false, "description": "Total de rubros calculados"},
+              {"name": "totalNoDeducible", "type": "number", "required": false, "description": "Total no deducible"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}/rubros",
+          "summary": "Listar rubros preliquidados de un colaborador",
+          "description": "Obtiene la lista detallada de rubros preliquidados de un colaborador en una instancia de ejecución (av_py_rubroslpre), con los 5 valores de salida, fechas, flag de envío y rubro IDO asociado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroPreLiquidadoListDTO",
+            "description": "Lista de rubros preliquidados del colaborador",
+            "fields": [
+              {"name": "items", "type": "array<RubroPreLiquidadoDTO>", "required": true, "description": "Lista de rubros preliquidados"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de rubros"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}/detalle",
+          "summary": "Obtener detalle completo del colaborador en preliquidación",
+          "description": "Obtiene el detalle completo de un colaborador en la preliquidación incluyendo datos personales (av_colaboradorese), totales preliquidados y comparación con histórico",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DetallePreColabResponseDTO",
+            "description": "Detalle completo del colaborador en preliquidación con comparación histórica",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "apellidosNombres", "type": "string", "required": false, "description": "Apellidos y nombres"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de empresa"},
+              {"name": "sueldo", "type": "number", "required": false, "description": "Sueldo del colaborador (msueldo)"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha de ingreso del colaborador"},
+              {"name": "cargo", "type": "string", "required": false, "description": "Cargo del colaborador (dimensión)"},
+              {"name": "localidad", "type": "string", "required": false, "description": "Localidad del colaborador (dimensión)"},
+              {"name": "centroCosto", "type": "string", "required": false, "description": "Centro de costo (dimensión)"},
+              {"name": "totalesPre", "type": "object", "required": false, "description": "Totales de preliquidación: {totalIngresos, totalEgresos, totalNeto, totalRubros, totalNoDeducible}"},
+              {"name": "totalesHis", "type": "object", "required": false, "description": "Totales históricos: {totalIngresos, totalEgresos, totalNeto, totalRubros, totalNoDeducible}"},
+              {"name": "rubrosPre", "type": "array<RubroPreLiquidadoDTO>", "required": false, "description": "Lista de rubros preliquidados"},
+              {"name": "rubrosHis", "type": "array<RubroHistoricoDTO>", "required": false, "description": "Lista de rubros históricos"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/nomina-colaborador/preliquidacion/{ejecucionId}/{colaboradorId}",
+          "summary": "Eliminar nómina preliquidada de colaborador",
+          "description": "Elimina los rubros preliquidados de un colaborador en una instancia de ejecución específica",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "nominaresumenGeneral.zul / ResumenGralNominaDialog.zul",
+      "baseUrl": "/api/v1/nomina-resumen",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-resumen",
+          "summary": "Obtener resumen general de nómina",
+          "description": "Obtiene el resumen general consolidado de nómina para una instancia de ejecución, con totales globales de ingresos, egresos, neto, número de colaboradores procesados por empresa",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución del proceso"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "tipo", "type": "string", "required": false, "description": "Tipo de resumen: PRE (preliquidado) o HIS (histórico)"}
+          ],
+          "responseDTO": {
+            "name": "ResumenGeneralNominaResponseDTO",
+            "description": "Resumen general consolidado de nómina",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso de nómina"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "tipo", "type": "string", "required": true, "description": "Tipo de resumen: PRE o HIS"},
+              {"name": "totalIngresos", "type": "number", "required": false, "description": "Total general de ingresos"},
+              {"name": "totalEgresos", "type": "number", "required": false, "description": "Total general de egresos"},
+              {"name": "totalNeto", "type": "number", "required": false, "description": "Total general neto"},
+              {"name": "totalRubros", "type": "number", "required": false, "description": "Total general de rubros"},
+              {"name": "totalNoDeducible", "type": "number", "required": false, "description": "Total general no deducible"},
+              {"name": "totalColaboradores", "type": "integer", "required": false, "description": "Número de colaboradores procesados"},
+              {"name": "periodo", "type": "string", "required": false, "description": "Período del proceso (año/mes)"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-resumen/{ejecucionId}",
+          "summary": "Obtener resumen detallado de nómina",
+          "description": "Obtiene el resumen detallado de una instancia de ejecución de nómina con datos de empresa, proceso, período, totales y desglose por clase de rubro",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ResumenDetalladoNominaResponseDTO",
+            "description": "Resumen detallado de nómina con configuración de clases de rubros",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso"},
+              {"name": "procesoNombre", "type": "string", "required": false, "description": "Nombre del proceso"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año de ejecución"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes de ejecución"},
+              {"name": "fechaInicio", "type": "datetime", "required": false, "description": "Fecha de inicio del período"},
+              {"name": "fechaFin", "type": "datetime", "required": false, "description": "Fecha de fin del período"},
+              {"name": "cerrado", "type": "integer", "required": false, "description": "Estado de cierre (0=abierto, 1=cerrado)"},
+              {"name": "totalIngresos", "type": "number", "required": false, "description": "Total de ingresos"},
+              {"name": "totalEgresos", "type": "number", "required": false, "description": "Total de egresos"},
+              {"name": "totalNeto", "type": "number", "required": false, "description": "Total neto"},
+              {"name": "totalColaboradores", "type": "integer", "required": false, "description": "Cantidad de colaboradores"},
+              {"name": "clasesRubro", "type": "array<ClaseRubroResumenDTO>", "required": false, "description": "Desglose por clase de rubro"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/nomina-resumen/generar",
+          "summary": "Generar resumen de nómina",
+          "description": "Genera el resumen consolidado de nómina para una instancia de ejecución y empresa, calculando totales por clase de rubro",
+          "requestDTO": {
+            "name": "GenerarResumenNominaDTO",
+            "description": "Parámetros para generar el resumen de nómina",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "tipo", "type": "string", "required": true, "description": "Tipo: PRE (preliquidado) o HIS (histórico)"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ResumenGeneralNominaResponseDTO",
+            "description": "Resumen generado con totales consolidados",
+            "fields": []
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/nomina-resumen/exportar",
+          "summary": "Exportar resumen general de nómina",
+          "description": "Exporta el resumen general de nómina a archivo Excel/PDF con datos de empresa, proceso, totales y desglose",
+          "requestDTO": {
+            "name": "ExportarResumenNominaDTO",
+            "description": "Parámetros para la exportación del resumen",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por empresa"},
+              {"name": "tipo", "type": "string", "required": false, "description": "Tipo: PRE o HIS"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato: XLSX, PDF"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la exportación fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/nomina-resumen/{ejecucionId}",
+          "summary": "Eliminar resumen de nómina",
+          "description": "Elimina el resumen generado de una instancia de ejecución",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "nominaresumenGralxRubro.zul",
+      "baseUrl": "/api/v1/nomina-resumen/por-rubro",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-resumen/por-rubro",
+          "summary": "Listar resumen de nómina por rubro",
+          "description": "Obtiene el resumen de nómina agrupado por rubro para una instancia de ejecución, mostrando totales de preliquidados e históricos por cada rubro con su efecto (ingreso/egreso/neutro)",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución del proceso"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "tipo", "type": "string", "required": false, "description": "Tipo: PRE (preliquidado) o HIS (histórico)"},
+            {"name": "efecto", "type": "string", "required": false, "description": "Filtro por efecto del rubro (ingreso/egreso/neutro)"},
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 50)"}
+          ],
+          "responseDTO": {
+            "name": "ResumenPorRubroPageResponseDTO",
+            "description": "Lista paginada del resumen de nómina por rubro",
+            "fields": [
+              {"name": "content", "type": "array<ResumenPorRubroResponseDTO>", "required": true, "description": "Lista de resumen por rubro"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId}",
+          "summary": "Obtener resumen de un rubro específico",
+          "description": "Obtiene el resumen detallado de un rubro específico en una instancia de ejecución con totales de los 5 valores de salida, cantidad de colaboradores afectados y fechas de aplicación",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ResumenPorRubroResponseDTO",
+            "description": "Resumen detallado de un rubro en la nómina",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "Identificador del rubro"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (vrubro)"},
+              {"name": "efecto", "type": "string", "required": false, "description": "Efecto del rubro (ingreso/egreso/neutro)"},
+              {"name": "totalValor01", "type": "number", "required": false, "description": "Suma total del valor de salida 01 (mvlrout01)"},
+              {"name": "totalValor02", "type": "number", "required": false, "description": "Suma total del valor de salida 02 (mvlrout02)"},
+              {"name": "totalValor03", "type": "number", "required": false, "description": "Suma total del valor de salida 03 (mvlrout03)"},
+              {"name": "totalValor04", "type": "number", "required": false, "description": "Suma total del valor de salida 04 (mvlrout04)"},
+              {"name": "totalValor05", "type": "number", "required": false, "description": "Suma total del valor de salida 05 (mvlrout05)"},
+              {"name": "cantidadColaboradores", "type": "integer", "required": false, "description": "Cantidad de colaboradores con este rubro"},
+              {"name": "tipo", "type": "string", "required": false, "description": "Tipo: PRE o HIS"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId}/colaboradores",
+          "summary": "Listar colaboradores de un rubro",
+          "description": "Obtiene la lista de colaboradores que tienen un rubro específico en la instancia de ejecución con sus valores individuales calculados",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "tipo", "type": "string", "required": false, "description": "Tipo: PRE o HIS"},
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página"}
+          ],
+          "responseDTO": {
+            "name": "ColaboradorRubroPageResponseDTO",
+            "description": "Lista paginada de colaboradores con un rubro específico",
+            "fields": [
+              {"name": "content", "type": "array<ColaboradorRubroDTO>", "required": true, "description": "Lista de colaboradores con valores del rubro"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/nomina-resumen/por-rubro/exportar",
+          "summary": "Exportar resumen por rubro",
+          "description": "Exporta el resumen de nómina por rubro a archivo Excel/PDF",
+          "requestDTO": {
+            "name": "ExportarResumenRubroDTO",
+            "description": "Parámetros para la exportación del resumen por rubro",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por empresa"},
+              {"name": "tipo", "type": "string", "required": false, "description": "Tipo: PRE o HIS"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato: XLSX, PDF"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la exportación fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/nomina-resumen/por-rubro/{ejecucionId}/{rubroId}",
+          "summary": "Eliminar resumen de rubro",
+          "description": "Elimina el resumen de un rubro específico en una instancia de ejecución",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "nominaresumenGralCxRubro.zul",
+      "baseUrl": "/api/v1/nomina-resumen/por-clasificacion",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-resumen/por-clasificacion",
+          "summary": "Listar resumen de nómina por clasificación de rubro",
+          "description": "Obtiene el resumen de nómina agrupado por clase/clasificación de rubro (av_py_clasesrubros) para una instancia de ejecución, consolidando rubros históricos por categoría: sueldos, beneficios sociales, aportes, etc.",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución del proceso"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "tipo", "type": "string", "required": false, "description": "Tipo: PRE (preliquidado) o HIS (histórico)"},
+            {"name": "claseId", "type": "string", "required": false, "description": "Filtro por ID de clase de rubro (vidclase)"},
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 50)"}
+          ],
+          "responseDTO": {
+            "name": "ResumenClasificacionPageResponseDTO",
+            "description": "Lista paginada del resumen de nómina por clasificación de rubro",
+            "fields": [
+              {"name": "content", "type": "array<ResumenClasificacionResponseDTO>", "required": true, "description": "Lista del resumen por clasificación"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId}",
+          "summary": "Obtener resumen de una clasificación específica",
+          "description": "Obtiene el resumen detallado de una clasificación de rubro con totales consolidados, nivel jerárquico, clase padre y rubros que la componen",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ResumenClasificacionResponseDTO",
+            "description": "Resumen detallado de una clasificación de rubro en la nómina",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "claseId", "type": "string", "required": true, "description": "Identificador de la clase de rubro (vidclase)"},
+              {"name": "claseNombre", "type": "string", "required": false, "description": "Nombre de la clase de rubro (vclase)"},
+              {"name": "nivel", "type": "string", "required": false, "description": "Nivel jerárquico de la clase (vnivel)"},
+              {"name": "clasePadreId", "type": "string", "required": false, "description": "ID de la clase padre (vidclasepadre)"},
+              {"name": "ocultar", "type": "string", "required": false, "description": "Indicador de visibilidad (cocultar)"},
+              {"name": "reporteNomina", "type": "string", "required": false, "description": "Indicador de inclusión en reporte de nómina"},
+              {"name": "idExterno", "type": "string", "required": false, "description": "Identificador externo de la clase (videxterno)"},
+              {"name": "totalValor", "type": "number", "required": false, "description": "Total consolidado de la clasificación"},
+              {"name": "cantidadRubros", "type": "integer", "required": false, "description": "Cantidad de rubros en esta clasificación"},
+              {"name": "cantidadColaboradores", "type": "integer", "required": false, "description": "Colaboradores afectados por esta clasificación"},
+              {"name": "rubros", "type": "array<ResumenPorRubroResponseDTO>", "required": false, "description": "Rubros que componen esta clasificación"},
+              {"name": "tipo", "type": "string", "required": false, "description": "Tipo: PRE o HIS"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId}/rubros",
+          "summary": "Listar rubros de una clasificación",
+          "description": "Obtiene la lista de rubros que pertenecen a una clasificación de rubro con sus totales dentro de la instancia de ejecución",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubrosClasificacionListDTO",
+            "description": "Lista de rubros de una clasificación",
+            "fields": [
+              {"name": "items", "type": "array<ResumenPorRubroResponseDTO>", "required": true, "description": "Lista de rubros de la clasificación"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de rubros"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/nomina-resumen/por-clasificacion/exportar",
+          "summary": "Exportar resumen por clasificación de rubro",
+          "description": "Exporta el resumen de nómina por clasificación de rubro a archivo Excel/PDF con estructura jerárquica de clases",
+          "requestDTO": {
+            "name": "ExportarResumenClasificacionDTO",
+            "description": "Parámetros para la exportación del resumen por clasificación",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por empresa"},
+              {"name": "tipo", "type": "string", "required": false, "description": "Tipo: PRE o HIS"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato: XLSX, PDF"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la exportación fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/nomina-resumen/por-clasificacion/{ejecucionId}/{claseId}",
+          "summary": "Eliminar resumen de clasificación",
+          "description": "Elimina el resumen de una clasificación de rubro específica en una instancia de ejecución",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "comparativoNominas.zul",
+      "baseUrl": "/api/v1/comparativo-nominas",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/comparativo-nominas",
+          "summary": "Listar comparativos de nóminas",
+          "description": "Obtiene la lista paginada de registros comparativos de nóminas (av_py_comparativo_nominas) con datos de empresa, localidad, período, costo de nómina y cantidad de personas/roles",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año"},
+            {"name": "mes", "type": "integer", "required": false, "description": "Filtro por mes"},
+            {"name": "procesoId", "type": "integer", "required": false, "description": "Filtro por ID de proceso"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por ID de localidad (dimensión)"},
+            {"name": "tipoConsulta", "type": "string", "required": false, "description": "Filtro por tipo de consulta (vtipoconsulta)"}
+          ],
+          "responseDTO": {
+            "name": "ComparativoNominasPageResponseDTO",
+            "description": "Lista paginada de comparativos de nóminas",
+            "fields": [
+              {"name": "content", "type": "array<ComparativoNominasResponseDTO>", "required": true, "description": "Lista de comparativos"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/comparativo-nominas/{id}",
+          "summary": "Obtener comparativo de nómina por ID",
+          "description": "Obtiene un registro comparativo de nómina con datos de empresa, localidad, año, mes, costo total, número de personas, roles anulados y generados",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ComparativoNominasResponseDTO",
+            "description": "Detalle de un registro comparativo de nómina",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del comparativo (iidcomparativo)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad (dimensión)"},
+              {"name": "localidadNombre", "type": "string", "required": false, "description": "Nombre de la localidad"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año del comparativo"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes del comparativo"},
+              {"name": "costoNomina", "type": "number", "required": false, "description": "Costo total de nómina del período (mcostonomina)"},
+              {"name": "numeroPersonas", "type": "integer", "required": false, "description": "Número de personas en el período (inumpersonas)"},
+              {"name": "rolesAnulados", "type": "integer", "required": false, "description": "Número de roles anulados (inumrola)"},
+              {"name": "rolesGenerados", "type": "integer", "required": false, "description": "Número de roles generados (inumrolg)"},
+              {"name": "tipoConsulta", "type": "string", "required": false, "description": "Tipo de consulta (vtipoconsulta)"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/comparativo-nominas",
+          "summary": "Crear comparativo de nóminas",
+          "description": "Crea un nuevo registro de comparativo de nóminas con datos de empresa, localidad, período y costos calculados",
+          "requestDTO": {
+            "name": "ComparativoNominasCreateDTO",
+            "description": "Datos para crear un comparativo de nóminas",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la localidad (dimensión)"},
+              {"name": "procesoId", "type": "integer", "required": false, "description": "ID del proceso de nómina"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año del comparativo"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes del comparativo"},
+              {"name": "costoNomina", "type": "number", "required": false, "description": "Costo total de nómina"},
+              {"name": "numeroPersonas", "type": "integer", "required": false, "description": "Número de personas"},
+              {"name": "rolesAnulados", "type": "integer", "required": false, "description": "Roles anulados"},
+              {"name": "rolesGenerados", "type": "integer", "required": false, "description": "Roles generados"},
+              {"name": "tipoConsulta", "type": "string", "required": false, "description": "Tipo de consulta"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ComparativoNominasResponseDTO",
+            "description": "Comparativo creado con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/comparativo-nominas/{id}",
+          "summary": "Actualizar comparativo de nóminas",
+          "description": "Actualiza un registro de comparativo de nóminas existente con nuevos datos de costos, personas y roles",
+          "requestDTO": {
+            "name": "ComparativoNominasUpdateDTO",
+            "description": "Datos para actualizar el comparativo",
+            "fields": [
+              {"name": "costoNomina", "type": "number", "required": false, "description": "Costo total de nómina"},
+              {"name": "numeroPersonas", "type": "integer", "required": false, "description": "Número de personas"},
+              {"name": "rolesAnulados", "type": "integer", "required": false, "description": "Roles anulados"},
+              {"name": "rolesGenerados", "type": "integer", "required": false, "description": "Roles generados"},
+              {"name": "tipoConsulta", "type": "string", "required": false, "description": "Tipo de consulta"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ComparativoNominasResponseDTO",
+            "description": "Comparativo actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/comparativo-nominas/{id}",
+          "summary": "Eliminar comparativo de nóminas",
+          "description": "Elimina un registro de comparativo de nóminas por su identificador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "conSueldo.zul",
+      "baseUrl": "/api/v1/consulta-sueldos",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/consulta-sueldos",
+          "summary": "Consultar sueldos de colaboradores",
+          "description": "Obtiene la lista paginada de sueldos de colaboradores con filtros por empresa, localidad, rol, estado y rango de fechas. Cruza datos de av_colaboradorese con dimensiones y totales de nómina histórica",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad (dimensión)"},
+            {"name": "rolId", "type": "integer", "required": false, "description": "Filtro por rol (dimensión)"},
+            {"name": "centroCostoId", "type": "integer", "required": false, "description": "Filtro por centro de costo (dimensión)"},
+            {"name": "cargoId", "type": "integer", "required": false, "description": "Filtro por cargo (dimensión)"},
+            {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado del colaborador (vstts)"},
+            {"name": "cedula", "type": "string", "required": false, "description": "Filtro por cédula del colaborador"},
+            {"name": "patronalId", "type": "integer", "required": false, "description": "Filtro por número patronal (av_en_empresaspatronal)"}
+          ],
+          "responseDTO": {
+            "name": "ConsultaSueldoPageResponseDTO",
+            "description": "Lista paginada de sueldos de colaboradores",
+            "fields": [
+              {"name": "content", "type": "array<ConsultaSueldoResponseDTO>", "required": true, "description": "Lista de sueldos de colaboradores"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/consulta-sueldos/{empresaId}/{colaboradorId}",
+          "summary": "Obtener sueldo de un colaborador",
+          "description": "Obtiene el detalle del sueldo de un colaborador en una empresa con datos de dimensiones (cargo, localidad, centro de costo, rol), fecha de ingreso, tipo de contrato y sueldo anterior",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ConsultaSueldoResponseDTO",
+            "description": "Detalle del sueldo de un colaborador",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa (parte del PK compuesto)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (parte del PK compuesto)"},
+              {"name": "cedula", "type": "string", "required": false, "description": "Cédula del colaborador"},
+              {"name": "apellidosNombres", "type": "string", "required": false, "description": "Apellidos y nombres del colaborador"},
+              {"name": "empresaNombre", "type": "string", "required": false, "description": "Nombre de la empresa"},
+              {"name": "sueldo", "type": "number", "required": false, "description": "Sueldo actual del colaborador (msueldo)"},
+              {"name": "sueldoAnterior", "type": "number", "required": false, "description": "Sueldo anterior del colaborador (msueldoanterior)"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha de ingreso del colaborador"},
+              {"name": "fechaSalida", "type": "datetime", "required": false, "description": "Fecha de salida del colaborador"},
+              {"name": "fechaCorporativa", "type": "datetime", "required": false, "description": "Fecha corporativa"},
+              {"name": "estado", "type": "string", "required": false, "description": "Estado del colaborador (vstts)"},
+              {"name": "contratoId", "type": "integer", "required": false, "description": "ID del tipo de contrato"},
+              {"name": "cargoId", "type": "integer", "required": false, "description": "ID de la dimensión cargo"},
+              {"name": "cargoNombre", "type": "string", "required": false, "description": "Nombre del cargo"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "ID de la dimensión localidad"},
+              {"name": "localidadNombre", "type": "string", "required": false, "description": "Nombre de la localidad"},
+              {"name": "centroCostoId", "type": "integer", "required": false, "description": "ID del centro de costo"},
+              {"name": "centroCostoNombre", "type": "string", "required": false, "description": "Nombre del centro de costo"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "ID de la dimensión rol"},
+              {"name": "rolNombre", "type": "string", "required": false, "description": "Nombre del rol"},
+              {"name": "estructuraOrganizacionalId", "type": "integer", "required": false, "description": "ID de la estructura organizacional"},
+              {"name": "neroId", "type": "integer", "required": false, "description": "ID de la dimensión nero"},
+              {"name": "bancoId", "type": "integer", "required": false, "description": "ID del banco para pago"},
+              {"name": "cuentaBanco", "type": "string", "required": false, "description": "Número de cuenta bancaria"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/consulta-sueldos/estructura-organizacional",
+          "summary": "Obtener estructura organizacional para filtro",
+          "description": "Obtiene la estructura organizacional jerárquica (áreas, departamentos, secciones) desde la vista av_en_dimensionesest_v para filtrar la consulta de sueldos",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por empresa"},
+            {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"}
+          ],
+          "responseDTO": {
+            "name": "EstructuraOrganizacionalListDTO",
+            "description": "Lista de nodos de la estructura organizacional",
+            "fields": [
+              {"name": "items", "type": "array<EstructuraOrganizacionalDTO>", "required": true, "description": "Lista de nodos (áreas/dptos/secciones)"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de nodos"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/consulta-sueldos/exportar",
+          "summary": "Exportar consulta de sueldos",
+          "description": "Exporta la consulta de sueldos de colaboradores a archivo Excel/CSV con filtros aplicados",
+          "requestDTO": {
+            "name": "ExportarConsultaSueldoDTO",
+            "description": "Filtros para la exportación de sueldos",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "localidadId", "type": "integer", "required": false, "description": "Filtro por localidad"},
+              {"name": "rolId", "type": "integer", "required": false, "description": "Filtro por rol"},
+              {"name": "estado", "type": "string", "required": false, "description": "Filtro por estado"},
+              {"name": "formato", "type": "string", "required": false, "description": "Formato: XLSX, CSV"}
+            ]
+          },
+          "responseDTO": {
+            "name": "ExportarResponseDTO",
+            "description": "Resultado de la exportación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la exportación fue exitosa"},
+              {"name": "archivoUrl", "type": "string", "required": false, "description": "URL de descarga del archivo"},
+              {"name": "totalRegistros", "type": "integer", "required": false, "description": "Total de registros exportados"}
+            ]
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/consulta-sueldos/{empresaId}/{colaboradorId}",
+          "summary": "Eliminar registro de sueldo",
+          "description": "Elimina el registro de sueldo de un colaborador en una empresa",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "acumulados.zul",
+      "baseUrl": "/api/v1/acumulados",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/acumulados",
+          "summary": "Listar acumulados de nómina",
+          "description": "Obtiene la lista paginada de acumulados de nómina desde la vista av_py_acumulados_v con datos de tipo de acumulado, monto, días laborados, empresa y colaborador",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "page", "type": "integer", "required": false, "description": "Número de página (default 0)"},
+            {"name": "size", "type": "integer", "required": false, "description": "Tamaño de página (default 20)"},
+            {"name": "empresaId", "type": "integer", "required": false, "description": "Filtro por ID de empresa"},
+            {"name": "colaboradorId", "type": "integer", "required": false, "description": "Filtro por ID de colaborador"},
+            {"name": "anio", "type": "integer", "required": false, "description": "Filtro por año del acumulado"},
+            {"name": "mes", "type": "integer", "required": false, "description": "Filtro por mes del acumulado"},
+            {"name": "claseId", "type": "string", "required": false, "description": "Filtro por clase de acumulado (vidclase)"},
+            {"name": "tipoAcumulado", "type": "string", "required": false, "description": "Filtro por tipo de acumulado"}
+          ],
+          "responseDTO": {
+            "name": "AcumuladoPageResponseDTO",
+            "description": "Lista paginada de acumulados de nómina",
+            "fields": [
+              {"name": "content", "type": "array<AcumuladoResponseDTO>", "required": true, "description": "Lista de acumulados"},
+              {"name": "totalElements", "type": "integer", "required": true, "description": "Total de registros"},
+              {"name": "totalPages", "type": "integer", "required": true, "description": "Total de páginas"},
+              {"name": "page", "type": "integer", "required": true, "description": "Página actual"},
+              {"name": "size", "type": "integer", "required": true, "description": "Tamaño de página"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/acumulados/{id}",
+          "summary": "Obtener acumulado por ID",
+          "description": "Obtiene un registro de acumulado de nómina con datos de empresa, colaborador, período, clase, monto, días laborados y tipo de acumulado",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "AcumuladoResponseDTO",
+            "description": "Detalle de un acumulado de nómina (vista av_py_acumulados_v)",
+            "fields": [
+              {"name": "id", "type": "integer", "required": true, "description": "Identificador del acumulado (iidacumulado)"},
+              {"name": "empresaId", "type": "integer", "required": false, "description": "ID de la empresa"},
+              {"name": "colaboradorId", "type": "integer", "required": false, "description": "ID del colaborador"},
+              {"name": "claseId", "type": "string", "required": false, "description": "Clase del acumulado (vidclase)"},
+              {"name": "tipoAcumulado", "type": "string", "required": false, "description": "Tipo de acumulado (tipoacumulado, campo de la vista)"},
+              {"name": "monto", "type": "number", "required": false, "description": "Monto del acumulado (mmonto)"},
+              {"name": "diasLaborados", "type": "integer", "required": false, "description": "Días laborados en el período (idiaslab)"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año del acumulado (ianio)"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes del acumulado (imes)"},
+              {"name": "fecha", "type": "datetime", "required": false, "description": "Fecha del acumulado (dfecha)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"},
+              {"name": "usuarioModificacion", "type": "string", "required": false, "description": "Usuario de última modificación"},
+              {"name": "fechaModificacion", "type": "datetime", "required": false, "description": "Fecha/hora de última modificación"}
+            ]
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/acumulados",
+          "summary": "Crear acumulado de nómina",
+          "description": "Crea un nuevo registro de acumulado de nómina para un colaborador con monto, días laborados, clase y período",
+          "requestDTO": {
+            "name": "AcumuladoCreateDTO",
+            "description": "Datos para crear un acumulado de nómina",
+            "fields": [
+              {"name": "empresaId", "type": "integer", "required": true, "description": "ID de la empresa"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador"},
+              {"name": "claseId", "type": "string", "required": true, "description": "Clase del acumulado (vidclase)"},
+              {"name": "monto", "type": "number", "required": true, "description": "Monto del acumulado"},
+              {"name": "diasLaborados", "type": "integer", "required": false, "description": "Días laborados"},
+              {"name": "anio", "type": "integer", "required": true, "description": "Año del acumulado"},
+              {"name": "mes", "type": "integer", "required": true, "description": "Mes del acumulado"},
+              {"name": "fecha", "type": "datetime", "required": false, "description": "Fecha del acumulado"}
+            ]
+          },
+          "responseDTO": {
+            "name": "AcumuladoResponseDTO",
+            "description": "Acumulado creado con datos completos",
+            "fields": []
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/api/v1/acumulados/{id}",
+          "summary": "Actualizar acumulado de nómina",
+          "description": "Actualiza un registro de acumulado de nómina con nuevos datos de monto, días laborados o período",
+          "requestDTO": {
+            "name": "AcumuladoUpdateDTO",
+            "description": "Datos para actualizar el acumulado",
+            "fields": [
+              {"name": "monto", "type": "number", "required": false, "description": "Monto del acumulado"},
+              {"name": "diasLaborados", "type": "integer", "required": false, "description": "Días laborados"},
+              {"name": "anio", "type": "integer", "required": false, "description": "Año del acumulado"},
+              {"name": "mes", "type": "integer", "required": false, "description": "Mes del acumulado"},
+              {"name": "fecha", "type": "datetime", "required": false, "description": "Fecha del acumulado"},
+              {"name": "claseId", "type": "string", "required": false, "description": "Clase del acumulado"}
+            ]
+          },
+          "responseDTO": {
+            "name": "AcumuladoResponseDTO",
+            "description": "Acumulado actualizado",
+            "fields": []
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/acumulados/{id}",
+          "summary": "Eliminar acumulado de nómina",
+          "description": "Elimina un registro de acumulado de nómina por su identificador",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "DeleteResponseDTO",
+            "description": "Confirmación de eliminación",
+            "fields": [
+              {"name": "success", "type": "boolean", "required": true, "description": "Indica si la eliminación fue exitosa"},
+              {"name": "message", "type": "string", "required": true, "description": "Mensaje de confirmación"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "screenName": "DTOs compartidos (subrecursos)",
+      "baseUrl": "/api/v1/nomina-colaborador",
+      "operations": [
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/rubros-historicos/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "summary": "Obtener rubro histórico individual",
+          "description": "Obtiene un rubro histórico específico de un colaborador por su clave compuesta (ejecucionId + colaboradorId + rubroId) con los 5 valores de salida y fechas",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroHistoricoDTO",
+            "description": "Detalle de un rubro histórico de nómina (av_py_rubroslhis)",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución (PK compuesto)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (PK compuesto)"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro (PK compuesto)"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "efecto", "type": "string", "required": false, "description": "Efecto del rubro (ingreso/egreso)"},
+              {"name": "valorSalida01", "type": "number", "required": false, "description": "Valor de salida 01 (mvlrout01)"},
+              {"name": "valorSalida02", "type": "number", "required": false, "description": "Valor de salida 02 (mvlrout02)"},
+              {"name": "valorSalida03", "type": "number", "required": false, "description": "Valor de salida 03 (mvlrout03)"},
+              {"name": "valorSalida04", "type": "number", "required": false, "description": "Valor de salida 04 (mvlrout04)"},
+              {"name": "valorSalida05", "type": "number", "required": false, "description": "Valor de salida 05 (mvlrout05)"},
+              {"name": "fechaInicioSalida", "type": "datetime", "required": false, "description": "Fecha inicio de salida (dfiniout)"},
+              {"name": "fechaFinSalida", "type": "datetime", "required": false, "description": "Fecha fin de salida (dffinout)"},
+              {"name": "rubrosIdoUplId", "type": "number", "required": false, "description": "ID del rubro IDO upload asociado"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/rubros-preliquidados/{ejecucionId}/{colaboradorId}/{rubroId}",
+          "summary": "Obtener rubro preliquidado individual",
+          "description": "Obtiene un rubro preliquidado específico de un colaborador por su clave compuesta con los 5 valores de salida, fechas y flag de envío",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "RubroPreLiquidadoDTO",
+            "description": "Detalle de un rubro preliquidado de nómina (av_py_rubroslpre)",
+            "fields": [
+              {"name": "ejecucionId", "type": "integer", "required": true, "description": "ID de la instancia de ejecución (PK compuesto)"},
+              {"name": "colaboradorId", "type": "integer", "required": true, "description": "ID del colaborador (PK compuesto)"},
+              {"name": "rubroId", "type": "string", "required": true, "description": "ID del rubro (PK compuesto)"},
+              {"name": "rubroNombre", "type": "string", "required": false, "description": "Nombre del rubro (denormalizado)"},
+              {"name": "efecto", "type": "string", "required": false, "description": "Efecto del rubro (ingreso/egreso)"},
+              {"name": "valorSalida01", "type": "number", "required": false, "description": "Valor de salida 01 (mvlrout01)"},
+              {"name": "valorSalida02", "type": "number", "required": false, "description": "Valor de salida 02 (mvlrout02)"},
+              {"name": "valorSalida03", "type": "number", "required": false, "description": "Valor de salida 03 (mvlrout03)"},
+              {"name": "valorSalida04", "type": "number", "required": false, "description": "Valor de salida 04 (mvlrout04)"},
+              {"name": "valorSalida05", "type": "number", "required": false, "description": "Valor de salida 05 (mvlrout05)"},
+              {"name": "fechaInicioSalida", "type": "datetime", "required": false, "description": "Fecha inicio de salida (dfiniout)"},
+              {"name": "fechaFinSalida", "type": "datetime", "required": false, "description": "Fecha fin de salida (dffinout)"},
+              {"name": "rubrosIdoUplId", "type": "number", "required": false, "description": "ID del rubro IDO upload asociado"},
+              {"name": "flagEnvio", "type": "integer", "required": false, "description": "Flag de envío (iflagenvio)"},
+              {"name": "usuarioIngreso", "type": "string", "required": false, "description": "Usuario que creó el registro"},
+              {"name": "fechaIngreso", "type": "datetime", "required": false, "description": "Fecha/hora de creación"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/clases-rubro",
+          "summary": "Listar clases de rubros",
+          "description": "Obtiene la lista jerárquica de clases de rubros (av_py_clasesrubros) para clasificación en resúmenes de nómina, con nivel, clase padre y configuración de reporte",
+          "requestDTO": null,
+          "queryParams": [
+            {"name": "nivel", "type": "string", "required": false, "description": "Filtro por nivel jerárquico"},
+            {"name": "clasePadreId", "type": "string", "required": false, "description": "Filtro por clase padre"},
+            {"name": "reporteNomina", "type": "string", "required": false, "description": "Filtro por inclusión en reporte de nómina"},
+            {"name": "asignaRubro", "type": "string", "required": false, "description": "Filtro por permiso de asignación de rubro"}
+          ],
+          "responseDTO": {
+            "name": "ClaseRubroListDTO",
+            "description": "Lista de clases de rubros",
+            "fields": [
+              {"name": "items", "type": "array<ClaseRubroResumenDTO>", "required": true, "description": "Lista de clases de rubro"},
+              {"name": "total", "type": "integer", "required": true, "description": "Total de clases"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/clases-rubro/{claseId}",
+          "summary": "Obtener clase de rubro por ID",
+          "description": "Obtiene una clase de rubro específica con datos de nivel, padre, visibilidad y configuración",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "ClaseRubroResumenDTO",
+            "description": "Detalle de una clase de rubro (av_py_clasesrubros)",
+            "fields": [
+              {"name": "claseId", "type": "string", "required": true, "description": "ID de la clase de rubro (vidclase)"},
+              {"name": "nombre", "type": "string", "required": false, "description": "Nombre de la clase (vclase)"},
+              {"name": "nivel", "type": "string", "required": false, "description": "Nivel jerárquico (vnivel)"},
+              {"name": "clasePadreId", "type": "string", "required": false, "description": "ID de la clase padre (vidclasepadre)"},
+              {"name": "ocultar", "type": "string", "required": false, "description": "Indicador de ocultamiento (cocultar)"},
+              {"name": "idExterno", "type": "string", "required": false, "description": "Identificador externo (videxterno)"},
+              {"name": "reporteNomina", "type": "string", "required": false, "description": "Incluir en reporte de nómina (creportenomina)"},
+              {"name": "asignaRubro", "type": "string", "required": false, "description": "Permite asignar rubro (casignarubro)"}
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/nomina-colaborador/estructura-organizacional/{areaId}",
+          "summary": "Obtener estructura organizacional por área",
+          "description": "Obtiene el detalle de un nodo de la estructura organizacional (vista av_en_dimensionesest_v) con datos de área, departamento y sección",
+          "requestDTO": null,
+          "responseDTO": {
+            "name": "EstructuraOrganizacionalDTO",
+            "description": "Detalle de un nodo de la estructura organizacional",
+            "fields": [
+              {"name": "areaId", "type": "integer", "required": true, "description": "ID del área (iidarea)"},
+              {"name": "dimensionId", "type": "integer", "required": false, "description": "ID de la dimensión (iiddimensionesl)"},
+              {"name": "departamentoId", "type": "integer", "required": false, "description": "ID del departamento (iiddpto)"},
+              {"name": "seccionId", "type": "integer", "required": false, "description": "ID de la sección (iidseccion)"},
+              {"name": "areaNombre", "type": "string", "required": false, "description": "Nombre del área (varea)"},
+              {"name": "departamentoNombre", "type": "string", "required": false, "description": "Nombre del departamento (vdpto)"},
+              {"name": "seccionNombre", "type": "string", "required": false, "description": "Nombre de la sección (vseccion)"},
+              {"name": "areaCodigoExterno", "type": "string", "required": false, "description": "Código externo del área (vidarea)"},
+              {"name": "departamentoCodigoExterno", "type": "string", "required": false, "description": "Código externo del dpto (viddpto)"},
+              {"name": "seccionCodigoExterno", "type": "string", "required": false, "description": "Código externo de sección (vidseccion)"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

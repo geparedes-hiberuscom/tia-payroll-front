@@ -1,0 +1,847 @@
+
+{
+  "module": "PayrollManagement",
+  "domain": "Finance",
+  "totalFunctionalities": 34,
+  "functionalities": [
+    {
+      "id": "PRL-F001",
+      "name": "Gestión de Componentes Salariales",
+      "service": "SalaryComponentService",
+      "domain": "SalaryComponent",
+      "description": "Crear, editar y mantener el catálogo de rubros salariales",
+      "businessCapability": "Salary Component Management",
+      "userStories": [
+        "Como administrador, quiero crear nuevos rubros salariales para nuevos conceptos de pago",
+        "Como administrador, quiero clasificar rubros por tipo (ingreso, deducción, aporte)",
+        "Como administrador, quiero definir la jerarquía y relaciones entre rubros"
+      ],
+      "entities": [
+        "AvPyRubro.java",
+        "AvPyRubrosl.java",
+        "AvPyClasesrubro.java"
+      ],
+      "relatedMicroservices": [
+        "SalaryComponentService"
+      ]
+    },
+    {
+      "id": "PRL-F002",
+      "name": "Cálculo de Rubros por Empleado",
+      "service": "EmployeeSalaryCalculationService",
+      "domain": "SalaryCalculation",
+      "description": "Calcular qué rubros aplican a cada empleado según contrato y posición",
+      "businessCapability": "Employee Salary Calculation",
+      "userStories": [
+        "Como HR, quiero asignar rubros a un empleado nuevo",
+        "Como HR, quiero cambiar los rubros de un empleado retroactivamente",
+        "Como sistema, quiero calcular automáticamente el salario mensual de cada empleado"
+      ],
+      "entities": [
+        "AvPyRubroslpreColab.java",
+        "AvPyRubroslpre.java",
+        "AvPyAcumulado.java"
+      ],
+      "relatedMicroservices": [
+        "EmployeeSalaryCalculationService"
+      ]
+    },
+    {
+      "id": "PRL-F003",
+      "name": "Generación y Ejecución de Nómina",
+      "service": "PayrollGenerationService",
+      "domain": "PayrollGeneration",
+      "description": "Orquestar el ciclo completo de generación de nómina mensual/quincenal",
+      "businessCapability": "Payroll Generation & Execution",
+      "userStories": [
+        "Como administrador de nómina, quiero ejecutar la generación de nómina de un período",
+        "Como controlador, quiero validar integridad de datos antes de generar",
+        "Como ejecutivo, quiero aprobar la nómina antes de pagos",
+        "Como auditor, quiero ver el registro de todos los procesos de nómina"
+      ],
+      "entities": [
+        "AvPyProcesos.java",
+        "AvPyProcesosinstancias.java",
+        "AvPyLogRegistrosProceso.java"
+      ],
+      "relatedMicroservices": [
+        "PayrollGenerationService"
+      ]
+    },
+    {
+      "id": "PRL-F004",
+      "name": "Distribución de Pagos",
+      "service": "PaymentDistributionService",
+      "domain": "PaymentAllocation",
+      "description": "Distribuir montos calculados entre cuentas bancarias y conceptos de pago",
+      "businessCapability": "Payment Distribution & Allocation",
+      "userStories": [
+        "Como tesorero, quiero distribuir el salario entre cuenta principal y ahorros",
+        "Como tesorero, quiero aplicar descuentos y retenciones",
+        "Como tesorero, quiero ver la disponibilidad de fondos después de distribuciones"
+      ],
+      "entities": [
+        "AvPyDistribucion.java",
+        "AvPyDistribucionDet.java",
+        "AvPyDistribValesdif.java"
+      ],
+      "relatedMicroservices": [
+        "PaymentDistributionService"
+      ]
+    },
+    {
+      "id": "PRL-F005",
+      "name": "Asignación de Costos por Departamento",
+      "service": "CostAllocationService",
+      "domain": "CostAllocation",
+      "description": "Distribuir costos de nómina entre departamentos y centros de costo",
+      "businessCapability": "Departmental Cost Allocation",
+      "userStories": [
+        "Como contador, quiero distribuir gastos de nómina por departamento",
+        "Como executor de presupuesto, quiero validar contra presupuesto asignado",
+        "Como cfo, quiero ver análisis de costos de nómina por línea de negocio"
+      ],
+      "entities": [
+        "AvPyDistcosto.java",
+        "AvPyDistcostoscxpl.java",
+        "AvPyDistcostoslxpl.java"
+      ],
+      "relatedMicroservices": [
+        "CostAllocationService"
+      ]
+    },
+    {
+      "id": "PRL-F006",
+      "name": "Gestión de Deudas y Embargos",
+      "service": "DebtManagementService",
+      "domain": "DebtManagement",
+      "description": "Registrar deudas de empleados y aplicar retenciones de sueldo",
+      "businessCapability": "Employee Debt & Withholding Management",
+      "userStories": [
+        "Como gestor de crédito, quiero registrar una deuda de empleado",
+        "Como tesorero, quiero aplicar embargo automático en nómina",
+        "Como HR, quiero autorizar sobregiros especiales",
+        "Como contador, quiero reportar deudas pendientes"
+      ],
+      "entities": [
+        "AvPyEndeudamiento.java",
+        "AvPyEndeudamientoDet.java",
+        "AvPyRubrosSobregiroHi.java"
+      ],
+      "relatedMicroservices": [
+        "DebtManagementService"
+      ]
+    },
+    {
+      "id": "PRL-F007",
+      "name": "Cálculo de Impuestos y IESS",
+      "service": "SpecialDeductionService",
+      "domain": "TaxDeduction",
+      "description": "Calcular aportes IESS, IDO y otros impuestos según regulación",
+      "businessCapability": "Tax & Special Deductions",
+      "userStories": [
+        "Como sistema, quiero calcular automáticamente aportes IESS",
+        "Como contador, quiero aplicar tasas de impuesto actualizadas",
+        "Como gestor, quiero generar reportes de cumplimiento tributario",
+        "Como auditor, quiero validar cálculos de impuestos"
+      ],
+      "entities": [
+        "AvPyRubrosIess.java",
+        "AvPyRubrosIessl.java",
+        "AvPyRubrosIdo.java"
+      ],
+      "relatedMicroservices": [
+        "SpecialDeductionService"
+      ]
+    },
+    {
+      "id": "PRL-F008",
+      "name": "Gestión de Préstamos a Empleados",
+      "service": "LoanManagementService",
+      "domain": "LoanManagement",
+      "description": "Crear préstamos, calcular cuotas y descontar de nómina",
+      "businessCapability": "Employee Loans & Credit Management",
+      "userStories": [
+        "Como gestor de crédito, quiero crear un préstamo a empleado",
+        "Como sistema, quiero calcular automáticamente amortización mensual",
+        "Como HR, quiero ver saldo pendiente de préstamos",
+        "Como empleado, quiero realizar prepago de préstamo"
+      ],
+      "entities": [
+        "AvPyRubrosPrestamo.java",
+        "AvPyRubrosPrestamoAbo.java",
+        "AvPyRubrosPrestamoAbonos.java"
+      ],
+      "relatedMicroservices": [
+        "LoanManagementService"
+      ]
+    },
+    {
+      "id": "PRL-F009",
+      "name": "Integración Contable",
+      "service": "AccountingIntegrationService",
+      "domain": "Accounting",
+      "description": "Exportar datos de nómina a sistema contable",
+      "businessCapability": "Accounting Export & Integration",
+      "userStories": [
+        "Como contador, quiero generar asientos contables de nómina",
+        "Como auditor, quiero validar cuadre contable",
+        "Como cfo, quiero ver reconciliación de sueldos vs gastos",
+        "Como sistema, quiero exportar a ERPs contables"
+      ],
+      "entities": [
+        "AvPyCuadreprovcontable.java",
+        "AvPyCuadreprovcontableDet.java",
+        "AvPyPlantillaContable.java"
+      ],
+      "relatedMicroservices": [
+        "AccountingIntegrationService"
+      ]
+    },
+    {
+      "id": "PRL-F010",
+      "name": "Interfaz Bancaria",
+      "service": "BankingIntegrationService",
+      "domain": "Banking",
+      "description": "Generar archivos de transferencia y ejecutar pagos bancarios",
+      "businessCapability": "Banking & Payment Interface",
+      "userStories": [
+        "Como tesorero, quiero generar archivo de transferencia bancaria",
+        "Como tesorero, quiero confirmar ejecución de pagos",
+        "Como sistema, quiero procesar fallas de transferencia",
+        "Como auditor, quiero ver historial de pagos ejecutados"
+      ],
+      "entities": [
+        "AvPyInterfas.java",
+        "AvPyInterfasarchivo.java"
+      ],
+      "relatedMicroservices": [
+        "BankingIntegrationService"
+      ]
+    },
+    {
+      "id": "PRL-F011",
+      "name": "Reportes y Análisis de Nómina",
+      "service": "PayrollReportingService",
+      "domain": "Reporting",
+      "description": "Generar reportes analíticos y comparativas de nómina",
+      "businessCapability": "Payroll Reports & Analytics",
+      "userStories": [
+        "Como ejecutivo, quiero ver resumen general de nómina",
+        "Como analista, quiero comparar nóminas mes a mes",
+        "Como HR, quiero analizar costos por departamento",
+        "Como usuario, quiero exportar reportes a Excel/PDF"
+      ],
+      "entities": [
+        "AvPyComparativoNomina.java",
+        "AvPyAcumuladosV.java"
+      ],
+      "relatedMicroservices": [
+        "PayrollReportingService"
+      ]
+    },
+    {
+      "id": "PRL-F012",
+      "name": "Autorización de Anticipo de Sueldo",
+      "service": "HumanResourcesAuthorizations",
+      "domain": "AdvanceManagement",
+      "description": "Solicitar y autorizar anticipos de sueldo",
+      "businessCapability": "Advance Authorization",
+      "userStories": [
+        "Como empleado, quiero solicitar un anticipo de sueldo",
+        "Como gestor, quiero aprobar/rechazar solicitud de anticipo",
+        "Como HR, quiero ver historial de anticipos",
+        "Como tesorero, quiero descontar anticipos de nómina final"
+      ],
+      "entities": [
+        "AvRhAutorizaAnticipoSueldo.java",
+        "AvRhSolicitudAnticipoSueldo.java"
+      ],
+      "relatedMicroservices": [
+        "HumanResourcesAuthorizations"
+      ]
+    },
+    {
+      "id": "PRL-F013",
+      "name": "Autorización de Sobregiro",
+      "service": "HumanResourcesAuthorizations",
+      "domain": "AdvanceManagement",
+      "description": "Autorizar sobregiros especiales en cuentas de empleados",
+      "businessCapability": "Overdraft Authorization",
+      "userStories": [
+        "Como gestor RH, quiero autorizar sobregiro a empleado",
+        "Como descuentista, quiero descontar sobregiro en próxima nómina",
+        "Como auditor, quiero auditar sobregiros autorizados"
+      ],
+      "entities": [
+        "AvRhAutorizaSobregiro.java"
+      ],
+      "relatedMicroservices": [
+        "HumanResourcesAuthorizations"
+      ]
+    },
+    {
+      "id": "PRL-F014",
+      "name": "Gestión de Parámetros de Nómina",
+      "service": "SalaryComponentService",
+      "domain": "Configuration",
+      "description": "Definir y actualizar parámetros globales de nómina",
+      "businessCapability": "Payroll Parameters",
+      "userStories": [
+        "Como administrador, quiero actualizar tasas de IESS",
+        "Como gestor, quiero cambiar porcentajes de descuento",
+        "Como auditor, quiero ver histórico de cambios de parámetros"
+      ],
+      "entities": [
+        "AvPyParametro.java"
+      ],
+      "relatedMicroservices": [
+        "SalaryComponentService"
+      ]
+    },
+    {
+      "id": "PRL-F015",
+      "name": "Plantillas Contables",
+      "service": "AccountingIntegrationService",
+      "domain": "Accounting",
+      "description": "Definir plantillas de asientos contables para diferentes tipos de nómina",
+      "businessCapability": "Accounting Templates",
+      "userStories": [
+        "Como contador, quiero crear plantilla de asiento para nómina normal",
+        "Como contador, quiero crear plantilla para nómina extraordinaria",
+        "Como contador, quiero mapear rubros a cuentas contables"
+      ],
+      "entities": [
+        "AvPyPlantillaContable.java"
+      ],
+      "relatedMicroservices": [
+        "AccountingIntegrationService"
+      ]
+    },
+    {
+      "id": "PRL-F016",
+      "name": "Validación de Procesos",
+      "service": "PayrollGenerationService",
+      "domain": "Validation",
+      "description": "Validar integridad e inconsistencias antes de generar nómina",
+      "businessCapability": "Process Validation",
+      "userStories": [
+        "Como sistema, quiero validar que todos los empleados tengan rubros",
+        "Como sistema, quiero detectar cambios salariales no procesados",
+        "Como controlador, quiero ver lista de advertencias pre-generación"
+      ],
+      "entities": [
+        "AvPyProcesos.java"
+      ],
+      "relatedMicroservices": [
+        "PayrollGenerationService"
+      ]
+    },
+    {
+      "id": "PRL-F017",
+      "name": "Auditoría de Cambios",
+      "service": "PayrollGenerationService",
+      "domain": "Audit",
+      "description": "Registrar y auditar todos los cambios en nómina",
+      "businessCapability": "Change Audit",
+      "userStories": [
+        "Como auditor, quiero ver quién cambió qué y cuándo",
+        "Como supervisor, quiero rastrear origen de cambios en rubros",
+        "Como compliance, quiero generar reportes de auditoría"
+      ],
+      "entities": [
+        "AvPyLogRegistrosProceso.java"
+      ],
+      "relatedMicroservices": [
+        "PayrollGenerationService"
+      ]
+    },
+    {
+      "id": "PRL-F018",
+      "name": "Cálculo de Acumulados",
+      "service": "EmployeeSalaryCalculationService",
+      "domain": "SalaryCalculation",
+      "description": "Calcular acumulados de período para análisis",
+      "businessCapability": "Accumulated Salary",
+      "userStories": [
+        "Como analista, quiero ver acumulado de salario año actual",
+        "Como HR, quiero generar certificado de ingresos con acumulado",
+        "Como sistema, quiero usar acumulado para cálculos retroactivos"
+      ],
+      "entities": [
+        "AvPyAcumulado.java"
+      ],
+      "relatedMicroservices": [
+        "EmployeeSalaryCalculationService"
+      ]
+    },
+    {
+      "id": "PRL-F019",
+      "name": "Historial de Cambios de Rubros",
+      "service": "EmployeeSalaryCalculationService",
+      "domain": "RubroHistory",
+      "description": "Mantener historial de cambios en asignación de rubros",
+      "businessCapability": "Rubro History",
+      "userStories": [
+        "Como HR, quiero ver historial de cambios salariales de empleado",
+        "Como contador, quiero rehacer cálculos con rubros históricos",
+        "Como auditor, quiero validar cambios retroactivos"
+      ],
+      "entities": [
+        "AvPyRubroslhis.java"
+      ],
+      "relatedMicroservices": [
+        "EmployeeSalaryCalculationService"
+      ]
+    },
+    {
+      "id": "PRL-F020",
+      "name": "Descuentos Diferidos",
+      "service": "PaymentDistributionService",
+      "domain": "Deferred",
+      "description": "Manejar descuentos que se aplican en próximos períodos",
+      "businessCapability": "Deferred Discounts",
+      "userStories": [
+        "Como tesorero, quiero aplazar descuento para próximo mes",
+        "Como sistema, quiero aplicar automáticamente descuentos diferidos",
+        "Como auditor, quiero ver saldo de descuentos pendientes"
+      ],
+      "entities": [
+        "AvPyDistribValesdif.java"
+      ],
+      "relatedMicroservices": [
+        "PaymentDistributionService"
+      ]
+    },
+    {
+      "id": "PRL-F021",
+      "name": "Gestión de Cuotas de Préstamo",
+      "service": "LoanManagementService",
+      "domain": "LoanManagement",
+      "description": "Calcular y aplicar cuotas de pago de préstamos",
+      "businessCapability": "Loan Amortization",
+      "userStories": [
+        "Como sistema, quiero calcular automáticamente cuota mensual",
+        "Como empleado, quiero ver estado de amortización de mi préstamo",
+        "Como tesorero, quiero ver desglose de pagos de préstamo"
+      ],
+      "entities": [
+        "AvPyRubrosPrestamoAbo.java",
+        "AvPyRubrosPrestamoAbonos.java"
+      ],
+      "relatedMicroservices": [
+        "LoanManagementService"
+      ]
+    },
+    {
+      "id": "PRL-F022",
+      "name": "Mapeo de Cuentas Contables",
+      "service": "AccountingIntegrationService",
+      "domain": "Accounting",
+      "description": "Mapear rubros de nómina a cuentas contables",
+      "businessCapability": "Account Mapping",
+      "userStories": [
+        "Como contador, quiero definir a qué cuenta contable va cada rubro",
+        "Como sistema, quiero usar mapeo para generar asientos automáticos",
+        "Como auditor, quiero validar mapeo de cuentas"
+      ],
+      "entities": [
+        "AvPyCtasubctaAso.java"
+      ],
+      "relatedMicroservices": [
+        "AccountingIntegrationService"
+      ]
+    },
+    {
+      "id": "PRL-F023",
+      "name": "Comparativa de Nóminas",
+      "service": "PayrollReportingService",
+      "domain": "Reporting",
+      "description": "Comparar nóminas de diferentes períodos",
+      "businessCapability": "Payroll Comparison",
+      "userStories": [
+        "Como analista, quiero comparar nómina actual vs mes anterior",
+        "Como ejecutivo, quiero ver variación de costos mes a mes",
+        "Como auditor, quiero identificar anomalías en comparativas"
+      ],
+      "entities": [
+        "AvPyComparativoNomina.java"
+      ],
+      "relatedMicroservices": [
+        "PayrollReportingService"
+      ]
+    },
+    {
+      "id": "PRL-F024",
+      "name": "Interfaz de Importación de Datos",
+      "service": "PayrollGenerationService",
+      "domain": "DataIntegration",
+      "description": "Importar datos de nómina desde archivos externos",
+      "businessCapability": "Data Import",
+      "userStories": [
+        "Como gestor, quiero importar archivos de configuración",
+        "Como sistema, quiero validar datos antes de importar",
+        "Como auditor, quiero ver log de importaciones realizadas"
+      ],
+      "entities": [
+        "AvPyInterfas.java",
+        "AvPyInterfasarchivo.java"
+      ],
+      "relatedMicroservices": [
+        "PayrollGenerationService"
+      ]
+    },
+    {
+      "id": "PRL-F025",
+      "name": "Gestión de Tasas de Descuento",
+      "service": "SpecialDeductionService",
+      "domain": "TaxDeduction",
+      "description": "Configurar y mantener tasas de descuento por tipo",
+      "businessCapability": "Discount Rate Management",
+      "userStories": [
+        "Como administrador, quiero actualizar porcentaje de descuento",
+        "Como sistema, quiero aplicar tasas según vigencia",
+        "Como auditor, quiero ver historial de cambios de tasas"
+      ],
+      "entities": [
+        "AvPyParametro.java"
+      ],
+      "relatedMicroservices": [
+        "SpecialDeductionService"
+      ]
+    },
+    {
+      "id": "PRL-F026",
+      "name": "Cierre de Período",
+      "service": "PayrollGenerationService",
+      "domain": "PeriodManagement",
+      "description": "Cerrar período de nómina bloqueando cambios posteriores",
+      "businessCapability": "Period Closure",
+      "userStories": [
+        "Como controlador, quiero cerrar período después de pagados",
+        "Como sistema, quiero prevenir cambios en período cerrado",
+        "Como auditor, quiero ver fecha/usuario que cerró período"
+      ],
+      "entities": [
+        "AvPyProcesos.java"
+      ],
+      "relatedMicroservices": [
+        "PayrollGenerationService"
+      ]
+    },
+    {
+      "id": "PRL-F027",
+      "name": "Reversión de Nómina",
+      "service": "AccountingIntegrationService",
+      "domain": "Reversal",
+      "description": "Reversar asientos contables de nómina procesada",
+      "businessCapability": "Payroll Reversal",
+      "userStories": [
+        "Como contador, quiero reversar nómina por error",
+        "Como sistema, quiero crear asientos de storno automáticamente",
+        "Como auditor, quiero auditar reversiones realizadas"
+      ],
+      "entities": [
+        "AvPyCuadreprovcontable.java"
+      ],
+      "relatedMicroservices": [
+        "AccountingIntegrationService"
+      ]
+    },
+    {
+      "id": "PRL-F028",
+      "name": "Validación de Datos Bancarios",
+      "service": "BankingIntegrationService",
+      "domain": "Banking",
+      "description": "Validar IBAN, Swift y otros datos bancarios antes de transferencia",
+      "businessCapability": "Banking Validation",
+      "userStories": [
+        "Como tesorero, quiero validar formato de IBAN",
+        "Como sistema, quiero prevenir transferencias con datos inválidos",
+        "Como operador, quiero ver errores de validación"
+      ],
+      "entities": [
+        "AvPyInterfas.java"
+      ],
+      "relatedMicroservices": [
+        "BankingIntegrationService"
+      ]
+    },
+    {
+      "id": "PRL-F029",
+      "name": "Reintentos de Transferencia",
+      "service": "BankingIntegrationService",
+      "domain": "Banking",
+      "description": "Reintentar transferencias que fallaron",
+      "businessCapability": "Retry Failed Transfers",
+      "userStories": [
+        "Como tesorero, quiero reintentar transferencia fallida",
+        "Como sistema, quiero registrar intentos fallidos",
+        "Como operador, quiero ver historial de reintentos"
+      ],
+      "entities": [
+        "AvPyInterfas.java"
+      ],
+      "relatedMicroservices": [
+        "BankingIntegrationService"
+      ]
+    },
+    {
+      "id": "PRL-F030",
+      "name": "Asignación de Rubros por Contrato",
+      "service": "EmployeeSalaryCalculationService",
+      "domain": "ContractManagement",
+      "description": "Definir rubros asociados a tipos de contrato",
+      "businessCapability": "Contract-based Rubros",
+      "userStories": [
+        "Como HR, quiero asignar rubros según tipo de contrato",
+        "Como sistema, quiero aplicar automáticamente rubros de contrato",
+        "Como auditor, quiero validar conformidad con contrato"
+      ],
+      "entities": [
+        "AvPyRubroslpre.java"
+      ],
+      "relatedMicroservices": [
+        "EmployeeSalaryCalculationService"
+      ]
+    },
+    {
+      "id": "PRL-F031",
+      "name": "Distribución por Dimensión",
+      "service": "CostAllocationService",
+      "domain": "CostAllocation",
+      "description": "Distribuir costos según estructuras organizacionales",
+      "businessCapability": "Dimension-based Distribution",
+      "userStories": [
+        "Como contador, quiero distribuir por centro de costo",
+        "Como contador, quiero distribuir por proyecto",
+        "Como cfo, quiero ver análisis multidimensional"
+      ],
+      "entities": [
+        "AvPyRubrosPrestamoDimension.java"
+      ],
+      "relatedMicroservices": [
+        "CostAllocationService"
+      ]
+    },
+    {
+      "id": "PRL-F032",
+      "name": "Confirmación de Pagos Bancarios",
+      "service": "BankingIntegrationService",
+      "domain": "Banking",
+      "description": "Recibir confirmación de ejecución de transferencias",
+      "businessCapability": "Payment Confirmation",
+      "userStories": [
+        "Como tesorero, quiero confirmar pagos ejecutados",
+        "Como sistema, quiero registrar confirmación de banco",
+        "Como auditor, quiero validar pagos contra confirmación"
+      ],
+      "entities": [
+        "AvPyInterfas.java"
+      ],
+      "relatedMicroservices": [
+        "BankingIntegrationService"
+      ]
+    },
+    {
+      "id": "PRL-F033",
+      "name": "Exportación de Nómina",
+      "service": "PayrollReportingService",
+      "domain": "Reporting",
+      "description": "Exportar datos de nómina a Excel, PDF y otros formatos",
+      "businessCapability": "Payroll Export",
+      "userStories": [
+        "Como usuario, quiero exportar nómina a Excel",
+        "Como usuario, quiero generar PDF de nómina",
+        "Como usuario, quiero compartir reportes por email"
+      ],
+      "entities": [],
+      "relatedMicroservices": [
+        "PayrollReportingService"
+      ]
+    },
+    {
+      "id": "PRL-F034",
+      "name": "Simulación de Nómina",
+      "service": "EmployeeSalaryCalculationService",
+      "domain": "Simulation",
+      "description": "Simular cálculo de nómina sin guardar cambios reales",
+      "businessCapability": "Payroll Simulation",
+      "userStories": [
+        "Como HR, quiero simular impacto de aumento salarial",
+        "Como tesorero, quiero simular impacto de cambios de rubros",
+        "Como usuario, quiero ver proyección sin afectar datos reales"
+      ],
+      "entities": [],
+      "relatedMicroservices": [
+        "EmployeeSalaryCalculationService"
+      ]
+    }
+  ],
+  "functionalityByMicroservice": {
+    "SalaryComponentService": [
+      "PRL-F001",
+      "PRL-F014",
+      "PRL-F025"
+    ],
+    "EmployeeSalaryCalculationService": [
+      "PRL-F002",
+      "PRL-F018",
+      "PRL-F019",
+      "PRL-F030",
+      "PRL-F034"
+    ],
+    "PayrollGenerationService": [
+      "PRL-F003",
+      "PRL-F016",
+      "PRL-F017",
+      "PRL-F024",
+      "PRL-F026"
+    ],
+    "PaymentDistributionService": [
+      "PRL-F004",
+      "PRL-F020"
+    ],
+    "CostAllocationService": [
+      "PRL-F005",
+      "PRL-F031"
+    ],
+    "DebtManagementService": [
+      "PRL-F006"
+    ],
+    "SpecialDeductionService": [
+      "PRL-F007",
+      "PRL-F025"
+    ],
+    "LoanManagementService": [
+      "PRL-F008",
+      "PRL-F021"
+    ],
+    "AccountingIntegrationService": [
+      "PRL-F009",
+      "PRL-F015",
+      "PRL-F022",
+      "PRL-F027"
+    ],
+    "BankingIntegrationService": [
+      "PRL-F010",
+      "PRL-F028",
+      "PRL-F029",
+      "PRL-F032"
+    ],
+    "PayrollReportingService": [
+      "PRL-F011",
+      "PRL-F023",
+      "PRL-F033"
+    ],
+    "HumanResourcesAuthorizations": [
+      "PRL-F012",
+      "PRL-F013"
+    ]
+  },
+  "functionalityByDomain": {
+    "SalaryComponent": [
+      "PRL-F001",
+      "PRL-F014"
+    ],
+    "SalaryCalculation": [
+      "PRL-F002",
+      "PRL-F018",
+      "PRL-F019",
+      "PRL-F030",
+      "PRL-F034"
+    ],
+    "Configuration": [
+      "PRL-F014",
+      "PRL-F025"
+    ],
+    "PayrollGeneration": [
+      "PRL-F003",
+      "PRL-F016",
+      "PRL-F026"
+    ],
+    "PaymentAllocation": [
+      "PRL-F004",
+      "PRL-F020"
+    ],
+    "CostAllocation": [
+      "PRL-F005",
+      "PRL-F031"
+    ],
+    "DebtManagement": [
+      "PRL-F006"
+    ],
+    "TaxDeduction": [
+      "PRL-F007",
+      "PRL-F025"
+    ],
+    "LoanManagement": [
+      "PRL-F008",
+      "PRL-F021"
+    ],
+    "Accounting": [
+      "PRL-F009",
+      "PRL-F015",
+      "PRL-F022",
+      "PRL-F027"
+    ],
+    "Banking": [
+      "PRL-F010",
+      "PRL-F028",
+      "PRL-F029",
+      "PRL-F032"
+    ],
+    "Reporting": [
+      "PRL-F011",
+      "PRL-F023",
+      "PRL-F033"
+    ],
+    "AdvanceManagement": [
+      "PRL-F012",
+      "PRL-F013"
+    ],
+    "Audit": [
+      "PRL-F017"
+    ],
+    "RubroHistory": [
+      "PRL-F019"
+    ],
+    "Deferred": [
+      "PRL-F020"
+    ],
+    "Validation": [
+      "PRL-F016"
+    ],
+    "DataIntegration": [
+      "PRL-F024"
+    ],
+    "PeriodManagement": [
+      "PRL-F026"
+    ],
+    "Reversal": [
+      "PRL-F027"
+    ],
+    "ContractManagement": [
+      "PRL-F030"
+    ],
+    "Simulation": [
+      "PRL-F034"
+    ]
+  },
+  "criticalFunctionalities": [
+    "PRL-F003",
+    "PRL-F002",
+    "PRL-F004",
+    "PRL-F007",
+    "PRL-F009",
+    "PRL-F010"
+  ],
+  "recommendations": [
+    "Las 6 funcionalidades críticas (generación, cálculo, distribución, impuestos, contabilidad y banca) requieren máxima confiabilidad y auditoría",
+    "Implementar feature flags para rollout gradual de nuevas funcionalidades",
+    "Priorizar en Fase 1: PRL-F001, PRL-F002, PRL-F003",
+    "Priorizar en Fase 2: PRL-F004, PRL-F005, PRL-F009, PRL-F010",
+    "Las funcionalidades de integración (bancaria y contable) requieren manejo robusto de errores",
+    "Implementar compensating transactions para reversiones de nómina"
+  ]
+}

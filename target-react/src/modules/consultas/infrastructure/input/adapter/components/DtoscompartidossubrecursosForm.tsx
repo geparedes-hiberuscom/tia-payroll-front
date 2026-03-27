@@ -1,0 +1,78 @@
+import React, { useState, useEffect } from 'react';
+import { CreateDtoscompartidossubrecursos, UpdateDtoscompartidossubrecursos, Dtoscompartidossubrecursos } from '../../../../domain/model/Dtoscompartidossubrecursos';
+
+interface DtoscompartidossubrecursosFormProps {
+  /** Si se pasa initialData, el formulario está en modo edición */
+  initialData?: Dtoscompartidossubrecursos;
+  onSubmit: (data: CreateDtoscompartidossubrecursos | UpdateDtoscompartidossubrecursos) => void;
+  onCancel?: () => void;
+  loading?: boolean;
+}
+
+/**
+ * Componente Formulario: DTOs compartidos (subrecursos)
+ * Formulario de creación/edición basado en las pantallas ZUL fuente.
+ * Pantallas fuente: DTOs compartidos (subrecursos)
+ * Renderers fuente: N/A
+ *
+ * TODO: Copilot — Completar con los campos reales del formulario (basarse en el domain model).
+ */
+export const DtoscompartidossubrecursosForm: React.FC<DtoscompartidossubrecursosFormProps> = ({
+  initialData,
+  onSubmit,
+  onCancel,
+  loading,
+}) => {
+  const isEditMode = !!initialData;
+
+  // TODO: Agregar estado para cada campo del formulario
+  // Ejemplo:
+  // const [nombre, setNombre] = useState(initialData?.nombre || '');
+
+  useEffect(() => {
+    if (initialData) {
+      // TODO: Precargar campos del formulario con initialData
+    }
+  }, [initialData]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Construir el objeto Create/Update y llamar onSubmit
+    // onSubmit({ nombre });
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      data-testid="dtoscompartidossubrecursos-form"
+      style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: 600 }}
+    >
+      <h3>{isEditMode ? 'Editar' : 'Crear'} DTOs compartidos (subrecursos)</h3>
+
+      {/* TODO: Agregar inputs del formulario */}
+      {/* Ejemplo:
+      <label>
+        Nombre
+        <input
+          type="text"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          required
+          disabled={loading}
+        />
+      </label>
+      */}
+
+      <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Guardando...' : isEditMode ? 'Actualizar' : 'Crear'}
+        </button>
+        {onCancel && (
+          <button type="button" onClick={onCancel} disabled={loading}>
+            Cancelar
+          </button>
+        )}
+      </div>
+    </form>
+  );
+};
