@@ -6,3 +6,4 @@ export { httpClient } from './infrastructure/output/adapter/api/httpClient';
 export { useErrorHandler } from './infrastructure/input/adapter/hooks/useErrorHandler';
 export { Loading } from './infrastructure/input/adapter/components/Loading';
 export { ErrorBanner } from './infrastructure/input/adapter/components/ErrorBanner';
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './infrastructure/input/adapter/components/Tabs';

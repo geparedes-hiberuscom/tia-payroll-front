@@ -1,0 +1,21 @@
+// Pages barrel — auto-generated
+export { RubrosIndexPage } from './RubrosIndexPage';
+export { RubrosRubrosdialogPage } from './RubrosRubrosdialogPage';
+export { RubrosRubrosdialogDetailPage } from './RubrosRubrosdialogDetailPage';
+export { RubrosRubrosdialogCreatePage } from './RubrosRubrosdialogCreatePage';
+export { RubrosxprocesodialogPage } from './RubrosxprocesodialogPage';
+export { RubrosxprocesodialogDetailPage } from './RubrosxprocesodialogDetailPage';
+export { RubrosxprocesodialogCreatePage } from './RubrosxprocesodialogCreatePage';
+export { RubrosidomainRubrosidolistRubrosidodetailPage } from './RubrosidomainRubrosidolistRubrosidodetailPage';
+export { RubrosidomainRubrosidolistRubrosidodetailDetailPage } from './RubrosidomainRubrosidolistRubrosidodetailDetailPage';
+export { RubrosidomainRubrosidolistRubrosidodetailCreatePage } from './RubrosidomainRubrosidolistRubrosidodetailCreatePage';
+export { RubrosidocargaxprocesoPage } from './RubrosidocargaxprocesoPage';
+export { RubrosidocargaxprocesoDetailPage } from './RubrosidocargaxprocesoDetailPage';
+export { RubrosidocargaxprocesoCreatePage } from './RubrosidocargaxprocesoCreatePage';
+export { CargarubrosidoPage } from './CargarubrosidoPage';
+export { CargarubrosidoDetailPage } from './CargarubrosidoDetailPage';
+export { CargarubrosidoCreatePage } from './CargarubrosidoCreatePage';
+export { ConsultarubrosidolistPage } from './ConsultarubrosidolistPage';
+export { ConsultarubrosidolistDetailPage } from './ConsultarubrosidolistDetailPage';
+export { ConsultarubrosidolistCreatePage } from './ConsultarubrosidolistCreatePage';
+export * from './RubrosPage';

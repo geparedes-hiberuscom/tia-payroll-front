@@ -1,0 +1,28 @@
+// Components barrel — auto-generated
+export { RubrosRubrosdialogList } from './RubrosRubrosdialogList';
+export { RubrosRubrosdialogForm } from './RubrosRubrosdialogForm';
+export { RubrosRubrosdialogDetail } from './RubrosRubrosdialogDetail';
+export { RubrosRubrosdialogCard } from './RubrosRubrosdialogCard';
+export { RubrosRubrosdialogFilter } from './RubrosRubrosdialogFilter';
+export { RubrosxprocesodialogList } from './RubrosxprocesodialogList';
+export { RubrosxprocesodialogForm } from './RubrosxprocesodialogForm';
+export { RubrosxprocesodialogDetail } from './RubrosxprocesodialogDetail';
+export { RubrosxprocesodialogCard } from './RubrosxprocesodialogCard';
+export { RubrosidomainRubrosidolistRubrosidodetailList } from './RubrosidomainRubrosidolistRubrosidodetailList';
+export { RubrosidomainRubrosidolistRubrosidodetailForm } from './RubrosidomainRubrosidolistRubrosidodetailForm';
+export { RubrosidomainRubrosidolistRubrosidodetailDetail } from './RubrosidomainRubrosidolistRubrosidodetailDetail';
+export { RubrosidomainRubrosidolistRubrosidodetailCard } from './RubrosidomainRubrosidolistRubrosidodetailCard';
+export { RubrosidocargaxprocesoList } from './RubrosidocargaxprocesoList';
+export { RubrosidocargaxprocesoForm } from './RubrosidocargaxprocesoForm';
+export { RubrosidocargaxprocesoDetail } from './RubrosidocargaxprocesoDetail';
+export { RubrosidocargaxprocesoCard } from './RubrosidocargaxprocesoCard';
+export { CargarubrosidoList } from './CargarubrosidoList';
+export { CargarubrosidoForm } from './CargarubrosidoForm';
+export { CargarubrosidoDetail } from './CargarubrosidoDetail';
+export { CargarubrosidoCard } from './CargarubrosidoCard';
+export { ConsultarubrosidolistList } from './ConsultarubrosidolistList';
+export { ConsultarubrosidolistForm } from './ConsultarubrosidolistForm';
+export { ConsultarubrosidolistDetail } from './ConsultarubrosidolistDetail';
+export { ConsultarubrosidolistCard } from './ConsultarubrosidolistCard';
+export * from './RubrosForm';
+export * from './RubrosList';

@@ -1,4 +1,4 @@
-import { Rubros } from '../../domain/model/Rubros';
+import { Rubros } from '@modules/rubros/domain/model/Rubros';
 
 /**
  * Puerto de entrada: 📋 Gestión de Rubros
