@@ -14,8 +14,9 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'https://anton-unconvenable-bryanna.ngrok-free.dev',
         changeOrigin: true,
+        secure: true,
       },
     },
   },

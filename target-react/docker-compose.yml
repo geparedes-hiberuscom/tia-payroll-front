@@ -1,0 +1,36 @@
+services:
+
+  # ── Desarrollo (hot-reload) ──────────────────────────────────────────────────
+  frontend-dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules        # evita sobreescribir node_modules del contenedor
+    environment:
+      - VITE_API_URL=https://anton-unconvenable-bryanna.ngrok-free.dev
+    # Si el backend corre en otro servicio de este compose, descomenta:
+    # depends_on:
+    #   - backend
+
+  # ── Producción (nginx + build estático) ─────────────────────────────────────
+  frontend-prod:
+    build:
+      context: .
+      target: prod
+    ports:
+      - "80:80"
+    profiles:
+      - prod
+    # Si el backend corre en otro servicio de este compose, descomenta:
+    # depends_on:
+    #   - backend
+
+  # ── Backend (descomenta y ajusta si lo levantas aquí también) ───────────────
+  # backend:
+  #   image: your-backend-image:latest
+  #   ports:
+  #     - "8080:8080"
