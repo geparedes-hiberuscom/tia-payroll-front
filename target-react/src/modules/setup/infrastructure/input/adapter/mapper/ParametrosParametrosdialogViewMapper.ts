@@ -1,24 +1,11 @@
 import { ParametrosParametrosdialog, CreateParametrosParametrosdialog, UpdateParametrosParametrosdialog, ParametrosParametrosdialogFilter, ParametrosParametrosdialogPageResult } from '../../../../domain/model/ParametrosParametrosdialog';
 import { ParametrosParametrosdialogResponse, ParametrosParametrosdialogListResponse, CreateParametrosParametrosdialogRequest, UpdateParametrosParametrosdialogRequest, ParametrosParametrosdialogFilterParams } from '../dto/ParametrosParametrosdialogDto';
 
-/**
- * View Mapper: parametros.zul / parametrosDialog.zul
- *
- * Transforma entre modelos de Dominio y DTOs de la Vista/Infraestructura.
- * - Response DTO → Domain Model (datos del backend → negocio)
- * - Domain Model → Request DTO (negocio → formulario/API)
- * - Domain Filter → DTO FilterParams
- *
- * Todos los métodos son estáticos.
- */
 export class ParametrosParametrosdialogViewMapper {
 
-  /**
-   * Response DTO → Domain Model
-   */
   static toDomain(response: ParametrosParametrosdialogResponse): ParametrosParametrosdialog {
     return {
-      id: response.id,
+      id: `${response.entorno}:${response.idParametro}`,
       entorno: response.entorno,
       idParametro: response.idParametro,
       parametro: response.parametro,
@@ -35,12 +22,9 @@ export class ParametrosParametrosdialogViewMapper {
     };
   }
 
-  /**
-   * ListResponse DTO → Domain PageResult
-   */
   static toPageResult(listResponse: ParametrosParametrosdialogListResponse): ParametrosParametrosdialogPageResult {
     return {
-      content: listResponse.data.map(ParametrosParametrosdialogViewMapper.toDomain),
+      content: listResponse.content.map(ParametrosParametrosdialogViewMapper.toDomain),
       totalElements: listResponse.totalElements,
       totalPages: listResponse.totalPages,
       page: listResponse.page,
@@ -48,9 +32,6 @@ export class ParametrosParametrosdialogViewMapper {
     };
   }
 
-  /**
-   * Domain Create → Request DTO
-   */
   static toCreateRequest(model: CreateParametrosParametrosdialog): CreateParametrosParametrosdialogRequest {
     return {
       entorno: model.entorno,
@@ -65,9 +46,6 @@ export class ParametrosParametrosdialogViewMapper {
     };
   }
 
-  /**
-   * Domain Update → Request DTO
-   */
   static toUpdateRequest(model: UpdateParametrosParametrosdialog): UpdateParametrosParametrosdialogRequest {
     return {
       parametro: model.parametro,
@@ -80,9 +58,6 @@ export class ParametrosParametrosdialogViewMapper {
     };
   }
 
-  /**
-   * Domain Filter → DTO FilterParams
-   */
   static toFilterParams(filter: ParametrosParametrosdialogFilter): ParametrosParametrosdialogFilterParams {
     return {
       page: filter.page ?? 0,

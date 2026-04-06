@@ -1,10 +1,10 @@
 import React from 'react';
-import { Reporteirinecdialog } from '../../../../domain/model/Reporteirinecdialog';
+import { ReporteirinecdialogResponse } from '../dto/ReporteirinecdialogDto';
 
 interface ReporteirinecdialogDetailProps {
-  item: Reporteirinecdialog;
-  onEdit?: (item: Reporteirinecdialog) => void;
-  onDelete?: (id: string) => void;
+  item: ReporteirinecdialogResponse;
+  onEdit?: (item: ReporteirinecdialogResponse) => void;
+  onDelete?: (id: number) => void;
   onBack?: () => void;
 }
 

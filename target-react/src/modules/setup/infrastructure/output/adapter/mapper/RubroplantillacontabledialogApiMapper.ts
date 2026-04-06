@@ -2,41 +2,40 @@ import { RubroplantillacontabledialogResponse, RubroplantillacontabledialogListR
 
 /**
  * API Mapper: rubroplantillaContableDialog.zul
- * Transforma las respuestas raw de la API a los DTOs tipados del frontend.
- * Transforma los DTOs del frontend a los payloads de la API.
  */
 export class RubroplantillacontabledialogApiMapper {
 
   static toResponse(raw: any): RubroplantillacontabledialogResponse {
     return {
       id: raw.id,
-      // TODO: Mapear campos del JSON de respuesta del backend al DTO Response
+      procesoId: raw.procesoId,
+      rubroId: raw.rubroId,
+      rubroNombre: raw.rubroNombre,
+      cuenta: raw.cuenta,
+      subcuenta: raw.subcuenta,
+      debeHaber: raw.debeHaber,
+      auxiliar: raw.auxiliar,
+      distribucionCosto: raw.distribucionCosto,
+      dimensionId: raw.dimensionId,
+      dimensionNombre: raw.dimensionNombre,
     };
   }
 
   static toListResponse(raw: any): RubroplantillacontabledialogListResponse {
     return {
-      data: Array.isArray(raw.data || raw.content || raw)
-        ? (raw.data || raw.content || raw).map(RubroplantillacontabledialogApiMapper.toResponse)
-        : [],
-      totalElements: raw.totalElements || raw.total || 0,
+      content: Array.isArray(raw.content) ? raw.content.map(RubroplantillacontabledialogApiMapper.toResponse) : [],
+      totalElements: raw.totalElements || 0,
       totalPages: raw.totalPages || 0,
-      page: raw.page || raw.number || 0,
-      size: raw.size || raw.pageSize || 10,
+      page: raw.page || 0,
+      size: raw.size || 10,
     };
   }
 
   static toCreatePayload(request: CreateRubroplantillacontabledialogRequest): Record<string, unknown> {
-    return {
-      // TODO: Mapear campos del DTO Request al payload de la API
-      ...request,
-    };
+    return { ...request };
   }
 
   static toUpdatePayload(request: UpdateRubroplantillacontabledialogRequest): Record<string, unknown> {
-    return {
-      // TODO: Mapear campos del DTO Request al payload de la API
-      ...request,
-    };
+    return { ...request };
   }
 }

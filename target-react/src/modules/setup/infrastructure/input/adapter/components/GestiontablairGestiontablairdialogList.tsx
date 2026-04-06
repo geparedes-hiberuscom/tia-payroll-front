@@ -6,7 +6,7 @@ interface GestiontablairGestiontablairdialogListProps {
   items: GestiontablairGestiontablairdialog[];
   loading?: boolean;
   onSelect?: (item: GestiontablairGestiontablairdialog) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: number) => void;
   onEdit?: (item: GestiontablairGestiontablairdialog) => void;
 }
 

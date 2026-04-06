@@ -3,11 +3,12 @@
  * Exporta todos los servicios de aplicación
  */
 
-export { ParametroService } from './ParametroService';
-export { TablaIRService } from './TablaIRService';
-export { GastosPersonalesService } from './GastosPersonalesService';
-export { IngresoProyectadoService } from './IngresoProyectadoService';
-export { ReporteIRINECService } from './ReporteIRINECService';
-export { PlantillaContableService } from './PlantillaContableService';
-export { RubroPlantillaService } from './RubroPlantillaService';
-export { ContratoPlantillaService } from './ContratoPlantillaService';
+export { ParametrosParametrosdialogService } from './ParametrosParametrosdialogService';
+export { GestiontablairGestiontablairdialogService } from './GestiontablairGestiontablairdialogService';
+export { GastospersonalesdialogService } from './GastospersonalesdialogService';
+export { GeningproyectadosService } from './GeningproyectadosService';
+export { ReporteirinecdialogService } from './ReporteirinecdialogService';
+export { PlantillacontablePlantillacontabledialogService } from './PlantillacontablePlantillacontabledialogService';
+export { RubroplantillacontabledialogService } from './RubroplantillacontabledialogService';
+export { ContratoplantillaContratoplantilladialogService } from './ContratoplantillaContratoplantilladialogService';
+export { SetupService } from './SetupService';

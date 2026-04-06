@@ -20,13 +20,13 @@ export const GastospersonalesdialogCreatePage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      fetchById(id);
+      fetchById(Number(id));
     }
   }, [id, fetchById]);
 
   const handleSubmit = async (data: CreateGastospersonalesdialog | UpdateGastospersonalesdialog) => {
     if (isEditMode && id) {
-      await update(id, data as UpdateGastospersonalesdialog);
+      await update(Number(id), data as UpdateGastospersonalesdialog);
     } else {
       await create(data as CreateGastospersonalesdialog);
     }

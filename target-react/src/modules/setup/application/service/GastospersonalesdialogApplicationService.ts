@@ -43,7 +43,6 @@ export class GastospersonalesdialogApplicationService implements Gastospersonale
   }
 
   async create(model: CreateGastospersonalesdialog): Promise<Gastospersonalesdialog> {
-    // TODO: Validaciones de negocio antes de crear
     this.validateGastospersonalesdialog(model);
     const request = GastospersonalesdialogViewMapper.toCreateRequest(model);
     const response = await this.gatewayPort.create(request);
@@ -54,7 +53,6 @@ export class GastospersonalesdialogApplicationService implements Gastospersonale
     if (!id) {
       throw new GastospersonalesdialogValidationError('El ID es requerido para actualizar');
     }
-    // TODO: Validaciones de negocio antes de actualizar
     const request = GastospersonalesdialogViewMapper.toUpdateRequest(model);
     const response = await this.gatewayPort.update(id, request);
     return GastospersonalesdialogViewMapper.toDomain(response);
@@ -70,13 +68,11 @@ export class GastospersonalesdialogApplicationService implements Gastospersonale
   // ─── Validaciones de negocio ───
 
   private validateGastospersonalesdialog(model: Partial<Gastospersonalesdialog>): void {
-    // TODO: Implementar validaciones de negocio
     // Ejemplo:
     // if (!model.nombre || model.nombre.trim().length === 0) {
     //   throw new GastospersonalesdialogValidationError('El nombre es obligatorio', 'nombre');
     // }
   }
 
-  // TODO: Agregar métodos de negocio adicionales
   // Ejemplo: procesar lotes, cálculos, orquestación de múltiples llamadas al gateway
 }

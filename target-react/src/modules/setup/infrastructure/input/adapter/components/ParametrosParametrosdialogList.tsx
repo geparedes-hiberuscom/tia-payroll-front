@@ -1,13 +1,13 @@
 import React from 'react';
-import { ParametrosParametrosdialog } from '../../../../domain/model/ParametrosParametrosdialog';
+import { ParametrosParametrosdialogResponse } from '../dto/ParametrosParametrosdialogDto';
 import { ParametrosParametrosdialogCard } from './ParametrosParametrosdialogCard';
 
 interface ParametrosParametrosdialogListProps {
-  items: ParametrosParametrosdialog[];
+  items: ParametrosParametrosdialogResponse[];
   loading?: boolean;
-  onSelect?: (item: ParametrosParametrosdialog) => void;
+  onSelect?: (item: ParametrosParametrosdialogResponse) => void;
   onDelete?: (id: string) => void;
-  onEdit?: (item: ParametrosParametrosdialog) => void;
+  onEdit?: (item: ParametrosParametrosdialogResponse) => void;
 }
 
 /**
@@ -36,7 +36,7 @@ export const ParametrosParametrosdialogList: React.FC<ParametrosParametrosdialog
     <div data-testid="parametros-parametrosdialog-list">
       {items.map((item) => (
         <ParametrosParametrosdialogCard
-          key={item.id}
+          key={`${item.entorno}:${item.idParametro}`}
           item={item}
           onSelect={onSelect}
           onDelete={onDelete}

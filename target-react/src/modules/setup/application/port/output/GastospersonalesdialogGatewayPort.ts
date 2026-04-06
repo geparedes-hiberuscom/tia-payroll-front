@@ -12,10 +12,9 @@ import { GastospersonalesdialogResponse, GastospersonalesdialogListResponse, Cre
   // DELETE /api/v1/gastos-personales/{id} — Eliminar gasto personal
  */
 export interface GastospersonalesdialogGatewayPort {
-  findById(id: string): Promise<GastospersonalesdialogResponse>;
+  findById(id: number): Promise<GastospersonalesdialogResponse>;
   findAll(params?: GastospersonalesdialogFilterParams): Promise<GastospersonalesdialogListResponse>;
   create(request: CreateGastospersonalesdialogRequest): Promise<GastospersonalesdialogResponse>;
-  update(id: string, request: UpdateGastospersonalesdialogRequest): Promise<GastospersonalesdialogResponse>;
-  remove(id: string): Promise<void>;
-  // TODO: Agregar métodos adicionales según los endpoints de la API
+  update(id: number, request: UpdateGastospersonalesdialogRequest): Promise<GastospersonalesdialogResponse>;
+  remove(id: number): Promise<void>;
 }

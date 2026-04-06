@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { GeningproyectadosService } from '../../../../application/service/GeningproyectadosService';
 import { GeningproyectadosGatewayAdapter } from '../../../output/adapter/api/GeningproyectadosGatewayAdapter';
-import { GeningproyectadosResponse, CreateGeningproyectadosRequest, UpdateGeningproyectadosRequest, GeningproyectadosFilterParams } from '../dto/GeningproyectadosDto';
+import { GeningproyectadosResponse, GenerarGeningproyectadosRequest, ProcesoGeningproyectadosResponse, UpdateGeningproyectadosRequest, GeningproyectadosFilterParams } from '../dto/GeningproyectadosDto';
 
 // ─── Inyección manual: Gateway Adapter → Service ───
 const gatewayAdapter = new GeningproyectadosGatewayAdapter();
@@ -25,7 +25,7 @@ export function useGeningproyectados() {
       setLoading(true);
       setError(null);
       const response = await geningproyectadosService.findAll(params);
-      setItems(response.data);
+      setItems(response.content);
       setTotalElements(response.totalElements);
       setPage(response.page);
     } catch (err) {
@@ -39,7 +39,7 @@ export function useGeningproyectados() {
     try {
       setLoading(true);
       setError(null);
-      const item = await geningproyectadosService.findById(id);
+      const item = await geningproyectadosService.findById(Number(id));
       setSelectedItem(item);
       return item;
     } catch (err) {
@@ -50,22 +50,22 @@ export function useGeningproyectados() {
     }
   }, []);
 
-  const create = useCallback(async (request: CreateGeningproyectadosRequest) => {
+  const generar = useCallback(async (request: GenerarGeningproyectadosRequest): Promise<ProcesoGeningproyectadosResponse | null> => {
     try {
       setLoading(true);
       setError(null);
-      const created = await geningproyectadosService.create(request);
-      setItems(prev => [...prev, created]);
-      return created;
+      const resultado = await geningproyectadosService.generar(request);
+      await fetchAll();
+      return resultado;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al crear');
+      setError(err instanceof Error ? err.message : 'Error al generar ingresos proyectados');
       throw err;
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const update = useCallback(async (id: string, request: UpdateGeningproyectadosRequest) => {
+  const update = useCallback(async (id: number, request: UpdateGeningproyectadosRequest) => {
     try {
       setLoading(true);
       setError(null);
@@ -81,7 +81,7 @@ export function useGeningproyectados() {
     }
   }, []);
 
-  const remove = useCallback(async (id: string) => {
+  const remove = useCallback(async (id: number) => {
     try {
       setLoading(true);
       setError(null);
@@ -109,7 +109,7 @@ export function useGeningproyectados() {
     page,
     fetchAll,
     fetchById,
-    create,
+    generar,
     update,
     remove,
     clearError: () => setError(null),

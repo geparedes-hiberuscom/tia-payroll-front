@@ -2,41 +2,46 @@
  * DTOs para funcionalidad: GastosPersonalesDialog.zul (GastosPersonalesDialog)
  * Entidades fuente: 5
  * Controladores fuente: 5
- *
- * TODO: Copilot — Completa los campos basándote en los schemas de la API y las entidades fuente.
  */
-
-// Fuente: GastosPersonalesListResponseDTO — Lista de configuración de gastos personales
-// Fuente: GastosPersonalesResponseDTO — Detalle de configuración de gasto personal deducible
-// Fuente: GastosPersonalesCreateDTO — Datos para crear configuración de gasto personal
-// Fuente: GastosPersonalesUpdateDTO — Datos para actualizar configuración de gasto personal
-// Fuente: DeleteResponseDTO — Confirmación de eliminación
 
 // ─── Request DTOs ───
 
 export interface CreateGastospersonalesdialogRequest {
-  // TODO: Campos del formulario de creación
+  empresaId: number;
+  anio: number;
+  descripcion: string;
+  montoMaximo?: number;
+  porcentaje?: number;
 }
 
 export interface UpdateGastospersonalesdialogRequest {
-  // TODO: Campos del formulario de actualización
+  descripcion?: string;
+  montoMaximo?: number;
+  porcentaje?: number;
 }
 
 export interface GastospersonalesdialogFilterParams {
   page?: number;
   size?: number;
-  // TODO: Filtros de búsqueda
+  empresaId?: number;
+  anio?: number;
 }
 
 // ─── Response DTOs ───
 
 export interface GastospersonalesdialogResponse {
-  id: string;
-  // TODO: Campos de la respuesta del servidor
+  id: number;
+  empresaId: number;
+  empresaNombre?: string;
+  anio: number;
+  descripcion: string;
+  montoMaximo?: number;
+  porcentaje?: number;
+  estado?: string;
 }
 
 export interface GastospersonalesdialogListResponse {
-  data: GastospersonalesdialogResponse[];
+  content: GastospersonalesdialogResponse[];
   totalElements: number;
   totalPages: number;
   page: number;

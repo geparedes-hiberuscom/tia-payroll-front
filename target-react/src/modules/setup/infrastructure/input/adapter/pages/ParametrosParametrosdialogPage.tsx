@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParametrosParametrosdialog } from '../hooks/useParametrosParametrosdialog';
 import { ParametrosParametrosdialogList } from '../components/ParametrosParametrosdialogList';
 import { ParametrosParametrosdialogForm } from '../components/ParametrosParametrosdialogForm';
-import { ParametrosParametrosdialog, CreateParametrosParametrosdialog, UpdateParametrosParametrosdialog } from '../../../../domain/model/ParametrosParametrosdialog';
+import { CreateParametrosParametrosdialogRequest, UpdateParametrosParametrosdialogRequest, ParametrosParametrosdialogResponse } from '../dto/ParametrosParametrosdialogDto';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 
@@ -27,30 +27,31 @@ export const ParametrosParametrosdialogPage: React.FC = () => {
   } = useParametrosParametrosdialog();
 
   const [showForm, setShowForm] = useState(false);
-  const [editingItem, setEditingItem] = useState<ParametrosParametrosdialog | undefined>(undefined);
+  const [editingItem, setEditingItem] = useState<ParametrosParametrosdialogResponse | undefined>(undefined);
 
   useEffect(() => {
     fetchAll();
   }, []);
 
-  const handleSubmit = async (data: CreateParametrosParametrosdialog | UpdateParametrosParametrosdialog) => {
+  const handleSubmit = async (data: CreateParametrosParametrosdialogRequest | UpdateParametrosParametrosdialogRequest) => {
     if (editingItem) {
-      await update(editingItem.id, data as UpdateParametrosParametrosdialog);
+      await update(editingItem.entorno, editingItem.idParametro, data as UpdateParametrosParametrosdialogRequest);
     } else {
-      await create(data as CreateParametrosParametrosdialog);
+      await create(data as CreateParametrosParametrosdialogRequest);
     }
     setShowForm(false);
     setEditingItem(undefined);
   };
 
-  const handleEdit = (item: ParametrosParametrosdialog) => {
+  const handleEdit = (item: ParametrosParametrosdialogResponse) => {
     setEditingItem(item);
     setShowForm(true);
   };
 
   const handleDelete = async (id: string) => {
+    const [entorno, idParametro] = id.split(':');
     if (window.confirm('¿Estás seguro de eliminar este registro?')) {
-      await remove(id);
+      await remove(entorno, idParametro);
     }
   };
 

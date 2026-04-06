@@ -6,7 +6,6 @@
  * Representa la entidad de negocio pura, sin dependencias de infraestructura.
  * Los campos deben reflejar los atributos reales del negocio.
  *
- * TODO: Copilot — Completa los atributos basándote en las entidades fuente y los schemas de la API.
  */
 
 // Fuente: GastosPersonalesListResponseDTO — Lista de configuración de gastos personales
@@ -50,7 +49,7 @@ export interface GastospersonalesdialogFilter {
  * Resultado paginado del dominio
  */
 export interface GastospersonalesdialogPageResult {
-  items: Gastospersonalesdialog[];
+  content: Gastospersonalesdialog[];
   totalElements: number;
   totalPages: number;
   page: number;

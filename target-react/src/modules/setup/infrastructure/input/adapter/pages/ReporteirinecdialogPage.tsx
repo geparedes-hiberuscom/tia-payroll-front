@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useReporteirinecdialog } from '../hooks/useReporteirinecdialog';
 import { ReporteirinecdialogList } from '../components/ReporteirinecdialogList';
 import { ReporteirinecdialogForm } from '../components/ReporteirinecdialogForm';
-import { Reporteirinecdialog, CreateReporteirinecdialog, UpdateReporteirinecdialog } from '../../../../domain/model/Reporteirinecdialog';
+import { GenerarReporteirinecdialogRequest, UpdateReporteirinecdialogRequest, ReporteirinecdialogResponse } from '../dto/ReporteirinecdialogDto';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 
@@ -17,17 +17,17 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
  * TODO: Copilot — Completar la página con la lógica de las pantallas ZUL originales.
  */
 export const ReporteirinecdialogPage: React.FC = () => {
-  const { items, loading, error, fetchAll, create, update, remove, clearError } = useReporteirinecdialog();
+  const { items, loading, error, fetchAll, generar, update, remove, clearError } = useReporteirinecdialog();
   const [showForm, setShowForm] = useState(false);
-  const [editingItem, setEditingItem] = useState<Reporteirinecdialog | undefined>(undefined);
+  const [editingItem, setEditingItem] = useState<ReporteirinecdialogResponse | undefined>(undefined);
 
   useEffect(() => { fetchAll(); }, []);
 
-  const handleSubmit = async (data: CreateReporteirinecdialog | UpdateReporteirinecdialog) => {
+  const handleSubmit = async (data: GenerarReporteirinecdialogRequest | UpdateReporteirinecdialogRequest) => {
     if (editingItem) {
-      await update(editingItem.id, data as UpdateReporteirinecdialog);
+      await update(editingItem.id, data as UpdateReporteirinecdialogRequest);
     } else {
-      await create(data as CreateReporteirinecdialog);
+      await generar(data as GenerarReporteirinecdialogRequest);
     }
     setShowForm(false);
     setEditingItem(undefined);
@@ -41,7 +41,7 @@ export const ReporteirinecdialogPage: React.FC = () => {
       </div>
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
       {showForm && <ReporteirinecdialogForm initialData={editingItem} onSubmit={handleSubmit} onCancel={() => { setShowForm(false); setEditingItem(undefined); }} loading={loading} />}
-      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando..." /> : <ReporteirinecdialogList items={items} loading={loading} onEdit={(item) => { setEditingItem(item); setShowForm(true); }} onDelete={(id) => { if (window.confirm('¿Eliminar?')) remove(id.toString()); }} />)}
+      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando..." /> : <ReporteirinecdialogList items={items} loading={loading} onEdit={(item) => { setEditingItem(item); setShowForm(true); }} onDelete={(id) => { if (window.confirm('¿Eliminar?')) remove(id); }} />)}
     </div>
   );
 };

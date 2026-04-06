@@ -25,7 +25,7 @@ export function usePlantillacontablePlantillacontabledialog() {
       setLoading(true);
       setError(null);
       const response = await plantillacontablePlantillacontabledialogService.findAll(params);
-      setItems(response.data);
+      setItems(response.content);
       setTotalElements(response.totalElements);
       setPage(response.page);
     } catch (err) {
@@ -35,7 +35,7 @@ export function usePlantillacontablePlantillacontabledialog() {
     }
   }, []);
 
-  const fetchById = useCallback(async (id: string) => {
+  const fetchById = useCallback(async (id: number) => {
     try {
       setLoading(true);
       setError(null);
@@ -65,7 +65,7 @@ export function usePlantillacontablePlantillacontabledialog() {
     }
   }, []);
 
-  const update = useCallback(async (id: string, request: UpdatePlantillacontablePlantillacontabledialogRequest) => {
+  const update = useCallback(async (id: number, request: UpdatePlantillacontablePlantillacontabledialogRequest) => {
     try {
       setLoading(true);
       setError(null);
@@ -81,7 +81,7 @@ export function usePlantillacontablePlantillacontabledialog() {
     }
   }, []);
 
-  const remove = useCallback(async (id: string) => {
+  const remove = useCallback(async (id: number) => {
     try {
       setLoading(true);
       setError(null);

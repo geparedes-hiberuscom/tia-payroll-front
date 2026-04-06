@@ -3,7 +3,7 @@ import { ParametrosParametrosdialogResponse, ParametrosParametrosdialogListRespo
 import { ParametrosParametrosdialogApiMapper } from '../mapper/ParametrosParametrosdialogApiMapper';
 import { httpClient } from '@shared/infrastructure/output/adapter/api/httpClient';
 
-const BASE_PATH = '/api/v1/setup';
+const BASE_PATH = '/api/v1/parametros';
 
 /**
  * API Gateway Adapter: parametros.zul / parametrosDialog.zul
@@ -12,8 +12,8 @@ const BASE_PATH = '/api/v1/setup';
  */
 export class ParametrosParametrosdialogGatewayAdapter implements ParametrosParametrosdialogGatewayPort {
 
-  async findById(id: string): Promise<ParametrosParametrosdialogResponse> {
-    const { data } = await httpClient.get(`${BASE_PATH}/${id}`);
+  async findById(entorno: string, idParametro: string): Promise<ParametrosParametrosdialogResponse> {
+    const { data } = await httpClient.get(`${BASE_PATH}/${entorno}/${idParametro}`);
     return ParametrosParametrosdialogApiMapper.toResponse(data);
   }
 
@@ -28,15 +28,13 @@ export class ParametrosParametrosdialogGatewayAdapter implements ParametrosParam
     return ParametrosParametrosdialogApiMapper.toResponse(data);
   }
 
-  async update(id: string, request: UpdateParametrosParametrosdialogRequest): Promise<ParametrosParametrosdialogResponse> {
+  async update(entorno: string, idParametro: string, request: UpdateParametrosParametrosdialogRequest): Promise<ParametrosParametrosdialogResponse> {
     const payload = ParametrosParametrosdialogApiMapper.toUpdatePayload(request);
-    const { data } = await httpClient.put(`${BASE_PATH}/${id}`, payload);
+    const { data } = await httpClient.put(`${BASE_PATH}/${entorno}/${idParametro}`, payload);
     return ParametrosParametrosdialogApiMapper.toResponse(data);
   }
 
-  async remove(id: string): Promise<void> {
-    await httpClient.delete(`${BASE_PATH}/${id}`);
+  async remove(entorno: string, idParametro: string): Promise<void> {
+    await httpClient.delete(`${BASE_PATH}/${entorno}/${idParametro}`);
   }
-
-  // TODO: Implementar métodos adicionales según los endpoints de la API
 }

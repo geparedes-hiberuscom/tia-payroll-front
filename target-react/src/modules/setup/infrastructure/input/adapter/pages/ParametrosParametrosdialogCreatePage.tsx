@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useParametrosParametrosdialog } from '../hooks/useParametrosParametrosdialog';
 import { ParametrosParametrosdialogForm } from '../components/ParametrosParametrosdialogForm';
-import { CreateParametrosParametrosdialog, UpdateParametrosParametrosdialog } from '../../../../domain/model/ParametrosParametrosdialog';
+import { CreateParametrosParametrosdialogRequest, UpdateParametrosParametrosdialogRequest } from '../dto/ParametrosParametrosdialogDto';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 
@@ -20,15 +20,17 @@ export const ParametrosParametrosdialogCreatePage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      fetchById(id);
+      const [entorno, idParametro] = id.split(':');
+      fetchById(entorno, idParametro);
     }
   }, [id, fetchById]);
 
-  const handleSubmit = async (data: CreateParametrosParametrosdialog | UpdateParametrosParametrosdialog) => {
+  const handleSubmit = async (data: CreateParametrosParametrosdialogRequest | UpdateParametrosParametrosdialogRequest) => {
     if (isEditMode && id) {
-      await update(id, data as UpdateParametrosParametrosdialog);
+      const [entorno, idParametro] = id.split(':');
+      await update(entorno, idParametro, data as UpdateParametrosParametrosdialogRequest);
     } else {
-      await create(data as CreateParametrosParametrosdialog);
+      await create(data as CreateParametrosParametrosdialogRequest);
     }
     navigate('/parametros-parametrosdialog');
   };

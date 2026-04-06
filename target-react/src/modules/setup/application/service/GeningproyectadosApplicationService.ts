@@ -43,7 +43,6 @@ export class GeningproyectadosApplicationService implements GeningproyectadosUse
   }
 
   async create(model: CreateGeningproyectados): Promise<Geningproyectados> {
-    // TODO: Validaciones de negocio antes de crear
     this.validateGeningproyectados(model);
     const request = GeningproyectadosViewMapper.toCreateRequest(model);
     const response = await this.gatewayPort.create(request);
@@ -54,7 +53,6 @@ export class GeningproyectadosApplicationService implements GeningproyectadosUse
     if (!id) {
       throw new GeningproyectadosValidationError('El ID es requerido para actualizar');
     }
-    // TODO: Validaciones de negocio antes de actualizar
     const request = GeningproyectadosViewMapper.toUpdateRequest(model);
     const response = await this.gatewayPort.update(id, request);
     return GeningproyectadosViewMapper.toDomain(response);
@@ -70,13 +68,11 @@ export class GeningproyectadosApplicationService implements GeningproyectadosUse
   // ─── Validaciones de negocio ───
 
   private validateGeningproyectados(model: Partial<Geningproyectados>): void {
-    // TODO: Implementar validaciones de negocio
     // Ejemplo:
     // if (!model.nombre || model.nombre.trim().length === 0) {
     //   throw new GeningproyectadosValidationError('El nombre es obligatorio', 'nombre');
     // }
   }
 
-  // TODO: Agregar métodos de negocio adicionales
   // Ejemplo: procesar lotes, cálculos, orquestación de múltiples llamadas al gateway
 }

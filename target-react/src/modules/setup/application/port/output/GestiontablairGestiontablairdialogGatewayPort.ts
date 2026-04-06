@@ -7,10 +7,9 @@ import { GestiontablairGestiontablairdialogResponse, GestiontablairGestiontablai
  * Endpoints relacionados:
  */
 export interface GestiontablairGestiontablairdialogGatewayPort {
-  findById(id: string): Promise<GestiontablairGestiontablairdialogResponse>;
+  findById(id: number): Promise<GestiontablairGestiontablairdialogResponse>;
   findAll(params?: GestiontablairGestiontablairdialogFilterParams): Promise<GestiontablairGestiontablairdialogListResponse>;
   create(request: CreateGestiontablairGestiontablairdialogRequest): Promise<GestiontablairGestiontablairdialogResponse>;
-  update(id: string, request: UpdateGestiontablairGestiontablairdialogRequest): Promise<GestiontablairGestiontablairdialogResponse>;
-  remove(id: string): Promise<void>;
-  // TODO: Agregar métodos adicionales según los endpoints de la API
+  update(id: number, request: UpdateGestiontablairGestiontablairdialogRequest): Promise<GestiontablairGestiontablairdialogResponse>;
+  remove(id: number): Promise<void>;
 }

@@ -6,7 +6,7 @@ interface ContratoplantillaContratoplantilladialogListProps {
   items: ContratoplantillaContratoplantilladialog[];
   loading?: boolean;
   onSelect?: (item: ContratoplantillaContratoplantilladialog) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: number) => void;
   onEdit?: (item: ContratoplantillaContratoplantilladialog) => void;
 }
 

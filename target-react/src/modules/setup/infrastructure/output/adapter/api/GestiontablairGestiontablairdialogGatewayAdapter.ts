@@ -3,7 +3,7 @@ import { GestiontablairGestiontablairdialogResponse, GestiontablairGestiontablai
 import { GestiontablairGestiontablairdialogApiMapper } from '../mapper/GestiontablairGestiontablairdialogApiMapper';
 import { httpClient } from '@shared/infrastructure/output/adapter/api/httpClient';
 
-const BASE_PATH = '/api/v1/setup';
+const BASE_PATH = '/api/v1/tabla-ir';
 
 /**
  * API Gateway Adapter: gestionTablaIR.zul / gestionTablaIRDialog.zul
@@ -12,7 +12,7 @@ const BASE_PATH = '/api/v1/setup';
  */
 export class GestiontablairGestiontablairdialogGatewayAdapter implements GestiontablairGestiontablairdialogGatewayPort {
 
-  async findById(id: string): Promise<GestiontablairGestiontablairdialogResponse> {
+  async findById(id: number): Promise<GestiontablairGestiontablairdialogResponse> {
     const { data } = await httpClient.get(`${BASE_PATH}/${id}`);
     return GestiontablairGestiontablairdialogApiMapper.toResponse(data);
   }
@@ -28,15 +28,14 @@ export class GestiontablairGestiontablairdialogGatewayAdapter implements Gestion
     return GestiontablairGestiontablairdialogApiMapper.toResponse(data);
   }
 
-  async update(id: string, request: UpdateGestiontablairGestiontablairdialogRequest): Promise<GestiontablairGestiontablairdialogResponse> {
+  async update(id: number, request: UpdateGestiontablairGestiontablairdialogRequest): Promise<GestiontablairGestiontablairdialogResponse> {
     const payload = GestiontablairGestiontablairdialogApiMapper.toUpdatePayload(request);
     const { data } = await httpClient.put(`${BASE_PATH}/${id}`, payload);
     return GestiontablairGestiontablairdialogApiMapper.toResponse(data);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await httpClient.delete(`${BASE_PATH}/${id}`);
   }
 
-  // TODO: Implementar métodos adicionales según los endpoints de la API
 }

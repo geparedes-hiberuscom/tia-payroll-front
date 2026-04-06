@@ -12,10 +12,9 @@ import { RubroplantillacontabledialogResponse, RubroplantillacontabledialogListR
   // DELETE /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId} — Quitar rubro de plantilla
  */
 export interface RubroplantillacontabledialogGatewayPort {
-  findById(id: string): Promise<RubroplantillacontabledialogResponse>;
+  findById(id: number): Promise<RubroplantillacontabledialogResponse>;
   findAll(params?: RubroplantillacontabledialogFilterParams): Promise<RubroplantillacontabledialogListResponse>;
   create(request: CreateRubroplantillacontabledialogRequest): Promise<RubroplantillacontabledialogResponse>;
-  update(id: string, request: UpdateRubroplantillacontabledialogRequest): Promise<RubroplantillacontabledialogResponse>;
-  remove(id: string): Promise<void>;
-  // TODO: Agregar métodos adicionales según los endpoints de la API
+  update(id: number, request: UpdateRubroplantillacontabledialogRequest): Promise<RubroplantillacontabledialogResponse>;
+  remove(id: number): Promise<void>;
 }

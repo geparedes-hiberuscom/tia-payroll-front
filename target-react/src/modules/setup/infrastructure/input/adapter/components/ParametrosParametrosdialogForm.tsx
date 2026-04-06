@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { CreateParametrosParametrosdialog, UpdateParametrosParametrosdialog, ParametrosParametrosdialog } from '../../../../domain/model/ParametrosParametrosdialog';
+import { CreateParametrosParametrosdialogRequest, UpdateParametrosParametrosdialogRequest, ParametrosParametrosdialogResponse } from '../dto/ParametrosParametrosdialogDto';
 
 interface ParametrosParametrosdialogFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
-  initialData?: ParametrosParametrosdialog;
-  onSubmit: (data: CreateParametrosParametrosdialog | UpdateParametrosParametrosdialog) => void;
+  initialData?: ParametrosParametrosdialogResponse;
+  onSubmit: (data: CreateParametrosParametrosdialogRequest | UpdateParametrosParametrosdialogRequest) => void;
   onCancel?: () => void;
   loading?: boolean;
 }
@@ -32,10 +32,10 @@ export const ParametrosParametrosdialogForm: React.FC<ParametrosParametrosdialog
   const [datoNumero, setDatoNumero] = useState(initialData?.datoNumero?.toString() || '');
   const [datoNumero2, setDatoNumero2] = useState(initialData?.datoNumero2?.toString() || '');
   const [datoFechaInicio, setDatoFechaInicio] = useState(
-    initialData?.datoFechaInicio ? initialData.datoFechaInicio.toISOString().split('T')[0] : ''
+    initialData?.datoFechaInicio ? initialData.datoFechaInicio.split('T')[0] : ''
   );
   const [datoFechaFin, setDatoFechaFin] = useState(
-    initialData?.datoFechaFin ? initialData.datoFechaFin.toISOString().split('T')[0] : ''
+    initialData?.datoFechaFin ? initialData.datoFechaFin.split('T')[0] : ''
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -45,7 +45,7 @@ export const ParametrosParametrosdialogForm: React.FC<ParametrosParametrosdialog
       return;
     }
 
-    const data: CreateParametrosParametrosdialog | UpdateParametrosParametrosdialog = {
+    const data: CreateParametrosParametrosdialogRequest | UpdateParametrosParametrosdialogRequest = {
       entorno,
       idParametro,
       parametro,
@@ -53,8 +53,8 @@ export const ParametrosParametrosdialogForm: React.FC<ParametrosParametrosdialog
       datoCadena2: datoCadena2 || undefined,
       datoNumero: datoNumero ? parseFloat(datoNumero) : undefined,
       datoNumero2: datoNumero2 ? parseFloat(datoNumero2) : undefined,
-      datoFechaInicio: datoFechaInicio ? new Date(datoFechaInicio) : undefined,
-      datoFechaFin: datoFechaFin ? new Date(datoFechaFin) : undefined,
+      datoFechaInicio: datoFechaInicio || undefined,
+      datoFechaFin: datoFechaFin || undefined,
     };
 
     onSubmit(data);

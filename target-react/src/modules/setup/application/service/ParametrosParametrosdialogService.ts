@@ -18,8 +18,8 @@ export class ParametrosParametrosdialogService {
   // Origen controlador: PUT /api/v1/parametros/{entorno}/{idParametro} — PUT /api/v1/parametros/{entorno}/{idParametro} — Actualizar parámetro
   // Origen controlador: DELETE /api/v1/parametros/{entorno}/{idParametro} — DELETE /api/v1/parametros/{entorno}/{idParametro} — Eliminar parámetro
 
-  async findById(id: string): Promise<ParametrosParametrosdialogResponse> {
-    return this.gateway.findById(id);
+  async findById(entorno: string, idParametro: string): Promise<ParametrosParametrosdialogResponse> {
+    return this.gateway.findById(entorno, idParametro);
   }
 
   async findAll(params?: ParametrosParametrosdialogFilterParams): Promise<ParametrosParametrosdialogListResponse> {
@@ -27,18 +27,15 @@ export class ParametrosParametrosdialogService {
   }
 
   async create(request: CreateParametrosParametrosdialogRequest): Promise<ParametrosParametrosdialogResponse> {
-    // TODO: Validaciones de negocio antes de crear
     return this.gateway.create(request);
   }
 
-  async update(id: string, request: UpdateParametrosParametrosdialogRequest): Promise<ParametrosParametrosdialogResponse> {
-    // TODO: Validaciones de negocio antes de actualizar
-    return this.gateway.update(id, request);
+  async update(entorno: string, idParametro: string, request: UpdateParametrosParametrosdialogRequest): Promise<ParametrosParametrosdialogResponse> {
+    return this.gateway.update(entorno, idParametro, request);
   }
 
-  async remove(id: string): Promise<void> {
-    return this.gateway.remove(id);
+  async remove(entorno: string, idParametro: string): Promise<void> {
+    return this.gateway.remove(entorno, idParametro);
   }
 
-  // TODO: Agregar métodos de negocio adicionales que combinen llamadas al gateway
 }

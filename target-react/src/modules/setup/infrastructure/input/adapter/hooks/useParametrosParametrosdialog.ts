@@ -25,7 +25,7 @@ export function useParametrosParametrosdialog() {
       setLoading(true);
       setError(null);
       const response = await parametrosParametrosdialogService.findAll(params);
-      setItems(response.data);
+      setItems(response.content);
       setTotalElements(response.totalElements);
       setPage(response.page);
     } catch (err) {
@@ -35,11 +35,11 @@ export function useParametrosParametrosdialog() {
     }
   }, []);
 
-  const fetchById = useCallback(async (id: string) => {
+  const fetchById = useCallback(async (entorno: string, idParametro: string) => {
     try {
       setLoading(true);
       setError(null);
-      const item = await parametrosParametrosdialogService.findById(id);
+      const item = await parametrosParametrosdialogService.findById(entorno, idParametro);
       setSelectedItem(item);
       return item;
     } catch (err) {
@@ -65,12 +65,12 @@ export function useParametrosParametrosdialog() {
     }
   }, []);
 
-  const update = useCallback(async (id: string, request: UpdateParametrosParametrosdialogRequest) => {
+  const update = useCallback(async (entorno: string, idParametro: string, request: UpdateParametrosParametrosdialogRequest) => {
     try {
       setLoading(true);
       setError(null);
-      const updated = await parametrosParametrosdialogService.update(id, request);
-      setItems(prev => prev.map(item => item.id === id ? updated : item));
+      const updated = await parametrosParametrosdialogService.update(entorno, idParametro, request);
+      setItems(prev => prev.map(item => item.entorno === entorno && item.idParametro === idParametro ? updated : item));
       setSelectedItem(updated);
       return updated;
     } catch (err) {
@@ -81,13 +81,13 @@ export function useParametrosParametrosdialog() {
     }
   }, []);
 
-  const remove = useCallback(async (id: string) => {
+  const remove = useCallback(async (entorno: string, idParametro: string) => {
     try {
       setLoading(true);
       setError(null);
-      await parametrosParametrosdialogService.remove(id);
-      setItems(prev => prev.filter(item => item.id !== id));
-      if (selectedItem?.id === id) { setSelectedItem(null); }
+      await parametrosParametrosdialogService.remove(entorno, idParametro);
+      setItems(prev => prev.filter(item => !(item.entorno === entorno && item.idParametro === idParametro)));
+      if (selectedItem?.entorno === entorno && selectedItem?.idParametro === idParametro) { setSelectedItem(null); }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al eliminar');
       throw err;

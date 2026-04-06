@@ -18,7 +18,7 @@ export const ReporteirinecdialogDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      fetchById(id);
+      fetchById(Number(id));
     }
   }, [id, fetchById]);
 
@@ -28,7 +28,7 @@ export const ReporteirinecdialogDetailPage: React.FC = () => {
 
   const handleDelete = async () => {
     if (id && window.confirm('¿Estás seguro de eliminar este registro?')) {
-      await remove(id);
+      await remove(Number(id));
       navigate('/reporteirinecdialog');
     }
   };
@@ -38,7 +38,7 @@ export const ReporteirinecdialogDetailPage: React.FC = () => {
   };
 
   if (loading) { return <Loading message="Cargando detalle..." />; }
-  if (error) { return <ErrorBanner message={error} onRetry={() => { clearError(); if (id) { fetchById(id); } }} />; }
+  if (error) { return <ErrorBanner message={error} onRetry={() => { clearError(); if (id) { fetchById(Number(id)); } }} />; }
   if (!selectedItem) { return <p>No encontrado.</p>; }
 
   return (

@@ -24,14 +24,14 @@ export const SetupIndexPage: React.FC = () => {
       <nav>
         <h2>Funcionalidades</h2>
         <ul>
-        <li><a href="/parametros-parametrosdialog">parametros.zul / parametrosDialog.zul</a></li>
-        <li><a href="/gestiontablair-gestiontablairdialog">gestionTablaIR.zul / gestionTablaIRDialog.zul</a></li>
-        <li><a href="/gastospersonalesdialog">GastosPersonalesDialog.zul</a></li>
-        <li><a href="/geningproyectados">genIngProyectados.zul</a></li>
-        <li><a href="/reporteirinecdialog">ReporteIRINECDialog.zul</a></li>
-        <li><a href="/plantillacontable-plantillacontabledialog">plantillaContable.zul / plantillaContableDialog.zul</a></li>
-        <li><a href="/rubroplantillacontabledialog">rubroplantillaContableDialog.zul</a></li>
-        <li><a href="/contratoplantilla-contratoplantilladialog">contratoPlantilla.zul / contratoPlantillaDialog.zul</a></li>
+        <li><a href="/setup/parametros-parametrosdialog">parametros.zul / parametrosDialog.zul</a></li>
+        <li><a href="/setup/gestiontablair-gestiontablairdialog">gestionTablaIR.zul / gestionTablaIRDialog.zul</a></li>
+        <li><a href="/setup/gastospersonalesdialog">GastosPersonalesDialog.zul</a></li>
+        <li><a href="/setup/geningproyectados">genIngProyectados.zul</a></li>
+        <li><a href="/setup/reporteirinecdialog">ReporteIRINECDialog.zul</a></li>
+        <li><a href="/setup/plantillacontable-plantillacontabledialog">plantillaContable.zul / plantillaContableDialog.zul</a></li>
+        <li><a href="/setup/rubroplantillacontabledialog">rubroplantillaContableDialog.zul</a></li>
+        <li><a href="/setup/contratoplantilla-contratoplantilladialog">contratoPlantilla.zul / contratoPlantillaDialog.zul</a></li>
         </ul>
       </nav>
     </div>

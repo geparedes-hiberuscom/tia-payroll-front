@@ -3,41 +3,50 @@
  * Entidades fuente: 6
  * Controladores fuente: 5
  *
- * TODO: Copilot — Completa los campos basándote en los schemas de la API y las entidades fuente.
  */
-
-// Fuente: IngresosProyectadosListResponseDTO — Lista de ingresos proyectados
-// Fuente: IngresoProyectadoResponseDTO — Detalle de ingreso proyectado
-// Fuente: GenerarIngresosProyectadosDTO — Datos para generar ingresos proyectados
-// Fuente: ProcesoResponseDTO — Resultado de la ejecución del proceso de generación
-// Fuente: IngresoProyectadoUpdateDTO — Datos para actualizar ingreso proyectado
-// Fuente: DeleteResponseDTO — Confirmación de eliminación
 
 // ─── Request DTOs ───
 
-export interface CreateGeningproyectadosRequest {
-  // TODO: Campos del formulario de creación
+export interface GenerarGeningproyectadosRequest {
+  empresaId: number;
+  anio: number;
+  mesDesde?: number;
+  mesHasta?: number;
 }
 
 export interface UpdateGeningproyectadosRequest {
-  // TODO: Campos del formulario de actualización
+  montoProyectado?: number;
+  estado?: string;
 }
 
 export interface GeningproyectadosFilterParams {
   page?: number;
   size?: number;
-  // TODO: Filtros de búsqueda
+  empresaId?: number;
+  anio?: number;
 }
 
 // ─── Response DTOs ───
 
 export interface GeningproyectadosResponse {
-  id: string;
-  // TODO: Campos de la respuesta del servidor
+  id: number;
+  empresaId: number;
+  empresaNombre?: string;
+  anio: number;
+  mes?: number;
+  montoProyectado: number;
+  estado?: string;
+  fechaGeneracion?: string;
+}
+
+export interface ProcesoGeningproyectadosResponse {
+  success: boolean;
+  message: string;
+  registrosGenerados: number;
 }
 
 export interface GeningproyectadosListResponse {
-  data: GeningproyectadosResponse[];
+  content: GeningproyectadosResponse[];
   totalElements: number;
   totalPages: number;
   page: number;

@@ -43,7 +43,6 @@ export class ParametrosParametrosdialogApplicationService implements ParametrosP
   }
 
   async create(model: CreateParametrosParametrosdialog): Promise<ParametrosParametrosdialog> {
-    // TODO: Validaciones de negocio antes de crear
     this.validateParametrosParametrosdialog(model);
     const request = ParametrosParametrosdialogViewMapper.toCreateRequest(model);
     const response = await this.gatewayPort.create(request);
@@ -54,7 +53,6 @@ export class ParametrosParametrosdialogApplicationService implements ParametrosP
     if (!id) {
       throw new ParametrosParametrosdialogValidationError('El ID es requerido para actualizar');
     }
-    // TODO: Validaciones de negocio antes de actualizar
     const request = ParametrosParametrosdialogViewMapper.toUpdateRequest(model);
     const response = await this.gatewayPort.update(id, request);
     return ParametrosParametrosdialogViewMapper.toDomain(response);
@@ -70,13 +68,11 @@ export class ParametrosParametrosdialogApplicationService implements ParametrosP
   // ─── Validaciones de negocio ───
 
   private validateParametrosParametrosdialog(model: Partial<ParametrosParametrosdialog>): void {
-    // TODO: Implementar validaciones de negocio
     // Ejemplo:
     // if (!model.nombre || model.nombre.trim().length === 0) {
     //   throw new ParametrosParametrosdialogValidationError('El nombre es obligatorio', 'nombre');
     // }
   }
 
-  // TODO: Agregar métodos de negocio adicionales
   // Ejemplo: procesar lotes, cálculos, orquestación de múltiples llamadas al gateway
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Geningproyectados } from '../../../../domain/model/Geningproyectados';
+import { GeningproyectadosResponse } from '../dto/GeningproyectadosDto';
 
 interface GeningproyectadosDetailProps {
-  item: Geningproyectados;
-  onEdit?: (item: Geningproyectados) => void;
-  onDelete?: (id: string) => void;
+  item: GeningproyectadosResponse;
+  onEdit?: (item: GeningproyectadosResponse) => void;
+  onDelete?: (id: number) => void;
   onBack?: () => void;
 }
 

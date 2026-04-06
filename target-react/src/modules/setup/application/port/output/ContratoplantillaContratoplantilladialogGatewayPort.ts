@@ -12,5 +12,4 @@ export interface ContratoplantillaContratoplantilladialogGatewayPort {
   create(request: CreateContratoplantillaContratoplantilladialogRequest): Promise<ContratoplantillaContratoplantilladialogResponse>;
   update(id: string, request: UpdateContratoplantillaContratoplantilladialogRequest): Promise<ContratoplantillaContratoplantilladialogResponse>;
   remove(id: string): Promise<void>;
-  // TODO: Agregar métodos adicionales según los endpoints de la API
 }

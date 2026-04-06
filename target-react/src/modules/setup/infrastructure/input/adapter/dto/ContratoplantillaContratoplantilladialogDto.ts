@@ -2,43 +2,43 @@
  * DTOs para funcionalidad: contratoPlantilla.zul / contratoPlantillaDialog.zul (contratoPlantilla_contratoPlantillaDialog)
  * Entidades fuente: 7
  * Controladores fuente: 6
- *
- * TODO: Copilot — Completa los campos basándote en los schemas de la API y las entidades fuente.
  */
-
-// Fuente: ContratoPlantillaPageResponseDTO — Lista paginada de plantillas por contrato
-// Fuente: ContratoPlantillaResponseDTO — Detalle de una plantilla de contrato
-// Fuente: ContratoPlantillaCreateDTO — Datos para crear una nueva plantilla de contrato
-// Fuente: ContratoPlantillaUpdateDTO — Datos para actualizar una plantilla de contrato
-// Fuente: DeleteResponseDTO — Confirmación de eliminación
-// Fuente: ArchivoPlantillaUploadDTO — Archivo de plantilla para subir (multipart)
-// Fuente: ArchivoPlantillaResponseDTO — Resultado de la subida del archivo
 
 // ─── Request DTOs ───
 
 export interface CreateContratoplantillaContratoplantilladialogRequest {
-  // TODO: Campos del formulario de creación
+  vdescplantilla: string;
+  vnombrearchivo?: string;
+  vnombrearchivo2?: string;
 }
 
 export interface UpdateContratoplantillaContratoplantilladialogRequest {
-  // TODO: Campos del formulario de actualización
+  vdescplantilla?: string;
+  vnombrearchivo?: string;
+  vnombrearchivo2?: string;
 }
 
 export interface ContratoplantillaContratoplantilladialogFilterParams {
   page?: number;
   size?: number;
-  // TODO: Filtros de búsqueda
+  descripcion?: string;
 }
 
 // ─── Response DTOs ───
 
 export interface ContratoplantillaContratoplantilladialogResponse {
   id: string;
-  // TODO: Campos de la respuesta del servidor
+  descripcion: string;
+  nombreArchivo?: string;
+  nombreArchivo2?: string;
+  usuarioIngreso?: string;
+  fechaIngreso?: string;
+  usuarioModificacion?: string;
+  fechaModificacion?: string;
 }
 
 export interface ContratoplantillaContratoplantilladialogListResponse {
-  data: ContratoplantillaContratoplantilladialogResponse[];
+  content: ContratoplantillaContratoplantilladialogResponse[];
   totalElements: number;
   totalPages: number;
   page: number;

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { CreateRubroplantillacontabledialog, UpdateRubroplantillacontabledialog, Rubroplantillacontabledialog } from '../../../../domain/model/Rubroplantillacontabledialog';
+import { CreateRubroplantillacontabledialogRequest, UpdateRubroplantillacontabledialogRequest, RubroplantillacontabledialogResponse } from '../dto/RubroplantillacontabledialogDto';
 
 interface RubroplantillacontabledialogFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
-  initialData?: Rubroplantillacontabledialog;
-  onSubmit: (data: CreateRubroplantillacontabledialog | UpdateRubroplantillacontabledialog) => void;
+  initialData?: RubroplantillacontabledialogResponse;
+  onSubmit: (data: CreateRubroplantillacontabledialogRequest | UpdateRubroplantillacontabledialogRequest) => void;
   onCancel?: () => void;
   loading?: boolean;
 }
@@ -25,19 +25,16 @@ export const RubroplantillacontabledialogForm: React.FC<Rubroplantillacontabledi
 }) => {
   const isEditMode = !!initialData;
 
-  // TODO: Agregar estado para cada campo del formulario
   // Ejemplo:
   // const [nombre, setNombre] = useState(initialData?.nombre || '');
 
   useEffect(() => {
     if (initialData) {
-      // TODO: Precargar campos del formulario con initialData
     }
   }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Construir el objeto Create/Update y llamar onSubmit
     // onSubmit({ nombre });
   };
 

@@ -3,7 +3,7 @@ import { ContratoplantillaContratoplantilladialogResponse, ContratoplantillaCont
 import { ContratoplantillaContratoplantilladialogApiMapper } from '../mapper/ContratoplantillaContratoplantilladialogApiMapper';
 import { httpClient } from '@shared/infrastructure/output/adapter/api/httpClient';
 
-const BASE_PATH = '/api/v1/setup';
+const BASE_PATH = '/api/v1/en-plantillas';
 
 /**
  * API Gateway Adapter: contratoPlantilla.zul / contratoPlantillaDialog.zul
@@ -38,5 +38,4 @@ export class ContratoplantillaContratoplantilladialogGatewayAdapter implements C
     await httpClient.delete(`${BASE_PATH}/${id}`);
   }
 
-  // TODO: Implementar métodos adicionales según los endpoints de la API
 }

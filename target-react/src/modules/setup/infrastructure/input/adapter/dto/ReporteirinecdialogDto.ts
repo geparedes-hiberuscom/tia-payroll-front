@@ -3,41 +3,51 @@
  * Entidades fuente: 6
  * Controladores fuente: 5
  *
- * TODO: Copilot — Completa los campos basándote en los schemas de la API y las entidades fuente.
  */
-
-// Fuente: ReporteIRINECListResponseDTO — Lista de reportes IR/INEC disponibles
-// Fuente: ReporteIRINECResponseDTO — Detalle de un reporte IR/INEC
-// Fuente: GenerarReporteIRINECDTO — Datos para generar un reporte IR/INEC
-// Fuente: ProcesoResponseDTO — Resultado de la generación del reporte
-// Fuente: ReporteIRINECUpdateDTO — Datos para actualizar un reporte
-// Fuente: DeleteResponseDTO — Confirmación de eliminación
 
 // ─── Request DTOs ───
 
-export interface CreateReporteirinecdialogRequest {
-  // TODO: Campos del formulario de creación
+export interface GenerarReporteirinecdialogRequest {
+  empresaId: number;
+  tipo: string;
+  anio: number;
+  formato?: string;
 }
 
 export interface UpdateReporteirinecdialogRequest {
-  // TODO: Campos del formulario de actualización
+  estado?: string;
+  formato?: string;
 }
 
 export interface ReporteirinecdialogFilterParams {
   page?: number;
   size?: number;
-  // TODO: Filtros de búsqueda
+  empresaId?: number;
+  tipo?: string;
 }
 
 // ─── Response DTOs ───
 
 export interface ReporteirinecdialogResponse {
-  id: string;
-  // TODO: Campos de la respuesta del servidor
+  id: number;
+  empresaId: number;
+  empresaNombre?: string;
+  tipo: string;
+  anio: number;
+  estado?: string;
+  fechaGeneracion?: string;
+  formato?: string;
+  archivoUrl?: string;
+}
+
+export interface ProcesoReporteirinecdialogResponse {
+  success: boolean;
+  message: string;
+  registrosGenerados: number;
 }
 
 export interface ReporteirinecdialogListResponse {
-  data: ReporteirinecdialogResponse[];
+  content: ReporteirinecdialogResponse[];
   totalElements: number;
   totalPages: number;
   page: number;

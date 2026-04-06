@@ -1,13 +1,13 @@
 import React from 'react';
-import { Geningproyectados } from '../../../../domain/model/Geningproyectados';
+import { GeningproyectadosResponse } from '../dto/GeningproyectadosDto';
 import { GeningproyectadosCard } from './GeningproyectadosCard';
 
 interface GeningproyectadosListProps {
-  items: Geningproyectados[];
+  items: GeningproyectadosResponse[];
   loading?: boolean;
-  onSelect?: (item: Geningproyectados) => void;
-  onDelete?: (id: string) => void;
-  onEdit?: (item: Geningproyectados) => void;
+  onSelect?: (item: GeningproyectadosResponse) => void;
+  onDelete?: (id: number) => void;
+  onEdit?: (item: GeningproyectadosResponse) => void;
 }
 
 /**

@@ -18,7 +18,6 @@ export class SetupService implements SetupInputPort {
   }
 
   async create(model: Omit<Setup, 'id'>): Promise<Setup> {
-    // TODO: Validaciones de negocio
     return this.outputPort.save(model);
   }
 

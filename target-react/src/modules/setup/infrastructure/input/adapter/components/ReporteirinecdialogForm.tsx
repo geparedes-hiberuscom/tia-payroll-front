@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { CreateReporteirinecdialog, UpdateReporteirinecdialog, Reporteirinecdialog } from '../../../../domain/model/Reporteirinecdialog';
+import { GenerarReporteirinecdialogRequest, UpdateReporteirinecdialogRequest, ReporteirinecdialogResponse } from '../dto/ReporteirinecdialogDto';
 
 interface ReporteirinecdialogFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
-  initialData?: Reporteirinecdialog;
-  onSubmit: (data: CreateReporteirinecdialog | UpdateReporteirinecdialog) => void;
+  initialData?: ReporteirinecdialogResponse;
+  onSubmit: (data: GenerarReporteirinecdialogRequest | UpdateReporteirinecdialogRequest) => void;
   onCancel?: () => void;
   loading?: boolean;
 }
@@ -25,19 +25,16 @@ export const ReporteirinecdialogForm: React.FC<ReporteirinecdialogFormProps> = (
 }) => {
   const isEditMode = !!initialData;
 
-  // TODO: Agregar estado para cada campo del formulario
   // Ejemplo:
   // const [nombre, setNombre] = useState(initialData?.nombre || '');
 
   useEffect(() => {
     if (initialData) {
-      // TODO: Precargar campos del formulario con initialData
     }
   }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Construir el objeto Create/Update y llamar onSubmit
     // onSubmit({ nombre });
   };
 

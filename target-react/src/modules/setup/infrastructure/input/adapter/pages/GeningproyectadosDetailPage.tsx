@@ -28,7 +28,7 @@ export const GeningproyectadosDetailPage: React.FC = () => {
 
   const handleDelete = async () => {
     if (id && window.confirm('¿Estás seguro de eliminar este registro?')) {
-      await remove(id);
+      await remove(Number(id));
       navigate('/geningproyectados');
     }
   };

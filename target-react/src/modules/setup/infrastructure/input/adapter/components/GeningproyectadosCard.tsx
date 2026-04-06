@@ -1,11 +1,11 @@
 import React from 'react';
-import { Geningproyectados } from '../../../../domain/model/Geningproyectados';
+import { GeningproyectadosResponse } from '../dto/GeningproyectadosDto';
 
 interface GeningproyectadosCardProps {
-  item: Geningproyectados;
-  onSelect?: (item: Geningproyectados) => void;
-  onDelete?: (id: string) => void;
-  onEdit?: (item: Geningproyectados) => void;
+  item: GeningproyectadosResponse;
+  onSelect?: (item: GeningproyectadosResponse) => void;
+  onDelete?: (id: number) => void;
+  onEdit?: (item: GeningproyectadosResponse) => void;
 }
 
 /**

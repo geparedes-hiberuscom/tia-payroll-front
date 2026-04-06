@@ -28,12 +28,10 @@ export class ContratoplantillaContratoplantilladialogService {
   }
 
   async create(request: CreateContratoplantillaContratoplantilladialogRequest): Promise<ContratoplantillaContratoplantilladialogResponse> {
-    // TODO: Validaciones de negocio antes de crear
     return this.gateway.create(request);
   }
 
   async update(id: string, request: UpdateContratoplantillaContratoplantilladialogRequest): Promise<ContratoplantillaContratoplantilladialogResponse> {
-    // TODO: Validaciones de negocio antes de actualizar
     return this.gateway.update(id, request);
   }
 
@@ -41,5 +39,4 @@ export class ContratoplantillaContratoplantilladialogService {
     return this.gateway.remove(id);
   }
 
-  // TODO: Agregar métodos de negocio adicionales que combinen llamadas al gateway
 }

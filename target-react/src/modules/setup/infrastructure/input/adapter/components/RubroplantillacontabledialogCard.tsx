@@ -1,11 +1,11 @@
 import React from 'react';
-import { Rubroplantillacontabledialog } from '../../../../domain/model/Rubroplantillacontabledialog';
+import { RubroplantillacontabledialogResponse } from '../dto/RubroplantillacontabledialogDto';
 
 interface RubroplantillacontabledialogCardProps {
-  item: Rubroplantillacontabledialog;
-  onSelect?: (item: Rubroplantillacontabledialog) => void;
-  onDelete?: (id: string) => void;
-  onEdit?: (item: Rubroplantillacontabledialog) => void;
+  item: RubroplantillacontabledialogResponse;
+  onSelect?: (item: RubroplantillacontabledialogResponse) => void;
+  onDelete?: (id: number) => void;
+  onEdit?: (item: RubroplantillacontabledialogResponse) => void;
 }
 
 /**

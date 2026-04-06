@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ReporteirinecdialogService } from '../../../../application/service/ReporteirinecdialogService';
 import { ReporteirinecdialogGatewayAdapter } from '../../../output/adapter/api/ReporteirinecdialogGatewayAdapter';
-import { ReporteirinecdialogResponse, CreateReporteirinecdialogRequest, UpdateReporteirinecdialogRequest, ReporteirinecdialogFilterParams } from '../dto/ReporteirinecdialogDto';
+import { ReporteirinecdialogResponse, GenerarReporteirinecdialogRequest, ProcesoReporteirinecdialogResponse, UpdateReporteirinecdialogRequest, ReporteirinecdialogFilterParams } from '../dto/ReporteirinecdialogDto';
 
 // ─── Inyección manual: Gateway Adapter → Service ───
 const gatewayAdapter = new ReporteirinecdialogGatewayAdapter();
@@ -25,7 +25,7 @@ export function useReporteirinecdialog() {
       setLoading(true);
       setError(null);
       const response = await reporteirinecdialogService.findAll(params);
-      setItems(response.data);
+      setItems(response.content);
       setTotalElements(response.totalElements);
       setPage(response.page);
     } catch (err) {
@@ -35,7 +35,7 @@ export function useReporteirinecdialog() {
     }
   }, []);
 
-  const fetchById = useCallback(async (id: string) => {
+  const fetchById = useCallback(async (id: number) => {
     try {
       setLoading(true);
       setError(null);
@@ -50,22 +50,22 @@ export function useReporteirinecdialog() {
     }
   }, []);
 
-  const create = useCallback(async (request: CreateReporteirinecdialogRequest) => {
+  const generar = useCallback(async (request: GenerarReporteirinecdialogRequest): Promise<ProcesoReporteirinecdialogResponse | null> => {
     try {
       setLoading(true);
       setError(null);
-      const created = await reporteirinecdialogService.create(request);
-      setItems(prev => [...prev, created]);
-      return created;
+      const resultado = await reporteirinecdialogService.generar(request);
+      await fetchAll();
+      return resultado;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al crear');
+      setError(err instanceof Error ? err.message : 'Error al generar reporte IR/INEC');
       throw err;
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const update = useCallback(async (id: string, request: UpdateReporteirinecdialogRequest) => {
+  const update = useCallback(async (id: number, request: UpdateReporteirinecdialogRequest) => {
     try {
       setLoading(true);
       setError(null);
@@ -81,7 +81,7 @@ export function useReporteirinecdialog() {
     }
   }, []);
 
-  const remove = useCallback(async (id: string) => {
+  const remove = useCallback(async (id: number) => {
     try {
       setLoading(true);
       setError(null);
@@ -109,7 +109,7 @@ export function useReporteirinecdialog() {
     page,
     fetchAll,
     fetchById,
-    create,
+    generar,
     update,
     remove,
     clearError: () => setError(null),

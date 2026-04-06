@@ -12,7 +12,7 @@ const BASE_PATH = '/api/v1/gastos-personales';
  */
 export class GastospersonalesdialogGatewayAdapter implements GastospersonalesdialogGatewayPort {
 
-  async findById(id: string): Promise<GastospersonalesdialogResponse> {
+  async findById(id: number): Promise<GastospersonalesdialogResponse> {
     const { data } = await httpClient.get(`${BASE_PATH}/${id}`);
     return GastospersonalesdialogApiMapper.toResponse(data);
   }
@@ -28,15 +28,14 @@ export class GastospersonalesdialogGatewayAdapter implements Gastospersonalesdia
     return GastospersonalesdialogApiMapper.toResponse(data);
   }
 
-  async update(id: string, request: UpdateGastospersonalesdialogRequest): Promise<GastospersonalesdialogResponse> {
+  async update(id: number, request: UpdateGastospersonalesdialogRequest): Promise<GastospersonalesdialogResponse> {
     const payload = GastospersonalesdialogApiMapper.toUpdatePayload(request);
     const { data } = await httpClient.put(`${BASE_PATH}/${id}`, payload);
     return GastospersonalesdialogApiMapper.toResponse(data);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await httpClient.delete(`${BASE_PATH}/${id}`);
   }
 
-  // TODO: Implementar métodos adicionales según los endpoints de la API
 }

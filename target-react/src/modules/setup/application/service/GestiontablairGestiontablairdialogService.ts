@@ -18,7 +18,7 @@ export class GestiontablairGestiontablairdialogService {
   // Origen controlador: PUT /api/v1/tabla-ir/{id} — PUT /api/v1/tabla-ir/{id} — Actualizar rango IR
   // Origen controlador: DELETE /api/v1/tabla-ir/{id} — DELETE /api/v1/tabla-ir/{id} — Eliminar rango IR
 
-  async findById(id: string): Promise<GestiontablairGestiontablairdialogResponse> {
+  async findById(id: number): Promise<GestiontablairGestiontablairdialogResponse> {
     return this.gateway.findById(id);
   }
 
@@ -27,18 +27,15 @@ export class GestiontablairGestiontablairdialogService {
   }
 
   async create(request: CreateGestiontablairGestiontablairdialogRequest): Promise<GestiontablairGestiontablairdialogResponse> {
-    // TODO: Validaciones de negocio antes de crear
     return this.gateway.create(request);
   }
 
-  async update(id: string, request: UpdateGestiontablairGestiontablairdialogRequest): Promise<GestiontablairGestiontablairdialogResponse> {
-    // TODO: Validaciones de negocio antes de actualizar
+  async update(id: number, request: UpdateGestiontablairGestiontablairdialogRequest): Promise<GestiontablairGestiontablairdialogResponse> {
     return this.gateway.update(id, request);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     return this.gateway.remove(id);
   }
 
-  // TODO: Agregar métodos de negocio adicionales que combinen llamadas al gateway
 }

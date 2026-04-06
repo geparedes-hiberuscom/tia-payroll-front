@@ -1,5 +1,5 @@
 import { ReporteirinecdialogGatewayPort } from '../../../../application/port/output/ReporteirinecdialogGatewayPort';
-import { ReporteirinecdialogResponse, ReporteirinecdialogListResponse, CreateReporteirinecdialogRequest, UpdateReporteirinecdialogRequest, ReporteirinecdialogFilterParams } from '../../../input/adapter/dto/ReporteirinecdialogDto';
+import { ReporteirinecdialogResponse, ReporteirinecdialogListResponse, GenerarReporteirinecdialogRequest, ProcesoReporteirinecdialogResponse, UpdateReporteirinecdialogRequest, ReporteirinecdialogFilterParams } from '../../../input/adapter/dto/ReporteirinecdialogDto';
 import { ReporteirinecdialogApiMapper } from '../mapper/ReporteirinecdialogApiMapper';
 import { httpClient } from '@shared/infrastructure/output/adapter/api/httpClient';
 
@@ -7,12 +7,10 @@ const BASE_PATH = '/api/v1/reportes-ir-inec';
 
 /**
  * API Gateway Adapter: ReporteIRINECDialog.zul
- * Implementa el Gateway Port usando Axios (httpClient).
- * Conecta el frontend con los endpoints REST del backend.
  */
 export class ReporteirinecdialogGatewayAdapter implements ReporteirinecdialogGatewayPort {
 
-  async findById(id: string): Promise<ReporteirinecdialogResponse> {
+  async findById(id: number): Promise<ReporteirinecdialogResponse> {
     const { data } = await httpClient.get(`${BASE_PATH}/${id}`);
     return ReporteirinecdialogApiMapper.toResponse(data);
   }
@@ -22,21 +20,18 @@ export class ReporteirinecdialogGatewayAdapter implements ReporteirinecdialogGat
     return ReporteirinecdialogApiMapper.toListResponse(data);
   }
 
-  async create(request: CreateReporteirinecdialogRequest): Promise<ReporteirinecdialogResponse> {
-    const payload = ReporteirinecdialogApiMapper.toCreatePayload(request);
-    const { data } = await httpClient.post(BASE_PATH, payload);
-    return ReporteirinecdialogApiMapper.toResponse(data);
+  async generar(request: GenerarReporteirinecdialogRequest): Promise<ProcesoReporteirinecdialogResponse> {
+    const { data } = await httpClient.post(`${BASE_PATH}/generar`, request);
+    return data as ProcesoReporteirinecdialogResponse;
   }
 
-  async update(id: string, request: UpdateReporteirinecdialogRequest): Promise<ReporteirinecdialogResponse> {
+  async update(id: number, request: UpdateReporteirinecdialogRequest): Promise<ReporteirinecdialogResponse> {
     const payload = ReporteirinecdialogApiMapper.toUpdatePayload(request);
     const { data } = await httpClient.put(`${BASE_PATH}/${id}`, payload);
     return ReporteirinecdialogApiMapper.toResponse(data);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await httpClient.delete(`${BASE_PATH}/${id}`);
   }
-
-  // TODO: Implementar métodos adicionales según los endpoints de la API
 }

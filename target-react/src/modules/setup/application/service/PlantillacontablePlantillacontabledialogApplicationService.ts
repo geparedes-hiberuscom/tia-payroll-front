@@ -43,7 +43,6 @@ export class PlantillacontablePlantillacontabledialogApplicationService implemen
   }
 
   async create(model: CreatePlantillacontablePlantillacontabledialog): Promise<PlantillacontablePlantillacontabledialog> {
-    // TODO: Validaciones de negocio antes de crear
     this.validatePlantillacontablePlantillacontabledialog(model);
     const request = PlantillacontablePlantillacontabledialogViewMapper.toCreateRequest(model);
     const response = await this.gatewayPort.create(request);
@@ -54,7 +53,6 @@ export class PlantillacontablePlantillacontabledialogApplicationService implemen
     if (!id) {
       throw new PlantillacontablePlantillacontabledialogValidationError('El ID es requerido para actualizar');
     }
-    // TODO: Validaciones de negocio antes de actualizar
     const request = PlantillacontablePlantillacontabledialogViewMapper.toUpdateRequest(model);
     const response = await this.gatewayPort.update(id, request);
     return PlantillacontablePlantillacontabledialogViewMapper.toDomain(response);
@@ -70,13 +68,11 @@ export class PlantillacontablePlantillacontabledialogApplicationService implemen
   // ─── Validaciones de negocio ───
 
   private validatePlantillacontablePlantillacontabledialog(model: Partial<PlantillacontablePlantillacontabledialog>): void {
-    // TODO: Implementar validaciones de negocio
     // Ejemplo:
     // if (!model.nombre || model.nombre.trim().length === 0) {
     //   throw new PlantillacontablePlantillacontabledialogValidationError('El nombre es obligatorio', 'nombre');
     // }
   }
 
-  // TODO: Agregar métodos de negocio adicionales
   // Ejemplo: procesar lotes, cálculos, orquestación de múltiples llamadas al gateway
 }

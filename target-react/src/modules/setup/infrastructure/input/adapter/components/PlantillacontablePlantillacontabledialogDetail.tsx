@@ -4,7 +4,7 @@ import { PlantillacontablePlantillacontabledialog } from '../../../../domain/mod
 interface PlantillacontablePlantillacontabledialogDetailProps {
   item: PlantillacontablePlantillacontabledialog;
   onEdit?: (item: PlantillacontablePlantillacontabledialog) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: number) => void;
   onBack?: () => void;
 }
 

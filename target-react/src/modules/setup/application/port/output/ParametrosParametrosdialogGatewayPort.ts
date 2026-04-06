@@ -7,10 +7,9 @@ import { ParametrosParametrosdialogResponse, ParametrosParametrosdialogListRespo
  * Endpoints relacionados:
  */
 export interface ParametrosParametrosdialogGatewayPort {
-  findById(id: string): Promise<ParametrosParametrosdialogResponse>;
+  findById(entorno: string, idParametro: string): Promise<ParametrosParametrosdialogResponse>;
   findAll(params?: ParametrosParametrosdialogFilterParams): Promise<ParametrosParametrosdialogListResponse>;
   create(request: CreateParametrosParametrosdialogRequest): Promise<ParametrosParametrosdialogResponse>;
-  update(id: string, request: UpdateParametrosParametrosdialogRequest): Promise<ParametrosParametrosdialogResponse>;
-  remove(id: string): Promise<void>;
-  // TODO: Agregar métodos adicionales según los endpoints de la API
+  update(entorno: string, idParametro: string, request: UpdateParametrosParametrosdialogRequest): Promise<ParametrosParametrosdialogResponse>;
+  remove(entorno: string, idParametro: string): Promise<void>;
 }

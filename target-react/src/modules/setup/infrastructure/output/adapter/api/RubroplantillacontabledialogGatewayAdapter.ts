@@ -3,7 +3,7 @@ import { RubroplantillacontabledialogResponse, RubroplantillacontabledialogListR
 import { RubroplantillacontabledialogApiMapper } from '../mapper/RubroplantillacontabledialogApiMapper';
 import { httpClient } from '@shared/infrastructure/output/adapter/api/httpClient';
 
-const BASE_PATH = '/api/v1/plantillas-contables/{plantillaId}/rubros';
+const BASE_PATH = '/api/v1/plantillas-contables';
 
 /**
  * API Gateway Adapter: rubroplantillaContableDialog.zul
@@ -12,7 +12,7 @@ const BASE_PATH = '/api/v1/plantillas-contables/{plantillaId}/rubros';
  */
 export class RubroplantillacontabledialogGatewayAdapter implements RubroplantillacontabledialogGatewayPort {
 
-  async findById(id: string): Promise<RubroplantillacontabledialogResponse> {
+  async findById(id: number): Promise<RubroplantillacontabledialogResponse> {
     const { data } = await httpClient.get(`${BASE_PATH}/${id}`);
     return RubroplantillacontabledialogApiMapper.toResponse(data);
   }
@@ -28,15 +28,14 @@ export class RubroplantillacontabledialogGatewayAdapter implements Rubroplantill
     return RubroplantillacontabledialogApiMapper.toResponse(data);
   }
 
-  async update(id: string, request: UpdateRubroplantillacontabledialogRequest): Promise<RubroplantillacontabledialogResponse> {
+  async update(id: number, request: UpdateRubroplantillacontabledialogRequest): Promise<RubroplantillacontabledialogResponse> {
     const payload = RubroplantillacontabledialogApiMapper.toUpdatePayload(request);
     const { data } = await httpClient.put(`${BASE_PATH}/${id}`, payload);
     return RubroplantillacontabledialogApiMapper.toResponse(data);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await httpClient.delete(`${BASE_PATH}/${id}`);
   }
 
-  // TODO: Implementar métodos adicionales según los endpoints de la API
 }

@@ -4,7 +4,7 @@ import { Gastospersonalesdialog } from '../../../../domain/model/Gastospersonale
 interface GastospersonalesdialogCardProps {
   item: Gastospersonalesdialog;
   onSelect?: (item: Gastospersonalesdialog) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: number) => void;
   onEdit?: (item: Gastospersonalesdialog) => void;
 }
 

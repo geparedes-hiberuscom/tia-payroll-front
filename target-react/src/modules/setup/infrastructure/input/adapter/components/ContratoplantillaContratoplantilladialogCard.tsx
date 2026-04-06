@@ -4,7 +4,7 @@ import { ContratoplantillaContratoplantilladialog } from '../../../../domain/mod
 interface ContratoplantillaContratoplantilladialogCardProps {
   item: ContratoplantillaContratoplantilladialog;
   onSelect?: (item: ContratoplantillaContratoplantilladialog) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: number) => void;
   onEdit?: (item: ContratoplantillaContratoplantilladialog) => void;
 }
 

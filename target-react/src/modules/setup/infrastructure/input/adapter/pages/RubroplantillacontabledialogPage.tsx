@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRubroplantillacontabledialog } from '../hooks/useRubroplantillacontabledialog';
 import { RubroplantillacontabledialogList } from '../components/RubroplantillacontabledialogList';
 import { RubroplantillacontabledialogForm } from '../components/RubroplantillacontabledialogForm';
-import { Rubroplantillacontabledialog, CreateRubroplantillacontabledialog, UpdateRubroplantillacontabledialog } from '../../../../domain/model/Rubroplantillacontabledialog';
+import { CreateRubroplantillacontabledialogRequest, UpdateRubroplantillacontabledialogRequest, RubroplantillacontabledialogResponse } from '../dto/RubroplantillacontabledialogDto';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 
@@ -19,15 +19,15 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
 export const RubroplantillacontabledialogPage: React.FC = () => {
   const { items, loading, error, fetchAll, create, update, remove, clearError } = useRubroplantillacontabledialog();
   const [showForm, setShowForm] = useState(false);
-  const [editingItem, setEditingItem] = useState<Rubroplantillacontabledialog | undefined>(undefined);
+  const [editingItem, setEditingItem] = useState<RubroplantillacontabledialogResponse | undefined>(undefined);
 
   useEffect(() => { fetchAll(); }, []);
 
-  const handleSubmit = async (data: CreateRubroplantillacontabledialog | UpdateRubroplantillacontabledialog) => {
+  const handleSubmit = async (data: CreateRubroplantillacontabledialogRequest | UpdateRubroplantillacontabledialogRequest) => {
     if (editingItem) {
-      await update(editingItem.rubroId, data as UpdateRubroplantillacontabledialog);
+      await update(editingItem.id, data as UpdateRubroplantillacontabledialogRequest);
     } else {
-      await create(data as CreateRubroplantillacontabledialog);
+      await create(data as CreateRubroplantillacontabledialogRequest);
     }
     setShowForm(false);
     setEditingItem(undefined);
@@ -41,7 +41,7 @@ export const RubroplantillacontabledialogPage: React.FC = () => {
       </div>
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
       {showForm && <RubroplantillacontabledialogForm initialData={editingItem} onSubmit={handleSubmit} onCancel={() => { setShowForm(false); setEditingItem(undefined); }} loading={loading} />}
-      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando..." /> : <RubroplantillacontabledialogList items={items} loading={loading} onEdit={(item) => { setEditingItem(item); setShowForm(true); }} onDelete={(id: string) => { if (window.confirm('¿Eliminar?')) remove(id); }} />)}
+      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando..." /> : <RubroplantillacontabledialogList items={items} loading={loading} onEdit={(item) => { setEditingItem(item); setShowForm(true); }} onDelete={(id) => { if (window.confirm('¿Eliminar?')) remove(id); }} />)}
     </div>
   );
 };

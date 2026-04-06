@@ -3,7 +3,7 @@ import { PlantillacontablePlantillacontabledialogResponse, PlantillacontablePlan
 import { PlantillacontablePlantillacontabledialogApiMapper } from '../mapper/PlantillacontablePlantillacontabledialogApiMapper';
 import { httpClient } from '@shared/infrastructure/output/adapter/api/httpClient';
 
-const BASE_PATH = '/api/v1/setup';
+const BASE_PATH = '/api/v1/plantillas-contables';
 
 /**
  * API Gateway Adapter: plantillaContable.zul / plantillaContableDialog.zul
@@ -12,7 +12,7 @@ const BASE_PATH = '/api/v1/setup';
  */
 export class PlantillacontablePlantillacontabledialogGatewayAdapter implements PlantillacontablePlantillacontabledialogGatewayPort {
 
-  async findById(id: string): Promise<PlantillacontablePlantillacontabledialogResponse> {
+  async findById(id: number): Promise<PlantillacontablePlantillacontabledialogResponse> {
     const { data } = await httpClient.get(`${BASE_PATH}/${id}`);
     return PlantillacontablePlantillacontabledialogApiMapper.toResponse(data);
   }
@@ -28,15 +28,13 @@ export class PlantillacontablePlantillacontabledialogGatewayAdapter implements P
     return PlantillacontablePlantillacontabledialogApiMapper.toResponse(data);
   }
 
-  async update(id: string, request: UpdatePlantillacontablePlantillacontabledialogRequest): Promise<PlantillacontablePlantillacontabledialogResponse> {
+  async update(id: number, request: UpdatePlantillacontablePlantillacontabledialogRequest): Promise<PlantillacontablePlantillacontabledialogResponse> {
     const payload = PlantillacontablePlantillacontabledialogApiMapper.toUpdatePayload(request);
     const { data } = await httpClient.put(`${BASE_PATH}/${id}`, payload);
     return PlantillacontablePlantillacontabledialogApiMapper.toResponse(data);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await httpClient.delete(`${BASE_PATH}/${id}`);
   }
-
-  // TODO: Implementar métodos adicionales según los endpoints de la API
 }

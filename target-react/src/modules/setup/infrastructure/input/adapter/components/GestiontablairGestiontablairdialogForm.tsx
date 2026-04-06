@@ -25,19 +25,16 @@ export const GestiontablairGestiontablairdialogForm: React.FC<GestiontablairGest
 }) => {
   const isEditMode = !!initialData;
 
-  // TODO: Agregar estado para cada campo del formulario
   // Ejemplo:
   // const [nombre, setNombre] = useState(initialData?.nombre || '');
 
   useEffect(() => {
     if (initialData) {
-      // TODO: Precargar campos del formulario con initialData
     }
   }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Construir el objeto Create/Update y llamar onSubmit
     // onSubmit({ nombre });
   };
 

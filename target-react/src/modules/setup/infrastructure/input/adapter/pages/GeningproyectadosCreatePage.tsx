@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGeningproyectados } from '../hooks/useGeningproyectados';
 import { GeningproyectadosForm } from '../components/GeningproyectadosForm';
-import { CreateGeningproyectados, UpdateGeningproyectados } from '../../../../domain/model/Geningproyectados';
+import { GenerarGeningproyectadosRequest, UpdateGeningproyectadosRequest } from '../dto/GeningproyectadosDto';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 
@@ -15,7 +15,7 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
 export const GeningproyectadosCreatePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { selectedItem, loading, error, fetchById, create, update, clearError } = useGeningproyectados();
+  const { selectedItem, loading, error, fetchById, generar, update, clearError } = useGeningproyectados();
   const isEditMode = !!id;
 
   useEffect(() => {
@@ -24,11 +24,11 @@ export const GeningproyectadosCreatePage: React.FC = () => {
     }
   }, [id, fetchById]);
 
-  const handleSubmit = async (data: CreateGeningproyectados | UpdateGeningproyectados) => {
+  const handleSubmit = async (data: GenerarGeningproyectadosRequest | UpdateGeningproyectadosRequest) => {
     if (isEditMode && id) {
-      await update(id, data as UpdateGeningproyectados);
+      await update(Number(id), data as UpdateGeningproyectadosRequest);
     } else {
-      await create(data as CreateGeningproyectados);
+      await generar(data as GenerarGeningproyectadosRequest);
     }
     navigate('/geningproyectados');
   };

@@ -41,7 +41,7 @@ export const PlantillacontablePlantillacontabledialogPage: React.FC = () => {
       </div>
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
       {showForm && <PlantillacontablePlantillacontabledialogForm initialData={editingItem} onSubmit={handleSubmit} onCancel={() => { setShowForm(false); setEditingItem(undefined); }} loading={loading} />}
-      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando..." /> : <PlantillacontablePlantillacontabledialogList items={items} loading={loading} onEdit={(item) => { setEditingItem(item); setShowForm(true); }} onDelete={(id) => { if (window.confirm('¿Eliminar?')) remove(id.toString()); }} />)}
+      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando..." /> : <PlantillacontablePlantillacontabledialogList items={items} loading={loading} onEdit={(item) => { setEditingItem(item); setShowForm(true); }} onDelete={(id) => { if (window.confirm('¿Eliminar?')) remove(id); }} />)}
     </div>
   );
 };

@@ -36,7 +36,7 @@ export const GastospersonalesdialogPage: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     if (window.confirm('¿Estás seguro de eliminar este registro?')) {
-      await remove(id.toString());
+      await remove(id);
     }
   };
 

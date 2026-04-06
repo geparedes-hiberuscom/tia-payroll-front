@@ -43,7 +43,6 @@ export class ReporteirinecdialogApplicationService implements Reporteirinecdialo
   }
 
   async create(model: CreateReporteirinecdialog): Promise<Reporteirinecdialog> {
-    // TODO: Validaciones de negocio antes de crear
     this.validateReporteirinecdialog(model);
     const request = ReporteirinecdialogViewMapper.toCreateRequest(model);
     const response = await this.gatewayPort.create(request);
@@ -54,7 +53,6 @@ export class ReporteirinecdialogApplicationService implements Reporteirinecdialo
     if (!id) {
       throw new ReporteirinecdialogValidationError('El ID es requerido para actualizar');
     }
-    // TODO: Validaciones de negocio antes de actualizar
     const request = ReporteirinecdialogViewMapper.toUpdateRequest(model);
     const response = await this.gatewayPort.update(id, request);
     return ReporteirinecdialogViewMapper.toDomain(response);
@@ -70,13 +68,11 @@ export class ReporteirinecdialogApplicationService implements Reporteirinecdialo
   // ─── Validaciones de negocio ───
 
   private validateReporteirinecdialog(model: Partial<Reporteirinecdialog>): void {
-    // TODO: Implementar validaciones de negocio
     // Ejemplo:
     // if (!model.nombre || model.nombre.trim().length === 0) {
     //   throw new ReporteirinecdialogValidationError('El nombre es obligatorio', 'nombre');
     // }
   }
 
-  // TODO: Agregar métodos de negocio adicionales
   // Ejemplo: procesar lotes, cálculos, orquestación de múltiples llamadas al gateway
 }

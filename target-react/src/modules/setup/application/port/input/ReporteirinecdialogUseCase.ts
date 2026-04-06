@@ -45,6 +45,5 @@ export interface ReporteirinecdialogUseCase {
    */
   remove(id: string): Promise<void>;
 
-  // TODO: Agregar métodos específicos del caso de uso
   // Ejemplo: activar, desactivar, aprobar, rechazar, procesar, etc.
 }

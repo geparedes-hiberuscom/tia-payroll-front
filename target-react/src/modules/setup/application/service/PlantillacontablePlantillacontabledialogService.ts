@@ -18,7 +18,7 @@ export class PlantillacontablePlantillacontabledialogService {
   // Origen controlador: PUT /api/v1/plantillas-contables/{id} — PUT /api/v1/plantillas-contables/{id} — Actualizar plantilla contable
   // Origen controlador: DELETE /api/v1/plantillas-contables/{id} — DELETE /api/v1/plantillas-contables/{id} — Eliminar plantilla contable
 
-  async findById(id: string): Promise<PlantillacontablePlantillacontabledialogResponse> {
+  async findById(id: number): Promise<PlantillacontablePlantillacontabledialogResponse> {
     return this.gateway.findById(id);
   }
 
@@ -27,18 +27,15 @@ export class PlantillacontablePlantillacontabledialogService {
   }
 
   async create(request: CreatePlantillacontablePlantillacontabledialogRequest): Promise<PlantillacontablePlantillacontabledialogResponse> {
-    // TODO: Validaciones de negocio antes de crear
     return this.gateway.create(request);
   }
 
-  async update(id: string, request: UpdatePlantillacontablePlantillacontabledialogRequest): Promise<PlantillacontablePlantillacontabledialogResponse> {
-    // TODO: Validaciones de negocio antes de actualizar
+  async update(id: number, request: UpdatePlantillacontablePlantillacontabledialogRequest): Promise<PlantillacontablePlantillacontabledialogResponse> {
     return this.gateway.update(id, request);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     return this.gateway.remove(id);
   }
 
-  // TODO: Agregar métodos de negocio adicionales que combinen llamadas al gateway
 }

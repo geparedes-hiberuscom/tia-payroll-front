@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useReporteirinecdialog } from '../hooks/useReporteirinecdialog';
 import { ReporteirinecdialogForm } from '../components/ReporteirinecdialogForm';
-import { CreateReporteirinecdialog, UpdateReporteirinecdialog } from '../../../../domain/model/Reporteirinecdialog';
+import { GenerarReporteirinecdialogRequest, UpdateReporteirinecdialogRequest } from '../dto/ReporteirinecdialogDto';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 
@@ -15,20 +15,20 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
 export const ReporteirinecdialogCreatePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { selectedItem, loading, error, fetchById, create, update, clearError } = useReporteirinecdialog();
+  const { selectedItem, loading, error, fetchById, generar, update, clearError } = useReporteirinecdialog();
   const isEditMode = !!id;
 
   useEffect(() => {
     if (id) {
-      fetchById(id);
+      fetchById(Number(id));
     }
   }, [id, fetchById]);
 
-  const handleSubmit = async (data: CreateReporteirinecdialog | UpdateReporteirinecdialog) => {
+  const handleSubmit = async (data: GenerarReporteirinecdialogRequest | UpdateReporteirinecdialogRequest) => {
     if (isEditMode && id) {
-      await update(id, data as UpdateReporteirinecdialog);
+      await update(Number(id), data as UpdateReporteirinecdialogRequest);
     } else {
-      await create(data as CreateReporteirinecdialog);
+      await generar(data as GenerarReporteirinecdialogRequest);
     }
     navigate('/reporteirinecdialog');
   };

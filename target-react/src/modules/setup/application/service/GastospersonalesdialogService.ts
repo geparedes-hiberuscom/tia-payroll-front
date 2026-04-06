@@ -18,7 +18,7 @@ export class GastospersonalesdialogService {
   // Origen controlador: PUT /api/v1/gastos-personales/{id} — PUT /api/v1/gastos-personales/{id} — Actualizar gasto personal
   // Origen controlador: DELETE /api/v1/gastos-personales/{id} — DELETE /api/v1/gastos-personales/{id} — Eliminar gasto personal
 
-  async findById(id: string): Promise<GastospersonalesdialogResponse> {
+  async findById(id: number): Promise<GastospersonalesdialogResponse> {
     return this.gateway.findById(id);
   }
 
@@ -27,18 +27,15 @@ export class GastospersonalesdialogService {
   }
 
   async create(request: CreateGastospersonalesdialogRequest): Promise<GastospersonalesdialogResponse> {
-    // TODO: Validaciones de negocio antes de crear
     return this.gateway.create(request);
   }
 
-  async update(id: string, request: UpdateGastospersonalesdialogRequest): Promise<GastospersonalesdialogResponse> {
-    // TODO: Validaciones de negocio antes de actualizar
+  async update(id: number, request: UpdateGastospersonalesdialogRequest): Promise<GastospersonalesdialogResponse> {
     return this.gateway.update(id, request);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     return this.gateway.remove(id);
   }
 
-  // TODO: Agregar métodos de negocio adicionales que combinen llamadas al gateway
 }

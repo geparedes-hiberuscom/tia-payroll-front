@@ -18,7 +18,7 @@ export class RubroplantillacontabledialogService {
   // Origen controlador: PUT /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId} — PUT /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId} — Actualizar rubro en plantilla
   // Origen controlador: DELETE /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId} — DELETE /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId} — Quitar rubro de plantilla
 
-  async findById(id: string): Promise<RubroplantillacontabledialogResponse> {
+  async findById(id: number): Promise<RubroplantillacontabledialogResponse> {
     return this.gateway.findById(id);
   }
 
@@ -27,18 +27,15 @@ export class RubroplantillacontabledialogService {
   }
 
   async create(request: CreateRubroplantillacontabledialogRequest): Promise<RubroplantillacontabledialogResponse> {
-    // TODO: Validaciones de negocio antes de crear
     return this.gateway.create(request);
   }
 
-  async update(id: string, request: UpdateRubroplantillacontabledialogRequest): Promise<RubroplantillacontabledialogResponse> {
-    // TODO: Validaciones de negocio antes de actualizar
+  async update(id: number, request: UpdateRubroplantillacontabledialogRequest): Promise<RubroplantillacontabledialogResponse> {
     return this.gateway.update(id, request);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     return this.gateway.remove(id);
   }
 
-  // TODO: Agregar métodos de negocio adicionales que combinen llamadas al gateway
 }

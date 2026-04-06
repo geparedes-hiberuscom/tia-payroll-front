@@ -20,13 +20,13 @@ export const PlantillacontablePlantillacontabledialogCreatePage: React.FC = () =
 
   useEffect(() => {
     if (id) {
-      fetchById(id);
+      fetchById(Number(id));
     }
   }, [id, fetchById]);
 
   const handleSubmit = async (data: CreatePlantillacontablePlantillacontabledialog | UpdatePlantillacontablePlantillacontabledialog) => {
     if (isEditMode && id) {
-      await update(id, data as UpdatePlantillacontablePlantillacontabledialog);
+      await update(Number(id), data as UpdatePlantillacontablePlantillacontabledialog);
     } else {
       await create(data as CreatePlantillacontablePlantillacontabledialog);
     }

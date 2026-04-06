@@ -6,7 +6,6 @@
  * Representa la entidad de negocio pura, sin dependencias de infraestructura.
  * Los campos deben reflejar los atributos reales del negocio.
  *
- * TODO: Copilot — Completa los atributos basándote en las entidades fuente y los schemas de la API.
  */
 
 // Fuente: TablaIRPageResponseDTO — Lista paginada de rangos de la tabla IR

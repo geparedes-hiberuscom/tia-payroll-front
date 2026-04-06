@@ -18,7 +18,8 @@ export const ParametrosParametrosdialogDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      fetchById(id);
+      const [entorno, idParametro] = id.split(':');
+      fetchById(entorno, idParametro);
     }
   }, [id, fetchById]);
 
@@ -28,7 +29,8 @@ export const ParametrosParametrosdialogDetailPage: React.FC = () => {
 
   const handleDelete = async () => {
     if (id && window.confirm('¿Estás seguro de eliminar este registro?')) {
-      await remove(id);
+      const [entorno, idParametro] = id.split(':');
+      await remove(entorno, idParametro);
       navigate('/parametros-parametrosdialog');
     }
   };
@@ -38,7 +40,7 @@ export const ParametrosParametrosdialogDetailPage: React.FC = () => {
   };
 
   if (loading) { return <Loading message="Cargando detalle..." />; }
-  if (error) { return <ErrorBanner message={error} onRetry={() => { clearError(); if (id) { fetchById(id); } }} />; }
+  if (error) { return <ErrorBanner message={error} onRetry={() => { clearError(); if (id) { const [e, p] = id.split(':'); fetchById(e, p); } }} />; }
   if (!selectedItem) { return <p>No encontrado.</p>; }
 
   return (

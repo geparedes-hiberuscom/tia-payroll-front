@@ -4,7 +4,7 @@ import { GestiontablairGestiontablairdialog } from '../../../../domain/model/Ges
 interface GestiontablairGestiontablairdialogCardProps {
   item: GestiontablairGestiontablairdialog;
   onSelect?: (item: GestiontablairGestiontablairdialog) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: number) => void;
   onEdit?: (item: GestiontablairGestiontablairdialog) => void;
 }
 

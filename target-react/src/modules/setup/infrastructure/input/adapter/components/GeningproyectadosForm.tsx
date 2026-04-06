@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { CreateGeningproyectados, UpdateGeningproyectados, Geningproyectados } from '../../../../domain/model/Geningproyectados';
+import { GenerarGeningproyectadosRequest, UpdateGeningproyectadosRequest, GeningproyectadosResponse } from '../dto/GeningproyectadosDto';
 
 interface GeningproyectadosFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
-  initialData?: Geningproyectados;
-  onSubmit: (data: CreateGeningproyectados | UpdateGeningproyectados) => void;
+  initialData?: GeningproyectadosResponse;
+  onSubmit: (data: GenerarGeningproyectadosRequest | UpdateGeningproyectadosRequest) => void;
   onCancel?: () => void;
   loading?: boolean;
 }
@@ -25,19 +25,16 @@ export const GeningproyectadosForm: React.FC<GeningproyectadosFormProps> = ({
 }) => {
   const isEditMode = !!initialData;
 
-  // TODO: Agregar estado para cada campo del formulario
   // Ejemplo:
   // const [nombre, setNombre] = useState(initialData?.nombre || '');
 
   useEffect(() => {
     if (initialData) {
-      // TODO: Precargar campos del formulario con initialData
     }
   }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Construir el objeto Create/Update y llamar onSubmit
     // onSubmit({ nombre });
   };
 

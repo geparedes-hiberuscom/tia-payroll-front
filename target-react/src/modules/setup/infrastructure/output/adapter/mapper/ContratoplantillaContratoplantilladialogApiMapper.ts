@@ -2,41 +2,39 @@ import { ContratoplantillaContratoplantilladialogResponse, ContratoplantillaCont
 
 /**
  * API Mapper: contratoPlantilla.zul / contratoPlantillaDialog.zul
- * Transforma las respuestas raw de la API a los DTOs tipados del frontend.
- * Transforma los DTOs del frontend a los payloads de la API.
+ * El backend usa nombres con prefijo v* (vdescplantilla, vnombrearchivo).
+ * El frontend usa nombres semánticos (descripcion, nombreArchivo).
  */
 export class ContratoplantillaContratoplantilladialogApiMapper {
 
   static toResponse(raw: any): ContratoplantillaContratoplantilladialogResponse {
     return {
       id: raw.id,
-      // TODO: Mapear campos del JSON de respuesta del backend al DTO Response
+      descripcion: raw.vdescplantilla,
+      nombreArchivo: raw.vnombrearchivo,
+      nombreArchivo2: raw.vnombrearchivo2,
+      usuarioIngreso: raw.usuarioIngreso,
+      fechaIngreso: raw.fechaIngreso,
+      usuarioModificacion: raw.usuarioModificacion,
+      fechaModificacion: raw.fechaModificacion,
     };
   }
 
   static toListResponse(raw: any): ContratoplantillaContratoplantilladialogListResponse {
     return {
-      data: Array.isArray(raw.data || raw.content || raw)
-        ? (raw.data || raw.content || raw).map(ContratoplantillaContratoplantilladialogApiMapper.toResponse)
-        : [],
-      totalElements: raw.totalElements || raw.total || 0,
+      content: Array.isArray(raw.content) ? raw.content.map(ContratoplantillaContratoplantilladialogApiMapper.toResponse) : [],
+      totalElements: raw.totalElements || 0,
       totalPages: raw.totalPages || 0,
-      page: raw.page || raw.number || 0,
-      size: raw.size || raw.pageSize || 10,
+      page: raw.page || 0,
+      size: raw.size || 10,
     };
   }
 
   static toCreatePayload(request: CreateContratoplantillaContratoplantilladialogRequest): Record<string, unknown> {
-    return {
-      // TODO: Mapear campos del DTO Request al payload de la API
-      ...request,
-    };
+    return { ...request };
   }
 
   static toUpdatePayload(request: UpdateContratoplantillaContratoplantilladialogRequest): Record<string, unknown> {
-    return {
-      // TODO: Mapear campos del DTO Request al payload de la API
-      ...request,
-    };
+    return { ...request };
   }
 }

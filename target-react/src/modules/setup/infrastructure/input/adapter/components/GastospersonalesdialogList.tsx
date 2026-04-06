@@ -6,7 +6,7 @@ interface GastospersonalesdialogListProps {
   items: Gastospersonalesdialog[];
   loading?: boolean;
   onSelect?: (item: Gastospersonalesdialog) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: number) => void;
   onEdit?: (item: Gastospersonalesdialog) => void;
 }
 

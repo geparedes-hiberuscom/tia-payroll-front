@@ -2,41 +2,55 @@
  * DTOs para funcionalidad: rubroplantillaContableDialog.zul (rubroplantillaContableDialog)
  * Entidades fuente: 5
  * Controladores fuente: 5
- *
- * TODO: Copilot — Completa los campos basándote en los schemas de la API y las entidades fuente.
  */
-
-// Fuente: RubroPlantillaListResponseDTO — Lista de rubros asociados a la plantilla contable
-// Fuente: RubroPlantillaResponseDTO — Detalle de un rubro asignado a la plantilla contable
-// Fuente: RubroPlantillaCreateDTO — Datos para asociar un rubro a la plantilla contable
-// Fuente: RubroPlantillaUpdateDTO — Datos para actualizar la asociación rubro-plantilla
-// Fuente: DeleteResponseDTO — Confirmación de eliminación
 
 // ─── Request DTOs ───
 
 export interface CreateRubroplantillacontabledialogRequest {
-  // TODO: Campos del formulario de creación
+  procesoId: number;
+  rubroId: string;
+  cuenta: string;
+  debeHaber: string;
+  subcuenta?: string;
+  auxiliar?: string;
+  distribucionCosto?: string;
+  dimensionId?: number;
 }
 
 export interface UpdateRubroplantillacontabledialogRequest {
-  // TODO: Campos del formulario de actualización
+  cuenta?: string;
+  subcuenta?: string;
+  auxiliar?: string;
+  debeHaber?: string;
+  distribucionCosto?: string;
+  dimensionId?: number;
 }
 
 export interface RubroplantillacontabledialogFilterParams {
   page?: number;
   size?: number;
-  // TODO: Filtros de búsqueda
+  procesoId?: number;
+  rubroId?: string;
 }
 
 // ─── Response DTOs ───
 
 export interface RubroplantillacontabledialogResponse {
-  id: string;
-  // TODO: Campos de la respuesta del servidor
+  id: number;
+  procesoId: number;
+  rubroId: string;
+  rubroNombre?: string;
+  cuenta: string;
+  subcuenta?: string;
+  debeHaber: string;
+  auxiliar?: string;
+  distribucionCosto?: string;
+  dimensionId?: number;
+  dimensionNombre?: string;
 }
 
 export interface RubroplantillacontabledialogListResponse {
-  data: RubroplantillacontabledialogResponse[];
+  content: RubroplantillacontabledialogResponse[];
   totalElements: number;
   totalPages: number;
   page: number;

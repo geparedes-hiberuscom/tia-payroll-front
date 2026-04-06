@@ -25,7 +25,7 @@ export const ContratoplantillaContratoplantilladialogPage: React.FC = () => {
 
   const handleSubmit = async (data: CreateContratoplantillaContratoplantilladialog | UpdateContratoplantillaContratoplantilladialog) => {
     if (editingItem) {
-      await update(editingItem.id, data as UpdateContratoplantillaContratoplantilladialog);
+      await update(editingItem.id.toString(), data as UpdateContratoplantillaContratoplantilladialog);
     } else {
       await create(data as CreateContratoplantillaContratoplantilladialog);
     }

@@ -6,7 +6,7 @@ interface PlantillacontablePlantillacontabledialogListProps {
   items: PlantillacontablePlantillacontabledialog[];
   loading?: boolean;
   onSelect?: (item: PlantillacontablePlantillacontabledialog) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: number) => void;
   onEdit?: (item: PlantillacontablePlantillacontabledialog) => void;
 }
 

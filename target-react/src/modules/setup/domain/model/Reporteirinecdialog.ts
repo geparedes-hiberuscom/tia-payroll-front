@@ -6,7 +6,6 @@
  * Representa la entidad de negocio pura, sin dependencias de infraestructura.
  * Los campos deben reflejar los atributos reales del negocio.
  *
- * TODO: Copilot — Completa los atributos basándote en las entidades fuente y los schemas de la API.
  */
 
 // Fuente: ReporteIRINECListResponseDTO — Lista de reportes IR/INEC disponibles
@@ -52,7 +51,7 @@ export interface ReporteirinecdialogFilter {
  * Resultado paginado del dominio
  */
 export interface ReporteirinecdialogPageResult {
-  data: Reporteirinecdialog[];
+  content: Reporteirinecdialog[];
   totalElements: number;
   totalPages: number;
   page: number;

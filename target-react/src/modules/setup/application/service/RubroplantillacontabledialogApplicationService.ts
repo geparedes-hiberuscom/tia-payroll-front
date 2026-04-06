@@ -43,7 +43,6 @@ export class RubroplantillacontabledialogApplicationService implements Rubroplan
   }
 
   async create(model: CreateRubroplantillacontabledialog): Promise<Rubroplantillacontabledialog> {
-    // TODO: Validaciones de negocio antes de crear
     this.validateRubroplantillacontabledialog(model);
     const request = RubroplantillacontabledialogViewMapper.toCreateRequest(model);
     const response = await this.gatewayPort.create(request);
@@ -54,7 +53,6 @@ export class RubroplantillacontabledialogApplicationService implements Rubroplan
     if (!id) {
       throw new RubroplantillacontabledialogValidationError('El ID es requerido para actualizar');
     }
-    // TODO: Validaciones de negocio antes de actualizar
     const request = RubroplantillacontabledialogViewMapper.toUpdateRequest(model);
     const response = await this.gatewayPort.update(id, request);
     return RubroplantillacontabledialogViewMapper.toDomain(response);
@@ -70,13 +68,11 @@ export class RubroplantillacontabledialogApplicationService implements Rubroplan
   // ─── Validaciones de negocio ───
 
   private validateRubroplantillacontabledialog(model: Partial<Rubroplantillacontabledialog>): void {
-    // TODO: Implementar validaciones de negocio
     // Ejemplo:
     // if (!model.nombre || model.nombre.trim().length === 0) {
     //   throw new RubroplantillacontabledialogValidationError('El nombre es obligatorio', 'nombre');
     // }
   }
 
-  // TODO: Agregar métodos de negocio adicionales
   // Ejemplo: procesar lotes, cálculos, orquestación de múltiples llamadas al gateway
 }

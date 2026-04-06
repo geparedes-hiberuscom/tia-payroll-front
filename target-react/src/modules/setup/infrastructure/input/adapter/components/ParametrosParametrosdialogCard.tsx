@@ -1,11 +1,11 @@
 import React from 'react';
-import { ParametrosParametrosdialog } from '../../../../domain/model/ParametrosParametrosdialog';
+import { ParametrosParametrosdialogResponse } from '../dto/ParametrosParametrosdialogDto';
 
 interface ParametrosParametrosdialogCardProps {
-  item: ParametrosParametrosdialog;
-  onSelect?: (item: ParametrosParametrosdialog) => void;
+  item: ParametrosParametrosdialogResponse;
+  onSelect?: (item: ParametrosParametrosdialogResponse) => void;
   onDelete?: (id: string) => void;
-  onEdit?: (item: ParametrosParametrosdialog) => void;
+  onEdit?: (item: ParametrosParametrosdialogResponse) => void;
 }
 
 /**
@@ -22,7 +22,7 @@ export const ParametrosParametrosdialogCard: React.FC<ParametrosParametrosdialog
 }) => {
   return (
     <div
-      data-testid={`parametros-parametrosdialog-card-${item.id}`}
+      data-testid={`parametros-parametrosdialog-card-${item.entorno}-${item.idParametro}`}
       style={{
         padding: '1rem',
         borderBottom: '1px solid #eee',
@@ -48,7 +48,7 @@ export const ParametrosParametrosdialogCard: React.FC<ParametrosParametrosdialog
         )}
         {onDelete && (
           <button
-            onClick={(e) => { e.stopPropagation(); onDelete(item.id); }}
+            onClick={(e) => { e.stopPropagation(); onDelete(`${item.entorno}:${item.idParametro}`); }}
             style={{ color: 'red' }}
           >
             Eliminar

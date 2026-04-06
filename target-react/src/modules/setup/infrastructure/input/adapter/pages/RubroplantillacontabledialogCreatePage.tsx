@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRubroplantillacontabledialog } from '../hooks/useRubroplantillacontabledialog';
 import { RubroplantillacontabledialogForm } from '../components/RubroplantillacontabledialogForm';
-import { CreateRubroplantillacontabledialog, UpdateRubroplantillacontabledialog } from '../../../../domain/model/Rubroplantillacontabledialog';
+import { CreateRubroplantillacontabledialogRequest, UpdateRubroplantillacontabledialogRequest } from '../dto/RubroplantillacontabledialogDto';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 
@@ -20,15 +20,15 @@ export const RubroplantillacontabledialogCreatePage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      fetchById(id);
+      fetchById(Number(id));
     }
   }, [id, fetchById]);
 
-  const handleSubmit = async (data: CreateRubroplantillacontabledialog | UpdateRubroplantillacontabledialog) => {
+  const handleSubmit = async (data: CreateRubroplantillacontabledialogRequest | UpdateRubroplantillacontabledialogRequest) => {
     if (isEditMode && id) {
-      await update(id, data as UpdateRubroplantillacontabledialog);
+      await update(Number(id), data as UpdateRubroplantillacontabledialogRequest);
     } else {
-      await create(data as CreateRubroplantillacontabledialog);
+      await create(data as CreateRubroplantillacontabledialogRequest);
     }
     navigate('/rubroplantillacontabledialog');
   };

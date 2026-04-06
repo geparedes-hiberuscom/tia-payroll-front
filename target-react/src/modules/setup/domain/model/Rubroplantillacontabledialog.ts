@@ -6,7 +6,6 @@
  * Representa la entidad de negocio pura, sin dependencias de infraestructura.
  * Los campos deben reflejar los atributos reales del negocio.
  *
- * TODO: Copilot — Completa los atributos basándote en las entidades fuente y los schemas de la API.
  */
 
 // Fuente: RubroPlantillaListResponseDTO — Lista de rubros asociados a la plantilla contable
@@ -52,7 +51,7 @@ export interface RubroplantillacontabledialogFilter {
  * Resultado paginado del dominio
  */
 export interface RubroplantillacontabledialogPageResult {
-  data: Rubroplantillacontabledialog[];
+  content: Rubroplantillacontabledialog[];
   totalElements: number;
   totalPages: number;
   page: number;

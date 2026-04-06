@@ -44,7 +44,6 @@ export class ContratoplantillaContratoplantilladialogApplicationService implemen
   }
 
   async create(model: CreateContratoplantillaContratoplantilladialog): Promise<ContratoplantillaContratoplantilladialog> {
-    // TODO: Validaciones de negocio antes de crear
     this.validateContratoplantillaContratoplantilladialog(model);
     const request = ContratoplantillaContratoplantilladialogViewMapper.toCreateRequest(model);
     const response = await this.gatewayPort.create(request);
@@ -55,7 +54,6 @@ export class ContratoplantillaContratoplantilladialogApplicationService implemen
     if (!id) {
       throw new ContratoplantillaContratoplantilladialogValidationError('El ID es requerido para actualizar');
     }
-    // TODO: Validaciones de negocio antes de actualizar
     const request = ContratoplantillaContratoplantilladialogViewMapper.toUpdateRequest(model);
     const response = await this.gatewayPort.update(id, request);
     return ContratoplantillaContratoplantilladialogViewMapper.toDomain(response);
@@ -71,13 +69,11 @@ export class ContratoplantillaContratoplantilladialogApplicationService implemen
   // ─── Validaciones de negocio ───
 
   private validateContratoplantillaContratoplantilladialog(model: Partial<ContratoplantillaContratoplantilladialog>): void {
-    // TODO: Implementar validaciones de negocio
     // Ejemplo:
     // if (!model.nombre || model.nombre.trim().length === 0) {
     //   throw new ContratoplantillaContratoplantilladialogValidationError('El nombre es obligatorio', 'nombre');
     // }
   }
 
-  // TODO: Agregar métodos de negocio adicionales
   // Ejemplo: procesar lotes, cálculos, orquestación de múltiples llamadas al gateway
 }

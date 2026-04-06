@@ -20,13 +20,13 @@ export const GestiontablairGestiontablairdialogCreatePage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      fetchById(id);
+      fetchById(Number(id));
     }
   }, [id, fetchById]);
 
   const handleSubmit = async (data: CreateGestiontablairGestiontablairdialog | UpdateGestiontablairGestiontablairdialog) => {
     if (isEditMode && id) {
-      await update(id, data as UpdateGestiontablairGestiontablairdialog);
+      await update(Number(id), data as UpdateGestiontablairGestiontablairdialog);
     } else {
       await create(data as CreateGestiontablairGestiontablairdialog);
     }

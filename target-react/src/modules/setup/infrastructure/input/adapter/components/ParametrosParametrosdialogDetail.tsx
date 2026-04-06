@@ -1,9 +1,9 @@
 import React from 'react';
-import { ParametrosParametrosdialog } from '../../../../domain/model/ParametrosParametrosdialog';
+import { ParametrosParametrosdialogResponse } from '../dto/ParametrosParametrosdialogDto';
 
 interface ParametrosParametrosdialogDetailProps {
-  item: ParametrosParametrosdialog;
-  onEdit?: (item: ParametrosParametrosdialog) => void;
+  item: ParametrosParametrosdialogResponse;
+  onEdit?: (item: ParametrosParametrosdialogResponse) => void;
   onDelete?: (id: string) => void;
   onBack?: () => void;
 }
@@ -28,15 +28,15 @@ export const ParametrosParametrosdialogDetail: React.FC<ParametrosParametrosdial
       </div>
 
       <dl>
-        <dt><strong>ID</strong></dt>
-        <dd>{item.id}</dd>
+        <dt><strong>Entorno / ID Parámetro</strong></dt>
+        <dd>{item.entorno} / {item.idParametro}</dd>
         {/* TODO: Agregar todos los campos del domain model */}
       </dl>
 
       <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
         {onEdit && <button onClick={() => onEdit(item)}>Editar</button>}
         {onDelete && (
-          <button onClick={() => onDelete(item.id)} style={{ color: 'red' }}>
+          <button onClick={() => onDelete(`${item.entorno}:${item.idParametro}`)} style={{ color: 'red' }}>
             Eliminar
           </button>
         )}

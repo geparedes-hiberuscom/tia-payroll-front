@@ -3,11 +3,12 @@
  * Exporta todos los puertos de salida (interfaces)
  */
 
-export { ParametroGatewayPort } from './ParametroGatewayPort';
-export { TablaIRGatewayPort } from './TablaIRGatewayPort';
-export { GastosPersonalesGatewayPort } from './GastosPersonalesGatewayPort';
-export { IngresoProyectadoGatewayPort } from './IngresoProyectadoGatewayPort';
-export { ReporteIRINECGatewayPort } from './ReporteIRINECGatewayPort';
-export { PlantillaContableGatewayPort } from './PlantillaContableGatewayPort';
-export { RubroPlantillaGatewayPort } from './RubroPlantillaGatewayPort';
-export { ContratoPlantillaGatewayPort } from './ContratoPlantillaGatewayPort';
+export { ParametrosParametrosdialogGatewayPort } from './ParametrosParametrosdialogGatewayPort';
+export { GestiontablairGestiontablairdialogGatewayPort } from './GestiontablairGestiontablairdialogGatewayPort';
+export { GastospersonalesdialogGatewayPort } from './GastospersonalesdialogGatewayPort';
+export { GeningproyectadosGatewayPort } from './GeningproyectadosGatewayPort';
+export { ReporteirinecdialogGatewayPort } from './ReporteirinecdialogGatewayPort';
+export { PlantillacontablePlantillacontabledialogGatewayPort } from './PlantillacontablePlantillacontabledialogGatewayPort';
+export { RubroplantillacontabledialogGatewayPort } from './RubroplantillacontabledialogGatewayPort';
+export { ContratoplantillaContratoplantilladialogGatewayPort } from './ContratoplantillaContratoplantilladialogGatewayPort';
+export { SetupOutputPort } from './SetupOutputPort';

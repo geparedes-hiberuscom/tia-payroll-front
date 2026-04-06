@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGeningproyectados } from '../hooks/useGeningproyectados';
 import { GeningproyectadosList } from '../components/GeningproyectadosList';
 import { GeningproyectadosForm } from '../components/GeningproyectadosForm';
-import { Geningproyectados, CreateGeningproyectados, UpdateGeningproyectados } from '../../../../domain/model/Geningproyectados';
+import { GenerarGeningproyectadosRequest, UpdateGeningproyectadosRequest, GeningproyectadosResponse } from '../dto/GeningproyectadosDto';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 
@@ -11,58 +11,18 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
  * Vertical Slice: 🔧 Setup y Configuración
  */
 export const GeningproyectadosPage: React.FC = () => {
-  const { items, loading, error, fetchAll, create, update, remove, clearError } = useGeningproyectados();
+  const { items, loading, error, fetchAll, generar, update, remove, clearError } = useGeningproyectados();
   const [showForm, setShowForm] = useState(false);
-  const [editingItem, setEditingItem] = useState<Geningproyectados | undefined>(undefined);
+  const [editingItem, setEditingItem] = useState<GeningproyectadosResponse | undefined>(undefined);
 
   useEffect(() => { fetchAll(); }, []);
 
-  const handleSubmit = async (data: CreateGeningproyectados | UpdateGeningproyectados) => {
-    if (editingItem) {
-      await update(editingItem.id, data as UpdateGeningproyectados);
-    } else {
-      await create(data as CreateGeningproyectados);
-    }
-    setShowForm(false);
-    setEditingItem(undefined);
-  };
-
-  return (
-    <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Ingresos Proyectados</h1>
-        {!showForm && <button onClick={() => setShowForm(true)} style={{ padding: '0.5rem 1rem' }}>+ Nuevo</button>}
-      </div>
-      {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
-      {showForm && <GeningproyectadosForm initialData={editingItem} onSubmit={handleSubmit} onCancel={() => { setShowForm(false); setEditingItem(undefined); }} loading={loading} />}
-      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando..." /> : <GeningproyectadosList items={items} loading={loading} onEdit={(item) => { setEditingItem(item); setShowForm(true); }} onDelete={(id) => { if (window.confirm('¿Eliminar?')) remove(id.toString()); }} />)}
-    </div>
-  );
-  const {
-    items,
-    loading,
-    error,
-    fetchAll,
-    create,
-    update,
-    remove,
-    clearError,
-  } = useGeningproyectados();
-
-  const [showForm, setShowForm] = useState(false);
-  const [editingItem, setEditingItem] = useState<Geningproyectados | undefined>(undefined);
-
-  const handleCreate = async (data: CreateGeningproyectados) => {
-    await create(data);
-    setShowForm(false);
-  };
-
-  const handleEdit = (item: Geningproyectados) => {
+  const handleEdit = (item: GeningproyectadosResponse) => {
     setEditingItem(item);
     setShowForm(true);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm('¿Estás seguro de eliminar este registro?')) {
       await remove(id);
     }
@@ -73,30 +33,33 @@ export const GeningproyectadosPage: React.FC = () => {
     setEditingItem(undefined);
   };
 
+  const handleSubmit = async (data: GenerarGeningproyectadosRequest | UpdateGeningproyectadosRequest) => {
+    if (editingItem) {
+      await update(editingItem.id, data as UpdateGeningproyectadosRequest);
+    } else {
+      await generar(data as GenerarGeningproyectadosRequest);
+    }
+    setShowForm(false);
+    setEditingItem(undefined);
+  };
+
   return (
     <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>genIngProyectados.zul</h1>
-        {!showForm && (
-          <button onClick={() => setShowForm(true)}>
-            + Nuevo
-          </button>
-        )}
+        <h1>Ingresos Proyectados</h1>
+        {!showForm && <button onClick={() => setShowForm(true)}>+ Generar</button>}
       </div>
-
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
-
       {showForm && (
         <GeningproyectadosForm
           initialData={editingItem}
-          onSubmit={handleCreate}
+          onSubmit={handleSubmit}
           onCancel={handleCancel}
           loading={loading}
         />
       )}
-
-      {loading && items.length === 0 ? (
-        <Loading message="Cargando genIngProyectados.zul..." />
+      {!showForm && (loading && items.length === 0 ? (
+        <Loading message="Cargando ingresos proyectados..." />
       ) : (
         <GeningproyectadosList
           items={items}
@@ -104,7 +67,7 @@ export const GeningproyectadosPage: React.FC = () => {
           onEdit={handleEdit}
           onDelete={handleDelete}
         />
-      )}
+      ))}
     </div>
   );
 };

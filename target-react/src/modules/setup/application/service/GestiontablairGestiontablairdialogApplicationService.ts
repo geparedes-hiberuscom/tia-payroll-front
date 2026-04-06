@@ -43,7 +43,6 @@ export class GestiontablairGestiontablairdialogApplicationService implements Ges
   }
 
   async create(model: CreateGestiontablairGestiontablairdialog): Promise<GestiontablairGestiontablairdialog> {
-    // TODO: Validaciones de negocio antes de crear
     this.validateGestiontablairGestiontablairdialog(model);
     const request = GestiontablairGestiontablairdialogViewMapper.toCreateRequest(model);
     const response = await this.gatewayPort.create(request);
@@ -54,7 +53,6 @@ export class GestiontablairGestiontablairdialogApplicationService implements Ges
     if (!id) {
       throw new GestiontablairGestiontablairdialogValidationError('El ID es requerido para actualizar');
     }
-    // TODO: Validaciones de negocio antes de actualizar
     const request = GestiontablairGestiontablairdialogViewMapper.toUpdateRequest(model);
     const response = await this.gatewayPort.update(id, request);
     return GestiontablairGestiontablairdialogViewMapper.toDomain(response);
@@ -70,13 +68,11 @@ export class GestiontablairGestiontablairdialogApplicationService implements Ges
   // ─── Validaciones de negocio ───
 
   private validateGestiontablairGestiontablairdialog(model: Partial<GestiontablairGestiontablairdialog>): void {
-    // TODO: Implementar validaciones de negocio
     // Ejemplo:
     // if (!model.nombre || model.nombre.trim().length === 0) {
     //   throw new GestiontablairGestiontablairdialogValidationError('El nombre es obligatorio', 'nombre');
     // }
   }
 
-  // TODO: Agregar métodos de negocio adicionales
   // Ejemplo: procesar lotes, cálculos, orquestación de múltiples llamadas al gateway
 }
