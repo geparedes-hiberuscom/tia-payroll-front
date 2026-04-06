@@ -1,0 +1,727 @@
+{
+  "slice_id": "slice-1-setup",
+  "slice_nombre": "🔧 Setup y Configuración",
+  "slice_descripcion": "Parámetros, tabla IR, plantillas contables",
+  "projectName": "payrol",
+  "target": "react",
+  "modulo": "Roles de Pago / Nómina (AvPy)",
+  "generatedAt": "2026-04-02T21:05:39.999Z",
+  "funcionalidades_seleccionadas": [
+    "parametros_parametrosDialog",
+    "gestionTablaIR_gestionTablaIRDialog",
+    "GastosPersonalesDialog",
+    "genIngProyectados",
+    "ReporteIRINECDialog",
+    "plantillaContable_plantillaContableDialog",
+    "rubroplantillaContableDialog",
+    "contratoPlantilla_contratoPlantillaDialog"
+  ],
+  "funcionalidades_no_encontradas": [
+    "12_parametros_nomina",
+    "13_tabla_impuesto_renta",
+    "11_plantilla_contable"
+  ],
+  "source_context": [
+    {
+      "funcionalidad_id": "parametros_parametrosDialog",
+      "funcionalidad_nombre": "parametros.zul / parametrosDialog.zul",
+      "entidades": [
+        {
+          "archivo": "ParametroPageResponseDTO",
+          "descripcion": "Lista paginada de parámetros del sistema"
+        },
+        {
+          "archivo": "ParametroResponseDTO",
+          "descripcion": "Detalle completo de un parámetro del sistema"
+        },
+        {
+          "archivo": "ParametroCreateDTO",
+          "descripcion": "Datos para crear un nuevo parámetro"
+        },
+        {
+          "archivo": "ParametroUpdateDTO",
+          "descripcion": "Datos para actualizar un parámetro existente"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/parametros",
+          "descripcion": "GET /api/v1/parametros — Listar parámetros"
+        },
+        {
+          "archivo": "GET /api/v1/parametros/{entorno}/{idParametro}",
+          "descripcion": "GET /api/v1/parametros/{entorno}/{idParametro} — Obtener parámetro por ID"
+        },
+        {
+          "archivo": "POST /api/v1/parametros",
+          "descripcion": "POST /api/v1/parametros — Crear parámetro"
+        },
+        {
+          "archivo": "PUT /api/v1/parametros/{entorno}/{idParametro}",
+          "descripcion": "PUT /api/v1/parametros/{entorno}/{idParametro} — Actualizar parámetro"
+        },
+        {
+          "archivo": "DELETE /api/v1/parametros/{entorno}/{idParametro}",
+          "descripcion": "DELETE /api/v1/parametros/{entorno}/{idParametro} — Eliminar parámetro"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "parametros.zul",
+          "descripcion": "Pantalla fuente: parametros.zul"
+        },
+        {
+          "archivo": "parametrosDialog.zul",
+          "descripcion": "Pantalla fuente: parametrosDialog.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "gestionTablaIR_gestionTablaIRDialog",
+      "funcionalidad_nombre": "gestionTablaIR.zul / gestionTablaIRDialog.zul",
+      "entidades": [
+        {
+          "archivo": "TablaIRPageResponseDTO",
+          "descripcion": "Lista paginada de rangos de la tabla IR"
+        },
+        {
+          "archivo": "TablaIRResponseDTO",
+          "descripcion": "Detalle de un rango de la tabla IR"
+        },
+        {
+          "archivo": "TablaIRCreateDTO",
+          "descripcion": "Datos para crear un nuevo rango IR"
+        },
+        {
+          "archivo": "TablaIRUpdateDTO",
+          "descripcion": "Datos para actualizar un rango IR existente"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/tabla-ir",
+          "descripcion": "GET /api/v1/tabla-ir — Listar tabla IR"
+        },
+        {
+          "archivo": "GET /api/v1/tabla-ir/{id}",
+          "descripcion": "GET /api/v1/tabla-ir/{id} — Obtener rango IR por ID"
+        },
+        {
+          "archivo": "POST /api/v1/tabla-ir",
+          "descripcion": "POST /api/v1/tabla-ir — Crear rango IR"
+        },
+        {
+          "archivo": "PUT /api/v1/tabla-ir/{id}",
+          "descripcion": "PUT /api/v1/tabla-ir/{id} — Actualizar rango IR"
+        },
+        {
+          "archivo": "DELETE /api/v1/tabla-ir/{id}",
+          "descripcion": "DELETE /api/v1/tabla-ir/{id} — Eliminar rango IR"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "gestionTablaIR.zul",
+          "descripcion": "Pantalla fuente: gestionTablaIR.zul"
+        },
+        {
+          "archivo": "gestionTablaIRDialog.zul",
+          "descripcion": "Pantalla fuente: gestionTablaIRDialog.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "GastosPersonalesDialog",
+      "funcionalidad_nombre": "GastosPersonalesDialog.zul",
+      "entidades": [
+        {
+          "archivo": "GastosPersonalesListResponseDTO",
+          "descripcion": "Lista de configuración de gastos personales"
+        },
+        {
+          "archivo": "GastosPersonalesResponseDTO",
+          "descripcion": "Detalle de configuración de gasto personal deducible"
+        },
+        {
+          "archivo": "GastosPersonalesCreateDTO",
+          "descripcion": "Datos para crear configuración de gasto personal"
+        },
+        {
+          "archivo": "GastosPersonalesUpdateDTO",
+          "descripcion": "Datos para actualizar configuración de gasto personal"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/gastos-personales",
+          "descripcion": "GET /api/v1/gastos-personales — Listar gastos personales"
+        },
+        {
+          "archivo": "GET /api/v1/gastos-personales/{id}",
+          "descripcion": "GET /api/v1/gastos-personales/{id} — Obtener gasto personal por ID"
+        },
+        {
+          "archivo": "POST /api/v1/gastos-personales",
+          "descripcion": "POST /api/v1/gastos-personales — Crear gasto personal"
+        },
+        {
+          "archivo": "PUT /api/v1/gastos-personales/{id}",
+          "descripcion": "PUT /api/v1/gastos-personales/{id} — Actualizar gasto personal"
+        },
+        {
+          "archivo": "DELETE /api/v1/gastos-personales/{id}",
+          "descripcion": "DELETE /api/v1/gastos-personales/{id} — Eliminar gasto personal"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "GastosPersonalesDialog.zul",
+          "descripcion": "Pantalla fuente: GastosPersonalesDialog.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "genIngProyectados",
+      "funcionalidad_nombre": "genIngProyectados.zul",
+      "entidades": [
+        {
+          "archivo": "IngresosProyectadosListResponseDTO",
+          "descripcion": "Lista de ingresos proyectados"
+        },
+        {
+          "archivo": "IngresoProyectadoResponseDTO",
+          "descripcion": "Detalle de ingreso proyectado"
+        },
+        {
+          "archivo": "GenerarIngresosProyectadosDTO",
+          "descripcion": "Datos para generar ingresos proyectados"
+        },
+        {
+          "archivo": "ProcesoResponseDTO",
+          "descripcion": "Resultado de la ejecución del proceso de generación"
+        },
+        {
+          "archivo": "IngresoProyectadoUpdateDTO",
+          "descripcion": "Datos para actualizar ingreso proyectado"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/ingresos-proyectados",
+          "descripcion": "GET /api/v1/ingresos-proyectados — Listar ingresos proyectados"
+        },
+        {
+          "archivo": "GET /api/v1/ingresos-proyectados/{id}",
+          "descripcion": "GET /api/v1/ingresos-proyectados/{id} — Obtener ingreso proyectado por ID"
+        },
+        {
+          "archivo": "POST /api/v1/ingresos-proyectados/generar",
+          "descripcion": "POST /api/v1/ingresos-proyectados/generar — Generar ingresos proyectados"
+        },
+        {
+          "archivo": "PUT /api/v1/ingresos-proyectados/{id}",
+          "descripcion": "PUT /api/v1/ingresos-proyectados/{id} — Actualizar ingreso proyectado"
+        },
+        {
+          "archivo": "DELETE /api/v1/ingresos-proyectados/{id}",
+          "descripcion": "DELETE /api/v1/ingresos-proyectados/{id} — Eliminar ingreso proyectado"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "genIngProyectados.zul",
+          "descripcion": "Pantalla fuente: genIngProyectados.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "ReporteIRINECDialog",
+      "funcionalidad_nombre": "ReporteIRINECDialog.zul",
+      "entidades": [
+        {
+          "archivo": "ReporteIRINECListResponseDTO",
+          "descripcion": "Lista de reportes IR/INEC disponibles"
+        },
+        {
+          "archivo": "ReporteIRINECResponseDTO",
+          "descripcion": "Detalle de un reporte IR/INEC"
+        },
+        {
+          "archivo": "GenerarReporteIRINECDTO",
+          "descripcion": "Datos para generar un reporte IR/INEC"
+        },
+        {
+          "archivo": "ProcesoResponseDTO",
+          "descripcion": "Resultado de la generación del reporte"
+        },
+        {
+          "archivo": "ReporteIRINECUpdateDTO",
+          "descripcion": "Datos para actualizar un reporte"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/reportes-ir-inec",
+          "descripcion": "GET /api/v1/reportes-ir-inec — Listar reportes IR/INEC disponibles"
+        },
+        {
+          "archivo": "GET /api/v1/reportes-ir-inec/{id}",
+          "descripcion": "GET /api/v1/reportes-ir-inec/{id} — Obtener reporte IR/INEC por ID"
+        },
+        {
+          "archivo": "POST /api/v1/reportes-ir-inec/generar",
+          "descripcion": "POST /api/v1/reportes-ir-inec/generar — Generar reporte IR/INEC"
+        },
+        {
+          "archivo": "PUT /api/v1/reportes-ir-inec/{id}",
+          "descripcion": "PUT /api/v1/reportes-ir-inec/{id} — Actualizar reporte IR/INEC"
+        },
+        {
+          "archivo": "DELETE /api/v1/reportes-ir-inec/{id}",
+          "descripcion": "DELETE /api/v1/reportes-ir-inec/{id} — Eliminar reporte IR/INEC"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "ReporteIRINECDialog.zul",
+          "descripcion": "Pantalla fuente: ReporteIRINECDialog.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "plantillaContable_plantillaContableDialog",
+      "funcionalidad_nombre": "plantillaContable.zul / plantillaContableDialog.zul",
+      "entidades": [
+        {
+          "archivo": "PlantillaContablePageResponseDTO",
+          "descripcion": "Lista paginada de plantillas contables"
+        },
+        {
+          "archivo": "PlantillaContableResponseDTO",
+          "descripcion": "Detalle de una plantilla contable"
+        },
+        {
+          "archivo": "PlantillaContableCreateDTO",
+          "descripcion": "Datos para crear una nueva plantilla contable"
+        },
+        {
+          "archivo": "PlantillaContableUpdateDTO",
+          "descripcion": "Datos para actualizar una plantilla contable"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/plantillas-contables",
+          "descripcion": "GET /api/v1/plantillas-contables — Listar plantillas contables"
+        },
+        {
+          "archivo": "GET /api/v1/plantillas-contables/{id}",
+          "descripcion": "GET /api/v1/plantillas-contables/{id} — Obtener plantilla contable por ID"
+        },
+        {
+          "archivo": "POST /api/v1/plantillas-contables",
+          "descripcion": "POST /api/v1/plantillas-contables — Crear plantilla contable"
+        },
+        {
+          "archivo": "PUT /api/v1/plantillas-contables/{id}",
+          "descripcion": "PUT /api/v1/plantillas-contables/{id} — Actualizar plantilla contable"
+        },
+        {
+          "archivo": "DELETE /api/v1/plantillas-contables/{id}",
+          "descripcion": "DELETE /api/v1/plantillas-contables/{id} — Eliminar plantilla contable"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "plantillaContable.zul",
+          "descripcion": "Pantalla fuente: plantillaContable.zul"
+        },
+        {
+          "archivo": "plantillaContableDialog.zul",
+          "descripcion": "Pantalla fuente: plantillaContableDialog.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "rubroplantillaContableDialog",
+      "funcionalidad_nombre": "rubroplantillaContableDialog.zul",
+      "entidades": [
+        {
+          "archivo": "RubroPlantillaListResponseDTO",
+          "descripcion": "Lista de rubros asociados a la plantilla contable"
+        },
+        {
+          "archivo": "RubroPlantillaResponseDTO",
+          "descripcion": "Detalle de un rubro asignado a la plantilla contable"
+        },
+        {
+          "archivo": "RubroPlantillaCreateDTO",
+          "descripcion": "Datos para asociar un rubro a la plantilla contable"
+        },
+        {
+          "archivo": "RubroPlantillaUpdateDTO",
+          "descripcion": "Datos para actualizar la asociación rubro-plantilla"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/plantillas-contables/{plantillaId}/rubros",
+          "descripcion": "GET /api/v1/plantillas-contables/{plantillaId}/rubros — Listar rubros de plantilla contable"
+        },
+        {
+          "archivo": "GET /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId}",
+          "descripcion": "GET /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId} — Obtener rubro de plantilla por ID"
+        },
+        {
+          "archivo": "POST /api/v1/plantillas-contables/{plantillaId}/rubros",
+          "descripcion": "POST /api/v1/plantillas-contables/{plantillaId}/rubros — Agregar rubro a plantilla"
+        },
+        {
+          "archivo": "PUT /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId}",
+          "descripcion": "PUT /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId} — Actualizar rubro en plantilla"
+        },
+        {
+          "archivo": "DELETE /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId}",
+          "descripcion": "DELETE /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId} — Quitar rubro de plantilla"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "rubroplantillaContableDialog.zul",
+          "descripcion": "Pantalla fuente: rubroplantillaContableDialog.zul"
+        }
+      ],
+      "vistas_bd": []
+    },
+    {
+      "funcionalidad_id": "contratoPlantilla_contratoPlantillaDialog",
+      "funcionalidad_nombre": "contratoPlantilla.zul / contratoPlantillaDialog.zul",
+      "entidades": [
+        {
+          "archivo": "ContratoPlantillaPageResponseDTO",
+          "descripcion": "Lista paginada de plantillas por contrato"
+        },
+        {
+          "archivo": "ContratoPlantillaResponseDTO",
+          "descripcion": "Detalle de una plantilla de contrato"
+        },
+        {
+          "archivo": "ContratoPlantillaCreateDTO",
+          "descripcion": "Datos para crear una nueva plantilla de contrato"
+        },
+        {
+          "archivo": "ContratoPlantillaUpdateDTO",
+          "descripcion": "Datos para actualizar una plantilla de contrato"
+        },
+        {
+          "archivo": "DeleteResponseDTO",
+          "descripcion": "Confirmación de eliminación"
+        },
+        {
+          "archivo": "ArchivoPlantillaUploadDTO",
+          "descripcion": "Archivo de plantilla para subir (multipart)"
+        },
+        {
+          "archivo": "ArchivoPlantillaResponseDTO",
+          "descripcion": "Resultado de la subida del archivo"
+        }
+      ],
+      "controladores": [
+        {
+          "archivo": "GET /api/v1/contratos-plantilla",
+          "descripcion": "GET /api/v1/contratos-plantilla — Listar plantillas por contrato"
+        },
+        {
+          "archivo": "GET /api/v1/contratos-plantilla/{id}",
+          "descripcion": "GET /api/v1/contratos-plantilla/{id} — Obtener plantilla de contrato por ID"
+        },
+        {
+          "archivo": "POST /api/v1/contratos-plantilla",
+          "descripcion": "POST /api/v1/contratos-plantilla — Crear plantilla de contrato"
+        },
+        {
+          "archivo": "PUT /api/v1/contratos-plantilla/{id}",
+          "descripcion": "PUT /api/v1/contratos-plantilla/{id} — Actualizar plantilla de contrato"
+        },
+        {
+          "archivo": "DELETE /api/v1/contratos-plantilla/{id}",
+          "descripcion": "DELETE /api/v1/contratos-plantilla/{id} — Eliminar plantilla de contrato"
+        },
+        {
+          "archivo": "POST /api/v1/contratos-plantilla/{id}/archivo",
+          "descripcion": "POST /api/v1/contratos-plantilla/{id}/archivo — Subir archivo de plantilla"
+        }
+      ],
+      "servicios": [],
+      "daos": [],
+      "renderers": [],
+      "pantallas_zul": [
+        {
+          "archivo": "contratoPlantilla.zul",
+          "descripcion": "Pantalla fuente: contratoPlantilla.zul"
+        },
+        {
+          "archivo": "contratoPlantillaDialog.zul",
+          "descripcion": "Pantalla fuente: contratoPlantillaDialog.zul"
+        }
+      ],
+      "vistas_bd": []
+    }
+  ],
+  "existing_infrastructure": {
+    "dtos": [
+      "ContratoplantillaContratoplantilladialogDto.ts",
+      "ContratoPlantillaDto.ts",
+      "GastospersonalesdialogDto.ts",
+      "GastosPersonalesDto.ts",
+      "GeningproyectadosDto.ts",
+      "GestiontablairGestiontablairdialogDto.ts",
+      "IngresoProyectadoDto.ts",
+      "ParametroDto.ts",
+      "ParametrosParametrosdialogDto.ts",
+      "PlantillaContableDto.ts",
+      "PlantillacontablePlantillacontabledialogDto.ts",
+      "ReporteirinecdialogDto.ts",
+      "ReporteIRINECDto.ts",
+      "RubroplantillacontabledialogDto.ts",
+      "RubroPlantillaDto.ts",
+      "SetupDto.ts",
+      "TablaIRDto.ts"
+    ],
+    "gateway_ports": [
+      "ContratoplantillaContratoplantilladialogGatewayPort.ts",
+      "ContratoPlantillaGatewayPort.ts",
+      "GastospersonalesdialogGatewayPort.ts",
+      "GastosPersonalesGatewayPort.ts",
+      "GeningproyectadosGatewayPort.ts",
+      "GestiontablairGestiontablairdialogGatewayPort.ts",
+      "index.ts",
+      "IngresoProyectadoGatewayPort.ts",
+      "ParametroGatewayPort.ts",
+      "ParametrosParametrosdialogGatewayPort.ts",
+      "PlantillaContableGatewayPort.ts",
+      "PlantillacontablePlantillacontabledialogGatewayPort.ts",
+      "ReporteirinecdialogGatewayPort.ts",
+      "ReporteIRINECGatewayPort.ts",
+      "RubroplantillacontabledialogGatewayPort.ts",
+      "RubroPlantillaGatewayPort.ts",
+      "SetupOutputPort.ts",
+      "TablaIRGatewayPort.ts"
+    ],
+    "gateway_adapters": [
+      "ContratoplantillaContratoplantilladialogGatewayAdapter.ts",
+      "ContratoPlantillaGatewayAdapter.ts",
+      "GastospersonalesdialogGatewayAdapter.ts",
+      "GastosPersonalesGatewayAdapter.ts",
+      "GeningproyectadosGatewayAdapter.ts",
+      "GestiontablairGestiontablairdialogGatewayAdapter.ts",
+      "IngresoProyectadoGatewayAdapter.ts",
+      "ParametroGatewayAdapter.ts",
+      "ParametrosParametrosdialogGatewayAdapter.ts",
+      "PlantillaContableGatewayAdapter.ts",
+      "PlantillacontablePlantillacontabledialogGatewayAdapter.ts",
+      "ReporteirinecdialogGatewayAdapter.ts",
+      "ReporteIRINECGatewayAdapter.ts",
+      "RubroplantillacontabledialogGatewayAdapter.ts",
+      "RubroPlantillaGatewayAdapter.ts",
+      "SetupApiAdapter.ts",
+      "TablaIRGatewayAdapter.ts"
+    ],
+    "api_mappers": [
+      "ContratoPlantillaApiMapper.ts",
+      "ContratoplantillaContratoplantilladialogApiMapper.ts",
+      "GastosPersonalesApiMapper.ts",
+      "GastospersonalesdialogApiMapper.ts",
+      "GeningproyectadosApiMapper.ts",
+      "GestiontablairGestiontablairdialogApiMapper.ts",
+      "IngresoProyectadoApiMapper.ts",
+      "ParametroApiMapper.ts",
+      "ParametrosParametrosdialogApiMapper.ts",
+      "PlantillaContableApiMapper.ts",
+      "PlantillacontablePlantillacontabledialogApiMapper.ts",
+      "ReporteIRINECApiMapper.ts",
+      "ReporteirinecdialogApiMapper.ts",
+      "RubroPlantillaApiMapper.ts",
+      "RubroplantillacontabledialogApiMapper.ts",
+      "SetupApiMapper.ts",
+      "TablaIRApiMapper.ts"
+    ],
+    "hooks": [
+      "index.ts",
+      "useContratoPlantilla.ts",
+      "useContratoplantillaContratoplantilladialog.ts",
+      "useGastosPersonales.ts",
+      "useGastospersonalesdialog.ts",
+      "useGeningproyectados.ts",
+      "useGestiontablairGestiontablairdialog.ts",
+      "useIngresoProyectado.ts",
+      "useParametro.ts",
+      "useParametrosParametrosdialog.ts",
+      "usePlantillaContable.ts",
+      "usePlantillacontablePlantillacontabledialog.ts",
+      "useReporteIRINEC.ts",
+      "useReporteirinecdialog.ts",
+      "useRubroPlantilla.ts",
+      "useRubroplantillacontabledialog.ts",
+      "useSetup.ts",
+      "useTablaIR.ts"
+    ]
+  },
+  "resumen": {
+    "total_funcionalidades": 8,
+    "total_entidades": 44,
+    "total_controladores": 41,
+    "total_servicios": 0,
+    "total_daos": 0,
+    "total_renderers": 0,
+    "total_pantallas_zul": 12,
+    "total_vistas_bd": 0,
+    "total_archivos_origen": 89,
+    "archivos_origen_unicos": [
+      "ArchivoPlantillaResponseDTO",
+      "ArchivoPlantillaUploadDTO",
+      "ContratoPlantillaCreateDTO",
+      "ContratoPlantillaPageResponseDTO",
+      "ContratoPlantillaResponseDTO",
+      "ContratoPlantillaUpdateDTO",
+      "DELETE /api/v1/contratos-plantilla/{id}",
+      "DELETE /api/v1/gastos-personales/{id}",
+      "DELETE /api/v1/ingresos-proyectados/{id}",
+      "DELETE /api/v1/parametros/{entorno}/{idParametro}",
+      "DELETE /api/v1/plantillas-contables/{id}",
+      "DELETE /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId}",
+      "DELETE /api/v1/reportes-ir-inec/{id}",
+      "DELETE /api/v1/tabla-ir/{id}",
+      "DeleteResponseDTO",
+      "GET /api/v1/contratos-plantilla",
+      "GET /api/v1/contratos-plantilla/{id}",
+      "GET /api/v1/gastos-personales",
+      "GET /api/v1/gastos-personales/{id}",
+      "GET /api/v1/ingresos-proyectados",
+      "GET /api/v1/ingresos-proyectados/{id}",
+      "GET /api/v1/parametros",
+      "GET /api/v1/parametros/{entorno}/{idParametro}",
+      "GET /api/v1/plantillas-contables",
+      "GET /api/v1/plantillas-contables/{id}",
+      "GET /api/v1/plantillas-contables/{plantillaId}/rubros",
+      "GET /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId}",
+      "GET /api/v1/reportes-ir-inec",
+      "GET /api/v1/reportes-ir-inec/{id}",
+      "GET /api/v1/tabla-ir",
+      "GET /api/v1/tabla-ir/{id}",
+      "GastosPersonalesCreateDTO",
+      "GastosPersonalesDialog.zul",
+      "GastosPersonalesListResponseDTO",
+      "GastosPersonalesResponseDTO",
+      "GastosPersonalesUpdateDTO",
+      "GenerarIngresosProyectadosDTO",
+      "GenerarReporteIRINECDTO",
+      "IngresoProyectadoResponseDTO",
+      "IngresoProyectadoUpdateDTO",
+      "IngresosProyectadosListResponseDTO",
+      "POST /api/v1/contratos-plantilla",
+      "POST /api/v1/contratos-plantilla/{id}/archivo",
+      "POST /api/v1/gastos-personales",
+      "POST /api/v1/ingresos-proyectados/generar",
+      "POST /api/v1/parametros",
+      "POST /api/v1/plantillas-contables",
+      "POST /api/v1/plantillas-contables/{plantillaId}/rubros",
+      "POST /api/v1/reportes-ir-inec/generar",
+      "POST /api/v1/tabla-ir",
+      "PUT /api/v1/contratos-plantilla/{id}",
+      "PUT /api/v1/gastos-personales/{id}",
+      "PUT /api/v1/ingresos-proyectados/{id}",
+      "PUT /api/v1/parametros/{entorno}/{idParametro}",
+      "PUT /api/v1/plantillas-contables/{id}",
+      "PUT /api/v1/plantillas-contables/{plantillaId}/rubros/{rubroId}",
+      "PUT /api/v1/reportes-ir-inec/{id}",
+      "PUT /api/v1/tabla-ir/{id}",
+      "ParametroCreateDTO",
+      "ParametroPageResponseDTO",
+      "ParametroResponseDTO",
+      "ParametroUpdateDTO",
+      "PlantillaContableCreateDTO",
+      "PlantillaContablePageResponseDTO",
+      "PlantillaContableResponseDTO",
+      "PlantillaContableUpdateDTO",
+      "ProcesoResponseDTO",
+      "ReporteIRINECDialog.zul",
+      "ReporteIRINECListResponseDTO",
+      "ReporteIRINECResponseDTO",
+      "ReporteIRINECUpdateDTO",
+      "RubroPlantillaCreateDTO",
+      "RubroPlantillaListResponseDTO",
+      "RubroPlantillaResponseDTO",
+      "RubroPlantillaUpdateDTO",
+      "TablaIRCreateDTO",
+      "TablaIRPageResponseDTO",
+      "TablaIRResponseDTO",
+      "TablaIRUpdateDTO",
+      "contratoPlantilla.zul",
+      "contratoPlantillaDialog.zul",
+      "genIngProyectados.zul",
+      "gestionTablaIR.zul",
+      "gestionTablaIRDialog.zul",
+      "parametros.zul",
+      "parametrosDialog.zul",
+      "plantillaContable.zul",
+      "plantillaContableDialog.zul",
+      "rubroplantillaContableDialog.zul"
+    ]
+  }
+}

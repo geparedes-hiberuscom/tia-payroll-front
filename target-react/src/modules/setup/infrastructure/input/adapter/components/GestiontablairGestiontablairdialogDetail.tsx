@@ -1,0 +1,46 @@
+import React from 'react';
+import { GestiontablairGestiontablairdialog } from '../../../../domain/model/GestiontablairGestiontablairdialog';
+
+interface GestiontablairGestiontablairdialogDetailProps {
+  item: GestiontablairGestiontablairdialog;
+  onEdit?: (item: GestiontablairGestiontablairdialog) => void;
+  onDelete?: (id: string) => void;
+  onBack?: () => void;
+}
+
+/**
+ * Componente Detalle: gestionTablaIR.zul / gestionTablaIRDialog.zul
+ * Muestra todos los campos de un GestiontablairGestiontablairdialog en detalle.
+ *
+ * TODO: Copilot — Mostrar todos los campos del domain model.
+ */
+export const GestiontablairGestiontablairdialogDetail: React.FC<GestiontablairGestiontablairdialogDetailProps> = ({
+  item,
+  onEdit,
+  onDelete,
+  onBack,
+}) => {
+  return (
+    <div data-testid="gestiontablair-gestiontablairdialog-detail" style={{ maxWidth: 600 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h3>Detalle de gestionTablaIR.zul / gestionTablaIRDialog.zul</h3>
+        {onBack && <button onClick={onBack}>← Volver</button>}
+      </div>
+
+      <dl>
+        <dt><strong>ID</strong></dt>
+        <dd>{item.id}</dd>
+        {/* TODO: Agregar todos los campos del domain model */}
+      </dl>
+
+      <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+        {onEdit && <button onClick={() => onEdit(item)}>Editar</button>}
+        {onDelete && (
+          <button onClick={() => onDelete(item.id)} style={{ color: 'red' }}>
+            Eliminar
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};

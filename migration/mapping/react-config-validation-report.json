@@ -1,20 +1,132 @@
 {
   "action": "all",
-  "generatedAt": "2026-03-27T17:17:14.766Z",
+  "generatedAt": "2026-04-02T21:29:11.147Z",
   "projectName": "payrol",
   "generated_files": 8,
   "validation": {
-    "total_issues": 197,
-    "errors": 39,
-    "warnings": 155,
-    "info": 3,
-    "auto_fixed": 51,
+    "total_issues": 386,
+    "errors": 85,
+    "warnings": 289,
+    "info": 12,
+    "auto_fixed": 48,
     "issues": [
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\input\\ContratoplantillaContratoplantilladialogUseCase.ts",
+        "message": "Import no resuelto: \"../../domain/model/ContratoplantillaContratoplantilladialog\" en application\\port\\input\\ContratoplantillaContratoplantilladialogUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\input\\GastospersonalesdialogUseCase.ts",
+        "message": "Import no resuelto: \"../../domain/model/Gastospersonalesdialog\" en application\\port\\input\\GastospersonalesdialogUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\input\\GeningproyectadosUseCase.ts",
+        "message": "Import no resuelto: \"../../domain/model/Geningproyectados\" en application\\port\\input\\GeningproyectadosUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\input\\GestiontablairGestiontablairdialogUseCase.ts",
+        "message": "Import no resuelto: \"../../domain/model/GestiontablairGestiontablairdialog\" en application\\port\\input\\GestiontablairGestiontablairdialogUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\input\\ParametrosParametrosdialogUseCase.ts",
+        "message": "Import no resuelto: \"../../domain/model/ParametrosParametrosdialog\" en application\\port\\input\\ParametrosParametrosdialogUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\input\\PlantillacontablePlantillacontabledialogUseCase.ts",
+        "message": "Import no resuelto: \"../../domain/model/PlantillacontablePlantillacontabledialog\" en application\\port\\input\\PlantillacontablePlantillacontabledialogUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\input\\ReporteirinecdialogUseCase.ts",
+        "message": "Import no resuelto: \"../../domain/model/Reporteirinecdialog\" en application\\port\\input\\ReporteirinecdialogUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\input\\RubroplantillacontabledialogUseCase.ts",
+        "message": "Import no resuelto: \"../../domain/model/Rubroplantillacontabledialog\" en application\\port\\input\\RubroplantillacontabledialogUseCase.ts",
+        "autoFixable": false
+      },
       {
         "severity": "error",
         "category": "imports",
         "file": "application\\port\\input\\SetupInputPort.ts",
         "message": "Import no resuelto: \"../../domain/model/Setup\" en application\\port\\input\\SetupInputPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\output\\ContratoplantillaContratoplantilladialogGatewayPort.ts",
+        "message": "Import no resuelto: \"../../infrastructure/input/adapter/dto/ContratoplantillaContratoplantilladialogDto\" en application\\port\\output\\ContratoplantillaContratoplantilladialogGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\output\\GastospersonalesdialogGatewayPort.ts",
+        "message": "Import no resuelto: \"../../infrastructure/input/adapter/dto/GastospersonalesdialogDto\" en application\\port\\output\\GastospersonalesdialogGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\output\\GeningproyectadosGatewayPort.ts",
+        "message": "Import no resuelto: \"../../infrastructure/input/adapter/dto/GeningproyectadosDto\" en application\\port\\output\\GeningproyectadosGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\output\\GestiontablairGestiontablairdialogGatewayPort.ts",
+        "message": "Import no resuelto: \"../../infrastructure/input/adapter/dto/GestiontablairGestiontablairdialogDto\" en application\\port\\output\\GestiontablairGestiontablairdialogGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\output\\ParametrosParametrosdialogGatewayPort.ts",
+        "message": "Import no resuelto: \"../../infrastructure/input/adapter/dto/ParametrosParametrosdialogDto\" en application\\port\\output\\ParametrosParametrosdialogGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\output\\PlantillacontablePlantillacontabledialogGatewayPort.ts",
+        "message": "Import no resuelto: \"../../infrastructure/input/adapter/dto/PlantillacontablePlantillacontabledialogDto\" en application\\port\\output\\PlantillacontablePlantillacontabledialogGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\output\\ReporteirinecdialogGatewayPort.ts",
+        "message": "Import no resuelto: \"../../infrastructure/input/adapter/dto/ReporteirinecdialogDto\" en application\\port\\output\\ReporteirinecdialogGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "application\\port\\output\\RubroplantillacontabledialogGatewayPort.ts",
+        "message": "Import no resuelto: \"../../infrastructure/input/adapter/dto/RubroplantillacontabledialogDto\" en application\\port\\output\\RubroplantillacontabledialogGatewayPort.ts",
         "autoFixable": false
       },
       {
@@ -27,8 +139,512 @@
       {
         "severity": "warning",
         "category": "imports",
+        "file": "domain\\exception\\ContratoplantillaContratoplantilladialogError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\ContratoplantillaContratoplantilladialogError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\GastospersonalesdialogError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\GastospersonalesdialogError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\GeningproyectadosError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\GeningproyectadosError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\GestiontablairGestiontablairdialogError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\GestiontablairGestiontablairdialogError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\ParametrosParametrosdialogError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\ParametrosParametrosdialogError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\PlantillacontablePlantillacontabledialogError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\PlantillacontablePlantillacontabledialogError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\ReporteirinecdialogError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\ReporteirinecdialogError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\RubroplantillacontabledialogError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\RubroplantillacontabledialogError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
         "file": "domain\\exception\\SetupError.ts",
         "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\SetupError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useContratoPlantilla.ts",
+        "message": "Import no resuelto: \"../../../application/service/ContratoPlantillaService\" en infrastructure\\input\\adapter\\hooks\\useContratoPlantilla.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useContratoPlantilla.ts",
+        "message": "Import no resuelto: \"../../output/adapter/api/ContratoPlantillaGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useContratoPlantilla.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useGastosPersonales.ts",
+        "message": "Import no resuelto: \"../../../application/service/GastosPersonalesService\" en infrastructure\\input\\adapter\\hooks\\useGastosPersonales.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useGastosPersonales.ts",
+        "message": "Import no resuelto: \"../../output/adapter/api/GastosPersonalesGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useGastosPersonales.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useIngresoProyectado.ts",
+        "message": "Import no resuelto: \"../../../application/service/IngresoProyectadoService\" en infrastructure\\input\\adapter\\hooks\\useIngresoProyectado.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useIngresoProyectado.ts",
+        "message": "Import no resuelto: \"../../output/adapter/api/IngresoProyectadoGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useIngresoProyectado.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useParametro.ts",
+        "message": "Import no resuelto: \"../../../application/service/ParametroService\" en infrastructure\\input\\adapter\\hooks\\useParametro.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useParametro.ts",
+        "message": "Import no resuelto: \"../../output/adapter/api/ParametroGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useParametro.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\usePlantillaContable.ts",
+        "message": "Import no resuelto: \"../../../application/service/PlantillaContableService\" en infrastructure\\input\\adapter\\hooks\\usePlantillaContable.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\usePlantillaContable.ts",
+        "message": "Import no resuelto: \"../../output/adapter/api/PlantillaContableGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\usePlantillaContable.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useReporteIRINEC.ts",
+        "message": "Import no resuelto: \"../../../application/service/ReporteIRINECService\" en infrastructure\\input\\adapter\\hooks\\useReporteIRINEC.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useReporteIRINEC.ts",
+        "message": "Import no resuelto: \"../../output/adapter/api/ReporteIRINECGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useReporteIRINEC.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useRubroPlantilla.ts",
+        "message": "Import no resuelto: \"../../../application/service/RubroPlantillaService\" en infrastructure\\input\\adapter\\hooks\\useRubroPlantilla.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useRubroPlantilla.ts",
+        "message": "Import no resuelto: \"../../output/adapter/api/RubroPlantillaGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useRubroPlantilla.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useTablaIR.ts",
+        "message": "Import no resuelto: \"../../../application/service/TablaIRService\" en infrastructure\\input\\adapter\\hooks\\useTablaIR.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useTablaIR.ts",
+        "message": "Import no resuelto: \"../../output/adapter/api/TablaIRGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useTablaIR.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ContratoplantillaContratoplantilladialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GastospersonalesdialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\GastospersonalesdialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GastospersonalesdialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\GastospersonalesdialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GastospersonalesdialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\GastospersonalesdialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GastospersonalesdialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\GastospersonalesdialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GastospersonalesdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\GastospersonalesdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GastospersonalesdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\GastospersonalesdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GeningproyectadosCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\GeningproyectadosCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GeningproyectadosCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\GeningproyectadosCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GeningproyectadosDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\GeningproyectadosDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GeningproyectadosDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\GeningproyectadosDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GeningproyectadosPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\GeningproyectadosPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GeningproyectadosPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\GeningproyectadosPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\GestiontablairGestiontablairdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ParametrosParametrosdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\PlantillacontablePlantillacontabledialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ReporteirinecdialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ReporteirinecdialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ReporteirinecdialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ReporteirinecdialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ReporteirinecdialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ReporteirinecdialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ReporteirinecdialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ReporteirinecdialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ReporteirinecdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ReporteirinecdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ReporteirinecdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ReporteirinecdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubroplantillacontabledialogPage.tsx",
         "autoFixable": false
       },
       {
@@ -48,29 +664,316 @@
       {
         "severity": "warning",
         "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ContratoplantillaContratoplantilladialogGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\ContratoplantillaContratoplantilladialogGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ContratoPlantillaGatewayAdapter.ts",
+        "message": "Import no resuelto: \"../../../application/port/output/ContratoPlantillaGatewayPort\" en infrastructure\\output\\adapter\\api\\ContratoPlantillaGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ContratoPlantillaGatewayAdapter.ts",
+        "message": "Import no resuelto: \"./mapper/ContratoPlantillaApiMapper\" en infrastructure\\output\\adapter\\api\\ContratoPlantillaGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ContratoPlantillaGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\ContratoPlantillaGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\GastospersonalesdialogGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\GastospersonalesdialogGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\GastosPersonalesGatewayAdapter.ts",
+        "message": "Import no resuelto: \"../../../application/port/output/GastosPersonalesGatewayPort\" en infrastructure\\output\\adapter\\api\\GastosPersonalesGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\GastosPersonalesGatewayAdapter.ts",
+        "message": "Import no resuelto: \"./mapper/GastosPersonalesApiMapper\" en infrastructure\\output\\adapter\\api\\GastosPersonalesGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\GastosPersonalesGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\GastosPersonalesGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\GeningproyectadosGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\GeningproyectadosGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\GestiontablairGestiontablairdialogGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\GestiontablairGestiontablairdialogGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\IngresoProyectadoGatewayAdapter.ts",
+        "message": "Import no resuelto: \"../../../application/port/output/IngresoProyectadoGatewayPort\" en infrastructure\\output\\adapter\\api\\IngresoProyectadoGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\IngresoProyectadoGatewayAdapter.ts",
+        "message": "Import no resuelto: \"./mapper/IngresoProyectadoApiMapper\" en infrastructure\\output\\adapter\\api\\IngresoProyectadoGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\IngresoProyectadoGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\IngresoProyectadoGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ParametroGatewayAdapter.ts",
+        "message": "Import no resuelto: \"../../../application/port/output/ParametroGatewayPort\" en infrastructure\\output\\adapter\\api\\ParametroGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ParametroGatewayAdapter.ts",
+        "message": "Import no resuelto: \"./mapper/ParametroApiMapper\" en infrastructure\\output\\adapter\\api\\ParametroGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ParametroGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\ParametroGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ParametrosParametrosdialogGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\ParametrosParametrosdialogGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\PlantillaContableGatewayAdapter.ts",
+        "message": "Import no resuelto: \"../../../application/port/output/PlantillaContableGatewayPort\" en infrastructure\\output\\adapter\\api\\PlantillaContableGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\PlantillaContableGatewayAdapter.ts",
+        "message": "Import no resuelto: \"./mapper/PlantillaContableApiMapper\" en infrastructure\\output\\adapter\\api\\PlantillaContableGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\PlantillaContableGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\PlantillaContableGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\PlantillacontablePlantillacontabledialogGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\PlantillacontablePlantillacontabledialogGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ReporteirinecdialogGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\ReporteirinecdialogGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ReporteIRINECGatewayAdapter.ts",
+        "message": "Import no resuelto: \"../../../application/port/output/ReporteIRINECGatewayPort\" en infrastructure\\output\\adapter\\api\\ReporteIRINECGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ReporteIRINECGatewayAdapter.ts",
+        "message": "Import no resuelto: \"./mapper/ReporteIRINECApiMapper\" en infrastructure\\output\\adapter\\api\\ReporteIRINECGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ReporteIRINECGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\ReporteIRINECGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\RubroplantillacontabledialogGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\RubroplantillacontabledialogGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\RubroPlantillaGatewayAdapter.ts",
+        "message": "Import no resuelto: \"../../../application/port/output/RubroPlantillaGatewayPort\" en infrastructure\\output\\adapter\\api\\RubroPlantillaGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\RubroPlantillaGatewayAdapter.ts",
+        "message": "Import no resuelto: \"./mapper/RubroPlantillaApiMapper\" en infrastructure\\output\\adapter\\api\\RubroPlantillaGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\RubroPlantillaGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\RubroPlantillaGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
         "file": "infrastructure\\output\\adapter\\api\\SetupApiAdapter.ts",
         "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\SetupApiAdapter.ts",
         "autoFixable": false
       },
       {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\TablaIRGatewayAdapter.ts",
+        "message": "Import no resuelto: \"../../../application/port/output/TablaIRGatewayPort\" en infrastructure\\output\\adapter\\api\\TablaIRGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "error",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\TablaIRGatewayAdapter.ts",
+        "message": "Import no resuelto: \"./mapper/TablaIRApiMapper\" en infrastructure\\output\\adapter\\api\\TablaIRGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
         "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\TablaIRGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\TablaIRGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "info",
         "category": "barrels",
         "file": "infrastructure\\input\\adapter\\components\\index.ts",
-        "message": "Barrel index.ts faltante en infrastructure\\input\\adapter\\components",
+        "message": "Archivo SetupForm.tsx no exportado en barrel infrastructure\\input\\adapter\\components/index.ts",
         "autoFixable": true
       },
       {
-        "severity": "warning",
+        "severity": "info",
+        "category": "barrels",
+        "file": "infrastructure\\input\\adapter\\components\\index.ts",
+        "message": "Archivo SetupList.tsx no exportado en barrel infrastructure\\input\\adapter\\components/index.ts",
+        "autoFixable": true
+      },
+      {
+        "severity": "info",
         "category": "barrels",
         "file": "infrastructure\\input\\adapter\\pages\\index.ts",
-        "message": "Barrel index.ts faltante en infrastructure\\input\\adapter\\pages",
+        "message": "Archivo SetupPage.tsx no exportado en barrel infrastructure\\input\\adapter\\pages/index.ts",
         "autoFixable": true
       },
       {
-        "severity": "warning",
+        "severity": "info",
         "category": "barrels",
         "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
-        "message": "Barrel index.ts faltante en infrastructure\\input\\adapter\\hooks",
+        "message": "Archivo useContratoplantillaContratoplantilladialog.ts no exportado en barrel infrastructure\\input\\adapter\\hooks/index.ts",
+        "autoFixable": true
+      },
+      {
+        "severity": "info",
+        "category": "barrels",
+        "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
+        "message": "Archivo useGastospersonalesdialog.ts no exportado en barrel infrastructure\\input\\adapter\\hooks/index.ts",
+        "autoFixable": true
+      },
+      {
+        "severity": "info",
+        "category": "barrels",
+        "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
+        "message": "Archivo useGeningproyectados.ts no exportado en barrel infrastructure\\input\\adapter\\hooks/index.ts",
+        "autoFixable": true
+      },
+      {
+        "severity": "info",
+        "category": "barrels",
+        "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
+        "message": "Archivo useGestiontablairGestiontablairdialog.ts no exportado en barrel infrastructure\\input\\adapter\\hooks/index.ts",
+        "autoFixable": true
+      },
+      {
+        "severity": "info",
+        "category": "barrels",
+        "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
+        "message": "Archivo useParametrosParametrosdialog.ts no exportado en barrel infrastructure\\input\\adapter\\hooks/index.ts",
+        "autoFixable": true
+      },
+      {
+        "severity": "info",
+        "category": "barrels",
+        "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
+        "message": "Archivo usePlantillacontablePlantillacontabledialog.ts no exportado en barrel infrastructure\\input\\adapter\\hooks/index.ts",
+        "autoFixable": true
+      },
+      {
+        "severity": "info",
+        "category": "barrels",
+        "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
+        "message": "Archivo useReporteirinecdialog.ts no exportado en barrel infrastructure\\input\\adapter\\hooks/index.ts",
+        "autoFixable": true
+      },
+      {
+        "severity": "info",
+        "category": "barrels",
+        "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
+        "message": "Archivo useRubroplantillacontabledialog.ts no exportado en barrel infrastructure\\input\\adapter\\hooks/index.ts",
+        "autoFixable": true
+      },
+      {
+        "severity": "info",
+        "category": "barrels",
+        "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
+        "message": "Archivo useSetup.ts no exportado en barrel infrastructure\\input\\adapter\\hooks/index.ts",
         "autoFixable": true
       },
       {
@@ -82,23 +985,114 @@
       },
       {
         "severity": "warning",
-        "category": "barrels",
-        "file": "modules\\setup\\domain\\model\\index.ts",
-        "message": "Barrel index.ts faltante en modules\\setup\\domain\\model",
-        "autoFixable": true
-      },
-      {
-        "severity": "error",
         "category": "imports",
-        "file": "application\\port\\input\\RubrosInputPort.ts",
-        "message": "Import no resuelto: \"../../domain/model/Rubros\" en application\\port\\input\\RubrosInputPort.ts",
+        "file": "application\\port\\input\\CargarubrosidoUseCase.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/domain/model/Cargarubrosido\" en application\\port\\input\\CargarubrosidoUseCase.ts",
         "autoFixable": false
       },
       {
-        "severity": "error",
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\input\\ConsultarubrosidolistUseCase.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/domain/model/Consultarubrosidolist\" en application\\port\\input\\ConsultarubrosidolistUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\input\\RubrosidocargaxprocesoUseCase.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/domain/model/Rubrosidocargaxproceso\" en application\\port\\input\\RubrosidocargaxprocesoUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\input\\RubrosidomainRubrosidolistRubrosidodetailUseCase.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/domain/model/RubrosidomainRubrosidolistRubrosidodetail\" en application\\port\\input\\RubrosidomainRubrosidolistRubrosidodetailUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\input\\RubrosInputPort.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/domain/model/Rubros\" en application\\port\\input\\RubrosInputPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\input\\RubrosRubrosdialogUseCase.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/domain/model/RubrosRubrosdialog\" en application\\port\\input\\RubrosRubrosdialogUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\input\\RubrosxprocesodialogUseCase.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/domain/model/Rubrosxprocesodialog\" en application\\port\\input\\RubrosxprocesodialogUseCase.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\output\\CargarubrosidoGatewayPort.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/input/adapter/dto/CargarubrosidoDto\" en application\\port\\output\\CargarubrosidoGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\output\\ConsultarubrosidolistGatewayPort.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/input/adapter/dto/ConsultarubrosidolistDto\" en application\\port\\output\\ConsultarubrosidolistGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\output\\RubrosidocargaxprocesoGatewayPort.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/input/adapter/dto/RubrosidocargaxprocesoDto\" en application\\port\\output\\RubrosidocargaxprocesoGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\output\\RubrosidomainRubrosidolistRubrosidodetailGatewayPort.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/input/adapter/dto/RubrosidomainRubrosidolistRubrosidodetailDto\" en application\\port\\output\\RubrosidomainRubrosidolistRubrosidodetailGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
         "category": "imports",
         "file": "application\\port\\output\\RubrosOutputPort.ts",
-        "message": "Import no resuelto: \"../../domain/model/Rubros\" en application\\port\\output\\RubrosOutputPort.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/domain/model/Rubros\" en application\\port\\output\\RubrosOutputPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\output\\RubrosRubrosdialogGatewayPort.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/input/adapter/dto/RubrosRubrosdialogDto\" en application\\port\\output\\RubrosRubrosdialogGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "application\\port\\output\\RubrosxprocesodialogGatewayPort.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/input/adapter/dto/RubrosxprocesodialogDto\" en application\\port\\output\\RubrosxprocesodialogGatewayPort.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\CargarubrosidoError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\CargarubrosidoError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\ConsultarubrosidolistError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\ConsultarubrosidolistError.ts",
         "autoFixable": false
       },
       {
@@ -106,6 +1100,279 @@
         "category": "imports",
         "file": "domain\\exception\\RubrosError.ts",
         "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\RubrosError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\RubrosidocargaxprocesoError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\RubrosidocargaxprocesoError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\RubrosidomainRubrosidolistRubrosidodetailError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\RubrosidomainRubrosidolistRubrosidodetailError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\RubrosRubrosdialogError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\RubrosRubrosdialogError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "domain\\exception\\RubrosxprocesodialogError.ts",
+        "message": "Import alias no resuelto: \"@shared/domain/exception/AppError\" en domain\\exception\\RubrosxprocesodialogError.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useCargarubrosido.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/output/adapter/api/CargarubrosidoGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useCargarubrosido.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useConsultarubrosidolist.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/application/service/ConsultarubrosidolistService\" en infrastructure\\input\\adapter\\hooks\\useConsultarubrosidolist.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useConsultarubrosidolist.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/output/adapter/api/ConsultarubrosidolistGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useConsultarubrosidolist.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useRubrosidocargaxproceso.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/application/service/RubrosidocargaxprocesoService\" en infrastructure\\input\\adapter\\hooks\\useRubrosidocargaxproceso.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useRubrosidocargaxproceso.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/output/adapter/api/RubrosidocargaxprocesoGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useRubrosidocargaxproceso.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useRubrosidomainRubrosidolistRubrosidodetail.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/application/service/RubrosidomainRubrosidolistRubrosidodetailService\" en infrastructure\\input\\adapter\\hooks\\useRubrosidomainRubrosidolistRubrosidodetail.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useRubrosidomainRubrosidolistRubrosidodetail.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/output/adapter/api/RubrosidomainRubrosidolistRubrosidodetailGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useRubrosidomainRubrosidolistRubrosidodetail.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useRubrosRubrosdialog.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/application/service/RubrosRubrosdialogService\" en infrastructure\\input\\adapter\\hooks\\useRubrosRubrosdialog.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useRubrosRubrosdialog.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/output/adapter/api/RubrosRubrosdialogGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useRubrosRubrosdialog.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useRubrosxprocesodialog.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/application/service/RubrosxprocesodialogService\" en infrastructure\\input\\adapter\\hooks\\useRubrosxprocesodialog.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\hooks\\useRubrosxprocesodialog.ts",
+        "message": "Import alias no resuelto: \"@modules/rubros/infrastructure/output/adapter/api/RubrosxprocesodialogGatewayAdapter\" en infrastructure\\input\\adapter\\hooks\\useRubrosxprocesodialog.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\CargarubrosidoCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\CargarubrosidoCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\CargarubrosidoCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\CargarubrosidoCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\CargarubrosidoDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\CargarubrosidoDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\CargarubrosidoDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\CargarubrosidoDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\CargarubrosidoPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\CargarubrosidoPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\CargarubrosidoPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\CargarubrosidoPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\ConsultarubrosidolistPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosidocargaxprocesoPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosidomainRubrosidolistRubrosidodetailPage.tsx",
         "autoFixable": false
       },
       {
@@ -125,44 +1392,142 @@
       {
         "severity": "warning",
         "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Modal\" en infrastructure\\input\\adapter\\pages\\RubrosRubrosdialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogCreatePage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogCreatePage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogDetailPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogDetailPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/Loading\" en infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogPage.tsx",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/input/adapter/components/ErrorBanner\" en infrastructure\\input\\adapter\\pages\\RubrosxprocesodialogPage.tsx",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\CargarubrosidoGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\CargarubrosidoGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\ConsultarubrosidolistGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\ConsultarubrosidolistGatewayAdapter.ts",
+        "autoFixable": false
+      },
+      {
+        "severity": "warning",
+        "category": "imports",
         "file": "infrastructure\\output\\adapter\\api\\RubrosApiAdapter.ts",
         "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\RubrosApiAdapter.ts",
         "autoFixable": false
       },
       {
         "severity": "warning",
-        "category": "barrels",
-        "file": "infrastructure\\input\\adapter\\components\\index.ts",
-        "message": "Barrel index.ts faltante en infrastructure\\input\\adapter\\components",
-        "autoFixable": true
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\RubrosidocargaxprocesoGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\RubrosidocargaxprocesoGatewayAdapter.ts",
+        "autoFixable": false
       },
       {
         "severity": "warning",
-        "category": "barrels",
-        "file": "infrastructure\\input\\adapter\\pages\\index.ts",
-        "message": "Barrel index.ts faltante en infrastructure\\input\\adapter\\pages",
-        "autoFixable": true
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\RubrosidomainRubrosidolistRubrosidodetailGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\RubrosidomainRubrosidolistRubrosidodetailGatewayAdapter.ts",
+        "autoFixable": false
       },
       {
         "severity": "warning",
-        "category": "barrels",
-        "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
-        "message": "Barrel index.ts faltante en infrastructure\\input\\adapter\\hooks",
-        "autoFixable": true
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\RubrosRubrosdialogGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\RubrosRubrosdialogGatewayAdapter.ts",
+        "autoFixable": false
       },
       {
         "severity": "warning",
-        "category": "barrels",
-        "file": "infrastructure\\input\\adapter\\dto\\index.ts",
-        "message": "Barrel index.ts faltante en infrastructure\\input\\adapter\\dto",
-        "autoFixable": true
-      },
-      {
-        "severity": "warning",
-        "category": "barrels",
-        "file": "modules\\rubros\\domain\\model\\index.ts",
-        "message": "Barrel index.ts faltante en modules\\rubros\\domain\\model",
-        "autoFixable": true
+        "category": "imports",
+        "file": "infrastructure\\output\\adapter\\api\\RubrosxprocesodialogGatewayAdapter.ts",
+        "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\RubrosxprocesodialogGatewayAdapter.ts",
+        "autoFixable": false
       },
       {
         "severity": "error",
@@ -870,48 +2235,6 @@
         "file": "infrastructure\\output\\adapter\\api\\NominaxcolabprelistNominaxcolabpredialogGatewayAdapter.ts",
         "message": "Import alias no resuelto: \"@shared/infrastructure/output/adapter/api/httpClient\" en infrastructure\\output\\adapter\\api\\NominaxcolabprelistNominaxcolabpredialogGatewayAdapter.ts",
         "autoFixable": false
-      },
-      {
-        "severity": "info",
-        "category": "barrels",
-        "file": "infrastructure\\input\\adapter\\components\\index.ts",
-        "message": "Archivo ConsultasForm.tsx no exportado en barrel infrastructure\\input\\adapter\\components/index.ts",
-        "autoFixable": true
-      },
-      {
-        "severity": "info",
-        "category": "barrels",
-        "file": "infrastructure\\input\\adapter\\components\\index.ts",
-        "message": "Archivo ConsultasList.tsx no exportado en barrel infrastructure\\input\\adapter\\components/index.ts",
-        "autoFixable": true
-      },
-      {
-        "severity": "info",
-        "category": "barrels",
-        "file": "infrastructure\\input\\adapter\\pages\\index.ts",
-        "message": "Archivo ConsultasPage.tsx no exportado en barrel infrastructure\\input\\adapter\\pages/index.ts",
-        "autoFixable": true
-      },
-      {
-        "severity": "warning",
-        "category": "barrels",
-        "file": "infrastructure\\input\\adapter\\hooks\\index.ts",
-        "message": "Barrel index.ts faltante en infrastructure\\input\\adapter\\hooks",
-        "autoFixable": true
-      },
-      {
-        "severity": "warning",
-        "category": "barrels",
-        "file": "infrastructure\\input\\adapter\\dto\\index.ts",
-        "message": "Barrel index.ts faltante en infrastructure\\input\\adapter\\dto",
-        "autoFixable": true
-      },
-      {
-        "severity": "warning",
-        "category": "barrels",
-        "file": "modules\\consultas\\domain\\model\\index.ts",
-        "message": "Barrel index.ts faltante en modules\\consultas\\domain\\model",
-        "autoFixable": true
       },
       {
         "severity": "error",

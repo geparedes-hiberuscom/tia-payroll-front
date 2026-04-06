@@ -1,0 +1,92 @@
+{
+  "slice_id": "slice-1-setup",
+  "slice_nombre": "🔧 Setup y Configuración",
+  "moduleName": "setup",
+  "target": "react",
+  "generatedAt": "2026-04-02T20:57:22.725Z",
+  "api_file": "vs-setup-configuracion-endpoints.json",
+  "api_endpoints_count": 41,
+  "api_schemas_count": 0,
+  "source_context": {
+    "funcionalidades": [
+      "parametros_parametrosDialog",
+      "gestionTablaIR_gestionTablaIRDialog",
+      "GastosPersonalesDialog",
+      "genIngProyectados",
+      "ReporteIRINECDialog",
+      "plantillaContable_plantillaContableDialog",
+      "rubroplantillaContableDialog",
+      "contratoPlantilla_contratoPlantillaDialog"
+    ],
+    "total_controladores": 41,
+    "total_entidades": 44
+  },
+  "generated": {
+    "dtos": [
+      "ParametrosParametrosdialogDto.ts",
+      "GestiontablairGestiontablairdialogDto.ts",
+      "GastospersonalesdialogDto.ts",
+      "GeningproyectadosDto.ts",
+      "ReporteirinecdialogDto.ts",
+      "PlantillacontablePlantillacontabledialogDto.ts",
+      "RubroplantillacontabledialogDto.ts",
+      "ContratoplantillaContratoplantilladialogDto.ts"
+    ],
+    "gateway_ports": [
+      "ParametrosParametrosdialogGatewayPort.ts",
+      "GestiontablairGestiontablairdialogGatewayPort.ts",
+      "GastospersonalesdialogGatewayPort.ts",
+      "GeningproyectadosGatewayPort.ts",
+      "ReporteirinecdialogGatewayPort.ts",
+      "PlantillacontablePlantillacontabledialogGatewayPort.ts",
+      "RubroplantillacontabledialogGatewayPort.ts",
+      "ContratoplantillaContratoplantilladialogGatewayPort.ts"
+    ],
+    "gateway_adapters": [
+      "ParametrosParametrosdialogGatewayAdapter.ts",
+      "GestiontablairGestiontablairdialogGatewayAdapter.ts",
+      "GastospersonalesdialogGatewayAdapter.ts",
+      "GeningproyectadosGatewayAdapter.ts",
+      "ReporteirinecdialogGatewayAdapter.ts",
+      "PlantillacontablePlantillacontabledialogGatewayAdapter.ts",
+      "RubroplantillacontabledialogGatewayAdapter.ts",
+      "ContratoplantillaContratoplantilladialogGatewayAdapter.ts"
+    ],
+    "api_mappers": [
+      "ParametrosParametrosdialogApiMapper.ts",
+      "GestiontablairGestiontablairdialogApiMapper.ts",
+      "GastospersonalesdialogApiMapper.ts",
+      "GeningproyectadosApiMapper.ts",
+      "ReporteirinecdialogApiMapper.ts",
+      "PlantillacontablePlantillacontabledialogApiMapper.ts",
+      "RubroplantillacontabledialogApiMapper.ts",
+      "ContratoplantillaContratoplantilladialogApiMapper.ts"
+    ],
+    "services": [
+      "ParametrosParametrosdialogService.ts",
+      "GestiontablairGestiontablairdialogService.ts",
+      "GastospersonalesdialogService.ts",
+      "GeningproyectadosService.ts",
+      "ReporteirinecdialogService.ts",
+      "PlantillacontablePlantillacontabledialogService.ts",
+      "RubroplantillacontabledialogService.ts",
+      "ContratoplantillaContratoplantilladialogService.ts"
+    ],
+    "hooks": [
+      "useParametrosParametrosdialog.ts",
+      "useGestiontablairGestiontablairdialog.ts",
+      "useGastospersonalesdialog.ts",
+      "useGeningproyectados.ts",
+      "useReporteirinecdialog.ts",
+      "usePlantillacontablePlantillacontabledialog.ts",
+      "useRubroplantillacontabledialog.ts",
+      "useContratoplantillaContratoplantilladialog.ts"
+    ]
+  },
+  "resumen": {
+    "total_dtos_generated": 8,
+    "total_services_generated": 8,
+    "total_gateways_generated": 8,
+    "total_api_endpoints": 41
+  }
+}

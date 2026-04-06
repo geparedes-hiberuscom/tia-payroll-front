@@ -1,0 +1,27 @@
+// Pages barrel — auto-generated
+export { SetupIndexPage } from './SetupIndexPage';
+export { ParametrosParametrosdialogPage } from './ParametrosParametrosdialogPage';
+export { ParametrosParametrosdialogDetailPage } from './ParametrosParametrosdialogDetailPage';
+export { ParametrosParametrosdialogCreatePage } from './ParametrosParametrosdialogCreatePage';
+export { GestiontablairGestiontablairdialogPage } from './GestiontablairGestiontablairdialogPage';
+export { GestiontablairGestiontablairdialogDetailPage } from './GestiontablairGestiontablairdialogDetailPage';
+export { GestiontablairGestiontablairdialogCreatePage } from './GestiontablairGestiontablairdialogCreatePage';
+export { GastospersonalesdialogPage } from './GastospersonalesdialogPage';
+export { GastospersonalesdialogDetailPage } from './GastospersonalesdialogDetailPage';
+export { GastospersonalesdialogCreatePage } from './GastospersonalesdialogCreatePage';
+export { GeningproyectadosPage } from './GeningproyectadosPage';
+export { GeningproyectadosDetailPage } from './GeningproyectadosDetailPage';
+export { GeningproyectadosCreatePage } from './GeningproyectadosCreatePage';
+export { ReporteirinecdialogPage } from './ReporteirinecdialogPage';
+export { ReporteirinecdialogDetailPage } from './ReporteirinecdialogDetailPage';
+export { ReporteirinecdialogCreatePage } from './ReporteirinecdialogCreatePage';
+export { PlantillacontablePlantillacontabledialogPage } from './PlantillacontablePlantillacontabledialogPage';
+export { PlantillacontablePlantillacontabledialogDetailPage } from './PlantillacontablePlantillacontabledialogDetailPage';
+export { PlantillacontablePlantillacontabledialogCreatePage } from './PlantillacontablePlantillacontabledialogCreatePage';
+export { RubroplantillacontabledialogPage } from './RubroplantillacontabledialogPage';
+export { RubroplantillacontabledialogDetailPage } from './RubroplantillacontabledialogDetailPage';
+export { RubroplantillacontabledialogCreatePage } from './RubroplantillacontabledialogCreatePage';
+export { ContratoplantillaContratoplantilladialogPage } from './ContratoplantillaContratoplantilladialogPage';
+export { ContratoplantillaContratoplantilladialogDetailPage } from './ContratoplantillaContratoplantilladialogDetailPage';
+export { ContratoplantillaContratoplantilladialogCreatePage } from './ContratoplantillaContratoplantilladialogCreatePage';
+export * from './SetupPage';
