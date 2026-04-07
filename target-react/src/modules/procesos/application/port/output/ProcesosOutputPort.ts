@@ -1,4 +1,4 @@
-import { Procesos } from '../../domain/model/Procesos';
+import { Procesos } from '../../../domain/model/Procesos';
 
 /**
  * Puerto de salida: ⚙️ Procesos de Nómina

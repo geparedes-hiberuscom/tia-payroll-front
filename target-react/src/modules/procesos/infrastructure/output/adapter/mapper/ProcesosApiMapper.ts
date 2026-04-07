@@ -3,7 +3,6 @@ import { Procesos } from '../../../../domain/model/Procesos';
 interface ProcesosApiDto {
   id: string;
   nombre: string;
-  // TODO: Mapear campos de la API
 }
 
 export class ProcesosApiMapper {

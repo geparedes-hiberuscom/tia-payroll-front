@@ -2,14 +2,11 @@ import { Procesos } from '../../domain/model/Procesos';
 import { ProcesosInputPort } from '../port/input/ProcesosInputPort';
 import { ProcesosOutputPort } from '../port/output/ProcesosOutputPort';
 
-/**
- * Servicio de aplicación: ⚙️ Procesos de Nómina
- * Implementa el puerto de entrada, delega en el puerto de salida.
- */
 export class ProcesosService implements ProcesosInputPort {
   constructor(private readonly outputPort: ProcesosOutputPort) {}
 
   async findById(id: string): Promise<Procesos> {
+    if (!id.trim()) throw new Error('id es requerido');
     return this.outputPort.fetchById(id);
   }
 
@@ -18,15 +15,17 @@ export class ProcesosService implements ProcesosInputPort {
   }
 
   async create(model: Omit<Procesos, 'id'>): Promise<Procesos> {
-    // TODO: Validaciones de negocio
+    if (!model.nombre?.trim()) throw new Error('nombre es requerido');
     return this.outputPort.save(model);
   }
 
   async update(id: string, model: Partial<Procesos>): Promise<Procesos> {
+    if (!id.trim()) throw new Error('id es requerido');
     return this.outputPort.update(id, model);
   }
 
   async delete(id: string): Promise<void> {
+    if (!id.trim()) throw new Error('id es requerido');
     return this.outputPort.remove(id);
   }
 }
