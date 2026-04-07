@@ -1,27 +1,44 @@
 // Pages barrel — auto-generated
 export { SetupIndexPage } from './SetupIndexPage';
-export { ParametrosParametrosdialogPage } from './ParametrosParametrosdialogPage';
-export { ParametrosParametrosdialogDetailPage } from './ParametrosParametrosdialogDetailPage';
-export { ParametrosParametrosdialogCreatePage } from './ParametrosParametrosdialogCreatePage';
-export { GestiontablairGestiontablairdialogPage } from './GestiontablairGestiontablairdialogPage';
-export { GestiontablairGestiontablairdialogDetailPage } from './GestiontablairGestiontablairdialogDetailPage';
-export { GestiontablairGestiontablairdialogCreatePage } from './GestiontablairGestiontablairdialogCreatePage';
-export { GastospersonalesdialogPage } from './GastospersonalesdialogPage';
-export { GastospersonalesdialogDetailPage } from './GastospersonalesdialogDetailPage';
-export { GastospersonalesdialogCreatePage } from './GastospersonalesdialogCreatePage';
-export { GeningproyectadosPage } from './GeningproyectadosPage';
-export { GeningproyectadosDetailPage } from './GeningproyectadosDetailPage';
-export { GeningproyectadosCreatePage } from './GeningproyectadosCreatePage';
-export { ReporteirinecdialogPage } from './ReporteirinecdialogPage';
-export { ReporteirinecdialogDetailPage } from './ReporteirinecdialogDetailPage';
-export { ReporteirinecdialogCreatePage } from './ReporteirinecdialogCreatePage';
-export { PlantillacontablePlantillacontabledialogPage } from './PlantillacontablePlantillacontabledialogPage';
-export { PlantillacontablePlantillacontabledialogDetailPage } from './PlantillacontablePlantillacontabledialogDetailPage';
-export { PlantillacontablePlantillacontabledialogCreatePage } from './PlantillacontablePlantillacontabledialogCreatePage';
-export { RubroplantillacontabledialogPage } from './RubroplantillacontabledialogPage';
-export { RubroplantillacontabledialogDetailPage } from './RubroplantillacontabledialogDetailPage';
-export { RubroplantillacontabledialogCreatePage } from './RubroplantillacontabledialogCreatePage';
-export { ContratoplantillaContratoplantilladialogPage } from './ContratoplantillaContratoplantilladialogPage';
-export { ContratoplantillaContratoplantilladialogDetailPage } from './ContratoplantillaContratoplantilladialogDetailPage';
-export { ContratoplantillaContratoplantilladialogCreatePage } from './ContratoplantillaContratoplantilladialogCreatePage';
+
+// Parámetros
+export { ParametrosParametrosdialogPage } from './parametros/ParametrosParametrosdialogPage';
+export { ParametrosParametrosdialogDetailPage } from './parametros/ParametrosParametrosdialogDetailPage';
+export { ParametrosParametrosdialogCreatePage } from './parametros/ParametrosParametrosdialogCreatePage';
+
+// Contrato Plantilla
+export { ContratoplantillaContratoplantilladialogPage } from './contrato-plantilla/ContratoplantillaContratoplantilladialogPage';
+export { ContratoplantillaContratoplantilladialogDetailPage } from './contrato-plantilla/ContratoplantillaContratoplantilladialogDetailPage';
+export { ContratoplantillaContratoplantilladialogCreatePage } from './contrato-plantilla/ContratoplantillaContratoplantilladialogCreatePage';
+
+// Gastos Personales
+export { GastospersonalesdialogPage } from './gastos-personales/GastospersonalesdialogPage';
+export { GastospersonalesdialogDetailPage } from './gastos-personales/GastospersonalesdialogDetailPage';
+export { GastospersonalesdialogCreatePage } from './gastos-personales/GastospersonalesdialogCreatePage';
+
+// Gening Proyectados
+export { GeningproyectadosPage } from './gening-proyectados/GeningproyectadosPage';
+export { GeningproyectadosDetailPage } from './gening-proyectados/GeningproyectadosDetailPage';
+export { GeningproyectadosCreatePage } from './gening-proyectados/GeningproyectadosCreatePage';
+
+// Reporte Irinec
+export { ReporteirinecdialogPage } from './reportes-irinec/ReporteirinecdialogPage';
+export { ReporteirinecdialogDetailPage } from './reportes-irinec/ReporteirinecdialogDetailPage';
+export { ReporteirinecdialogCreatePage } from './reportes-irinec/ReporteirinecdialogCreatePage';
+
+// Plantilla Contable
+export { PlantillacontablePlantillacontabledialogPage } from './plantilla-contable/PlantillacontablePlantillacontabledialogPage';
+export { PlantillacontablePlantillacontabledialogDetailPage } from './plantilla-contable/PlantillacontablePlantillacontabledialogDetailPage';
+export { PlantillacontablePlantillacontabledialogCreatePage } from './plantilla-contable/PlantillacontablePlantillacontabledialogCreatePage';
+
+// Rubro Plantilla Contable
+export { RubroplantillacontabledialogPage } from './rubro-plantilla-contable/RubroplantillacontabledialogPage';
+export { RubroplantillacontabledialogDetailPage } from './rubro-plantilla-contable/RubroplantillacontabledialogDetailPage';
+export { RubroplantillacontabledialogCreatePage } from './rubro-plantilla-contable/RubroplantillacontabledialogCreatePage';
+
+// Gestion Tabla IR
+export { GestiontablairGestiontablairdialogPage } from './gestion-tabla-ir/GestiontablairGestiontablairdialogPage';
+export { GestiontablairGestiontablairdialogDetailPage } from './gestion-tabla-ir/GestiontablairGestiontablairdialogDetailPage';
+export { GestiontablairGestiontablairdialogCreatePage } from './gestion-tabla-ir/GestiontablairGestiontablairdialogCreatePage';
+
 export * from './SetupPage';

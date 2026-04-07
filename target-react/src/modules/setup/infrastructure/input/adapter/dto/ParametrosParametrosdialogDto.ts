@@ -33,8 +33,7 @@ export interface ParametrosParametrosdialogFilterParams {
   page?: number;
   size?: number;
   idParametro?: string;
-  nombre?: string;
-  observaciones?: string;
+  parametro?: string;
 }
 
 // ─── Response DTOs ───

@@ -1,14 +1,14 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { SetupIndexPage } from './SetupIndexPage';
-import { ParametrosParametrosdialogPage } from './ParametrosParametrosdialogPage';
-import { GestiontablairGestiontablairdialogPage } from './GestiontablairGestiontablairdialogPage';
-import { GastospersonalesdialogPage } from './GastospersonalesdialogPage';
-import { GeningproyectadosPage } from './GeningproyectadosPage';
-import { ReporteirinecdialogPage } from './ReporteirinecdialogPage';
-import { PlantillacontablePlantillacontabledialogPage } from './PlantillacontablePlantillacontabledialogPage';
-import { RubroplantillacontabledialogPage } from './RubroplantillacontabledialogPage';
-import { ContratoplantillaContratoplantilladialogPage } from './ContratoplantillaContratoplantilladialogPage';
+import { ParametrosParametrosdialogPage } from './parametros/ParametrosParametrosdialogPage';
+import { GestiontablairGestiontablairdialogPage } from './gestion-tabla-ir/GestiontablairGestiontablairdialogPage';
+import { GastospersonalesdialogPage } from './gastos-personales/GastospersonalesdialogPage';
+import { GeningproyectadosPage } from './gening-proyectados/GeningproyectadosPage';
+import { ReporteirinecdialogPage } from './reportes-irinec/ReporteirinecdialogPage';
+import { PlantillacontablePlantillacontabledialogPage } from './plantilla-contable/PlantillacontablePlantillacontabledialogPage';
+import { RubroplantillacontabledialogPage } from './rubro-plantilla-contable/RubroplantillacontabledialogPage';
+import { ContratoplantillaContratoplantilladialogPage } from './contrato-plantilla/ContratoplantillaContratoplantilladialogPage';
 
 export const SetupRoutes: React.FC = () => {
   return (

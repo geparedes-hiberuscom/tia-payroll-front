@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSetup } from '../hooks/useSetup';
-import { SetupList } from '../components/SetupList';
-import { SetupForm } from '../components/SetupForm';
+import { SetupList } from '../components/shared/SetupList';
+import { SetupForm } from '../components/shared/SetupForm';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 
