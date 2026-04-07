@@ -18,6 +18,8 @@ export const RubrosRubrosdialogPage: React.FC = () => {
     items,
     loading,
     error,
+    page,
+    totalElements,
     fetchAll,
     create,
     update,
@@ -26,6 +28,7 @@ export const RubrosRubrosdialogPage: React.FC = () => {
     fetchById,
   } = useRubrosRubrosdialog();
   const [showForm, setShowForm] = useState(false);
+  const [isReadOnlyForm, setIsReadOnlyForm] = useState(false);
   const [editingItem, setEditingItem] = useState<
     RubrosRubrosdialog | undefined
   >(undefined);
@@ -41,7 +44,33 @@ export const RubrosRubrosdialogPage: React.FC = () => {
     }
     await fetchAll(activeFilters);
     setShowForm(false);
+        setIsReadOnlyForm(false);
     setEditingItem(undefined);
+  };
+
+
+    const handleView = async (item: RubrosRubrosdialog) => {
+     const detailedItem = await fetchById(item.idRubro);
+      setEditingItem(detailedItem ?? item);
+      setIsReadOnlyForm(true);
+      setShowForm(true);
+    };
+
+    const handleEdit = async (item: RubrosRubrosdialog) => {
+      const detailedItem = await fetchById(item.idRubro);
+      setEditingItem(detailedItem ?? item);
+      setIsReadOnlyForm(false);
+      setShowForm(true);
+    };
+  
+
+    const handleDelete = async (id: string) => {
+    const ok = window.confirm('Deseas eliminar este registro?');
+    if (!ok) {
+      return;
+    }
+    await remove(id);
+    await fetchAll(activeFilters);
   };
 
   return (
@@ -56,6 +85,7 @@ export const RubrosRubrosdialogPage: React.FC = () => {
         <h1>Rubros</h1>
         {!showForm && (
           <button onClick={() => {setShowForm(true);
+            setIsReadOnlyForm(false);
             setEditingItem(undefined)
           }}>+ Nuevo</button>
         )}
@@ -89,15 +119,20 @@ export const RubrosRubrosdialogPage: React.FC = () => {
           open={showForm}
           setIsOpen={(open) => {
             setShowForm(open);
-            if (!open) setEditingItem(undefined);
+            if (!open) {
+              setEditingItem(undefined);
+              setIsReadOnlyForm(false);
+            }
           }}
           title={""}
         >
           <RubrosRubrosdialogForm
             initialData={editingItem}
+            readOnly={isReadOnlyForm}
             onSubmit={handleSubmit}
             onCancel={() => {
               setShowForm(false);
+              setIsReadOnlyForm(false);
               setEditingItem(undefined);
             }}
             loading={loading}
@@ -111,17 +146,20 @@ export const RubrosRubrosdialogPage: React.FC = () => {
         <RubrosRubrosdialogList
           items={items}
           loading={loading}
-          onEdit={async (item) => {
-            const detailedItem = await fetchById(item.idRubro);
-            console.log("Fetched item for editing:", detailedItem);
-            setEditingItem(detailedItem ?? item);
-            setShowForm(true);
-          }}
-          onDelete={async (itemId) => {
-            if (window.confirm("¿Eliminar este registro?")) {
-              await remove(itemId);
-              await fetchAll(activeFilters);
-            }
+          onView={handleView}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          page={page}
+          pageSize={activeFilters.size ?? 10}
+          totalItems={totalElements}
+          onPageChange={(nextPage) => {
+            const nextFilters: RubrosRubrosdialogFilterParams = {
+              ...activeFilters,
+              page: nextPage,
+              size: activeFilters.size ?? 10,
+            };
+            setActiveFilters(nextFilters);
+            fetchAll(nextFilters);
           }}
         />
       )}

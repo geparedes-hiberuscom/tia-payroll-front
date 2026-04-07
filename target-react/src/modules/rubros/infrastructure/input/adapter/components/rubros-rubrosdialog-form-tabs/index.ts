@@ -3,6 +3,7 @@ export { RubrosRubrosdialogParametrosTab } from "./RubrosRubrosdialogParametrosT
 export type {
   AmbitoSelectValue,
   EfectoSelectValue,
+  RubrosRubrosdialogFormValues,
   RubrosRubrosdialogDetalleTabProps,
   RubrosRubrosdialogParametrosTabProps,
 } from "./types";

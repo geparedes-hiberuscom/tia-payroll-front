@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useCargarubrosido } from '../hooks/useCargarubrosido';
 import { CargarubrosidoDetail } from '../components/CargarubrosidoDetail';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
@@ -19,7 +20,7 @@ export const CargarubrosidoDetailPage: React.FC = () => {
   const handleDelete = async (itemId: number) => {
     if (window.confirm('¿Eliminar este registro?')) {
       await remove(String(itemId));
-      navigate('/cargarubrosido');
+      navigate(ROUTES.PATHS['cargarubrosido']);
     }
   };
 

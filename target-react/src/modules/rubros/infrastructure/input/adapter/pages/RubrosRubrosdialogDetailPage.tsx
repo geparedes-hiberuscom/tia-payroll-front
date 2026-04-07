@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useRubrosRubrosdialog } from '../hooks/useRubrosRubrosdialog';
 import { RubrosRubrosdialogDetail } from '../components/RubrosRubrosdialogDetail';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
@@ -26,7 +27,7 @@ export const RubrosRubrosdialogDetailPage: React.FC = () => {
         onDelete={async (itemId) => {
           if (window.confirm('¿Eliminar este registro?')) {
             await remove(itemId);
-            navigate('/rubros-rubrosdialog');
+            navigate(ROUTES.PATHS['rubros-rubrosdialog']);
           }
         }}
         onBack={() => navigate(-1)}

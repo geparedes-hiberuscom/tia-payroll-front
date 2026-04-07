@@ -38,7 +38,7 @@ export const RubrosRubrosdialogDetail: React.FC<RubrosRubrosdialogDetailProps> =
         <dt>Ambito</dt><dd>{ambitoLabel}</dd>
         <dt>Efecto</dt><dd>{efectoLabel}</dd>
         <dt>Observaciones</dt><dd>{item.observaciones ?? 'N/A'}</dd>
-        <dt>Tipo Calculo</dt><dd>{item.tipoCalculo ?? 'N/A'}</dd>
+        <dt>Procedimiento</dt><dd>{item.procedimientoCalculo ?? 'N/A'}</dd>
         <dt>Rubro Historico</dt><dd>{item.rubroHistorico ? 'Si' : 'No'}</dd>
         <dt>Secuencia Impresion</dt><dd>{item.secuenciaImpresion ?? 'N/A'}</dd>
         <dt>Secuencia Sobregiro</dt><dd>{item.secuenciaSobregiro ?? 'N/A'}</dd>

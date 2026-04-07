@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useRubrosidocargaxproceso } from '../hooks/useRubrosidocargaxproceso';
 import { RubrosidocargaxprocesoForm } from '../components/RubrosidocargaxprocesoForm';
 import { CreateRubrosidocargaxproceso, UpdateRubrosidocargaxproceso } from '../../../../domain/model/Rubrosidocargaxproceso';
@@ -22,7 +23,7 @@ export const RubrosidocargaxprocesoCreatePage: React.FC = () => {
     } else {
       await create(data as CreateRubrosidocargaxproceso);
     }
-    navigate('/rubrosidocargaxproceso');
+    navigate(ROUTES.PATHS['rubrosidocargaxproceso']);
   };
 
   if (isEditMode && loading && !selectedItem) return <Loading message="Cargando datos..." />;

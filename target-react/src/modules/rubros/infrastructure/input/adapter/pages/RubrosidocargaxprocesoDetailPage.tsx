@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useRubrosidocargaxproceso } from '../hooks/useRubrosidocargaxproceso';
 import { RubrosidocargaxprocesoDetail } from '../components/RubrosidocargaxprocesoDetail';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
@@ -26,7 +27,7 @@ export const RubrosidocargaxprocesoDetailPage: React.FC = () => {
         onDelete={async (itemId) => {
           if (window.confirm('¿Eliminar este registro?')) {
             await remove(itemId);
-            navigate('/rubrosidocargaxproceso');
+            navigate(ROUTES.PATHS['rubrosidocargaxproceso']);
           }
         }}
         onBack={() => navigate(-1)}

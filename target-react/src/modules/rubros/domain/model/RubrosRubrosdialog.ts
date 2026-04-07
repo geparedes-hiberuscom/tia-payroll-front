@@ -8,8 +8,8 @@ export interface RubrosRubrosdialog {
   ambito?: AmbitoRubro;
   efecto?: EfectoRubro;
   observaciones?: string;
-  tipoCalculo?: string;
-  rubroHistorico?: boolean;
+  procedimientoCalculo?: string;
+  rubroHistorico?: number;
   secuenciaImpresion?: number;
   secuenciaSobregiro?: number;
   aplicaInterfaz?: boolean;
@@ -40,8 +40,8 @@ export type CreateRubrosRubrosdialog = {
   ambito?: AmbitoRubro;
   efecto?: EfectoRubro;
   observaciones?: string;
-  tipoCalculo?: string;
-  rubroHistorico?: boolean;
+  procedimientoCalculo?: string;
+  rubroHistorico?: number;
   secuenciaImpresion?: number;
   secuenciaSobregiro?: number;
   aplicaInterfaz?: boolean;
@@ -62,8 +62,8 @@ export type UpdateRubrosRubrosdialog = {
   ambito?: AmbitoRubro;
   efecto?: EfectoRubro;
   observaciones?: string;
-  tipoCalculo?: string;
-  rubroHistorico?: boolean;
+  procedimientoCalculo?: string;
+  rubroHistorico?: number;
   secuenciaImpresion?: number;
   secuenciaSobregiro?: number;
   aplicaInterfaz?: boolean;

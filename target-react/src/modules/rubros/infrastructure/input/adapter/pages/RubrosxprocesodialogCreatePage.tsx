@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useRubrosxprocesodialog } from '../hooks/useRubrosxprocesodialog';
 import { RubrosxprocesodialogForm } from '../components/RubrosxprocesodialogForm';
 import { CreateRubrosxprocesodialog, UpdateRubrosxprocesodialog } from '../../../../domain/model/Rubrosxprocesodialog';
@@ -22,7 +23,7 @@ export const RubrosxprocesodialogCreatePage: React.FC = () => {
     } else {
       await create(data as CreateRubrosxprocesodialog);
     }
-    navigate('/rubrosxprocesodialog');
+    navigate(ROUTES.PATHS['rubrosxprocesodialog']);
   };
 
   if (isEditMode && loading && !selectedItem) return <Loading message="Cargando datos..." />;

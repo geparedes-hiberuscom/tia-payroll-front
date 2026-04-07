@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useCargarubrosido } from '../hooks/useCargarubrosido';
 import { CargarubrosidoForm } from '../components/CargarubrosidoForm';
 import { CreateCargarubrosido, UpdateCargarubrosido } from '../../../../domain/model/Cargarubrosido';
@@ -24,7 +25,7 @@ export const CargarubrosidoCreatePage: React.FC = () => {
     } else {
       await create(data as CreateCargarubrosido);
     }
-    navigate('/cargarubrosido');
+    navigate(ROUTES.PATHS['cargarubrosido']);
   };
 
   if (isEditMode && loading && !selectedItem) {

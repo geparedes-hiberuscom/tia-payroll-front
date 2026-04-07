@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useConsultarubrosidolist } from '../hooks/useConsultarubrosidolist';
 import { ConsultarubrosidolistDetail } from '../components/ConsultarubrosidolistDetail';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
@@ -17,7 +18,7 @@ export const ConsultarubrosidolistDetailPage: React.FC = () => {
   const handleDelete = async (itemId: number) => {
     if (window.confirm('¿Eliminar este registro?')) {
       await remove(itemId);
-      navigate('/consultarubrosidolist');
+      navigate(ROUTES.PATHS['consultarubrosidolist']);
     }
   };
 

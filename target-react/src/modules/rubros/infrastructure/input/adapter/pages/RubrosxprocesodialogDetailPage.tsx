@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useRubrosxprocesodialog } from '../hooks/useRubrosxprocesodialog';
 import { RubrosxprocesodialogDetail } from '../components/RubrosxprocesodialogDetail';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
@@ -26,7 +27,7 @@ export const RubrosxprocesodialogDetailPage: React.FC = () => {
         onDelete={async (itemId) => {
           if (window.confirm('¿Eliminar este registro?')) {
             await remove(itemId);
-            navigate('/rubrosxprocesodialog');
+            navigate(ROUTES.PATHS['rubrosxprocesodialog']);
           }
         }}
         onBack={() => navigate(-1)}

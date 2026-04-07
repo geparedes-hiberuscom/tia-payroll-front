@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useRubrosidomainRubrosidolistRubrosidodetail } from '../hooks/useRubrosidomainRubrosidolistRubrosidodetail';
 import { RubrosidomainRubrosidolistRubrosidodetailForm } from '../components/RubrosidomainRubrosidolistRubrosidodetailForm';
 import { CreateRubrosidomainRubrosidolistRubrosidodetail, UpdateRubrosidomainRubrosidolistRubrosidodetail } from '../../../../domain/model/RubrosidomainRubrosidolistRubrosidodetail';
@@ -22,7 +23,7 @@ export const RubrosidomainRubrosidolistRubrosidodetailCreatePage: React.FC = () 
     } else {
       await create(data as CreateRubrosidomainRubrosidolistRubrosidodetail);
     }
-    navigate('/rubrosidomain-rubrosidolist-rubrosidodetail');
+    navigate(ROUTES.PATHS['rubrosidomain-rubrosidolist-rubrosidodetail']);
   };
 
   if (isEditMode && loading && !selectedItem) return <Loading message="Cargando datos..." />;

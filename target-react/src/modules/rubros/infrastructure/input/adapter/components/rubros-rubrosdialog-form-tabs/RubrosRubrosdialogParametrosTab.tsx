@@ -3,108 +3,98 @@ import { RubrosRubrosdialogParametrosTabProps } from "./types";
 
 export const RubrosRubrosdialogParametrosTab: React.FC<
   RubrosRubrosdialogParametrosTabProps
-> = ({
-  loading,
-  antiguedadMinima,
-  setAntiguedadMinima,
-  numAprobaciones,
-  setNumAprobaciones,
-  numAprobacionesNoLocales,
-  setNumAprobacionesNoLocales,
-  plazoMaximo,
-  setPlazoMaximo,
-  plazoMinimo,
-  setPlazoMinimo,
-  montoMaximo,
-  setMontoMaximo,
-  verificaEndeudamiento,
-  setVerificaEndeudamiento,
-}) => {
+> = ({ methods, loading }) => {
+  const formValues = methods.watch();
+
   return (
     <div style={{ display: "grid", gap: "0.75rem" }}>
-      <label>
-        Antiguedad Minima
+      
+      <label style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        <input
+          data-testid="rubros-rubrosdialog-field-verifica-endeudamiento"
+          type="checkbox"
+          checked={formValues.verificaEndeudamiento}
+          onChange={(event) => methods.setValue("verificaEndeudamiento", event.target.checked)}
+          disabled={loading}
+        />
+        Verifica Endeudamiento
+      </label>
+            <label>
+        Antiguedad Laboral
         <input
           data-testid="rubros-rubrosdialog-field-antiguedad-minima"
           type="number"
-          value={antiguedadMinima}
-          onChange={(event) => setAntiguedadMinima(event.target.value)}
+          value={formValues.antiguedadMinima}
+          onChange={(event) => methods.setValue("antiguedadMinima", event.target.value)}
           min={0}
           disabled={loading}
         />
       </label>
-
       <label>
-        Numero Aprobaciones
-        <input
-          data-testid="rubros-rubrosdialog-field-num-aprobaciones"
-          type="number"
-          value={numAprobaciones}
-          onChange={(event) => setNumAprobaciones(event.target.value)}
-          min={0}
-          disabled={loading}
-        />
-      </label>
-
-      <label>
-        Numero Aprobaciones No Locales
-        <input
-          data-testid="rubros-rubrosdialog-field-num-aprobaciones-no-locales"
-          type="number"
-          value={numAprobacionesNoLocales}
-          onChange={(event) => setNumAprobacionesNoLocales(event.target.value)}
-          min={0}
-          disabled={loading}
-        />
-      </label>
-
-      <label>
-        Plazo Maximo
+        Plazo Máximo
         <input
           data-testid="rubros-rubrosdialog-field-plazo-maximo"
           type="number"
-          value={plazoMaximo}
-          onChange={(event) => setPlazoMaximo(event.target.value)}
+          value={formValues.plazoMaximo}
+          onChange={(event) => methods.setValue("plazoMaximo", event.target.value)}
           min={0}
           disabled={loading}
         />
       </label>
 
       <label>
-        Plazo Minimo
+        Plazo Mínimo
         <input
           data-testid="rubros-rubrosdialog-field-plazo-minimo"
           type="number"
-          value={plazoMinimo}
-          onChange={(event) => setPlazoMinimo(event.target.value)}
+          value={formValues.plazoMinimo}
+          onChange={(event) => methods.setValue("plazoMinimo", event.target.value)}
           min={0}
           disabled={loading}
         />
       </label>
 
       <label>
-        Monto Maximo
+        Monto Máximo
         <input
           data-testid="rubros-rubrosdialog-field-monto-maximo"
           type="number"
-          value={montoMaximo}
-          onChange={(event) => setMontoMaximo(event.target.value)}
+          value={formValues.montoMaximo}
+          onChange={(event) => methods.setValue("montoMaximo", event.target.value)}
           min={0}
           step="0.01"
           disabled={loading}
         />
       </label>
 
-      <label style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+
+
+
+
+      <label>
+        Número Aprobaciones
         <input
-          data-testid="rubros-rubrosdialog-field-verifica-endeudamiento"
-          type="checkbox"
-          checked={verificaEndeudamiento}
-          onChange={(event) => setVerificaEndeudamiento(event.target.checked)}
+          data-testid="rubros-rubrosdialog-field-num-aprobaciones"
+          type="number"
+          value={formValues.numAprobaciones}
+          onChange={(event) => methods.setValue("numAprobaciones", event.target.value)}
+          min={0}
           disabled={loading}
         />
-        Verifica Endeudamiento
+      </label>
+
+      <label>
+        Número Aprobaciones No Locales
+        <input
+          data-testid="rubros-rubrosdialog-field-num-aprobaciones-no-locales"
+          type="number"
+          value={formValues.numAprobacionesNoLocales}
+          onChange={(event) => methods.setValue("numAprobacionesNoLocales", event.target.value)}
+          min={0}
+          disabled={loading}
+        />
       </label>
     </div>
   );
 };
+

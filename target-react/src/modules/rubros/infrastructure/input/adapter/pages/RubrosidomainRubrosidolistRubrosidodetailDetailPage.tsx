@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useRubrosidomainRubrosidolistRubrosidodetail } from '../hooks/useRubrosidomainRubrosidolistRubrosidodetail';
 import { RubrosidomainRubrosidolistRubrosidodetailDetail } from '../components/RubrosidomainRubrosidolistRubrosidodetailDetail';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
@@ -26,7 +27,7 @@ export const RubrosidomainRubrosidolistRubrosidodetailDetailPage: React.FC = () 
         onDelete={async (itemId) => {
           if (window.confirm('¿Eliminar este registro?')) {
             await remove(itemId);
-            navigate('/rubrosidomain-rubrosidolist-rubrosidodetail');
+            navigate(ROUTES.PATHS['rubrosidomain-rubrosidolist-rubrosidodetail']);
           }
         }}
         onBack={() => navigate(-1)}
