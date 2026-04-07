@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useConsultarubrosidolist } from '../hooks/useConsultarubrosidolist';
 import { ConsultarubrosidolistForm } from '../components/ConsultarubrosidolistForm';
 import { CreateConsultarubrosidolist, UpdateConsultarubrosidolist } from '../../../../domain/model/Consultarubrosidolist';
@@ -22,7 +23,7 @@ export const ConsultarubrosidolistCreatePage: React.FC = () => {
     } else {
       await create(data as CreateConsultarubrosidolist);
     }
-    navigate('/consultarubrosidolist');
+    navigate(ROUTES.PATHS['consultarubrosidolist']);
   };
 
   if (isEditMode && loading && !selectedItem) return <Loading message="Cargando datos..." />;

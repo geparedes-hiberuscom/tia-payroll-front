@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ROUTES } from '../../../../../../routes';
 import { useRubrosRubrosdialog } from '../hooks/useRubrosRubrosdialog';
 import { RubrosRubrosdialogForm } from '../components/RubrosRubrosdialogForm';
 import { CreateRubrosRubrosdialog, UpdateRubrosRubrosdialog } from '../../../../domain/model/RubrosRubrosdialog';
@@ -22,7 +23,7 @@ export const RubrosRubrosdialogCreatePage: React.FC = () => {
     } else {
       await create(data as CreateRubrosRubrosdialog);
     }
-    navigate('/rubros-rubrosdialog');
+    navigate(ROUTES.PATHS['rubros-rubrosdialog']);
   };
 
   if (isEditMode && loading && !selectedItem) return <Loading message="Cargando datos..." />;

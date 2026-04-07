@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
+  Form,
   Tabs,
   TabsContent,
   TabsList,
@@ -9,6 +11,7 @@ import {
   AmbitoSelectValue,
   EfectoSelectValue,
   RubrosRubrosdialogDetalleTab,
+  RubrosRubrosdialogFormValues,
   RubrosRubrosdialogParametrosTab,
 } from "./rubros-rubrosdialog-form-tabs";
 import {
@@ -24,95 +27,104 @@ interface RubrosRubrosdialogFormProps {
   onSubmit: (data: CreateRubrosRubrosdialog | UpdateRubrosRubrosdialog) => void;
   onCancel?: () => void;
   loading?: boolean;
+  readOnly?: boolean;
 }
+
+const defaultFormValues: RubrosRubrosdialogFormValues = {
+  idRubro: "",
+  nombre: "",
+  ambito: "-1",
+  efecto: "-1",
+  observaciones: "",
+  procedimientoCalculo: "",
+  rubroHistorico: '',
+  secuenciaImpresion: "",
+  secuenciaSobregiro: "",
+  aplicaInterfaz: false,
+  insertaEnLote: false,
+  carta: "",
+  antiguedadMinima: "",
+  numAprobaciones: "",
+  numAprobacionesNoLocales: "",
+  plazoMaximo: "",
+  plazoMinimo: "",
+  montoMaximo: "",
+  verificaEndeudamiento: false,
+  acumulable: false,
+};
 
 export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
   initialData,
   onSubmit,
   onCancel,
   loading,
+  readOnly = false,
 }) => {
   const isEditMode = Boolean(initialData);
   const [activeTab, setActiveTab] = useState("detalle");
-  const [idRubro, setIdRubro] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [ambito, setAmbito] = useState<AmbitoSelectValue>("-1");
-  const [efecto, setEfecto] = useState<EfectoSelectValue>("-1");
-  const [observaciones, setObservaciones] = useState("");
-  const [tipoCalculo, setTipoCalculo] = useState("");
-  const [rubroHistorico, setRubroHistorico] = useState(false);
-  const [secuenciaImpresion, setSecuenciaImpresion] = useState("");
-  const [secuenciaSobregiro, setSecuenciaSobregiro] = useState("");
-  const [aplicaInterfaz, setAplicaInterfaz] = useState(false);
-  const [insertaEnLote, setInsertaEnLote] = useState(false);
-  const [carta, setCarta] = useState("");
-  const [antiguedadMinima, setAntiguedadMinima] = useState("");
-  const [numAprobaciones, setNumAprobaciones] = useState("");
-  const [numAprobacionesNoLocales, setNumAprobacionesNoLocales] = useState("");
-  const [plazoMaximo, setPlazoMaximo] = useState("");
-  const [plazoMinimo, setPlazoMinimo] = useState("");
-  const [montoMaximo, setMontoMaximo] = useState("");
-  const [verificaEndeudamiento, setVerificaEndeudamiento] = useState(false);
-  const [acumulable, setAcumulable] = useState(false);
+  const [isReadOnlyMode, setIsReadOnlyMode] = useState(readOnly);
+  const methods = useForm<RubrosRubrosdialogFormValues>({
+    defaultValues: defaultFormValues,
+  });
   const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
+    setIsReadOnlyMode(readOnly);
+  }, [readOnly]);
+
+  useEffect(() => {
     if (!initialData) {
+      methods.reset(defaultFormValues);
       return;
     }
-    setIdRubro(initialData.idRubro);
-    setNombre(initialData.nombre);
-    setAmbito(initialData.ambito ?? "-1");
-    setEfecto(initialData.efecto ?? "-1");
-    setObservaciones(initialData.observaciones ?? "");
-    setTipoCalculo(initialData.tipoCalculo ?? "");
-    setRubroHistorico(Boolean(initialData.rubroHistorico));
-    setSecuenciaImpresion(
-      initialData.secuenciaImpresion !== undefined
-        ? String(initialData.secuenciaImpresion)
-        : "",
-    );
-    setSecuenciaSobregiro(
-      initialData.secuenciaSobregiro !== undefined
-        ? String(initialData.secuenciaSobregiro)
-        : "",
-    );
-    setAplicaInterfaz(Boolean(initialData.aplicaInterfaz));
-    setInsertaEnLote(Boolean(initialData.insertaEnLote));
-    setCarta(initialData.carta ?? "");
-    setAntiguedadMinima(
-      initialData.antiguedadMinima !== undefined
-        ? String(initialData.antiguedadMinima)
-        : "",
-    );
-    setNumAprobaciones(
-      initialData.numAprobaciones !== undefined
-        ? String(initialData.numAprobaciones)
-        : "",
-    );
-    setNumAprobacionesNoLocales(
-      initialData.numAprobacionesNoLocales !== undefined
-        ? String(initialData.numAprobacionesNoLocales)
-        : "",
-    );
-    setPlazoMaximo(
-      initialData.plazoMaximo !== undefined
-        ? String(initialData.plazoMaximo)
-        : "",
-    );
-    setPlazoMinimo(
-      initialData.plazoMinimo !== undefined
-        ? String(initialData.plazoMinimo)
-        : "",
-    );
-    setMontoMaximo(
-      initialData.montoMaximo !== undefined
-        ? String(initialData.montoMaximo)
-        : "",
-    );
-    setVerificaEndeudamiento(Boolean(initialData.verificaEndeudamiento));
-    setAcumulable(Boolean(initialData.acumulable));
-  }, [initialData]);
+
+    methods.reset({
+      idRubro: initialData.idRubro,
+      nombre: initialData.nombre,
+      ambito: initialData.ambito ?? "-1",
+      efecto: initialData.efecto ?? "-1",
+      observaciones: initialData.observaciones ?? "",
+      procedimientoCalculo: initialData.procedimientoCalculo ?? "",
+      rubroHistorico: initialData.rubroHistorico !== undefined ? String(initialData.rubroHistorico) : "",
+      secuenciaImpresion:
+        initialData.secuenciaImpresion !== undefined
+          ? String(initialData.secuenciaImpresion)
+          : "",
+      secuenciaSobregiro:
+        initialData.secuenciaSobregiro !== undefined
+          ? String(initialData.secuenciaSobregiro)
+          : "",
+      aplicaInterfaz: Boolean(initialData.aplicaInterfaz),
+      insertaEnLote: Boolean(initialData.insertaEnLote),
+      carta: initialData.carta ?? "",
+      antiguedadMinima:
+        initialData.antiguedadMinima !== undefined
+          ? String(initialData.antiguedadMinima)
+          : "",
+      numAprobaciones:
+        initialData.numAprobaciones !== undefined
+          ? String(initialData.numAprobaciones)
+          : "",
+      numAprobacionesNoLocales:
+        initialData.numAprobacionesNoLocales !== undefined
+          ? String(initialData.numAprobacionesNoLocales)
+          : "",
+      plazoMaximo:
+        initialData.plazoMaximo !== undefined
+          ? String(initialData.plazoMaximo)
+          : "",
+      plazoMinimo:
+        initialData.plazoMinimo !== undefined
+          ? String(initialData.plazoMinimo)
+          : "",
+      montoMaximo:
+        initialData.montoMaximo !== undefined
+          ? String(initialData.montoMaximo)
+          : "",
+      verificaEndeudamiento: Boolean(initialData.verificaEndeudamiento),
+      acumulable: Boolean(initialData.acumulable),
+    });
+  }, [initialData, methods]);
 
   const parseOptionalNumber = (value: string): number | undefined => {
     if (!value.trim()) {
@@ -130,6 +142,7 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
     return value === "-1" ? undefined : value;
   };
 
+  const ambito = methods.watch("ambito");
   const showParametrosTab = ambito === "PTM";
 
   useEffect(() => {
@@ -138,28 +151,31 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
     }
   }, [activeTab, showParametrosTab]);
 
-  const validate = (): string[] => {
+  const validate = (formValues: RubrosRubrosdialogFormValues): string[] => {
     const nextErrors: string[] = [];
-    if (!isEditMode && !/^[A-Za-z0-9_-]{2,30}$/.test(idRubro.trim())) {
+    if (!isEditMode && !/^[A-Za-z0-9_-]{2,30}$/.test(formValues.idRubro.trim())) {
       nextErrors.push(
         "El ID de rubro debe tener entre 2 y 30 caracteres alfanumericos.",
       );
     }
-    if (!nombre.trim()) {
+    if (!formValues.nombre.trim()) {
       nextErrors.push("El nombre es obligatorio.");
     }
-    if (nombre.trim().length > 120) {
+    if (formValues.nombre.trim().length > 120) {
       nextErrors.push("El nombre no puede exceder 120 caracteres.");
     }
-    if (carta.trim().length > 10) {
+    if (formValues.carta.trim().length > 10) {
       nextErrors.push("Carta no puede exceder 10 caracteres.");
     }
     return nextErrors;
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    const nextErrors = validate();
+  const handleSubmit = (formValues: RubrosRubrosdialogFormValues) => {
+    if (isReadOnlyMode) {
+      return;
+    }
+
+    const nextErrors = validate(formValues);
     setErrors(nextErrors);
     if (nextErrors.length > 0) {
       return;
@@ -167,55 +183,56 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
 
     if (isEditMode) {
       onSubmit({
-        nombre: nombre.trim(),
-        ambito: parseAmbito(ambito),
-        efecto: parseEfecto(efecto),
-        observaciones: observaciones.trim() || undefined,
-        tipoCalculo: tipoCalculo.trim() || undefined,
-        rubroHistorico,
-        secuenciaImpresion: parseOptionalNumber(secuenciaImpresion),
-        secuenciaSobregiro: parseOptionalNumber(secuenciaSobregiro),
-        aplicaInterfaz,
-        insertaEnLote,
-        carta: carta.trim() || undefined,
-        antiguedadMinima: parseOptionalNumber(antiguedadMinima),
-        numAprobaciones: parseOptionalNumber(numAprobaciones),
-        numAprobacionesNoLocales: parseOptionalNumber(numAprobacionesNoLocales),
-        plazoMaximo: parseOptionalNumber(plazoMaximo),
-        plazoMinimo: parseOptionalNumber(plazoMinimo),
-        montoMaximo: parseOptionalNumber(montoMaximo),
-        verificaEndeudamiento,
-        acumulable,
+        nombre: formValues.nombre.trim(),
+        ambito: parseAmbito(formValues.ambito),
+        efecto: parseEfecto(formValues.efecto),
+        observaciones: formValues.observaciones.trim() || undefined,
+        procedimientoCalculo: formValues.procedimientoCalculo.trim() || undefined,
+        rubroHistorico: parseOptionalNumber(formValues.rubroHistorico),
+        secuenciaImpresion: parseOptionalNumber(formValues.secuenciaImpresion),
+        secuenciaSobregiro: parseOptionalNumber(formValues.secuenciaSobregiro),
+        aplicaInterfaz: formValues.aplicaInterfaz,
+        insertaEnLote: formValues.insertaEnLote,
+        carta: formValues.carta.trim() || undefined,
+        antiguedadMinima: parseOptionalNumber(formValues.antiguedadMinima),
+        numAprobaciones: parseOptionalNumber(formValues.numAprobaciones),
+        numAprobacionesNoLocales: parseOptionalNumber(formValues.numAprobacionesNoLocales),
+        plazoMaximo: parseOptionalNumber(formValues.plazoMaximo),
+        plazoMinimo: parseOptionalNumber(formValues.plazoMinimo),
+        montoMaximo: parseOptionalNumber(formValues.montoMaximo),
+        verificaEndeudamiento: formValues.verificaEndeudamiento,
+        acumulable: formValues.acumulable,
       });
       return;
     }
 
     onSubmit({
-      idRubro: idRubro.trim(),
-      nombre: nombre.trim(),
-      ambito: parseAmbito(ambito),
-      efecto: parseEfecto(efecto),
-      observaciones: observaciones.trim() || undefined,
-      tipoCalculo: tipoCalculo.trim() || undefined,
-      rubroHistorico,
-      secuenciaImpresion: parseOptionalNumber(secuenciaImpresion),
-      secuenciaSobregiro: parseOptionalNumber(secuenciaSobregiro),
-      aplicaInterfaz,
-      insertaEnLote,
-      carta: carta.trim() || undefined,
-      antiguedadMinima: parseOptionalNumber(antiguedadMinima),
-      numAprobaciones: parseOptionalNumber(numAprobaciones),
-      numAprobacionesNoLocales: parseOptionalNumber(numAprobacionesNoLocales),
-      plazoMaximo: parseOptionalNumber(plazoMaximo),
-      plazoMinimo: parseOptionalNumber(plazoMinimo),
-      montoMaximo: parseOptionalNumber(montoMaximo),
-      verificaEndeudamiento,
-      acumulable,
+      idRubro: formValues.idRubro.trim(),
+      nombre: formValues.nombre.trim(),
+      ambito: parseAmbito(formValues.ambito),
+      efecto: parseEfecto(formValues.efecto),
+      observaciones: formValues.observaciones.trim() || undefined,
+      procedimientoCalculo: formValues.procedimientoCalculo.trim() || undefined,
+      rubroHistorico: parseOptionalNumber(formValues.rubroHistorico),
+      secuenciaImpresion: parseOptionalNumber(formValues.secuenciaImpresion),
+      secuenciaSobregiro: parseOptionalNumber(formValues.secuenciaSobregiro),
+      aplicaInterfaz: formValues.aplicaInterfaz,
+      insertaEnLote: formValues.insertaEnLote,
+      carta: formValues.carta.trim() || undefined,
+      antiguedadMinima: parseOptionalNumber(formValues.antiguedadMinima),
+      numAprobaciones: parseOptionalNumber(formValues.numAprobaciones),
+      numAprobacionesNoLocales: parseOptionalNumber(formValues.numAprobacionesNoLocales),
+      plazoMaximo: parseOptionalNumber(formValues.plazoMaximo),
+      plazoMinimo: parseOptionalNumber(formValues.plazoMinimo),
+      montoMaximo: parseOptionalNumber(formValues.montoMaximo),
+      verificaEndeudamiento: formValues.verificaEndeudamiento,
+      acumulable: formValues.acumulable,
     });
   };
 
   return (
-    <form
+    <Form
+      methods={methods}
       onSubmit={handleSubmit}
       data-testid="rubros-rubrosdialog-form"
       style={{
@@ -226,6 +243,25 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
       }}
     >
       <h3>{isEditMode ? "Editar rubro" : "Crear rubro"}</h3>
+      {isReadOnlyMode && (
+        <div
+          data-testid="rubros-rubrosdialog-readonly-badge"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            width: "fit-content",
+            padding: "0.2rem 0.6rem",
+            borderRadius: 999,
+            backgroundColor: "#e5e7eb",
+            color: "#374151",
+            fontSize: "0.75rem",
+            fontWeight: 600,
+            letterSpacing: "0.02em",
+          }}
+        >
+          Solo lectura
+        </div>
+      )}
       {errors.length > 0 && (
         <ul
           data-testid="rubros-rubrosdialog-form-errors"
@@ -245,67 +281,41 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
 
         <TabsContent value="detalle">
           <RubrosRubrosdialogDetalleTab
+            methods={methods}
             isEditMode={isEditMode}
-            loading={loading}
-            idRubro={idRubro}
-            setIdRubro={setIdRubro}
-            nombre={nombre}
-            setNombre={setNombre}
-            ambito={ambito}
-            setAmbito={setAmbito}
-            efecto={efecto}
-            setEfecto={setEfecto}
-            observaciones={observaciones}
-            setObservaciones={setObservaciones}
-            tipoCalculo={tipoCalculo}
-            setTipoCalculo={setTipoCalculo}
-            secuenciaImpresion={secuenciaImpresion}
-            setSecuenciaImpresion={setSecuenciaImpresion}
-            secuenciaSobregiro={secuenciaSobregiro}
-            setSecuenciaSobregiro={setSecuenciaSobregiro}
-            carta={carta}
-            setCarta={setCarta}
-            rubroHistorico={rubroHistorico}
-            setRubroHistorico={setRubroHistorico}
-            aplicaInterfaz={aplicaInterfaz}
-            setAplicaInterfaz={setAplicaInterfaz}
-            insertaEnLote={insertaEnLote}
-            setInsertaEnLote={setInsertaEnLote}
-            acumulable={acumulable}
-            setAcumulable={setAcumulable}
+            loading={Boolean(loading) || isReadOnlyMode}
           />
         </TabsContent>
 
         {showParametrosTab && (
           <TabsContent value="parametros">
             <RubrosRubrosdialogParametrosTab
-              loading={loading}
-              antiguedadMinima={antiguedadMinima}
-              setAntiguedadMinima={setAntiguedadMinima}
-              numAprobaciones={numAprobaciones}
-              setNumAprobaciones={setNumAprobaciones}
-              numAprobacionesNoLocales={numAprobacionesNoLocales}
-              setNumAprobacionesNoLocales={setNumAprobacionesNoLocales}
-              plazoMaximo={plazoMaximo}
-              setPlazoMaximo={setPlazoMaximo}
-              plazoMinimo={plazoMinimo}
-              setPlazoMinimo={setPlazoMinimo}
-              montoMaximo={montoMaximo}
-              setMontoMaximo={setMontoMaximo}
-              verificaEndeudamiento={verificaEndeudamiento}
-              setVerificaEndeudamiento={setVerificaEndeudamiento}
+              methods={methods}
+              loading={Boolean(loading) || isReadOnlyMode}
             />
           </TabsContent>
         )}
       </Tabs>
       <div style={{ display: "flex", gap: "0.5rem" }}>
-        <button
-          type="submit"
-          data-testid="rubros-rubrosdialog-submit"
-          disabled={loading}
-        >
-          {loading ? "Guardando..." : isEditMode ? "Actualizar" : "Crear"}
-        </button>
+        {!isReadOnlyMode && (
+          <button
+            type="submit"
+            data-testid="rubros-rubrosdialog-submit"
+            disabled={loading}
+          >
+            {loading ? "Guardando..." : isEditMode ? "Actualizar" : "Crear"}
+          </button>
+        )}
+        {isReadOnlyMode && isEditMode && (
+          <button
+            type="button"
+            data-testid="rubros-rubrosdialog-enable-edit"
+            onClick={() => setIsReadOnlyMode(false)}
+            disabled={loading}
+          >
+            Editar
+          </button>
+        )}
         {onCancel && (
           <button
             type="button"
@@ -317,6 +327,6 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
           </button>
         )}
       </div>
-    </form>
+    </Form>
   );
 };

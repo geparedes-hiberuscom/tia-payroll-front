@@ -1,39 +1,41 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
-import { SetupRoutes } from '@modules/setup/infrastructure/input/adapter/pages/SetupRoutes';
+import { ROUTES } from './routes';
+import { rubrosRoutes } from './modules/rubros/rubrosRoutes';
 
-// ─── Lazy imports (code splitting per page) ───
+const SetupPage = lazy(() => import('@modules/setup').then((m) => ({ default: m.SetupPage })));
+const ConsultasPage = lazy(() => import('@modules/consultas').then((m) => ({ default: m.ConsultasPage })));
+const PagoPage = lazy(() => import('@modules/pago').then((m) => ({ default: m.PagoPage })));
+const PrestamosPage = lazy(() => import('@modules/prestamos').then((m) => ({ default: m.PrestamosPage })));
+const CostosPage = lazy(() => import('@modules/costos').then((m) => ({ default: m.CostosPage })));
+const BeneficiosPage = lazy(() => import('@modules/beneficios').then((m) => ({ default: m.BeneficiosPage })));
+const IntegracionesPage = lazy(() => import('@modules/integraciones').then((m) => ({ default: m.IntegracionesPage })));
+const ReportesPage = lazy(() => import('@modules/reportes').then((m) => ({ default: m.ReportesPage })));
 
+const withSuspense = (element: React.ReactElement) => (
+  <Suspense fallback={<Loading message="Cargando modulo..." />}>
+    {element}
+  </Suspense>
+);
 
-/**
- * AppRouter — Rutas principales de la aplicación
- * Generado automáticamente desde los Vertical Slices y funcionalidades.
- *
- * Cada funcionalidad tiene rutas:
- *   /{funcionalidad}           → Lista (Page principal)
- *   /{funcionalidad}/create    → Formulario crear
- *   /{funcionalidad}/:id       → Detalle
- *   /{funcionalidad}/:id/edit  → Formulario editar
- */
 export const AppRouter: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/setup" replace />} />
+      <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.SETUP} replace />} />
 
-        <Route path="/setup/*" element={<SetupRoutes />} />
-        <Route path="/rubros" element={<></>} />
-        <Route path="/procesos" element={<></>} />
-        <Route path="/consultas" element={<></>} />
-        <Route path="/pago" element={<></>} />
-        <Route path="/prestamos" element={<></>} />
-        <Route path="/costos" element={<></>} />
-        <Route path="/beneficios" element={<></>} />
-        <Route path="/integraciones" element={<></>} />
-        <Route path="/reportes" element={<></>} />
+      <Route path={ROUTES.SETUP} element={withSuspense(<SetupPage />)} />
+      <Route path={ROUTES.CONSULTAS} element={withSuspense(<ConsultasPage />)} />
+      <Route path={ROUTES.PAGO} element={withSuspense(<PagoPage />)} />
+      <Route path={ROUTES.PRESTAMOS} element={withSuspense(<PrestamosPage />)} />
+      <Route path={ROUTES.COSTOS} element={withSuspense(<CostosPage />)} />
+      <Route path={ROUTES.BENEFICIOS} element={withSuspense(<BeneficiosPage />)} />
+      <Route path={ROUTES.INTEGRACIONES} element={withSuspense(<IntegracionesPage />)} />
+      <Route path={ROUTES.REPORTES} element={withSuspense(<ReportesPage />)} />
 
-      {/* 404 */}
-      <Route path="*" element={<div style={{ textAlign: 'center', padding: '4rem' }}><h1>404</h1><p>Página no encontrada</p></div>} />
+      {rubrosRoutes}
+
+      <Route path="*" element={<div className="container"><h1>404</h1><p>Pagina no encontrada</p></div>} />
     </Routes>
   );
 };

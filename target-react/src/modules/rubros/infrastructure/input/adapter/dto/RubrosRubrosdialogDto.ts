@@ -15,8 +15,8 @@ export interface CreateRubrosRubrosdialogRequest {
   ambito?: AmbitoRubro;
   efecto?: EfectoRubro;
   observaciones?: string;
-  tipoCalculo?: string;
-  rubroHistorico?: boolean;
+  procedimientoCalculo?: string;
+  rubroHistorico?: number;
   secuenciaImpresion?: number;
   secuenciaSobregiro?: number;
   aplicaInterfaz?: boolean;
@@ -37,8 +37,8 @@ export interface UpdateRubrosRubrosdialogRequest {
   ambito?: AmbitoRubro;
   efecto?: EfectoRubro;
   observaciones?: string;
-  tipoCalculo?: string;
-  rubroHistorico?: boolean;
+  procedimientoCalculo?: string;
+  rubroHistorico?: number;
   secuenciaImpresion?: number;
   secuenciaSobregiro?: number;
   aplicaInterfaz?: boolean;
@@ -71,8 +71,8 @@ export interface RubrosRubrosdialogResponse {
   ambito?: AmbitoRubro;
   efecto?: EfectoRubro;
   observaciones?: string;
-  tipoCalculo?: string;
-  rubroHistorico?: boolean;
+  procedimientoCalculo?: string;
+  rubroHistorico?: number;
   secuenciaImpresion?: number;
   secuenciaSobregiro?: number;
   aplicaInterfaz?: boolean;
