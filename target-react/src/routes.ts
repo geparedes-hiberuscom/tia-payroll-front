@@ -15,6 +15,16 @@ export const ROUTES = {
   INTEGRACIONES: '/integraciones',
   REPORTES: '/reportes',
   PATHS: {
+    // Setup
+    'parametros-parametrosdialog': '/setup/parametros-parametrosdialog',
+    'contratoplantilla-contratoplantilladialog': '/setup/contratoplantilla-contratoplantilladialog',
+    'gastospersonalesdialog': '/setup/gastospersonalesdialog',
+    'geningproyectados': '/setup/geningproyectados',
+    'gestiontablair-gestiontablairdialog': '/setup/gestiontablair-gestiontablairdialog',
+    'plantillacontable-plantillacontabledialog': '/setup/plantillacontable-plantillacontabledialog',
+    'reporteirinecdialog': '/setup/reporteirinecdialog',
+    'rubroplantillacontabledialog': '/setup/rubroplantillacontabledialog',
+    // Rubros
     cargarubrosido: '/cargarubrosido',
     consultarubrosidolist: '/consultarubrosidolist',
     ejecucionbot: '/ejecucionbot',
