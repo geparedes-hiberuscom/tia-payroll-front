@@ -15,11 +15,8 @@ export const ProcesosProcesosdialogDetail: React.FC<ProcesosProcesosdialogDetail
   onBack,
 }) => {
   return (
-    <div data-testid="procesos-procesosdialog-detail" className="card" style={{ maxWidth: 760 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h3>Detalle de Proceso</h3>
-        {onBack && <button onClick={onBack}>← Volver</button>}
-      </div>
+    <section data-testid="procesos-procesosdialog-detail" style={{ maxWidth: 720 }}>
+      <h2>Detalle de Proceso</h2>
 
       <dl>
         <dt><strong>ID</strong></dt>
@@ -40,14 +37,15 @@ export const ProcesosProcesosdialogDetail: React.FC<ProcesosProcesosdialogDetail
         <dd>{item.activo === false ? 'No' : 'Si'}</dd>
       </dl>
 
-      <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
-        {onEdit && <button className="btn btn-secondary" onClick={() => onEdit(item)}>Editar</button>}
+      <div style={{ display: 'flex', gap: '0.5rem' }}>
+        {onEdit && <button type="button" data-testid="procesos-procesosdialog-detail-edit" onClick={() => onEdit(item)}>Editar</button>}
         {onDelete && (
-          <button className="btn btn-danger" onClick={() => onDelete(item.id)}>
+          <button type="button" data-testid="procesos-procesosdialog-detail-delete" style={{ color: '#b91c1c' }} onClick={() => onDelete(item.id)}>
             Eliminar
           </button>
         )}
+        {onBack && <button type="button" data-testid="procesos-procesosdialog-detail-back" onClick={onBack}>Volver</button>}
       </div>
-    </div>
+    </section>
   );
 };

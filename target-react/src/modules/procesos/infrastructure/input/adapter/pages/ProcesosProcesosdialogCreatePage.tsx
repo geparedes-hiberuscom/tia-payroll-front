@@ -41,8 +41,8 @@ export const ProcesosProcesosdialogCreatePage: React.FC = () => {
   }
 
   return (
-    <main className="container" data-testid="procesos-procesosdialog-create-page">
-      <h1>{isEditMode ? 'Editar' : 'Crear'} ProcesosProcesosdialog</h1>
+    <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }} data-testid="procesos-procesosdialog-create-page">
+      <h1>{isEditMode ? 'Editar' : 'Crear'} proceso</h1>
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); if (isEditMode && id) { fetchById(id); } }} />}
       <ProcesosProcesosdialogForm
         initialData={initialData}
@@ -50,6 +50,6 @@ export const ProcesosProcesosdialogCreatePage: React.FC = () => {
         onCancel={() => navigate(ROUTES.PATHS['procesos-procesosdialog'])}
         loading={loading}
       />
-    </main>
+    </div>
   );
 };

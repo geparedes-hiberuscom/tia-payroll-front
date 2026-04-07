@@ -9,6 +9,7 @@ import { ProcesosProcesosdialog, CreateProcesosProcesosdialog, UpdateProcesosPro
 import { ProcesosProcesosdialogList } from '../components/ProcesosProcesosdialogList';
 import { ProcesosProcesosdialogForm } from '../components/ProcesosProcesosdialogForm';
 import { ProcesosProcesosdialogFilterParams } from '../dto/ProcesosProcesosdialogDto';
+import { Modal } from '@shared/infrastructure/input/adapter/components/Modal';
 
 export const ProcesosProcesosdialogPage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,12 +20,6 @@ export const ProcesosProcesosdialogPage: React.FC = () => {
   const [activeFilters, setActiveFilters] = useState<ProcesosProcesosdialogFilterParams>({ page: 0, size: 10 });
 
   const domainItems = useMemo(() => items.map((item) => ProcesosProcesosdialogViewMapper.toDomain(item)), [items]);
-
-  const handleCreate = () => {
-    setIsReadOnlyForm(false);
-    setEditingItem(undefined);
-    setShowForm(true);
-  };
 
   const handleEdit = (item: ProcesosProcesosdialog) => {
     setIsReadOnlyForm(true);
@@ -53,28 +48,60 @@ export const ProcesosProcesosdialogPage: React.FC = () => {
     await fetchAll(activeFilters);
   };
 
-  if (loading && domainItems.length === 0) {
-    return <Loading message="Cargando listado..." />;
-  }
-
   return (
-    <main className="container" data-testid="procesos-procesosdialog-page">
-      <h1>ProcesosProcesosdialog</h1>
+    <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }} data-testid="procesos-procesosdialog-page">
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <h1>Procesos</h1>
+        {!showForm && (
+          <button
+            type="button"
+            onClick={() => {
+              setShowForm(true);
+              setIsReadOnlyForm(false);
+              setEditingItem(undefined);
+            }}
+          >
+            + Nuevo
+          </button>
+        )}
+      </div>
+
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(activeFilters); }} />}
-      {!showForm && <button type="button" className="btn btn-primary" onClick={handleCreate}>Nuevo</button>}
+
+      {loading && domainItems.length === 0 && <Loading message="Cargando listado..." />}
+
       {showForm && (
-        <ProcesosProcesosdialogForm
-          initialData={editingItem}
-          readOnly={isReadOnlyForm}
-          onSubmit={handleSubmit}
-          onCancel={() => {
-            setShowForm(false);
-            setIsReadOnlyForm(false);
-            setEditingItem(undefined);
+        <Modal
+          open={showForm}
+          setIsOpen={(open) => {
+            setShowForm(open);
+            if (!open) {
+              setIsReadOnlyForm(false);
+              setEditingItem(undefined);
+            }
           }}
-          loading={loading}
-        />
+          title=""
+        >
+          <ProcesosProcesosdialogForm
+            initialData={editingItem}
+            readOnly={isReadOnlyForm}
+            onSubmit={handleSubmit}
+            onCancel={() => {
+              setShowForm(false);
+              setIsReadOnlyForm(false);
+              setEditingItem(undefined);
+            }}
+            loading={loading}
+          />
+        </Modal>
       )}
+
       <ProcesosProcesosdialogList
         items={domainItems}
         loading={loading}
@@ -94,6 +121,6 @@ export const ProcesosProcesosdialogPage: React.FC = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-    </main>
+    </div>
   );
 };

@@ -136,7 +136,7 @@ export const ProcesosProcesosdialogForm: React.FC<ProcesosProcesosdialogFormProp
     } as CreateProcesosProcesosdialog);
   };
 
-  const readOnlyCardStyle = isReadOnlyMode
+  const readOnlyFormStyle = isReadOnlyMode
     ? {
         backgroundColor: '#f9fafb',
       }
@@ -147,10 +147,9 @@ export const ProcesosProcesosdialogForm: React.FC<ProcesosProcesosdialogFormProp
       methods={methods}
       onSubmit={handleSubmit}
       data-testid="procesos-procesosdialog-form"
-      className="card"
-      style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: 600, ...readOnlyCardStyle }}
+      style={{ display: 'grid', gap: '0.75rem', maxWidth: 640, marginBottom: '1rem', ...readOnlyFormStyle }}
     >
-      <h3>{isEditMode ? 'Editar' : 'Crear'} Proceso</h3>
+      <h3>{isEditMode ? 'Editar proceso' : 'Crear proceso'}</h3>
       {isReadOnlyMode && (
         <div
           data-testid="procesos-procesosdialog-readonly-badge"
@@ -281,15 +280,14 @@ export const ProcesosProcesosdialogForm: React.FC<ProcesosProcesosdialogFormProp
         Activo
       </label>
 
-      <div className="form-actions">
+      <div style={{ display: 'flex', gap: '0.5rem' }}>
         {!isReadOnlyMode && (
-          <button className="btn btn-primary" type="submit" disabled={loading}>
+          <button type="submit" disabled={loading}>
             {loading ? 'Guardando...' : isEditMode ? 'Actualizar' : 'Crear'}
           </button>
         )}
         {isReadOnlyMode && isEditMode && (
           <button
-            className="btn btn-primary"
             type="button"
             data-testid="procesos-procesosdialog-enable-edit"
             onClick={() => setIsReadOnlyMode(false)}
@@ -299,7 +297,7 @@ export const ProcesosProcesosdialogForm: React.FC<ProcesosProcesosdialogFormProp
           </button>
         )}
         {onCancel && (
-          <button className="btn btn-secondary" type="button" onClick={onCancel} disabled={loading}>
+          <button type="button" onClick={onCancel} disabled={loading}>
             Cancelar
           </button>
         )}

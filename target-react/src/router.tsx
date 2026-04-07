@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ROUTES } from './routes';
 import { rubrosRoutes } from './modules/rubros/rubrosRoutes';
+import { procesosRoutes } from './modules/procesos/procesosRoutes';
 
 const SetupPage = lazy(() => import('@modules/setup').then((m) => ({ default: m.SetupPage })));
 const ConsultasPage = lazy(() => import('@modules/consultas').then((m) => ({ default: m.ConsultasPage })));
@@ -34,6 +35,7 @@ export const AppRouter: React.FC = () => {
       <Route path={ROUTES.REPORTES} element={withSuspense(<ReportesPage />)} />
 
       {rubrosRoutes}
+      {procesosRoutes}
 
       <Route path="*" element={<div className="container"><h1>404</h1><p>Pagina no encontrada</p></div>} />
     </Routes>

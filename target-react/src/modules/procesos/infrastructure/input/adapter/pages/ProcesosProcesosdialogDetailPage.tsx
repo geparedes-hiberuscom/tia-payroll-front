@@ -26,14 +26,14 @@ export const ProcesosProcesosdialogDetailPage: React.FC = () => {
 
   if (!domainItem) {
     return (
-      <main className="container">
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
         {error ? <ErrorBanner message={error} onRetry={() => { clearError(); if (id) { fetchById(id); } }} /> : <p>No se encontro el registro.</p>}
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="container" data-testid="procesos-procesosdialog-detail-page">
+    <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }} data-testid="procesos-procesosdialog-detail-page">
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); if (id) { fetchById(id); } }} />}
       <ProcesosProcesosdialogDetail
         item={domainItem}
@@ -48,6 +48,6 @@ export const ProcesosProcesosdialogDetailPage: React.FC = () => {
         }}
         onBack={() => navigate(ROUTES.PATHS['procesos-procesosdialog'])}
       />
-    </main>
+    </div>
   );
 };
