@@ -7,9 +7,7 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
 
 /**
  * Página de detalle: plantillaContable.zul / plantillaContableDialog.zul
- * Muestra el detalle completo de un registro.
- *
- * TODO: Copilot — Completar con la navegación y acciones específicas.
+ * Muestra el detalle completo de un registro con opciones de editar y eliminar.
  */
 export const PlantillacontablePlantillacontabledialogDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,30 +21,47 @@ export const PlantillacontablePlantillacontabledialogDetailPage: React.FC = () =
   }, [id, fetchById]);
 
   const handleEdit = () => {
-    navigate(`/plantillacontable-plantillacontabledialog/${id}/edit`);
+    navigate(`/setup/plantillacontable-plantillacontabledialog/${id}/edit`);
   };
 
   const handleDelete = async () => {
     if (id && globalThis.confirm('¿Estás seguro de eliminar este registro?')) {
-      await remove(Number(id));
-      navigate('/plantillacontable-plantillacontabledialog');
+      try {
+        await remove(Number(id));
+        navigate('/setup/plantillacontable-plantillacontabledialog');
+      } catch (err) {
+        console.error('Error al eliminar:', err);
+      }
     }
   };
 
   const handleBack = () => {
-    navigate('/plantillacontable-plantillacontabledialog');
+    navigate('/setup/plantillacontable-plantillacontabledialog');
   };
 
-  if (loading) { return <Loading message="Cargando detalle..." />; }
-  if (error) { return <ErrorBanner message={error} onRetry={() => { clearError(); if (id) { fetchById(Number(id)); } }} />; }
-  if (!selectedItem) { return <p>No encontrado.</p>; }
+  if (loading && !selectedItem) {
+    return <Loading message="Cargando detalle..." />;
+  }
+
+  if (error) {
+    return <ErrorBanner message={error} onRetry={() => { clearError(); if (id) { fetchById(Number(id)); } }} />;
+  }
+
+  if (!selectedItem) {
+    return (
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem', textAlign: 'center' }}>
+        <p style={{ color: '#666' }}>No se encontró el registro solicitado.</p>
+        <button onClick={handleBack} style={{ marginTop: '1rem' }}>Volver a la lista</button>
+      </div>
+    );
+  }
 
   return (
     <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
       <PlantillacontablePlantillacontabledialogDetail
         item={selectedItem}
-        onEdit={() => handleEdit()}
-        onDelete={() => handleDelete()}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
         onBack={handleBack}
       />
     </div>
