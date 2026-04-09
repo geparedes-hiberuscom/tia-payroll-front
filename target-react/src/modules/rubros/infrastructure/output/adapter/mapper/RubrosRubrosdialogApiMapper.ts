@@ -53,6 +53,12 @@ export class RubrosRubrosdialogApiMapper {
       fechaCreacion: raw.fechaCreacion,
       usuarioActualizacion: raw.usuarioActualizacion,
       fechaActualizacion: raw.fechaActualizacion,
+      vnomenclatura: raw.vnomenclatura,
+      iidempresa: raw.iidempresa,
+      cargosQueAplican: Array.isArray(raw.cargosQueAplican) ? raw.cargosQueAplican : undefined,
+      rolesQueAplican: Array.isArray(raw.rolesQueAplican) ? raw.rolesQueAplican : undefined,
+      cargosQueApruebanAlmacen: Array.isArray(raw.cargosQueApruebanAlmacen) ? raw.cargosQueApruebanAlmacen : undefined,
+      cargosQueApruebanOficina: Array.isArray(raw.cargosQueApruebanOficina) ? raw.cargosQueApruebanOficina : undefined,
     };
   }
 
@@ -97,6 +103,12 @@ export class RubrosRubrosdialogApiMapper {
       plazoMinimo: request.plazoMinimo,
       montoMaximo: request.montoMaximo,
       verificaEndeudamiento: request.verificaEndeudamiento,
+      vnomenclatura: request.vnomenclatura,
+      iidempresa: request.iidempresa,
+      cargosQueAplican: request.cargosQueAplican,
+      rolesQueAplican: request.rolesQueAplican,
+      cargosQueApruebanAlmacen: request.cargosQueApruebanAlmacen,
+      cargosQueApruebanOficina: request.cargosQueApruebanOficina,
     };
   }
 
@@ -123,6 +135,12 @@ export class RubrosRubrosdialogApiMapper {
       plazoMinimo: request.plazoMinimo,
       montoMaximo: request.montoMaximo,
       verificaEndeudamiento: request.verificaEndeudamiento,
+      vnomenclatura: request.vnomenclatura,
+      iidempresa: request.iidempresa,
+      cargosQueAplican: request.cargosQueAplican,
+      rolesQueAplican: request.rolesQueAplican,
+      cargosQueApruebanAlmacen: request.cargosQueApruebanAlmacen,
+      cargosQueApruebanOficina: request.cargosQueApruebanOficina,
     };
   }
 }

@@ -1,4 +1,5 @@
 // Auto-generated barrel
+export * from './useClasesrubro';
 export * from './useCargarubrosido';
 export * from './useConsultarubrosidolist';
 export * from './useRubros';

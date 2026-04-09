@@ -5,10 +5,10 @@ import { RubrosRubrosdialogForm } from "../components/RubrosRubrosdialogForm";
 import { RubrosRubrosdialogFilter } from "../components/RubrosRubrosdialogFilter";
 import {
   CreateRubrosRubrosdialog,
+  RubrosRubrosdialogFilter as RubrosRubrosdialogFilterModel,
   RubrosRubrosdialog,
   UpdateRubrosRubrosdialog,
 } from "../../../../domain/model/RubrosRubrosdialog";
-import { RubrosRubrosdialogFilterParams } from "../dto/RubrosRubrosdialogDto";
 import { Loading } from "@shared/infrastructure/input/adapter/components/Loading";
 import { ErrorBanner } from "@shared/infrastructure/input/adapter/components/ErrorBanner";
 import { Modal } from "@shared/infrastructure/input/adapter/components/Modal";
@@ -32,7 +32,7 @@ export const RubrosRubrosdialogPage: React.FC = () => {
   const [editingItem, setEditingItem] = useState<
     RubrosRubrosdialog | undefined
   >(undefined);
-  const [activeFilters, setActiveFilters] = useState<RubrosRubrosdialogFilterParams>({});
+  const [activeFilters, setActiveFilters] = useState<RubrosRubrosdialogFilterModel>({});
 
   const handleSubmit = async (
     data: CreateRubrosRubrosdialog | UpdateRubrosRubrosdialog,
@@ -108,7 +108,7 @@ export const RubrosRubrosdialogPage: React.FC = () => {
           fetchAll(params);
         }}
         onClear={() => {
-          const emptyFilters: RubrosRubrosdialogFilterParams = { page: 0 };
+          const emptyFilters: RubrosRubrosdialogFilterModel = { page: 0 };
           setActiveFilters(emptyFilters);
           fetchAll(emptyFilters);
         }}
@@ -136,6 +136,7 @@ export const RubrosRubrosdialogPage: React.FC = () => {
               setEditingItem(undefined);
             }}
             loading={loading}
+            error={error??''}
           />
         </Modal>
       )}
@@ -153,7 +154,7 @@ export const RubrosRubrosdialogPage: React.FC = () => {
           pageSize={activeFilters.size ?? 10}
           totalItems={totalElements}
           onPageChange={(nextPage) => {
-            const nextFilters: RubrosRubrosdialogFilterParams = {
+            const nextFilters: RubrosRubrosdialogFilterModel = {
               ...activeFilters,
               page: nextPage,
               size: activeFilters.size ?? 10,

@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { RubrosidocargaxprocesoService } from '@modules/rubros/application/service/RubrosidocargaxprocesoService';
+import { RubrosidocargaxprocesoApplicationService } from '@modules/rubros/application/service/RubrosidocargaxprocesoApplicationService';
 import { RubrosidocargaxprocesoGatewayAdapter } from '@modules/rubros/infrastructure/output/adapter/api/RubrosidocargaxprocesoGatewayAdapter';
-import { RubrosidocargaxprocesoResponse, CreateRubrosidocargaxprocesoRequest, UpdateRubrosidocargaxprocesoRequest, RubrosidocargaxprocesoFilterParams } from '../dto/RubrosidocargaxprocesoDto';
+import { Rubrosidocargaxproceso, CreateRubrosidocargaxproceso, UpdateRubrosidocargaxproceso, RubrosidocargaxprocesoFilter } from '@modules/rubros/domain/model/Rubrosidocargaxproceso';
 
-// ─── Inyección manual: Gateway Adapter → Service ───
+// ─── Inyección manual: Gateway Adapter → Application Service ───
 const gatewayAdapter = new RubrosidocargaxprocesoGatewayAdapter();
-const rubrosidocargaxprocesoService = new RubrosidocargaxprocesoService(gatewayAdapter);
+const rubrosidocargaxprocesoService = new RubrosidocargaxprocesoApplicationService(gatewayAdapter);
 
 /**
  * Custom Hook: useRubrosidocargaxproceso
@@ -13,21 +13,21 @@ const rubrosidocargaxprocesoService = new RubrosidocargaxprocesoService(gatewayA
  * Maneja estado de carga, errores y datos.
  */
 export function useRubrosidocargaxproceso() {
-  const [items, setItems] = useState<RubrosidocargaxprocesoResponse[]>([]);
-  const [selectedItem, setSelectedItem] = useState<RubrosidocargaxprocesoResponse | null>(null);
+  const [items, setItems] = useState<Rubrosidocargaxproceso[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Rubrosidocargaxproceso | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalElements, setTotalElements] = useState(0);
   const [page, setPage] = useState(0);
 
-  const fetchAll = useCallback(async (params?: RubrosidocargaxprocesoFilterParams) => {
+  const fetchAll = useCallback(async (params?: RubrosidocargaxprocesoFilter) => {
     try {
       setLoading(true);
       setError(null);
       const response = await rubrosidocargaxprocesoService.findAll(params);
       setItems(response.items);
-      setTotalElements(response.total);
-      setPage(response.page || 0);
+      setTotalElements(response.totalElements);
+      setPage(response.currentPage || 0);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al cargar datos');
     } finally {
@@ -50,7 +50,7 @@ export function useRubrosidocargaxproceso() {
     }
   }, []);
 
-  const create = useCallback(async (request: CreateRubrosidocargaxprocesoRequest) => {
+  const create = useCallback(async (request: CreateRubrosidocargaxproceso) => {
     try {
       setLoading(true);
       setError(null);
@@ -67,7 +67,7 @@ export function useRubrosidocargaxproceso() {
     }
   }, []);
 
-  const update = useCallback(async (id: string | number, request: UpdateRubrosidocargaxprocesoRequest) => {
+  const update = useCallback(async (id: string | number, request: UpdateRubrosidocargaxproceso) => {
     try {
       setLoading(true);
       setError(null);

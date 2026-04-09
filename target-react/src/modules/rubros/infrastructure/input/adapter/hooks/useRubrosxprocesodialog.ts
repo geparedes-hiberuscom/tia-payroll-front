@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { RubrosxprocesodialogService } from '@modules/rubros/application/service/RubrosxprocesodialogService';
+import { RubrosxprocesodialogApplicationService } from '@modules/rubros/application/service/RubrosxprocesodialogApplicationService';
 import { RubrosxprocesodialogGatewayAdapter } from '@modules/rubros/infrastructure/output/adapter/api/RubrosxprocesodialogGatewayAdapter';
-import { RubrosxprocesodialogResponse, CreateRubrosxprocesodialogRequest, UpdateRubrosxprocesodialogRequest, RubrosxprocesodialogFilterParams } from '../dto/RubrosxprocesodialogDto';
+import { Rubrosxprocesodialog, CreateRubrosxprocesodialog, UpdateRubrosxprocesodialog, RubrosxprocesodialogFilter } from '@modules/rubros/domain/model/Rubrosxprocesodialog';
 
-// ─── Inyección manual: Gateway Adapter → Service ───
+// ─── Inyección manual: Gateway Adapter → Application Service ───
 const gatewayAdapter = new RubrosxprocesodialogGatewayAdapter();
-const rubrosxprocesodialogService = new RubrosxprocesodialogService(gatewayAdapter);
+const rubrosxprocesodialogService = new RubrosxprocesodialogApplicationService(gatewayAdapter);
 
 /**
  * Custom Hook: useRubrosxprocesodialog
@@ -13,23 +13,23 @@ const rubrosxprocesodialogService = new RubrosxprocesodialogService(gatewayAdapt
  * Maneja estado de carga, errores y datos.
  */
 export function useRubrosxprocesodialog() {
-  const [items, setItems] = useState<RubrosxprocesodialogResponse[]>([]);
-  const [selectedItem, setSelectedItem] = useState<RubrosxprocesodialogResponse | null>(null);
+  const [items, setItems] = useState<Rubrosxprocesodialog[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Rubrosxprocesodialog | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalElements, setTotalElements] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(0);
 
-  const fetchAll = useCallback(async (params?: RubrosxprocesodialogFilterParams) => {
+  const fetchAll = useCallback(async (params?: RubrosxprocesodialogFilter) => {
     try {
       setLoading(true);
       setError(null);
       const response = await rubrosxprocesodialogService.findAll(params);
-      setItems(response.content);
+      setItems(response.items);
       setTotalElements(response.totalElements);
       setTotalPages(response.totalPages);
-      setPage(response.number || 0);
+      setPage(response.currentPage || 0);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al cargar datos');
     } finally {
@@ -52,7 +52,7 @@ export function useRubrosxprocesodialog() {
     }
   }, []);
 
-  const create = useCallback(async (request: CreateRubrosxprocesodialogRequest) => {
+  const create = useCallback(async (request: CreateRubrosxprocesodialog) => {
     try {
       setLoading(true);
       setError(null);
@@ -67,7 +67,7 @@ export function useRubrosxprocesodialog() {
     }
   }, []);
 
-  const update = useCallback(async (id: string | number, request: UpdateRubrosxprocesodialogRequest) => {
+  const update = useCallback(async (id: string | number, request: UpdateRubrosxprocesodialog) => {
     try {
       setLoading(true);
       setError(null);

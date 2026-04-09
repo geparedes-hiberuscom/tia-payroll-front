@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { RubrosidomainRubrosidolistRubrosidodetailService } from '@modules/rubros/application/service/RubrosidomainRubrosidolistRubrosidodetailService';
+import { RubrosidomainRubrosidolistRubrosidodetailApplicationService } from '@modules/rubros/application/service/RubrosidomainRubrosidolistRubrosidodetailApplicationService';
 import { RubrosidomainRubrosidolistRubrosidodetailGatewayAdapter } from '@modules/rubros/infrastructure/output/adapter/api/RubrosidomainRubrosidolistRubrosidodetailGatewayAdapter';
-import { RubrosidomainRubrosidolistRubrosidodetailResponse, CreateRubrosidomainRubrosidolistRubrosidodetailRequest, UpdateRubrosidomainRubrosidolistRubrosidodetailRequest, RubrosidomainRubrosidolistRubrosidodetailFilterParams } from '../dto/RubrosidomainRubrosidolistRubrosidodetailDto';
+import { RubrosidomainRubrosidolistRubrosidodetail, CreateRubrosidomainRubrosidolistRubrosidodetail, UpdateRubrosidomainRubrosidolistRubrosidodetail, RubrosidomainRubrosidolistRubrosidodetailFilter } from '@modules/rubros/domain/model/RubrosidomainRubrosidolistRubrosidodetail';
 
-// ─── Inyección manual: Gateway Adapter → Service ───
+// ─── Inyección manual: Gateway Adapter → Application Service ───
 const gatewayAdapter = new RubrosidomainRubrosidolistRubrosidodetailGatewayAdapter();
-const rubrosidomainRubrosidolistRubrosidodetailService = new RubrosidomainRubrosidolistRubrosidodetailService(gatewayAdapter);
+const rubrosidomainRubrosidolistRubrosidodetailService = new RubrosidomainRubrosidolistRubrosidodetailApplicationService(gatewayAdapter);
 
 /**
  * Custom Hook: useRubrosidomainRubrosidolistRubrosidodetail
@@ -13,23 +13,23 @@ const rubrosidomainRubrosidolistRubrosidodetailService = new RubrosidomainRubros
  * Maneja estado de carga, errores y datos.
  */
 export function useRubrosidomainRubrosidolistRubrosidodetail() {
-  const [items, setItems] = useState<RubrosidomainRubrosidolistRubrosidodetailResponse[]>([]);
-  const [selectedItem, setSelectedItem] = useState<RubrosidomainRubrosidolistRubrosidodetailResponse | null>(null);
+  const [items, setItems] = useState<RubrosidomainRubrosidolistRubrosidodetail[]>([]);
+  const [selectedItem, setSelectedItem] = useState<RubrosidomainRubrosidolistRubrosidodetail | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalElements, setTotalElements] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(0);
 
-  const fetchAll = useCallback(async (params?: RubrosidomainRubrosidolistRubrosidodetailFilterParams) => {
+  const fetchAll = useCallback(async (params?: RubrosidomainRubrosidolistRubrosidodetailFilter) => {
     try {
       setLoading(true);
       setError(null);
       const response = await rubrosidomainRubrosidolistRubrosidodetailService.findAll(params);
-      setItems(response.content);
+      setItems(response.items);
       setTotalElements(response.totalElements);
       setTotalPages(response.totalPages);
-      setPage(response.number || 0);
+      setPage(response.currentPage || 0);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al cargar datos');
     } finally {
@@ -52,7 +52,7 @@ export function useRubrosidomainRubrosidolistRubrosidodetail() {
     }
   }, []);
 
-  const create = useCallback(async (request: CreateRubrosidomainRubrosidolistRubrosidodetailRequest) => {
+  const create = useCallback(async (request: CreateRubrosidomainRubrosidolistRubrosidodetail) => {
     try {
       setLoading(true);
       setError(null);
@@ -67,7 +67,7 @@ export function useRubrosidomainRubrosidolistRubrosidodetail() {
     }
   }, []);
 
-  const update = useCallback(async (id: string | number, request: UpdateRubrosidomainRubrosidolistRubrosidodetailRequest) => {
+  const update = useCallback(async (id: string | number, request: UpdateRubrosidomainRubrosidolistRubrosidodetail) => {
     try {
       setLoading(true);
       setError(null);

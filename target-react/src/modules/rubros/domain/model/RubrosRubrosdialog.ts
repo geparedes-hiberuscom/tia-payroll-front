@@ -2,6 +2,16 @@
 // Source: migration/plan/config.json
 // GeneratedAt: 2026-03-27
 
+export interface AprobacionCargo {
+  iiddimensionesl: number;
+  iordenaprobacion: number;
+}
+
+export interface ClaseRubro {
+  vidclase: string;
+  vclase: string;
+}
+
 export interface RubrosRubrosdialog {
   idRubro: string;
   nombre: string;
@@ -28,6 +38,13 @@ export interface RubrosRubrosdialog {
   usuarioActualizacion?: string;
   fechaActualizacion?: string;
   acumulable?: boolean;
+  vnomenclatura?: string;
+  clases?: ClaseRubro[];
+  iidempresa?: number;
+  cargosQueAplican?: number[];
+  rolesQueAplican?: number[];
+  cargosQueApruebanAlmacen?: number[];
+  cargosQueApruebanOficina?: number[];
 }
 
 export type EfectoRubro = "ING" | "EGR" | "NA";
@@ -55,6 +72,12 @@ export type CreateRubrosRubrosdialog = {
   montoMaximo?: number;
   verificaEndeudamiento?: boolean;
   acumulable?: boolean;
+  vnomenclatura?: string;
+  iidempresa?: number;
+  cargosQueAplican?: number[];
+  rolesQueAplican?: number[];
+  cargosQueApruebanAlmacen?: AprobacionCargo[];
+  cargosQueApruebanOficina?: AprobacionCargo[];
 };
 
 export type UpdateRubrosRubrosdialog = {
@@ -77,6 +100,12 @@ export type UpdateRubrosRubrosdialog = {
   montoMaximo?: number;
   verificaEndeudamiento?: boolean;
   acumulable?: boolean;
+  vnomenclatura?: string;
+  iidempresa?: number;
+  cargosQueAplican?: number[];
+  rolesQueAplican?: number[];
+  cargosQueApruebanAlmacen?: AprobacionCargo[];
+  cargosQueApruebanOficina?: AprobacionCargo[];
 };
 
 export interface RubrosRubrosdialogFilter {
@@ -84,6 +113,7 @@ export interface RubrosRubrosdialogFilter {
   size?: number;
   idRubro?: string;
   nombre?: string;
+  observaciones?: string;
   efecto?: EfectoRubro;
   ambito?: AmbitoRubro;
 }

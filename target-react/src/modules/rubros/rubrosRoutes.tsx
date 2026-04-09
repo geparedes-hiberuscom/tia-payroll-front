@@ -60,6 +60,7 @@ export const rubrosRoutes = [
   <Route key="consultarubrosidolist-create" path={ROUTES.PATHS['consultarubrosidolist'] + '/create'} element={w(<ConsultarubrosidolistCreatePage />)} />,
   <Route key="consultarubrosidolist-detail" path={ROUTES.PATHS['consultarubrosidolist'] + '/:id'} element={w(<ConsultarubrosidolistDetailPage />)} />,
   <Route key="consultarubrosidolist-edit" path={ROUTES.PATHS['consultarubrosidolist'] + '/:id/edit'} element={w(<ConsultarubrosidolistCreatePage />)} />,
+  <Route key="consultarubrosidolist-editar" path={ROUTES.PATHS['consultarubrosidolist'] + '/editar/:id'} element={w(<ConsultarubrosidolistCreatePage />)} />,
 
   <Route key="cargarubrosido" path={ROUTES.PATHS['cargarubrosido']} element={w(<CargarubrosidoPage />)} />,
   <Route key="cargarubrosido-create" path={ROUTES.PATHS['cargarubrosido'] + '/create'} element={w(<CargarubrosidoCreatePage />)} />,
