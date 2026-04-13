@@ -9,8 +9,6 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
 /**
  * Página de creación/edición: rubroplantillaContableDialog.zul
  * Si tiene :id en la URL, modo edición. Si no, modo creación.
- *
- * TODO: Copilot — Completar con validaciones y navegación.
  */
 export const RubroplantillacontabledialogCreatePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,12 +23,16 @@ export const RubroplantillacontabledialogCreatePage: React.FC = () => {
   }, [id, fetchById]);
 
   const handleSubmit = async (data: CreateRubroplantillacontabledialogRequest | UpdateRubroplantillacontabledialogRequest) => {
-    if (isEditMode && id) {
-      await update(Number(id), data as UpdateRubroplantillacontabledialogRequest);
-    } else {
-      await create(data as CreateRubroplantillacontabledialogRequest);
+    try {
+      if (isEditMode && id) {
+        await update(Number(id), data as UpdateRubroplantillacontabledialogRequest);
+      } else {
+        await create(data as CreateRubroplantillacontabledialogRequest);
+      }
+      navigate('/rubroplantillacontabledialog');
+    } catch (err) {
+      console.error('Error al guardar:', err);
     }
-    navigate('/rubroplantillacontabledialog');
   };
 
   const handleCancel = () => {

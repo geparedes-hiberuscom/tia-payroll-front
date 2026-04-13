@@ -1,5 +1,6 @@
 import React from 'react';
-import { Gastospersonalesdialog } from '../../../../domain/model/Gastospersonalesdialog';
+import { UIButton } from '../../components/ui-kit';
+import { Gastospersonalesdialog } from '../../../../../domain/model/Gastospersonalesdialog';
 
 interface GastospersonalesdialogDetailProps {
   item: Gastospersonalesdialog;
@@ -12,7 +13,7 @@ interface GastospersonalesdialogDetailProps {
  * Componente Detalle: GastosPersonalesDialog.zul
  * Muestra todos los campos de un Gastospersonalesdialog en detalle.
  *
- * TODO: Copilot — Mostrar todos los campos del domain model.
+ * Copilot — Mostrar todos los campos del domain model.
  */
 export const GastospersonalesdialogDetail: React.FC<GastospersonalesdialogDetailProps> = ({
   item,
@@ -24,21 +25,21 @@ export const GastospersonalesdialogDetail: React.FC<GastospersonalesdialogDetail
     <div data-testid="gastospersonalesdialog-detail" style={{ maxWidth: 600 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h3>Detalle de GastosPersonalesDialog.zul</h3>
-        {onBack && <button onClick={onBack}>← Volver</button>}
+        {onBack && <UIButton variant="secondary" onClick={onBack}>← Volver</UIButton>}
       </div>
 
       <dl>
         <dt><strong>ID</strong></dt>
         <dd>{item.id}</dd>
-        {/* TODO: Agregar todos los campos del domain model */}
+        {/*Agregar todos los campos del domain model */}
       </dl>
 
       <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
-        {onEdit && <button onClick={() => onEdit(item)}>Editar</button>}
+        {onEdit && <UIButton variant="primary" onClick={() => onEdit(item)}>Editar</UIButton>}
         {onDelete && (
-          <button onClick={() => onDelete(item.id)} style={{ color: 'red' }}>
+          <UIButton variant="secondary" onClick={() => onDelete(item.id)}>
             Eliminar
-          </button>
+          </UIButton>
         )}
       </div>
     </div>

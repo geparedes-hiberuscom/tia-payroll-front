@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { UIButton } from '../../components/ui-kit';
 import { useParametrosParametrosdialog } from '../../hooks/useParametrosParametrosdialog';
 import { ParametrosParametrosdialogList } from '../../components/parametros/ParametrosParametrosdialogList';
 import { ParametrosParametrosdialogForm } from '../../components/parametros/ParametrosParametrosdialogForm';
@@ -96,20 +97,12 @@ export const ParametrosParametrosdialogPage: React.FC = () => {
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <h1 style={{ margin: 0 }}>Parámetros del Sistema</h1>
-        <button
+        <UIButton
+          variant="primary"
           onClick={() => setShowFormModal(true)}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#B1CBD5',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            cursor: 'pointer',
-            fontWeight: 500,
-          }}
         >
           + Nuevo Parámetro
-        </button>
+        </UIButton>
       </div>
 
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}

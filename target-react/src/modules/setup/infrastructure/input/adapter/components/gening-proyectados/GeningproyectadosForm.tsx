@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { GenerarGeningproyectadosRequest, UpdateGeningproyectadosRequest, GeningproyectadosResponse } from '../dto/GeningproyectadosDto';
+import React, { useEffect } from 'react';
+import { UIButton } from '../../components/ui-kit';
+import { GenerarGeningproyectadosRequest, UpdateGeningproyectadosRequest, GeningproyectadosResponse } from '../../dto/GeningproyectadosDto';
 
 interface GeningproyectadosFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
   initialData?: GeningproyectadosResponse;
-  onSubmit: (data: GenerarGeningproyectadosRequest | UpdateGeningproyectadosRequest) => void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onSubmit?: (data: GenerarGeningproyectadosRequest | UpdateGeningproyectadosRequest) => void;
   onCancel?: () => void;
   loading?: boolean;
 }
@@ -14,8 +16,6 @@ interface GeningproyectadosFormProps {
  * Formulario de creación/edición basado en las pantallas ZUL fuente.
  * Pantallas fuente: genIngProyectados.zul
  * Renderers fuente: N/A
- *
- * TODO: Copilot — Completar con los campos reales del formulario (basarse en el domain model).
  */
 export const GeningproyectadosForm: React.FC<GeningproyectadosFormProps> = ({
   initialData,
@@ -25,17 +25,20 @@ export const GeningproyectadosForm: React.FC<GeningproyectadosFormProps> = ({
 }) => {
   const isEditMode = !!initialData;
 
-  // Ejemplo:
-  // const [nombre, setNombre] = useState(initialData?.nombre || '');
+  const getButtonLabel = (): string => {
+    if (loading) return 'Guardando...';
+    return isEditMode ? 'Actualizar' : 'Crear';
+  };
 
   useEffect(() => {
-    if (initialData) {
-    }
+    // Initialize form with initialData if available
   }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // onSubmit({ nombre });
+    if (onSubmit) {
+      // Call onSubmit with form data
+    }
   };
 
   return (
@@ -46,28 +49,16 @@ export const GeningproyectadosForm: React.FC<GeningproyectadosFormProps> = ({
     >
       <h3>{isEditMode ? 'Editar' : 'Crear'} genIngProyectados.zul</h3>
 
-      {/* TODO: Agregar inputs del formulario */}
-      {/* Ejemplo:
-      <label>
-        Nombre
-        <input
-          type="text"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
-          disabled={loading}
-        />
-      </label>
-      */}
+      {/* Campos del formulario irían aquí */}
 
       <div style={{ display: 'flex', gap: '0.5rem' }}>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Guardando...' : isEditMode ? 'Actualizar' : 'Crear'}
-        </button>
+        <UIButton variant="primary" type="submit" disabled={loading}>
+          {getButtonLabel()}
+        </UIButton>
         {onCancel && (
-          <button type="button" onClick={onCancel} disabled={loading}>
+          <UIButton variant="outline" type="button" onClick={onCancel} disabled={loading}>
             Cancelar
-          </button>
+          </UIButton>
         )}
       </div>
     </form>

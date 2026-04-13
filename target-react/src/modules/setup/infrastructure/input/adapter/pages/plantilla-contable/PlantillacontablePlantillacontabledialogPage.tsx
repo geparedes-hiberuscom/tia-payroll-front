@@ -7,6 +7,7 @@ import { CreatePlantillacontablePlantillacontabledialogRequest, UpdatePlantillac
 import { PlantillacontablePlantillacontabledialog } from '../../../../../domain/model/PlantillacontablePlantillacontabledialog';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
+import { UIButton } from '../../components/ui-kit';
 
 /**
  * Página principal: plantillaContable.zul / plantillaContableDialog.zul
@@ -82,31 +83,16 @@ export const PlantillacontablePlantillacontabledialogPage: React.FC = () => {
           <p style={{ margin: 0, color: '#666', fontSize: '0.95rem' }}>Gestión de plantillas contables del sistema</p>
         </div>
         {!showForm && (
-          <button
+          <UIButton
+            variant="primary"
+            size="medium"
             onClick={() => {
               setEditingItem(undefined);
               setShowForm(true);
             }}
-            style={{
-              padding: '0.5rem 1.5rem',
-              backgroundColor: '#B1CBD5',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
-              cursor: 'pointer',
-              fontSize: '0.95rem',
-              fontWeight: 500,
-              transition: 'background-color 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#7B8D95';
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#B1CBD5';
-            }}
           >
             + Nueva Plantilla
-          </button>
+          </UIButton>
         )}
       </div>
 

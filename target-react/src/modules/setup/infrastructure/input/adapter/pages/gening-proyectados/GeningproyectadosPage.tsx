@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { UIButton } from '../../components/ui-kit';
 import { useGeningproyectados } from '../../hooks/useGeningproyectados';
 import { GeningproyectadosList } from '../../components/gening-proyectados/GeningproyectadosList';
 import { GeningproyectadosForm } from '../../components/gening-proyectados/GeningproyectadosForm';
@@ -47,7 +48,7 @@ export const GeningproyectadosPage: React.FC = () => {
     <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Ingresos Proyectados</h1>
-        {!showForm && <button onClick={() => setShowForm(true)}>+ Generar</button>}
+        {!showForm && <UIButton variant="primary" onClick={() => setShowForm(true)}>+ Generar</UIButton>}
       </div>
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
       {showForm && (

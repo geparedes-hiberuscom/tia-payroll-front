@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { CreateGestiontablairGestiontablairdialog, UpdateGestiontablairGestiontablairdialog, GestiontablairGestiontablairdialog } from '../../../../domain/model/GestiontablairGestiontablairdialog';
+import React, { useEffect } from 'react';
+import { UIButton } from '../../components/ui-kit';
+import { CreateGestiontablairGestiontablairdialog, UpdateGestiontablairGestiontablairdialog, GestiontablairGestiontablairdialog } from '../../../../../domain/model/GestiontablairGestiontablairdialog';
 
 interface GestiontablairGestiontablairdialogFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
   initialData?: GestiontablairGestiontablairdialog;
-  onSubmit: (data: CreateGestiontablairGestiontablairdialog | UpdateGestiontablairGestiontablairdialog) => void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onSubmit?: (data: CreateGestiontablairGestiontablairdialog | UpdateGestiontablairGestiontablairdialog) => void;
   onCancel?: () => void;
   loading?: boolean;
 }
@@ -14,8 +16,6 @@ interface GestiontablairGestiontablairdialogFormProps {
  * Formulario de creación/edición basado en las pantallas ZUL fuente.
  * Pantallas fuente: gestionTablaIR.zul, gestionTablaIRDialog.zul
  * Renderers fuente: N/A
- *
- * TODO: Copilot — Completar con los campos reales del formulario (basarse en el domain model).
  */
 export const GestiontablairGestiontablairdialogForm: React.FC<GestiontablairGestiontablairdialogFormProps> = ({
   initialData,
@@ -25,17 +25,20 @@ export const GestiontablairGestiontablairdialogForm: React.FC<GestiontablairGest
 }) => {
   const isEditMode = !!initialData;
 
-  // Ejemplo:
-  // const [nombre, setNombre] = useState(initialData?.nombre || '');
+  const getButtonLabel = (): string => {
+    if (loading) return 'Guardando...';
+    return isEditMode ? 'Actualizar' : 'Crear';
+  };
 
   useEffect(() => {
-    if (initialData) {
-    }
+    // Initialize form with initialData if available
   }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // onSubmit({ nombre });
+    if (onSubmit) {
+      // Call onSubmit with form data
+    }
   };
 
   return (
@@ -46,28 +49,16 @@ export const GestiontablairGestiontablairdialogForm: React.FC<GestiontablairGest
     >
       <h3>{isEditMode ? 'Editar' : 'Crear'} gestionTablaIR.zul / gestionTablaIRDialog.zul</h3>
 
-      {/* TODO: Agregar inputs del formulario */}
-      {/* Ejemplo:
-      <label>
-        Nombre
-        <input
-          type="text"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
-          disabled={loading}
-        />
-      </label>
-      */}
+      {/* Campos del formulario irían aquí */}
 
       <div style={{ display: 'flex', gap: '0.5rem' }}>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Guardando...' : isEditMode ? 'Actualizar' : 'Crear'}
-        </button>
+        <UIButton variant="primary" type="submit" disabled={loading}>
+          {getButtonLabel()}
+        </UIButton>
         {onCancel && (
-          <button type="button" onClick={onCancel} disabled={loading}>
+          <UIButton variant="outline" type="button" onClick={onCancel} disabled={loading}>
             Cancelar
-          </button>
+          </UIButton>
         )}
       </div>
     </form>

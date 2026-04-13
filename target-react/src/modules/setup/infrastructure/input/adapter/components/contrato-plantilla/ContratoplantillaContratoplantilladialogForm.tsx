@@ -1,73 +1,160 @@
 import React, { useState, useEffect } from 'react';
-import { CreateContratoplantillaContratoplantilladialog, UpdateContratoplantillaContratoplantilladialog, ContratoplantillaContratoplantilladialog } from '../../../../domain/model/ContratoplantillaContratoplantilladialog';
+import { CreateContratoplantillaContratoplantilladialogRequest, UpdateContratoplantillaContratoplantilladialogRequest, ContratoplantillaContratoplantilladialogResponse } from '../../dto/ContratoplantillaContratoplantilladialogDto';
+import { UIInput, UIButton } from '../../components/ui-kit';
 
 interface ContratoplantillaContratoplantilladialogFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
-  initialData?: ContratoplantillaContratoplantilladialog;
-  onSubmit: (data: CreateContratoplantillaContratoplantilladialog | UpdateContratoplantillaContratoplantilladialog) => void;
+  initialData?: ContratoplantillaContratoplantilladialogResponse;
+  onSubmit: (data: CreateContratoplantillaContratoplantilladialogRequest | UpdateContratoplantillaContratoplantilladialogRequest) => void;
   onCancel?: () => void;
   loading?: boolean;
+  error?: string | null;
 }
 
 /**
  * Componente Formulario: contratoPlantilla.zul / contratoPlantillaDialog.zul
  * Formulario de creación/edición basado en las pantallas ZUL fuente.
  * Pantallas fuente: contratoPlantilla.zul, contratoPlantillaDialog.zul
- * Renderers fuente: N/A
- *
- * TODO: Copilot — Completar con los campos reales del formulario (basarse en el domain model).
  */
 export const ContratoplantillaContratoplantilladialogForm: React.FC<ContratoplantillaContratoplantilladialogFormProps> = ({
   initialData,
   onSubmit,
   onCancel,
   loading,
+  error,
 }) => {
   const isEditMode = !!initialData;
 
-  // Ejemplo:
-  // const [nombre, setNombre] = useState(initialData?.nombre || '');
+  // Estados para campos de creación/edición
+  const [descripcion, setDescripcion] = useState(initialData?.descripcion || '');
+  const [nombreArchivo, setNombreArchivo] = useState(initialData?.nombreArchivo || '');
+  const [nombreArchivo2, setNombreArchivo2] = useState(initialData?.nombreArchivo2 || '');
 
   useEffect(() => {
     if (initialData) {
+      setDescripcion(initialData.descripcion || '');
+      setNombreArchivo(initialData.nombreArchivo || '');
+      setNombreArchivo2(initialData.nombreArchivo2 || '');
     }
   }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // onSubmit({ nombre });
+
+    // Validar campos requeridos
+    if (!descripcion) {
+      alert('Por favor completa todos los campos requeridos (Descripción)');
+      return;
+    }
+
+    const data: CreateContratoplantillaContratoplantilladialogRequest | UpdateContratoplantillaContratoplantilladialogRequest = {
+      vdescplantilla: descripcion,
+      vnombrearchivo: nombreArchivo || undefined,
+      vnombrearchivo2: nombreArchivo2 || undefined,
+    };
+
+    onSubmit(data);
+  };
+
+  const buttonContainerStyle = {
+    display: 'flex',
+    gap: '0.75rem',
+    justifyContent: 'flex-end',
+    marginTop: '1.5rem',
+  };
+
+  const getButtonText = () => {
+    if (loading) return 'Guardando...';
+    if (isEditMode) return 'Actualizar';
+    return 'Crear';
   };
 
   return (
     <form
       onSubmit={handleSubmit}
       data-testid="contratoplantilla-contratoplantilladialog-form"
-      style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: 600 }}
+      style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}
     >
-      <h3>{isEditMode ? 'Editar' : 'Crear'} contratoPlantilla.zul / contratoPlantillaDialog.zul</h3>
+      {error && (
+        <div
+          style={{
+            backgroundColor: '#fee',
+            border: '1px solid #fcc',
+            borderRadius: 4,
+            padding: '1rem',
+            color: '#c33',
+            fontSize: '0.95rem',
+            fontWeight: 500,
+          }}
+        >
+          ⚠️ {error}
+        </div>
+      )}
 
-      {/* TODO: Agregar inputs del formulario */}
-      {/* Ejemplo:
-      <label>
-        Nombre
-        <input
+      <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+        <legend style={{ fontWeight: 'bold', marginBottom: '0.75rem', fontSize: '0.875rem' }}>
+          Información requerida
+        </legend>
+
+        <UIInput
+          label="Descripción"
           type="text"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
+          value={descripcion}
+          onChange={(e) => setDescripcion(e.target.value)}
           disabled={loading}
+          placeholder="Ej: Plantilla de Contrato"
+          required
+          fullWidth
         />
-      </label>
-      */}
+      </fieldset>
 
-      <div style={{ display: 'flex', gap: '0.5rem' }}>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Guardando...' : isEditMode ? 'Actualizar' : 'Crear'}
-        </button>
+      <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+        <legend style={{ fontWeight: 'bold', marginBottom: '0.75rem', fontSize: '0.875rem' }}>
+          Información adicional (opcional)
+        </legend>
+
+        <UIInput
+          label="Archivo Principal"
+          type="text"
+          value={nombreArchivo}
+          onChange={(e) => setNombreArchivo(e.target.value)}
+          disabled={loading}
+          placeholder="Opcional"
+          fullWidth
+        />
+
+        <div style={{ marginTop: '1rem' }}>
+          <UIInput
+            label="Archivo Secundario"
+            type="text"
+            value={nombreArchivo2}
+            onChange={(e) => setNombreArchivo2(e.target.value)}
+            disabled={loading}
+            placeholder="Opcional"
+            fullWidth
+          />
+        </div>
+      </fieldset>
+
+      <div style={buttonContainerStyle}>
+        <UIButton
+          type="submit"
+          variant="primary"
+          size="medium"
+          disabled={loading}
+        >
+          {getButtonText()}
+        </UIButton>
         {onCancel && (
-          <button type="button" onClick={onCancel} disabled={loading}>
+          <UIButton
+            type="button"
+            variant="secondary"
+            size="medium"
+            onClick={onCancel}
+            disabled={loading}
+          >
             Cancelar
-          </button>
+          </UIButton>
         )}
       </div>
     </form>

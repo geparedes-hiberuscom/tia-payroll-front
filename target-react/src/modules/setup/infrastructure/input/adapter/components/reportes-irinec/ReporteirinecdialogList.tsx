@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReporteirinecdialogResponse } from '../dto/ReporteirinecdialogDto';
+import { ReporteirinecdialogResponse } from '../../dto/ReporteirinecdialogDto';
 import { ReporteirinecdialogCard } from './ReporteirinecdialogCard';
 
 interface ReporteirinecdialogListProps {

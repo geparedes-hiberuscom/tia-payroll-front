@@ -1,4 +1,5 @@
 import React from 'react';
+import { UIButton } from '../../components/ui-kit';
 import { PlantillacontablePlantillacontabledialogResponse } from '../../dto/PlantillacontablePlantillacontabledialogDto';
 
 interface PlantillacontablePlantillacontabledialogDetailProps {
@@ -86,27 +87,12 @@ export const PlantillacontablePlantillacontabledialogDetail: React.FC<Plantillac
         </div>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           {onBack && (
-            <button
+            <UIButton
+              variant="secondary"
               onClick={onBack}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: '#6C5C51',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 4,
-                cursor: 'pointer',
-                fontSize: '0.875rem',
-                transition: 'background-color 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#5A4C42';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#6C5C51';
-              }}
             >
               ← Volver
-            </button>
+            </UIButton>
           )}
         </div>
       </div>
@@ -209,52 +195,20 @@ export const PlantillacontablePlantillacontabledialogDetail: React.FC<Plantillac
       {/* Acciones */}
       <div style={{ display: 'flex', gap: '0.5rem', marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid #e5e7eb' }}>
         {onEdit && (
-          <button
+          <UIButton
+            variant="primary"
             onClick={() => onEdit(item)}
-            style={{
-              padding: '0.5rem 1.5rem',
-              backgroundColor: '#B1CBD5',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              transition: 'background-color 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#7B8D95';
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#B1CBD5';
-            }}
           >
             Editar
-          </button>
+          </UIButton>
         )}
         {onDelete && (
-          <button
+          <UIButton
+            variant="secondary"
             onClick={() => onDelete(item.id)}
-            style={{
-              padding: '0.5rem 1.5rem',
-              backgroundColor: '#6C5C51',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              transition: 'background-color 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#5A4C42';
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#6C5C51';
-            }}
           >
             Eliminar
-          </button>
+          </UIButton>
         )}
       </div>
     </div>

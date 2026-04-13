@@ -1,5 +1,6 @@
 import React from 'react';
-import { Gastospersonalesdialog } from '../../../../domain/model/Gastospersonalesdialog';
+import { UIButton } from '../../components/ui-kit';
+import { Gastospersonalesdialog } from '../../../../../domain/model/Gastospersonalesdialog';
 
 interface GastospersonalesdialogCardProps {
   item: Gastospersonalesdialog;
@@ -12,7 +13,7 @@ interface GastospersonalesdialogCardProps {
  * Componente Card: GastosPersonalesDialog.zul
  * Muestra un resumen individual de un Gastospersonalesdialog.
  *
- * TODO: Copilot — Agregar campos reales del domain model.
+ * Copilot — Agregar campos reales del domain model.
  */
 export const GastospersonalesdialogCard: React.FC<GastospersonalesdialogCardProps> = ({
   item,
@@ -21,7 +22,8 @@ export const GastospersonalesdialogCard: React.FC<GastospersonalesdialogCardProp
   onEdit,
 }) => {
   return (
-    <div
+    <button
+      type="button"
       data-testid={`gastospersonalesdialog-card-${item.id}`}
       style={{
         padding: '1rem',
@@ -30,6 +32,10 @@ export const GastospersonalesdialogCard: React.FC<GastospersonalesdialogCardProp
         justifyContent: 'space-between',
         alignItems: 'center',
         cursor: onSelect ? 'pointer' : 'default',
+        border: 'none',
+        background: 'transparent',
+        textAlign: 'left',
+        width: '100%',
       }}
       onClick={() => onSelect?.(item)}
     >
@@ -42,19 +48,20 @@ export const GastospersonalesdialogCard: React.FC<GastospersonalesdialogCardProp
       </div>
       <div style={{ display: 'flex', gap: '0.5rem' }}>
         {onEdit && (
-          <button onClick={(e) => { e.stopPropagation(); onEdit(item); }}>
+          <UIButton variant="primary" size="small" onClick={(e) => { e.stopPropagation(); onEdit(item); }}>
             Editar
-          </button>
+          </UIButton>
         )}
         {onDelete && (
-          <button
+          <UIButton
+            variant="secondary"
+            size="small"
             onClick={(e) => { e.stopPropagation(); onDelete(item.id); }}
-            style={{ color: 'red' }}
           >
             Eliminar
-          </button>
+          </UIButton>
         )}
       </div>
-    </div>
+    </button>
   );
 };

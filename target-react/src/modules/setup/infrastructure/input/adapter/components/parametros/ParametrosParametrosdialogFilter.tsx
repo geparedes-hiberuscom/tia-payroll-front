@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { UIButton } from '../../components/ui-kit';
 import { ParametrosParametrosdialogFilterParams } from '../../dto/ParametrosParametrosdialogDto';
 
 interface ParametrosParametrosdialogFilterProps {
@@ -82,39 +83,23 @@ export const ParametrosParametrosdialogFilter: React.FC<ParametrosParametrosdial
       </fieldset>
 
       <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-        <button
+        <UIButton
+          variant="primary"
           type="submit"
           disabled={loading}
           data-testid="parametros-filter-apply"
-          style={{ 
-            padding: '0.5rem 1rem',
-            backgroundColor: '#B1CBD5',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.6 : 1,
-          }}
         >
           Buscar
-        </button>
-        <button
+        </UIButton>
+        <UIButton
+          variant="outline"
           type="button"
           disabled={loading}
           onClick={handleClear}
           data-testid="parametros-filter-clear"
-          style={{ 
-            padding: '0.5rem 1rem',
-            backgroundColor: '#8A9BA8',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.6 : 1,
-          }}
         >
           Limpiar
-        </button>
+        </UIButton>
       </div>
     </form>
   );

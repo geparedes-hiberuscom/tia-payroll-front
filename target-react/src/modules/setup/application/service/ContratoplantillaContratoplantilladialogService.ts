@@ -6,8 +6,6 @@ import { ContratoplantillaContratoplantilladialogResponse, ContratoplantillaCont
  * Implementa la lógica de aplicación invocando el Gateway Port (puerto de salida).
  * Controladores fuente: 6
  * Servicios fuente: 0
- *
- * TODO: Copilot — Implementa lógica de negocio adicional (validaciones, transformaciones).
  */
 export class ContratoplantillaContratoplantilladialogService {
   constructor(private readonly gateway: ContratoplantillaContratoplantilladialogGatewayPort) {}

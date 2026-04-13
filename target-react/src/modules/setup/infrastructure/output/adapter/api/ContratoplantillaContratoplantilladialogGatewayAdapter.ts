@@ -3,7 +3,7 @@ import { ContratoplantillaContratoplantilladialogResponse, ContratoplantillaCont
 import { ContratoplantillaContratoplantilladialogApiMapper } from '../mapper/ContratoplantillaContratoplantilladialogApiMapper';
 import { httpClient } from '@shared/infrastructure/output/adapter/api/httpClient';
 
-const BASE_PATH = '/api/v1/en-plantillas';
+const BASE_PATH = '/api/v1/contrato-plantillas';
 
 /**
  * API Gateway Adapter: contratoPlantilla.zul / contratoPlantillaDialog.zul

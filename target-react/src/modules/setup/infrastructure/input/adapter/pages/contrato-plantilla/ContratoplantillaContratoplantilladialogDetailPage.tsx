@@ -8,8 +8,6 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
 /**
  * Página de detalle: contratoPlantilla.zul / contratoPlantillaDialog.zul
  * Muestra el detalle completo de un registro.
- *
- * TODO: Copilot — Completar con la navegación y acciones específicas.
  */
 export const ContratoplantillaContratoplantilladialogDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

@@ -1,4 +1,5 @@
 import React from 'react';
+import { UIButton } from '../../components/ui-kit';
 import { Modal } from '@shared/infrastructure/input/adapter/components/Modal';
 
 interface ParametrosDeleteConfirmModalProps {
@@ -30,36 +31,20 @@ export const ParametrosDeleteConfirmModal: React.FC<ParametrosDeleteConfirmModal
       </div>
 
       <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-        <button
+        <UIButton
+          variant="outline"
           onClick={onCancel}
           disabled={loading}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#8A9BA8',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.6 : 1,
-          }}
         >
           Cancelar
-        </button>
-        <button
+        </UIButton>
+        <UIButton
+          variant="secondary"
           onClick={onConfirm}
           disabled={loading}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#6C5C51',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.6 : 1,
-          }}
         >
           {loading ? 'Eliminando...' : 'Eliminar'}
-        </button>
+        </UIButton>
       </div>
     </Modal>
   );

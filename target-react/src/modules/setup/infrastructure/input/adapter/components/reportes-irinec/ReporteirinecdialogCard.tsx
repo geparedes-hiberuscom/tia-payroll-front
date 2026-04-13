@@ -1,5 +1,6 @@
 import React from 'react';
-import { ReporteirinecdialogResponse } from '../dto/ReporteirinecdialogDto';
+import { UIButton } from '../../components/ui-kit';
+import { ReporteirinecdialogResponse } from '../../dto/ReporteirinecdialogDto';
 
 interface ReporteirinecdialogCardProps {
   item: ReporteirinecdialogResponse;
@@ -11,8 +12,6 @@ interface ReporteirinecdialogCardProps {
 /**
  * Componente Card: ReporteIRINECDialog.zul
  * Muestra un resumen individual de un Reporteirinecdialog.
- *
- * TODO: Copilot — Agregar campos reales del domain model.
  */
 export const ReporteirinecdialogCard: React.FC<ReporteirinecdialogCardProps> = ({
   item,
@@ -21,7 +20,8 @@ export const ReporteirinecdialogCard: React.FC<ReporteirinecdialogCardProps> = (
   onEdit,
 }) => {
   return (
-    <div
+    <button
+      type="button"
       data-testid={`reporteirinecdialog-card-${item.id}`}
       style={{
         padding: '1rem',
@@ -30,28 +30,32 @@ export const ReporteirinecdialogCard: React.FC<ReporteirinecdialogCardProps> = (
         justifyContent: 'space-between',
         alignItems: 'center',
         cursor: onSelect ? 'pointer' : 'default',
+        border: 'none',
+        background: 'transparent',
+        textAlign: 'left',
+        width: '100%',
       }}
       onClick={() => onSelect?.(item)}
     >
       <div>
         <strong>{item.id}</strong>
-        {/* TODO: Mostrar campos del dominio */}
       </div>
       <div style={{ display: 'flex', gap: '0.5rem' }}>
         {onEdit && (
-          <button onClick={(e) => { e.stopPropagation(); onEdit(item); }}>
+          <UIButton variant="primary" size="small" onClick={(e) => { e.stopPropagation(); onEdit(item); }}>
             Editar
-          </button>
+          </UIButton>
         )}
         {onDelete && (
-          <button
+          <UIButton
+            variant="secondary"
+            size="small"
             onClick={(e) => { e.stopPropagation(); onDelete(item.id); }}
-            style={{ color: 'red' }}
           >
             Eliminar
-          </button>
+          </UIButton>
         )}
       </div>
-    </div>
+    </button>
   );
 };

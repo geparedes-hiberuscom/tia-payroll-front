@@ -1,5 +1,5 @@
 import React from 'react';
-import { Gastospersonalesdialog } from '../../../../domain/model/Gastospersonalesdialog';
+import { Gastospersonalesdialog } from '../../../../../domain/model/Gastospersonalesdialog';
 import { GastospersonalesdialogCard } from './GastospersonalesdialogCard';
 
 interface GastospersonalesdialogListProps {

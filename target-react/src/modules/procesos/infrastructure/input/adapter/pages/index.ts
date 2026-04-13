@@ -1,6 +1,3 @@
-// Auto-generated barrel
-export * from './ProcesosPage';
-
 export * from './EjecucionbotCreatePage';
 export * from './EjecucionbotDetailPage';
 export * from './EjecucionbotPage';

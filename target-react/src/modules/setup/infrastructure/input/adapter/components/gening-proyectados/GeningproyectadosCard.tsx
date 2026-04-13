@@ -1,5 +1,6 @@
 import React from 'react';
-import { GeningproyectadosResponse } from '../dto/GeningproyectadosDto';
+import { UIButton } from '../../components/ui-kit';
+import { GeningproyectadosResponse } from '../../dto/GeningproyectadosDto';
 
 interface GeningproyectadosCardProps {
   item: GeningproyectadosResponse;
@@ -12,7 +13,7 @@ interface GeningproyectadosCardProps {
  * Componente Card: genIngProyectados.zul
  * Muestra un resumen individual de un Geningproyectados.
  *
- * TODO: Copilot — Agregar campos reales del domain model.
+ *Copilot — Agregar campos reales del domain model.
  */
 export const GeningproyectadosCard: React.FC<GeningproyectadosCardProps> = ({
   item,
@@ -21,7 +22,8 @@ export const GeningproyectadosCard: React.FC<GeningproyectadosCardProps> = ({
   onEdit,
 }) => {
   return (
-    <div
+    <button
+      type="button"
       data-testid={`geningproyectados-card-${item.id}`}
       style={{
         padding: '1rem',
@@ -30,28 +32,33 @@ export const GeningproyectadosCard: React.FC<GeningproyectadosCardProps> = ({
         justifyContent: 'space-between',
         alignItems: 'center',
         cursor: onSelect ? 'pointer' : 'default',
+        border: 'none',
+        background: 'transparent',
+        textAlign: 'left',
+        width: '100%',
       }}
       onClick={() => onSelect?.(item)}
     >
       <div>
         <strong>{item.id}</strong>
-        {/* TODO: Mostrar campos del dominio */}
+        {/*Mostrar campos del dominio */}
       </div>
       <div style={{ display: 'flex', gap: '0.5rem' }}>
         {onEdit && (
-          <button onClick={(e) => { e.stopPropagation(); onEdit(item); }}>
+          <UIButton variant="primary" size="small" onClick={(e) => { e.stopPropagation(); onEdit(item); }}>
             Editar
-          </button>
+          </UIButton>
         )}
         {onDelete && (
-          <button
+          <UIButton
+            variant="secondary"
+            size="small"
             onClick={(e) => { e.stopPropagation(); onDelete(item.id); }}
-            style={{ color: 'red' }}
           >
             Eliminar
-          </button>
+          </UIButton>
         )}
       </div>
-    </div>
+    </button>
   );
 };

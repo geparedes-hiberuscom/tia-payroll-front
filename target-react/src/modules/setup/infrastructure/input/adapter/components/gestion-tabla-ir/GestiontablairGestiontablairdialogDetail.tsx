@@ -1,5 +1,6 @@
 import React from 'react';
-import { GestiontablairGestiontablairdialog } from '../../../../domain/model/GestiontablairGestiontablairdialog';
+import { UIButton } from '../../components/ui-kit';
+import { GestiontablairGestiontablairdialog } from '../../../../../domain/model/GestiontablairGestiontablairdialog';
 
 interface GestiontablairGestiontablairdialogDetailProps {
   item: GestiontablairGestiontablairdialog;
@@ -12,7 +13,7 @@ interface GestiontablairGestiontablairdialogDetailProps {
  * Componente Detalle: gestionTablaIR.zul / gestionTablaIRDialog.zul
  * Muestra todos los campos de un GestiontablairGestiontablairdialog en detalle.
  *
- * TODO: Copilot — Mostrar todos los campos del domain model.
+ * Copilot — Mostrar todos los campos del domain model.
  */
 export const GestiontablairGestiontablairdialogDetail: React.FC<GestiontablairGestiontablairdialogDetailProps> = ({
   item,
@@ -24,21 +25,20 @@ export const GestiontablairGestiontablairdialogDetail: React.FC<GestiontablairGe
     <div data-testid="gestiontablair-gestiontablairdialog-detail" style={{ maxWidth: 600 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h3>Detalle de gestionTablaIR.zul / gestionTablaIRDialog.zul</h3>
-        {onBack && <button onClick={onBack}>← Volver</button>}
+        {onBack && <UIButton variant="secondary" onClick={onBack}>← Volver</UIButton>}
       </div>
 
       <dl>
         <dt><strong>ID</strong></dt>
         <dd>{item.id}</dd>
-        {/* TODO: Agregar todos los campos del domain model */}
       </dl>
 
       <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
-        {onEdit && <button onClick={() => onEdit(item)}>Editar</button>}
+        {onEdit && <UIButton variant="primary" onClick={() => onEdit(item)}>Editar</UIButton>}
         {onDelete && (
-          <button onClick={() => onDelete(item.id)} style={{ color: 'red' }}>
+          <UIButton variant="secondary" onClick={() => onDelete(item.id)}>
             Eliminar
-          </button>
+          </UIButton>
         )}
       </div>
     </div>

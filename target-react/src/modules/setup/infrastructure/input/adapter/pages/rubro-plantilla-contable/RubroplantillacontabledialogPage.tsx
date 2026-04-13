@@ -5,6 +5,7 @@ import { RubroplantillacontabledialogForm } from '../../components/rubro-plantil
 import { CreateRubroplantillacontabledialogRequest, UpdateRubroplantillacontabledialogRequest, RubroplantillacontabledialogResponse } from '../../dto/RubroplantillacontabledialogDto';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
+import { UIButton } from '../../components/ui-kit';
 
 /**
  * Página principal: rubroplantillaContableDialog.zul
@@ -13,35 +14,82 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
  *
  * Usa el hook useRubroplantillacontabledialog que conecta con:
  *   ApplicationService → GatewayPort → GatewayAdapter (Axios)
- *
- * TODO: Copilot — Completar la página con la lógica de las pantallas ZUL originales.
  */
 export const RubroplantillacontabledialogPage: React.FC = () => {
   const { items, loading, error, fetchAll, create, update, remove, clearError } = useRubroplantillacontabledialog();
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<RubroplantillacontabledialogResponse | undefined>(undefined);
+  const [formError, setFormError] = useState<string | null>(null);
 
-  useEffect(() => { fetchAll(); }, []);
+  useEffect(() => { 
+    fetchAll(); 
+  }, []);
 
   const handleSubmit = async (data: CreateRubroplantillacontabledialogRequest | UpdateRubroplantillacontabledialogRequest) => {
-    if (editingItem) {
-      await update(editingItem.id, data as UpdateRubroplantillacontabledialogRequest);
-    } else {
-      await create(data as CreateRubroplantillacontabledialogRequest);
+    try {
+      setFormError(null);
+      if (editingItem) {
+        await update(editingItem.id, data as UpdateRubroplantillacontabledialogRequest);
+      } else {
+        await create(data as CreateRubroplantillacontabledialogRequest);
+      }
+      setShowForm(false);
+      setEditingItem(undefined);
+      setFormError(null);
+      await fetchAll();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Error al guardar';
+      setFormError(errorMessage);
     }
-    setShowForm(false);
-    setEditingItem(undefined);
+  };
+
+  const handleEdit = (item: RubroplantillacontabledialogResponse) => {
+    setEditingItem(item);
+    setShowForm(true);
+  };
+
+  const handleDelete = async (id: number) => {
+    if (globalThis.confirm('¿Estás seguro de que deseas eliminar este elemento?')) {
+      try {
+        await remove(id);
+        await fetchAll();
+      } catch (err) {
+        setFormError(err instanceof Error ? err.message : 'Error al eliminar');
+      }
+    }
   };
 
   return (
     <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Rubros de Plantillas</h1>
-        {!showForm && <button onClick={() => setShowForm(true)} style={{ padding: '0.5rem 1rem' }}>+ Nuevo Rubro</button>}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <h1>Rubros de Plantilla Contable</h1>
+        {!showForm && (
+          <UIButton 
+            variant="primary"
+            size="medium"
+            onClick={() => { setEditingItem(undefined); setShowForm(true); }}
+          >
+            + Nuevo Rubro
+          </UIButton>
+        )}
       </div>
+
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
-      {showForm && <RubroplantillacontabledialogForm initialData={editingItem} onSubmit={handleSubmit} onCancel={() => { setShowForm(false); setEditingItem(undefined); }} loading={loading} />}
-      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando..." /> : <RubroplantillacontabledialogList items={items} loading={loading} onEdit={(item) => { setEditingItem(item); setShowForm(true); }} onDelete={(id) => { if (globalThis.confirm('¿Eliminar?')) remove(id); }} />)}
+      {formError && <div style={{ backgroundColor: '#fee', border: '1px solid #fcc', borderRadius: 4, padding: '1rem', color: '#c33', marginBottom: '1rem' }}>⚠️ {formError}</div>}
+
+      {showForm && (
+        <div style={{ marginBottom: '2rem', padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: 6 }}>
+          <RubroplantillacontabledialogForm 
+            initialData={editingItem} 
+            onSubmit={handleSubmit} 
+            onCancel={() => { setShowForm(false); setEditingItem(undefined); }} 
+            loading={loading}
+            error={formError}
+          />
+        </div>
+      )}
+
+      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando rubros..." /> : <RubroplantillacontabledialogList items={items} loading={loading} onEdit={handleEdit} onDelete={handleDelete} />)}
     </div>
   );
 };

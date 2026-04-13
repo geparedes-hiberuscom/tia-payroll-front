@@ -1,5 +1,5 @@
 import React from 'react';
-import { GeningproyectadosResponse } from '../dto/GeningproyectadosDto';
+import { GeningproyectadosResponse } from '../../dto/GeningproyectadosDto';
 import { GeningproyectadosCard } from './GeningproyectadosCard';
 
 interface GeningproyectadosListProps {

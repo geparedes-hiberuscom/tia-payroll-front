@@ -1,5 +1,5 @@
 import React from 'react';
-import { GestiontablairGestiontablairdialog } from '../../../../domain/model/GestiontablairGestiontablairdialog';
+import { GestiontablairGestiontablairdialog } from '../../../../../domain/model/GestiontablairGestiontablairdialog';
 import { GestiontablairGestiontablairdialogCard } from './GestiontablairGestiontablairdialogCard';
 
 interface GestiontablairGestiontablairdialogListProps {

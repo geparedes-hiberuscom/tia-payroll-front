@@ -2,8 +2,6 @@ import { ContratoplantillaContratoplantilladialogResponse, ContratoplantillaCont
 
 /**
  * API Mapper: contratoPlantilla.zul / contratoPlantillaDialog.zul
- * El backend usa nombres con prefijo v* (vdescplantilla, vnombrearchivo).
- * El frontend usa nombres semánticos (descripcion, nombreArchivo).
  */
 export class ContratoplantillaContratoplantilladialogApiMapper {
 
@@ -31,10 +29,18 @@ export class ContratoplantillaContratoplantilladialogApiMapper {
   }
 
   static toCreatePayload(request: CreateContratoplantillaContratoplantilladialogRequest): Record<string, unknown> {
-    return { ...request };
+    return {
+      vdescplantilla: request.vdescplantilla,
+      vnombrearchivo: request.vnombrearchivo,
+      vnombrearchivo2: request.vnombrearchivo2,
+    };
   }
 
   static toUpdatePayload(request: UpdateContratoplantillaContratoplantilladialogRequest): Record<string, unknown> {
-    return { ...request };
+    const payload: Record<string, unknown> = {};
+    if (request.vdescplantilla !== undefined) payload.vdescplantilla = request.vdescplantilla;
+    if (request.vnombrearchivo !== undefined) payload.vnombrearchivo = request.vnombrearchivo;
+    if (request.vnombrearchivo2 !== undefined) payload.vnombrearchivo2 = request.vnombrearchivo2;
+    return payload;
   }
 }

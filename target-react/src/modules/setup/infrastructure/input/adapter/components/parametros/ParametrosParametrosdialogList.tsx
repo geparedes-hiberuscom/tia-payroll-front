@@ -1,4 +1,5 @@
 import React from 'react';
+import { UIButton } from '../../components/ui-kit';
 import { ParametrosParametrosdialogResponse } from '../../dto/ParametrosParametrosdialogDto';
 
 interface ParametrosParametrosdialogListProps {
@@ -86,58 +87,30 @@ export const ParametrosParametrosdialogList: React.FC<ParametrosParametrosdialog
               <td style={{ padding: '0.75rem', textAlign: 'center' }}>
                 <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
                   {onEdit && (
-                    <button
+                    <UIButton
+                      variant="primary"
+                      size="small"
                       onClick={(e) => {
                         e.stopPropagation();
                         onEdit(item);
                       }}
                       data-testid={`edit-${item.entorno}-${item.idParametro}`}
-                      style={{
-                        padding: '0.4rem 0.8rem',
-                        fontSize: '0.875rem',
-                        backgroundColor: '#B1CBD5',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: 4,
-                        cursor: 'pointer',
-                        transition: 'background-color 0.2s',
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#7B8D95';
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#B1CBD5';
-                      }}
                     >
                       Editar
-                    </button>
+                    </UIButton>
                   )}
                   {onDelete && (
-                    <button
+                    <UIButton
+                      variant="secondary"
+                      size="small"
                       onClick={(e) => {
                         e.stopPropagation();
                         onDelete(`${item.entorno}:${item.idParametro}`);
                       }}
                       data-testid={`delete-${item.entorno}-${item.idParametro}`}
-                      style={{
-                        padding: '0.4rem 0.8rem',
-                        fontSize: '0.875rem',
-                        backgroundColor: '#6C5C51',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: 4,
-                        cursor: 'pointer',
-                        transition: 'background-color 0.2s',
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#5A4C42';
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#6C5C51';
-                      }}
                     >
                       Eliminar
-                    </button>
+                    </UIButton>
                   )}
                 </div>
               </td>

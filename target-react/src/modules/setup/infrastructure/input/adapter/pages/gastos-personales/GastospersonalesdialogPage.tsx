@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { UIButton } from '../../components/ui-kit';
 import { useGastospersonalesdialog } from '../../hooks/useGastospersonalesdialog';
 import { GastospersonalesdialogList } from '../../components/gastos-personales/GastospersonalesdialogList';
 import { GastospersonalesdialogForm } from '../../components/gastos-personales/GastospersonalesdialogForm';
@@ -49,7 +50,7 @@ export const GastospersonalesdialogPage: React.FC = () => {
     <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Gastos Personales Deducibles</h1>
-        {!showForm && <button onClick={() => setShowForm(true)} style={{ padding: '0.5rem 1rem' }}>+ Nuevo</button>}
+        {!showForm && <UIButton variant="primary" onClick={() => setShowForm(true)}>+ Nuevo</UIButton>}
       </div>
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
       {showForm && <GastospersonalesdialogForm initialData={editingItem} onSubmit={handleSubmit} onCancel={handleCancel} loading={loading} />}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { UIButton } from '../../components/ui-kit';
 import { CreateParametrosParametrosdialogRequest, UpdateParametrosParametrosdialogRequest, ParametrosParametrosdialogResponse } from '../../dto/ParametrosParametrosdialogDto';
 
 interface ParametrosParametrosdialogFormProps {
@@ -217,41 +218,21 @@ export const ParametrosParametrosdialogForm: React.FC<ParametrosParametrosdialog
 
       <div style={buttonContainerStyle}>
         {onCancel && (
-          <button
-            type="button"
+          <UIButton
+            variant="outline"
             onClick={onCancel}
             disabled={loading}
-            style={{
-              padding: '0.5rem 1rem',
-              backgroundColor: '#6c757d',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.6 : 1,
-              fontSize: '0.875rem',
-            }}
           >
             Cancelar
-          </button>
+          </UIButton>
         )}
-        <button
+        <UIButton
+          variant="primary"
           type="submit"
           disabled={loading}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#B1CBD5',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.6 : 1,
-            fontSize: '0.875rem',
-            fontWeight: 500,
-          }}
         >
           {loading ? 'Guardando...' : buttonLabel}
-        </button>
+        </UIButton>
       </div>
     </form>
   );

@@ -8,8 +8,6 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
 /**
  * Página de detalle: rubroplantillaContableDialog.zul
  * Muestra el detalle completo de un registro.
- *
- * TODO: Copilot — Completar con la navegación y acciones específicas.
  */
 export const RubroplantillacontabledialogDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { UIButton } from '../../components/ui-kit';
 import { useGestiontablairGestiontablairdialog } from '../../hooks/useGestiontablairGestiontablairdialog';
 import { GestiontablairGestiontablairdialogList } from '../../components/gestion-tabla-ir/GestiontablairGestiontablairdialogList';
 import { GestiontablairGestiontablairdialogForm } from '../../components/gestion-tabla-ir/GestiontablairGestiontablairdialogForm';
@@ -61,9 +62,9 @@ export const GestiontablairGestiontablairdialogPage: React.FC = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Tabla de Renta (IR)</h1>
         {!showForm && (
-          <button onClick={() => setShowForm(true)} style={{ padding: '0.5rem 1rem' }}>
+          <UIButton variant="primary" onClick={() => setShowForm(true)}>
             + Nuevo Rango
-          </button>
+          </UIButton>
         )}
       </div>
 

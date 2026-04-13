@@ -3,16 +3,11 @@ import { ContratoplantillaContratoplantilladialogService } from '../../../../app
 import { ContratoplantillaContratoplantilladialogGatewayAdapter } from '../../../output/adapter/api/ContratoplantillaContratoplantilladialogGatewayAdapter';
 
 import {
+  ContratoplantillaContratoplantilladialogResponse,
   ContratoplantillaContratoplantilladialogFilterParams,
+  CreateContratoplantillaContratoplantilladialogRequest,
+  UpdateContratoplantillaContratoplantilladialogRequest,
 } from '../dto/ContratoplantillaContratoplantilladialogDto';
-
-import {
-  ContratoplantillaContratoplantilladialog,
-  CreateContratoplantillaContratoplantilladialog,
-  UpdateContratoplantillaContratoplantilladialog,
-} from '@modules/setup/domain/model/ContratoplantillaContratoplantilladialog';
-
-import { ContratoplantillaContratoplantilladialogViewMapper } from '../mapper/ContratoplantillaContratoplantilladialogViewMapper';
 
 // ─── Inyección manual de dependencias ───
 const gateway = new ContratoplantillaContratoplantilladialogGatewayAdapter();
@@ -24,10 +19,10 @@ const service = new ContratoplantillaContratoplantilladialogService(gateway);
 export function useContratoplantillaContratoplantilladialog() {
   
   // -------------------------------------------
-  // Estados del dominio (no DTOs)
+  // Estados con DTOs Response
   // -------------------------------------------
-  const [items, setItems] = useState<ContratoplantillaContratoplantilladialog[]>([]);
-  const [selectedItem, setSelectedItem] = useState<ContratoplantillaContratoplantilladialog | undefined>();
+  const [items, setItems] = useState<ContratoplantillaContratoplantilladialogResponse[]>([]);
+  const [selectedItem, setSelectedItem] = useState<ContratoplantillaContratoplantilladialogResponse | undefined>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,11 +38,7 @@ export function useContratoplantillaContratoplantilladialog() {
       setError(null);
 
       const response = await service.findAll(params);
-
-      // Mapear DTO → Domain
-      const mapped = response.content.map(ContratoplantillaContratoplantilladialogViewMapper.toDomain);
-
-      setItems(mapped);
+      setItems(response.content);
       setTotalElements(response.totalElements);
       setPage(response.page);
 
@@ -67,11 +58,8 @@ export function useContratoplantillaContratoplantilladialog() {
       setError(null);
 
       const response = await service.findById(id);
-
-      const mapped = ContratoplantillaContratoplantilladialogViewMapper.toDomain(response);
-
-      setSelectedItem(mapped);
-      return mapped;
+      setSelectedItem(response);
+      return response;
 
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al cargar detalle");
@@ -84,22 +72,20 @@ export function useContratoplantillaContratoplantilladialog() {
   // -------------------------------------------
   // Create
   // -------------------------------------------
-  const create = useCallback(async (model: CreateContratoplantillaContratoplantilladialog) => {
+  const create = useCallback(async (request: CreateContratoplantillaContratoplantilladialogRequest) => {
     try {
       setLoading(true);
       setError(null);
 
-      const request = ContratoplantillaContratoplantilladialogViewMapper.toCreateRequest(model);
       const response = await service.create(request);
-      const mapped = ContratoplantillaContratoplantilladialogViewMapper.toDomain(response);
 
       // Agregar a la lista
-      setItems(prev => [...prev, mapped]);
+      setItems(prev => [...prev, response]);
 
-      return mapped;
+      return response;
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al crear");
+      setError(err instanceof Error ? err.message : 'Error al crear');
       throw err;
     } finally {
       setLoading(false);
@@ -109,26 +95,24 @@ export function useContratoplantillaContratoplantilladialog() {
   // -------------------------------------------
   // Update
   // -------------------------------------------
-  const update = useCallback(async (id: string, model: UpdateContratoplantillaContratoplantilladialog) => {
+  const update = useCallback(async (id: string, request: UpdateContratoplantillaContratoplantilladialogRequest) => {
     try {
       setLoading(true);
       setError(null);
 
-      const request = ContratoplantillaContratoplantilladialogViewMapper.toUpdateRequest(model);
       const response = await service.update(id, request);
-      const mapped = ContratoplantillaContratoplantilladialogViewMapper.toDomain(response);
 
       // Actualizar lista
       setItems(prev =>
-        prev.map(item => (item.id === mapped.id ? mapped : item))
+        prev.map(item => (item.id === id ? response : item))
       );
 
-      setSelectedItem(mapped);
+      setSelectedItem(response);
 
-      return mapped;
+      return response;
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al actualizar");
+      setError(err instanceof Error ? err.message : 'Error al actualizar');
       throw err;
     } finally {
       setLoading(false);
@@ -145,14 +129,14 @@ export function useContratoplantillaContratoplantilladialog() {
 
       await service.remove(id);
 
-      setItems(prev => prev.filter(item => item.id !== Number(id)));
+      setItems(prev => prev.filter(item => item.id !== id));
 
-      if (selectedItem?.id === Number(id)) {
+      if (selectedItem?.id === id) {
         setSelectedItem(undefined);
       }
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al eliminar");
+      setError(err instanceof Error ? err.message : 'Error al eliminar');
       throw err;
     } finally {
       setLoading(false);

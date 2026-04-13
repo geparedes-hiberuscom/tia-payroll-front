@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { UIButton } from '../../components/ui-kit';
 import { useReporteirinecdialog } from '../../hooks/useReporteirinecdialog';
 import { ReporteirinecdialogList } from '../../components/reportes-irinec/ReporteirinecdialogList';
 import { ReporteirinecdialogForm } from '../../components/reportes-irinec/ReporteirinecdialogForm';
@@ -37,7 +38,7 @@ export const ReporteirinecdialogPage: React.FC = () => {
     <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Reportes IR / INEC</h1>
-        {!showForm && <button onClick={() => setShowForm(true)} style={{ padding: '0.5rem 1rem' }}>+ Nuevo</button>}
+        {!showForm && <UIButton variant="primary" onClick={() => setShowForm(true)}>+ Nuevo</UIButton>}
       </div>
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
       {showForm && <ReporteirinecdialogForm initialData={editingItem} onSubmit={handleSubmit} onCancel={() => { setShowForm(false); setEditingItem(undefined); }} loading={loading} />}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CreatePlantillacontablePlantillacontabledialogRequest, UpdatePlantillacontablePlantillacontabledialogRequest, PlantillacontablePlantillacontabledialogResponse } from '../../dto/PlantillacontablePlantillacontabledialogDto';
+import { UIButton, UIInput } from '../../components/ui-kit';
 
 interface PlantillacontablePlantillacontabledialogFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
@@ -85,22 +86,6 @@ export const PlantillacontablePlantillacontabledialogForm: React.FC<Plantillacon
     onSubmit(data);
   };
 
-  const inputStyle = {
-    width: '100%',
-    padding: '0.5rem',
-    borderRadius: 4,
-    border: '1px solid #ccc',
-    fontFamily: 'inherit',
-    fontSize: '0.875rem',
-  } as const;
-
-  const labelStyle = {
-    display: 'block',
-    marginBottom: '0.25rem',
-    fontWeight: 500,
-    color: '#333',
-  } as const;
-
   const fieldContainerStyle = {
     display: 'flex',
     flexDirection: 'column' as const,
@@ -153,87 +138,70 @@ export const PlantillacontablePlantillacontabledialogForm: React.FC<Plantillacon
         </legend>
 
         <div style={twoColumnStyle}>
-          <div style={fieldContainerStyle}>
-            <label htmlFor="procesoId" style={labelStyle}>
-              Proceso <span style={{ color: 'red' }}>*</span>
-            </label>
-            <input
-              id="procesoId"
-              type="number"
-              value={procesoId}
-              onChange={(e) => setProcesoId(e.target.value)}
-              required
-              disabled={loading}
-              placeholder="Ej: 1"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="procesoId"
+            label="Proceso"
+            type="number"
+            value={procesoId}
+            onChange={(e) => setProcesoId(e.target.value)}
+            required
+            disabled={loading}
+            placeholder="Ej: 1"
+            fullWidth
+          />
 
-          <div style={fieldContainerStyle}>
-            <label htmlFor="rubroId" style={labelStyle}>
-              Rubro <span style={{ color: 'red' }}>*</span>
-            </label>
-            <input
-              id="rubroId"
-              type="text"
-              value={rubroId}
-              onChange={(e) => setRubroId(e.target.value)}
-              required
-              disabled={loading}
-              placeholder="Ej: RUB001"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="rubroId"
+            label="Rubro"
+            type="text"
+            value={rubroId}
+            onChange={(e) => setRubroId(e.target.value)}
+            required
+            disabled={loading}
+            placeholder="Ej: RUB001"
+            fullWidth
+          />
         </div>
 
         <div style={{ ...fieldContainerStyle, marginTop: '1rem' }}>
-          <label htmlFor="cuenta" style={labelStyle}>
-            Cuenta <span style={{ color: 'red' }}>*</span>
-          </label>
-          <input
+          <UIInput
             id="cuenta"
+            label="Cuenta"
             type="text"
             value={cuenta}
             onChange={(e) => setCuenta(e.target.value)}
             required
             disabled={loading}
             placeholder="Ej: 2101"
-            style={inputStyle}
+            fullWidth
           />
         </div>
 
         <div style={twoColumnStyle}>
-          <div style={fieldContainerStyle}>
-            <label htmlFor="debeHaber" style={labelStyle}>
-              Debe/Haber <span style={{ color: 'red' }}>*</span>
-            </label>
-            <select
-              id="debeHaber"
-              value={debeHaber}
-              onChange={(e) => setDebeHaber(e.target.value)}
-              required
-              disabled={loading}
-              style={inputStyle}
-            >
-              <option value="D">Debe (D)</option>
-              <option value="H">Haber (H)</option>
-            </select>
-          </div>
+          <UIInput
+            id="debeHaber"
+            label="Debe/Haber"
+            value={debeHaber}
+            onChange={(e) => setDebeHaber(e.target.value)}
+            required
+            disabled={loading}
+            fullWidth
+            as="select"
+          >
+            <option value="D">Debe (D)</option>
+            <option value="H">Haber (H)</option>
+          </UIInput>
 
-          <div style={fieldContainerStyle}>
-            <label htmlFor="dimensionId" style={labelStyle}>
-              Dimensión
-            </label>
-            <input
-              id="dimensionId"
-              type="number"
-              value={dimensionId}
-              onChange={(e) => setDimensionId(e.target.value)}
-              disabled={loading}
-              placeholder="Opcional"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="dimensionId"
+            label="Dimensión"
+            type="number"
+            value={dimensionId}
+            onChange={(e) => setDimensionId(e.target.value)}
+            disabled={loading}
+            placeholder="Opcional"
+            fullWidth
+          />
         </div>
       </fieldset>
 
@@ -243,190 +211,120 @@ export const PlantillacontablePlantillacontabledialogForm: React.FC<Plantillacon
         </legend>
 
         <div style={twoColumnStyle}>
-          <div style={fieldContainerStyle}>
-            <label htmlFor="subcuenta" style={labelStyle}>
-              Subcuenta
-            </label>
-            <input
-              id="subcuenta"
-              type="text"
-              value={subcuenta}
-              onChange={(e) => setSubcuenta(e.target.value)}
-              disabled={loading}
-              placeholder="Opcional"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="subcuenta"
+            label="Subcuenta"
+            type="text"
+            value={subcuenta}
+            onChange={(e) => setSubcuenta(e.target.value)}
+            disabled={loading}
+            placeholder="Opcional"
+            fullWidth
+          />
 
-          <div style={fieldContainerStyle}>
-            <label htmlFor="auxiliar" style={labelStyle}>
-              Auxiliar
-            </label>
-            <input
-              id="auxiliar"
-              type="text"
-              value={auxiliar}
-              onChange={(e) => setAuxiliar(e.target.value)}
-              disabled={loading}
-              placeholder="Opcional"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="auxiliar"
+            label="Auxiliar"
+            type="text"
+            value={auxiliar}
+            onChange={(e) => setAuxiliar(e.target.value)}
+            disabled={loading}
+            placeholder="Opcional"
+            fullWidth
+          />
         </div>
 
         <div style={twoColumnStyle}>
-          <div style={fieldContainerStyle}>
-            <label htmlFor="distribucionCosto" style={labelStyle}>
-              Distribución de Costo
-            </label>
-            <input
-              id="distribucionCosto"
-              type="text"
-              value={distribucionCosto}
-              onChange={(e) => setDistribucionCosto(e.target.value)}
-              disabled={loading}
-              placeholder="Opcional"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="distribucionCosto"
+            label="Distribución de Costo"
+            type="text"
+            value={distribucionCosto}
+            onChange={(e) => setDistribucionCosto(e.target.value)}
+            disabled={loading}
+            placeholder="Opcional"
+            fullWidth
+          />
 
-          <div style={fieldContainerStyle}>
-            <label htmlFor="rpt" style={labelStyle}>
-              RPT
-            </label>
-            <input
-              id="rpt"
-              type="text"
-              value={rpt}
-              onChange={(e) => setRpt(e.target.value)}
-              disabled={loading}
-              placeholder="Opcional"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="rpt"
+            label="RPT"
+            type="text"
+            value={rpt}
+            onChange={(e) => setRpt(e.target.value)}
+            disabled={loading}
+            placeholder="Opcional"
+            fullWidth
+          />
         </div>
 
         <div style={twoColumnStyle}>
-          <div style={fieldContainerStyle}>
-            <label htmlFor="tcDmCentroCosto" style={labelStyle}>
-              Centro de Costo (TC/DM)
-            </label>
-            <input
-              id="tcDmCentroCosto"
-              type="text"
-              value={tcDmCentroCosto}
-              onChange={(e) => setTcDmCentroCosto(e.target.value)}
-              disabled={loading}
-              placeholder="Opcional"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="tcDmCentroCosto"
+            label="Centro de Costo (TC/DM)"
+            type="text"
+            value={tcDmCentroCosto}
+            onChange={(e) => setTcDmCentroCosto(e.target.value)}
+            disabled={loading}
+            placeholder="Opcional"
+            fullWidth
+          />
 
-          <div style={fieldContainerStyle}>
-            <label htmlFor="tcDmLocalidad" style={labelStyle}>
-              Localidad (TC/DM)
-            </label>
-            <input
-              id="tcDmLocalidad"
-              type="text"
-              value={tcDmLocalidad}
-              onChange={(e) => setTcDmLocalidad(e.target.value)}
-              disabled={loading}
-              placeholder="Opcional"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="tcDmLocalidad"
+            label="Localidad (TC/DM)"
+            type="text"
+            value={tcDmLocalidad}
+            onChange={(e) => setTcDmLocalidad(e.target.value)}
+            disabled={loading}
+            placeholder="Opcional"
+            fullWidth
+          />
         </div>
 
         <div style={twoColumnStyle}>
-          <div style={fieldContainerStyle}>
-            <label htmlFor="agrupacionCC" style={labelStyle}>
-              Agrupación Centro de Costo
-            </label>
-            <input
-              id="agrupacionCC"
-              type="text"
-              value={agrupacionCC}
-              onChange={(e) => setAgrupacionCC(e.target.value)}
-              disabled={loading}
-              placeholder="Opcional"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="agrupacionCC"
+            label="Agrupación Centro de Costo"
+            type="text"
+            value={agrupacionCC}
+            onChange={(e) => setAgrupacionCC(e.target.value)}
+            disabled={loading}
+            placeholder="Opcional"
+            fullWidth
+          />
 
-          <div style={fieldContainerStyle}>
-            <label htmlFor="agrupacionLoc" style={labelStyle}>
-              Agrupación Localidad
-            </label>
-            <input
-              id="agrupacionLoc"
-              type="text"
-              value={agrupacionLoc}
-              onChange={(e) => setAgrupacionLoc(e.target.value)}
-              disabled={loading}
-              placeholder="Opcional"
-              style={inputStyle}
-            />
-          </div>
+          <UIInput
+            id="agrupacionLoc"
+            label="Agrupación Localidad"
+            type="text"
+            value={agrupacionLoc}
+            onChange={(e) => setAgrupacionLoc(e.target.value)}
+            disabled={loading}
+            placeholder="Opcional"
+            fullWidth
+          />
         </div>
       </fieldset>
 
       <div style={buttonContainerStyle}>
-        {(() => {
-          const buttonText = getButtonText();
-          return (
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                padding: '0.5rem 1.5rem',
-                backgroundColor: '#B1CBD5',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 4,
-                cursor: loading ? 'not-allowed' : 'pointer',
-                fontSize: '0.875rem',
-                fontWeight: 500,
-                transition: 'background-color 0.2s',
-                opacity: loading ? 0.6 : 1,
-              }}
-              onMouseEnter={(e) => {
-                if (!loading) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#7B8D95';
-              }}
-              onMouseLeave={(e) => {
-                if (!loading) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#B1CBD5';
-              }}
-            >
-              {buttonText}
-            </button>
-          );
-        })()}
+        <UIButton
+          variant="primary"
+          size="medium"
+          disabled={loading}
+          onClick={(e) => handleSubmit(e as unknown as React.FormEvent)}
+        >
+          {getButtonText()}
+        </UIButton>
         {onCancel && (
-          <button
-            type="button"
-            onClick={onCancel}
+          <UIButton
+            variant="secondary"
+            size="medium"
             disabled={loading}
-            style={{
-              padding: '0.5rem 1.5rem',
-              backgroundColor: '#6c757d',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
-              cursor: loading ? 'not-allowed' : 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              transition: 'background-color 0.2s',
-              opacity: loading ? 0.6 : 1,
-            }}
-            onMouseEnter={(e) => {
-              if (!loading) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#575757';
-            }}
-            onMouseLeave={(e) => {
-              if (!loading) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#6c757d';
-            }}
+            onClick={onCancel}
           >
             Cancelar
-          </button>
+          </UIButton>
         )}
       </div>
     </form>
