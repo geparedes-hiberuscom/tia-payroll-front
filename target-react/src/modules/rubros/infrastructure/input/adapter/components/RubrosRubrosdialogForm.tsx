@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
+  DimensionItem,
+  ErrorBanner,
   Form,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
+  useDimensiones,
+  useEmpresas,
 } from "../../../../../../shared";
 import {
   AmbitoSelectValue,
@@ -21,6 +25,7 @@ import {
   RubrosRubrosdialog,
   UpdateRubrosRubrosdialog,
 } from "../../../../domain/model/RubrosRubrosdialog";
+import { useClasesrubro } from "../hooks";
 
 interface RubrosRubrosdialogFormProps {
   initialData?: RubrosRubrosdialog;
@@ -28,6 +33,7 @@ interface RubrosRubrosdialogFormProps {
   onCancel?: () => void;
   loading?: boolean;
   readOnly?: boolean;
+  error?: string;
 }
 
 const defaultFormValues: RubrosRubrosdialogFormValues = {
@@ -37,7 +43,7 @@ const defaultFormValues: RubrosRubrosdialogFormValues = {
   efecto: "-1",
   observaciones: "",
   procedimientoCalculo: "",
-  rubroHistorico: '',
+  rubroHistorico: "",
   secuenciaImpresion: "",
   secuenciaSobregiro: "",
   aplicaInterfaz: false,
@@ -51,6 +57,12 @@ const defaultFormValues: RubrosRubrosdialogFormValues = {
   montoMaximo: "",
   verificaEndeudamiento: false,
   acumulable: false,
+  clases: [],
+  iidempresa: "-1",
+  cargosQueAplican: [],
+  rolesQueAplican: [],
+  cargosQueApruebanAlmacen: [],
+  cargosQueApruebanOficina: [],
 };
 
 export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
@@ -59,6 +71,7 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
   onCancel,
   loading,
   readOnly = false,
+  error,
 }) => {
   const isEditMode = Boolean(initialData);
   const [activeTab, setActiveTab] = useState("detalle");
@@ -67,9 +80,24 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
     defaultValues: defaultFormValues,
   });
   const [errors, setErrors] = useState<string[]>([]);
+  const [cargos, setCargos] = useState<DimensionItem[]>([]);
+  const [roles, setRoles] = useState<DimensionItem[]>([]);
+
+  const { items: clasesRubrosItems } = useClasesrubro();
+  const { items: empresasItems } = useEmpresas();
+  const { fetchItems } = useDimensiones();
 
   useEffect(() => {
+    function loadDimensiones() {
+      fetchItems("DMCG").then((data) => {
+        setCargos(data?.items ?? []);
+      });
+      fetchItems("DMRO").then((data) => {
+        setRoles(data?.items ?? []);
+      });
+    }
     setIsReadOnlyMode(readOnly);
+    loadDimensiones();
   }, [readOnly]);
 
   useEffect(() => {
@@ -85,7 +113,10 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
       efecto: initialData.efecto ?? "-1",
       observaciones: initialData.observaciones ?? "",
       procedimientoCalculo: initialData.procedimientoCalculo ?? "",
-      rubroHistorico: initialData.rubroHistorico !== undefined ? String(initialData.rubroHistorico) : "",
+      rubroHistorico:
+        initialData.rubroHistorico !== undefined
+          ? String(initialData.rubroHistorico)
+          : "",
       secuenciaImpresion:
         initialData.secuenciaImpresion !== undefined
           ? String(initialData.secuenciaImpresion)
@@ -123,6 +154,27 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
           : "",
       verificaEndeudamiento: Boolean(initialData.verificaEndeudamiento),
       acumulable: Boolean(initialData.acumulable),
+      clases: initialData.clases
+        ? initialData.clases.map((v) => Number(v)).filter((v) => !isNaN(v))
+        : [],
+      iidempresa:
+        initialData.iidempresa !== undefined
+          ? String(initialData.iidempresa)
+          : "-1",
+      cargosQueAplican: initialData.cargosQueAplican ?? [],
+      rolesQueAplican: initialData.rolesQueAplican ?? [],
+      cargosQueApruebanAlmacen: (
+        initialData.cargosQueApruebanAlmacen ?? []
+      ).map((item, index) => ({
+        id: item,
+        orden: index,
+      })),
+      cargosQueApruebanOficina: (
+        initialData.cargosQueApruebanOficina ?? []
+      ).map((item, index) => ({
+        id: item,
+        orden: index,
+      })),
     });
   }, [initialData, methods]);
 
@@ -153,7 +205,10 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
 
   const validate = (formValues: RubrosRubrosdialogFormValues): string[] => {
     const nextErrors: string[] = [];
-    if (!isEditMode && !/^[A-Za-z0-9_-]{2,30}$/.test(formValues.idRubro.trim())) {
+    if (
+      !isEditMode &&
+      !/^[A-Za-z0-9_-]{2,30}$/.test(formValues.idRubro.trim())
+    ) {
       nextErrors.push(
         "El ID de rubro debe tener entre 2 y 30 caracteres alfanumericos.",
       );
@@ -187,7 +242,8 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
         ambito: parseAmbito(formValues.ambito),
         efecto: parseEfecto(formValues.efecto),
         observaciones: formValues.observaciones.trim() || undefined,
-        procedimientoCalculo: formValues.procedimientoCalculo.trim() || undefined,
+        procedimientoCalculo:
+          formValues.procedimientoCalculo.trim() || undefined,
         rubroHistorico: parseOptionalNumber(formValues.rubroHistorico),
         secuenciaImpresion: parseOptionalNumber(formValues.secuenciaImpresion),
         secuenciaSobregiro: parseOptionalNumber(formValues.secuenciaSobregiro),
@@ -196,12 +252,40 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
         carta: formValues.carta.trim() || undefined,
         antiguedadMinima: parseOptionalNumber(formValues.antiguedadMinima),
         numAprobaciones: parseOptionalNumber(formValues.numAprobaciones),
-        numAprobacionesNoLocales: parseOptionalNumber(formValues.numAprobacionesNoLocales),
+        numAprobacionesNoLocales: parseOptionalNumber(
+          formValues.numAprobacionesNoLocales,
+        ),
         plazoMaximo: parseOptionalNumber(formValues.plazoMaximo),
         plazoMinimo: parseOptionalNumber(formValues.plazoMinimo),
         montoMaximo: parseOptionalNumber(formValues.montoMaximo),
         verificaEndeudamiento: formValues.verificaEndeudamiento,
         acumulable: formValues.acumulable,
+        iidempresa:
+          formValues.iidempresa !== "-1"
+            ? parseOptionalNumber(formValues.iidempresa)
+            : undefined,
+        cargosQueAplican:
+          formValues.cargosQueAplican.length > 0
+            ? (formValues.cargosQueAplican as number[])
+            : undefined,
+        rolesQueAplican:
+          formValues.rolesQueAplican.length > 0
+            ? (formValues.rolesQueAplican as number[])
+            : undefined,
+        cargosQueApruebanAlmacen:
+          formValues.cargosQueApruebanAlmacen.length > 0
+            ? formValues.cargosQueApruebanAlmacen.map((item) => ({
+                iiddimensionesl: item.id,
+                iordenaprobacion: item.orden,
+              }))
+            : undefined,
+        cargosQueApruebanOficina:
+          formValues.cargosQueApruebanOficina.length > 0
+            ? formValues.cargosQueApruebanOficina.map((item) => ({
+                iiddimensionesl: item.id,
+                iordenaprobacion: item.orden,
+              }))
+            : undefined,
       });
       return;
     }
@@ -221,12 +305,40 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
       carta: formValues.carta.trim() || undefined,
       antiguedadMinima: parseOptionalNumber(formValues.antiguedadMinima),
       numAprobaciones: parseOptionalNumber(formValues.numAprobaciones),
-      numAprobacionesNoLocales: parseOptionalNumber(formValues.numAprobacionesNoLocales),
+      numAprobacionesNoLocales: parseOptionalNumber(
+        formValues.numAprobacionesNoLocales,
+      ),
       plazoMaximo: parseOptionalNumber(formValues.plazoMaximo),
       plazoMinimo: parseOptionalNumber(formValues.plazoMinimo),
       montoMaximo: parseOptionalNumber(formValues.montoMaximo),
       verificaEndeudamiento: formValues.verificaEndeudamiento,
       acumulable: formValues.acumulable,
+      iidempresa:
+        formValues.iidempresa !== "-1"
+          ? parseOptionalNumber(formValues.iidempresa)
+          : undefined,
+      cargosQueAplican:
+        formValues.cargosQueAplican.length > 0
+          ? (formValues.cargosQueAplican as number[])
+          : undefined,
+      rolesQueAplican:
+        formValues.rolesQueAplican.length > 0
+          ? (formValues.rolesQueAplican as number[])
+          : undefined,
+      cargosQueApruebanAlmacen:
+        formValues.cargosQueApruebanAlmacen.length > 0
+          ? formValues.cargosQueApruebanAlmacen.map((item) => ({
+              iiddimensionesl: item.id,
+              iordenaprobacion: item.orden,
+            }))
+          : undefined,
+      cargosQueApruebanOficina:
+        formValues.cargosQueApruebanOficina.length > 0
+          ? formValues.cargosQueApruebanOficina.map((item) => ({
+              iiddimensionesl: item.id,
+              iordenaprobacion: item.orden,
+            }))
+          : undefined,
     });
   };
 
@@ -276,7 +388,9 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList aria-label="Secciones del formulario de rubros">
           <TabsTrigger value="detalle">Detalle</TabsTrigger>
-          {showParametrosTab && <TabsTrigger value="parametros">Parametros</TabsTrigger>}
+          {showParametrosTab && (
+            <TabsTrigger value="parametros">Parametros</TabsTrigger>
+          )}
         </TabsList>
 
         <TabsContent value="detalle">
@@ -284,6 +398,7 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
             methods={methods}
             isEditMode={isEditMode}
             loading={Boolean(loading) || isReadOnlyMode}
+            clases={clasesRubrosItems}
           />
         </TabsContent>
 
@@ -292,10 +407,14 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
             <RubrosRubrosdialogParametrosTab
               methods={methods}
               loading={Boolean(loading) || isReadOnlyMode}
+              empresas={empresasItems}
+              cargos={cargos}
+              roles={roles}
             />
           </TabsContent>
         )}
       </Tabs>
+      {error && <ErrorBanner message={error} />}
       <div style={{ display: "flex", gap: "0.5rem" }}>
         {!isReadOnlyMode && (
           <button

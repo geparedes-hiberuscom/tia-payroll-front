@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { RubrosRubrosdialogFilterParams } from "../dto/RubrosRubrosdialogDto";
+import type { RubrosRubrosdialogFilter as RubrosRubrosdialogFilterModel } from "@modules/rubros/domain/model/RubrosRubrosdialog";
 
-type AmbitoFilterValue = NonNullable<RubrosRubrosdialogFilterParams["ambito"]> | "";
-type EfectoFilterValue = NonNullable<RubrosRubrosdialogFilterParams["efecto"]> | "";
+type AmbitoFilterValue = NonNullable<RubrosRubrosdialogFilterModel["ambito"]> | "";
+type EfectoFilterValue = NonNullable<RubrosRubrosdialogFilterModel["efecto"]> | "";
 
 interface RubrosRubrosdialogFilterProps {
   loading?: boolean;
-  onApply: (params: RubrosRubrosdialogFilterParams) => void;
+  onApply: (params: RubrosRubrosdialogFilterModel) => void;
   onClear: () => void;
 }
 

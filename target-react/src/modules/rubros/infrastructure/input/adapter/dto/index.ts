@@ -8,6 +8,12 @@ export type {
 } from './CargarubrosidoDto';
 
 export type {
+  ClasesrubroFilterParams,
+  ClasesrubroResponse,
+  ClasesrubroListResponse,
+} from './ClasesrubroDto';
+
+export type {
   CreateConsultarubrosidolistRequest, UpdateConsultarubrosidolistRequest,
   ExportarConsultaIDORequest, CambiarEstadoIDORequest, ConsultarubrosidolistFilterParams,
   ConsultarubrosidolistResponse, ConsultarubrosidolistListResponse, ExportarResponseDTO,

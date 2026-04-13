@@ -2,8 +2,8 @@
 // Source: migration/plan/config.json
 // GeneratedAt: 2026-03-27
 
-import { RubrosRubrosdialog, CreateRubrosRubrosdialog, UpdateRubrosRubrosdialog, RubrosRubrosdialogFilter, RubrosRubrosdialogPageResult } from '../../../../domain/model/RubrosRubrosdialog';
-import { RubrosRubrosdialogResponse, RubrosRubrosdialogListResponse, CreateRubrosRubrosdialogRequest, UpdateRubrosRubrosdialogRequest, RubrosRubrosdialogFilterParams } from '../dto/RubrosRubrosdialogDto';
+import { RubrosRubrosdialog, CreateRubrosRubrosdialog, UpdateRubrosRubrosdialog, RubrosRubrosdialogFilter, RubrosRubrosdialogPageResult, AprobacionCargo } from '../../../../domain/model/RubrosRubrosdialog';
+import { RubrosRubrosdialogResponse, RubrosRubrosdialogListResponse, CreateRubrosRubrosdialogRequest, UpdateRubrosRubrosdialogRequest, RubrosRubrosdialogFilterParams, AprobacionCargoDto } from '../dto/RubrosRubrosdialogDto';
 
 export class RubrosRubrosdialogViewMapper {
 
@@ -34,6 +34,12 @@ export class RubrosRubrosdialogViewMapper {
       fechaCreacion: response.fechaCreacion,
       usuarioActualizacion: response.usuarioActualizacion,
       fechaActualizacion: response.fechaActualizacion,
+      vnomenclatura: response.vnomenclatura,
+      iidempresa: response.iidempresa,
+      cargosQueAplican: response.cargosQueAplican,
+      rolesQueAplican: response.rolesQueAplican,
+      cargosQueApruebanAlmacen: response.cargosQueApruebanAlmacen as AprobacionCargo[] | undefined,
+      cargosQueApruebanOficina: response.cargosQueApruebanOficina as AprobacionCargo[] | undefined,
     };
   }
 
@@ -68,6 +74,12 @@ export class RubrosRubrosdialogViewMapper {
       plazoMinimo: model.plazoMinimo,
       montoMaximo: model.montoMaximo,
       verificaEndeudamiento: model.verificaEndeudamiento,
+      vnomenclatura: model.vnomenclatura,
+      iidempresa: model.iidempresa,
+      cargosQueAplican: model.cargosQueAplican,
+      rolesQueAplican: model.rolesQueAplican,
+      cargosQueApruebanAlmacen: model.cargosQueApruebanAlmacen as AprobacionCargoDto[] | undefined,
+      cargosQueApruebanOficina: model.cargosQueApruebanOficina as AprobacionCargoDto[] | undefined,
     };
   }
 
@@ -92,6 +104,12 @@ export class RubrosRubrosdialogViewMapper {
       plazoMinimo: model.plazoMinimo,
       montoMaximo: model.montoMaximo,
       verificaEndeudamiento: model.verificaEndeudamiento,
+      vnomenclatura: model.vnomenclatura,
+      iidempresa: model.iidempresa,
+      cargosQueAplican: model.cargosQueAplican,
+      rolesQueAplican: model.rolesQueAplican,
+      cargosQueApruebanAlmacen: model.cargosQueApruebanAlmacen as AprobacionCargoDto[] | undefined,
+      cargosQueApruebanOficina: model.cargosQueApruebanOficina as AprobacionCargoDto[] | undefined,
     };
   }
 
@@ -99,8 +117,9 @@ export class RubrosRubrosdialogViewMapper {
     return {
       page: filter.page,
       size: filter.size,
-      idRubro: filter.idRubro,
-      nombre: filter.nombre,
+      vidrubro: filter.idRubro,
+      vrubro: filter.nombre,
+      vobservaciones: filter.observaciones,
       efecto: filter.efecto,
       ambito: filter.ambito,
     };

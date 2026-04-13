@@ -25,6 +25,7 @@ export class RubrosRubrosdialogApplicationService implements RubrosRubrosdialogU
 
   async findAll(filter?: RubrosRubrosdialogFilter): Promise<RubrosRubrosdialogPageResult> {
     const params = filter ? RubrosRubrosdialogViewMapper.toFilterParams(filter) : undefined;
+    console.log("params for findAll:", params); // Debug log
     const response = await this.gatewayPort.findAll(params);
     return RubrosRubrosdialogViewMapper.toPageResult(response);
   }
