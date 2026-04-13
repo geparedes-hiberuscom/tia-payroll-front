@@ -4,6 +4,7 @@ import { Loading } from '@shared/infrastructure/input/adapter/components/Loading
 import { ROUTES } from './routes';
 import { setupRoutes } from './modules/setup/setupRoutes';
 import { rubrosRoutes } from './modules/rubros/rubrosRoutes';
+import { procesosRoutes } from './modules/procesos/procesosRoutes';
 
 const SetupIndexPage = lazy(() => import('@modules/setup/infrastructure/input/adapter/pages').then((m) => ({ default: m.SetupIndexPage })));
 const ConsultasPage = lazy(() => import('@modules/consultas').then((m) => ({ default: m.ConsultasPage })));
@@ -36,6 +37,7 @@ export const AppRouter: React.FC = () => {
 
       {setupRoutes}
       {rubrosRoutes}
+      {procesosRoutes}
 
       <Route path="*" element={<div className="container"><h1>404</h1><p>Pagina no encontrada</p></div>} />
     </Routes>

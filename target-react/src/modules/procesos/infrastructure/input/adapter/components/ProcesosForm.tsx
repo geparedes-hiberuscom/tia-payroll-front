@@ -1,35 +1,53 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { Form } from '../../../../../../shared';
 
 interface ProcesosFormProps {
   onSubmit: (data: { nombre: string }) => void;
   loading?: boolean;
 }
 
-export const ProcesosForm: React.FC<ProcesosFormProps> = ({ onSubmit, loading }) => {
-  const [nombre, setNombre] = useState('');
+interface ProcesosFormValues {
+  nombre: string;
+}
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (nombre.trim()) {
-      onSubmit({ nombre: nombre.trim() });
-      setNombre('');
+export const ProcesosForm: React.FC<ProcesosFormProps> = ({ onSubmit, loading }) => {
+  const methods = useForm<ProcesosFormValues>({
+    defaultValues: {
+      nombre: '',
+    },
+  });
+
+  const nombre = methods.watch('nombre');
+
+  const handleSubmit = (data: ProcesosFormValues) => {
+    const nombreTrimmed = data.nombre.trim();
+    if (nombreTrimmed && nombreTrimmed.length >= 2) {
+      onSubmit({ nombre: nombreTrimmed });
+      methods.reset({ nombre: '' });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
-      <input
-        type="text"
-        value={nombre}
-        onChange={(e) => setNombre(e.target.value)}
-        placeholder="Nombre..."
-        required
-        disabled={loading}
-        style={{ flex: 1, padding: '0.5rem' }}
-      />
-      <button type="submit" disabled={loading || !nombre.trim()}>
-        {loading ? 'Guardando...' : 'Crear'}
-      </button>
-    </form>
+    <Form methods={methods} onSubmit={handleSubmit} className="card" data-testid="procesos-form">
+      <label className="form-field">
+        <span>Nombre</span>
+        <input
+          type="text"
+          {...methods.register('nombre', {
+            required: 'El nombre es obligatorio',
+            minLength: { value: 2, message: 'Debe tener al menos 2 caracteres' },
+          })}
+          placeholder="Nombre..."
+          disabled={loading}
+        />
+      </label>
+      {methods.formState.errors.nombre && <p className="field-error">{methods.formState.errors.nombre.message}</p>}
+      <div className="form-actions">
+        <button type="submit" className="btn btn-primary" disabled={loading || !nombre.trim() || nombre.trim().length < 2}>
+          {loading ? 'Guardando...' : 'Crear'}
+        </button>
+      </div>
+    </Form>
   );
 };
