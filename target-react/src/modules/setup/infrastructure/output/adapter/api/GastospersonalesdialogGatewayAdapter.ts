@@ -38,4 +38,11 @@ export class GastospersonalesdialogGatewayAdapter implements Gastospersonalesdia
     await httpClient.delete(`${BASE_PATH}/${id}`);
   }
 
+  async exportarExcel(empresaId: number, anio: number): Promise<Blob> {
+    const { data } = await httpClient.get(`${BASE_PATH}/export`, {
+      params: { empresaId, anio },
+      responseType: 'blob',
+    });
+    return data as Blob;
+  }
 }

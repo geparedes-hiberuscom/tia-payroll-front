@@ -78,7 +78,12 @@ export const UICombobox: React.FC<UIComboboxProps> = ({
     outline: 'none',
     opacity: disabled ? 0.6 : 1,
     boxSizing: 'border-box',
-  };
+    // Esconder ícono nativo del navegador
+    backgroundImage: 'none',
+    backgroundRepeat: 'no-repeat',
+    appearance: 'none',
+    WebkitAppearance: 'none',
+  } as React.CSSProperties;
 
   const datalistId = id ? `${id}-options` : undefined;
 
@@ -107,6 +112,18 @@ export const UICombobox: React.FC<UIComboboxProps> = ({
       )}
 
       <div style={{ position: 'relative', width: fullWidth ? '100%' : 'auto' }}>
+        <style>{`
+          input[list]::-webkit-calendar-picker-indicator {
+            display: none !important;
+          }
+          input[list]::-webkit-credentials-auto-fill-button {
+            display: none !important;
+          }
+          input[list] {
+            -webkit-appearance: none !important;
+            appearance: none !important;
+          }
+        `}</style>
         <input
           id={id}
           type="text"

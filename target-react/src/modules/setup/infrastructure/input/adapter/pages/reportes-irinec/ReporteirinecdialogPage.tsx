@@ -15,34 +15,66 @@ import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/Err
  * Usa el hook useReporteirinecdialog que conecta con:
  *   ApplicationService → GatewayPort → GatewayAdapter (Axios)
  *
- * TODO: Copilot — Completar la página con la lógica de las pantallas ZUL originales.
  */
 export const ReporteirinecdialogPage: React.FC = () => {
   const { items, loading, error, fetchAll, generar, update, remove, clearError } = useReporteirinecdialog();
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<ReporteirinecdialogResponse | undefined>(undefined);
+  const [formError, setFormError] = useState<string | null>(null);
 
-  useEffect(() => { fetchAll(); }, []);
+  useEffect(() => { fetchAll(); }, [fetchAll]);
 
   const handleSubmit = async (data: GenerarReporteirinecdialogRequest | UpdateReporteirinecdialogRequest) => {
-    if (editingItem) {
-      await update(editingItem.id, data as UpdateReporteirinecdialogRequest);
-    } else {
-      await generar(data as GenerarReporteirinecdialogRequest);
+    try {
+      setFormError(null);
+      if (editingItem) {
+        await update(editingItem.id, data as UpdateReporteirinecdialogRequest);
+      } else {
+        await generar(data as GenerarReporteirinecdialogRequest);
+      }
+      setShowForm(false);
+      setEditingItem(undefined);
+      setFormError(null);
+      await fetchAll();
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Error al guardar');
     }
+  };
+
+  const handleEdit = (item: ReporteirinecdialogResponse) => {
+    setEditingItem(item);
+    setShowForm(true);
+    setFormError(null);
+    clearError();
+  };
+
+  const handleDelete = async (id: number) => {
+    if (globalThis.confirm('¿Eliminar?')) {
+      try {
+        await remove(id);
+        await fetchAll();
+      } catch (err) {
+        setFormError(err instanceof Error ? err.message : 'Error al eliminar');
+      }
+    }
+  };
+
+  const handleCancel = () => {
     setShowForm(false);
     setEditingItem(undefined);
+    setFormError(null);
+    clearError();
   };
 
   return (
     <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Reportes IR / INEC</h1>
-        {!showForm && <UIButton variant="primary" onClick={() => setShowForm(true)}>+ Nuevo</UIButton>}
+        {!showForm && <UIButton variant="primary" onClick={() => { setShowForm(true); setEditingItem(undefined); setFormError(null); clearError(); }}>+ Nuevo</UIButton>}
       </div>
-      {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
-      {showForm && <ReporteirinecdialogForm initialData={editingItem} onSubmit={handleSubmit} onCancel={() => { setShowForm(false); setEditingItem(undefined); }} loading={loading} />}
-      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando..." /> : <ReporteirinecdialogList items={items} loading={loading} onEdit={(item) => { setEditingItem(item); setShowForm(true); }} onDelete={(id) => { if (globalThis.confirm('¿Eliminar?')) remove(id); }} />)}
+      {error && !showForm && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
+      {showForm && <ReporteirinecdialogForm initialData={editingItem} onSubmit={handleSubmit} onCancel={handleCancel} loading={loading} error={formError} />}
+      {!showForm && (loading && items.length === 0 ? <Loading message="Cargando..." /> : <ReporteirinecdialogList items={items} loading={loading} onEdit={handleEdit} onDelete={handleDelete} />)}
     </div>
   );
 };

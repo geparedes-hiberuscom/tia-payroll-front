@@ -10,6 +10,7 @@ import { GastospersonalesdialogResponse, GastospersonalesdialogListResponse, Cre
   // POST /api/v1/gastos-personales — Crear gasto personal
   // PUT /api/v1/gastos-personales/{id} — Actualizar gasto personal
   // DELETE /api/v1/gastos-personales/{id} — Eliminar gasto personal
+  // GET /api/v1/gastos-personales/export — Exportar a Excel
  */
 export interface GastospersonalesdialogGatewayPort {
   findById(id: number): Promise<GastospersonalesdialogResponse>;
@@ -17,4 +18,5 @@ export interface GastospersonalesdialogGatewayPort {
   create(request: CreateGastospersonalesdialogRequest): Promise<GastospersonalesdialogResponse>;
   update(id: number, request: UpdateGastospersonalesdialogRequest): Promise<GastospersonalesdialogResponse>;
   remove(id: number): Promise<void>;
+  exportarExcel(empresaId: number, anio: number): Promise<Blob>;
 }

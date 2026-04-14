@@ -63,7 +63,7 @@ export function useReporteirinecdialog() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [fetchAll]);
 
   const update = useCallback(async (id: number, request: UpdateReporteirinecdialogRequest) => {
     try {
@@ -74,8 +74,9 @@ export function useReporteirinecdialog() {
       setSelectedItem(updated);
       return updated;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al actualizar');
-      throw err;
+      const errorMessage = err instanceof Error ? err.message : 'Error al actualizar';
+      setError(errorMessage);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -87,14 +88,14 @@ export function useReporteirinecdialog() {
       setError(null);
       await reporteirinecdialogService.remove(id);
       setItems(prev => prev.filter(item => item.id !== id));
-      if (selectedItem?.id === id) { setSelectedItem(null); }
+      setSelectedItem(prev => prev?.id === id ? null : prev);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al eliminar');
-      throw err;
+      const errorMessage = err instanceof Error ? err.message : 'Error al eliminar';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
-  }, [selectedItem]);
+  }, []);
 
   useEffect(() => {
     fetchAll();

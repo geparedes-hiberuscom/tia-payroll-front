@@ -58,8 +58,9 @@ export function useGastospersonalesdialog() {
       setItems(prev => [...prev, created]);
       return created;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al crear');
-      throw err;
+      const errorMessage = err instanceof Error ? err.message : 'Error al crear';
+      setError(errorMessage);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -74,8 +75,9 @@ export function useGastospersonalesdialog() {
       setSelectedItem(updated);
       return updated;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al actualizar');
-      throw err;
+      const errorMessage = err instanceof Error ? err.message : 'Error al actualizar';
+      setError(errorMessage);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -87,14 +89,57 @@ export function useGastospersonalesdialog() {
       setError(null);
       await gastospersonalesdialogService.remove(id);
       setItems(prev => prev.filter(item => item.id !== id));
-      if (selectedItem?.id === id) { setSelectedItem(null); }
+      setSelectedItem(prev => prev?.id === id ? null : prev);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al eliminar');
-      throw err;
+      const errorMessage = err instanceof Error ? err.message : 'Error al eliminar';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
-  }, [selectedItem]);
+  }, []);
+
+  const exportarExcel = useCallback(async (empresaId: number, anio: number) => {
+    let url: string | null = null;
+    let link: HTMLAnchorElement | null = null;
+    
+    try {
+      setLoading(true);
+      setError(null);
+      const blob = await gastospersonalesdialogService.exportarExcel(empresaId, anio);
+      
+      if (typeof globalThis === 'undefined' || !globalThis.URL) {
+        throw new Error('No se puede descargar en este navegador');
+      }
+      
+      url = globalThis.URL.createObjectURL(blob);
+      link = document.createElement('a');
+      link.href = url;
+      link.download = `GastosPersonales_${anio}_${empresaId}.xls`;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Error al exportar';
+      setError(errorMessage);
+    } finally {
+      // Limpieza segura
+      if (link?.parentNode === document.body) {
+        try {
+          link.remove();
+        } catch (e) {
+          console.log('No se pudo eliminar el enlace de descarga:', e);
+        }
+      }
+      if (url && typeof globalThis !== 'undefined' && globalThis.URL) {
+        try {
+          globalThis.URL.revokeObjectURL(url);
+        } catch (e) {
+          console.log('No se pudo revocar el URL del blob:', e);
+        }
+      }
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetchAll();
@@ -112,6 +157,7 @@ export function useGastospersonalesdialog() {
     create,
     update,
     remove,
+    exportarExcel,
     clearError: () => setError(null),
   };
 }

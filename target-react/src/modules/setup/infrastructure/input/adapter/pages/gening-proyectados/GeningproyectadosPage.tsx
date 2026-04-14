@@ -15,48 +15,66 @@ export const GeningproyectadosPage: React.FC = () => {
   const { items, loading, error, fetchAll, generar, update, remove, clearError } = useGeningproyectados();
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<GeningproyectadosResponse | undefined>(undefined);
+  const [formError, setFormError] = useState<string | null>(null);
 
-  useEffect(() => { fetchAll(); }, []);
+  useEffect(() => { fetchAll(); }, [fetchAll]);
 
   const handleEdit = (item: GeningproyectadosResponse) => {
     setEditingItem(item);
     setShowForm(true);
+    setFormError(null);
+    clearError();
   };
 
   const handleDelete = async (id: number) => {
     if (globalThis.confirm('¿Estás seguro de eliminar este registro?')) {
-      await remove(id);
+      try {
+        await remove(id);
+        await fetchAll();
+      } catch (err) {
+        setFormError(err instanceof Error ? err.message : 'Error al eliminar');
+      }
     }
   };
 
   const handleCancel = () => {
     setShowForm(false);
     setEditingItem(undefined);
+    setFormError(null);
+    clearError();
   };
 
   const handleSubmit = async (data: GenerarGeningproyectadosRequest | UpdateGeningproyectadosRequest) => {
-    if (editingItem) {
-      await update(editingItem.id, data as UpdateGeningproyectadosRequest);
-    } else {
-      await generar(data as GenerarGeningproyectadosRequest);
+    try {
+      setFormError(null);
+      if (editingItem) {
+        await update(editingItem.id, data as UpdateGeningproyectadosRequest);
+      } else {
+        await generar(data as GenerarGeningproyectadosRequest);
+      }
+      setShowForm(false);
+      setEditingItem(undefined);
+      setFormError(null);
+      await fetchAll();
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Error al guardar');
     }
-    setShowForm(false);
-    setEditingItem(undefined);
   };
 
   return (
     <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Ingresos Proyectados</h1>
-        {!showForm && <UIButton variant="primary" onClick={() => setShowForm(true)}>+ Generar</UIButton>}
+        {!showForm && <UIButton variant="primary" onClick={() => { setShowForm(true); setEditingItem(undefined); setFormError(null); clearError(); }}>+ Generar</UIButton>}
       </div>
-      {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
+      {error && !showForm && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
       {showForm && (
         <GeningproyectadosForm
           initialData={editingItem}
           onSubmit={handleSubmit}
           onCancel={handleCancel}
           loading={loading}
+          error={formError}
         />
       )}
       {!showForm && (loading && items.length === 0 ? (

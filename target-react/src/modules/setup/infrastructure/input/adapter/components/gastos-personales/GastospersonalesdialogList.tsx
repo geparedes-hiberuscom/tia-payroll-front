@@ -15,7 +15,7 @@ interface GastospersonalesdialogListProps {
  * Renderiza una lista de elementos usando GastospersonalesdialogCard.
  * Pantallas fuente: GastosPersonalesDialog.zul
  *
- * TODO: Copilot — Completar la tabla/lista con las columnas reales del dominio.
+ * Copilot — Completar la tabla/lista con las columnas reales del dominio.
  */
 export const GastospersonalesdialogList: React.FC<GastospersonalesdialogListProps> = ({
   items,

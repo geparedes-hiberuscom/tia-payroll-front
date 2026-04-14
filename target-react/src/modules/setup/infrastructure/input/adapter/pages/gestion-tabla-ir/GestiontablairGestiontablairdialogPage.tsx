@@ -26,35 +26,52 @@ export const GestiontablairGestiontablairdialogPage: React.FC = () => {
 
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<GestiontablairGestiontablairdialog | undefined>(undefined);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchAll();
   }, []);
 
   const handleSubmit = async (data: CreateGestiontablairGestiontablairdialog | UpdateGestiontablairGestiontablairdialog) => {
-    if (editingItem) {
-      await update(editingItem.id, data as UpdateGestiontablairGestiontablairdialog);
-    } else {
-      await create(data as CreateGestiontablairGestiontablairdialog);
+    try {
+      setFormError(null);
+      if (editingItem) {
+        await update(editingItem.id, data as UpdateGestiontablairGestiontablairdialog);
+      } else {
+        await create(data as CreateGestiontablairGestiontablairdialog);
+      }
+      setShowForm(false);
+      setEditingItem(undefined);
+      setFormError(null);
+      await fetchAll();
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Error al guardar');
     }
-    setShowForm(false);
-    setEditingItem(undefined);
   };
 
   const handleEdit = (item: GestiontablairGestiontablairdialog) => {
     setEditingItem(item);
     setShowForm(true);
+    setFormError(null);
+    clearError();
   };
 
   const handleDelete = async (id: number) => {
     if (globalThis.confirm('¿Estás seguro de eliminar este registro?')) {
-      await remove(id);
+      try {
+        await remove(id);
+        await fetchAll();
+      } catch (err) {
+        setFormError(err instanceof Error ? err.message : 'Error al eliminar');
+      }
     }
   };
 
   const handleCancel = () => {
     setShowForm(false);
     setEditingItem(undefined);
+    setFormError(null);
+    clearError();
   };
 
   return (
@@ -62,13 +79,13 @@ export const GestiontablairGestiontablairdialogPage: React.FC = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Tabla de Renta (IR)</h1>
         {!showForm && (
-          <UIButton variant="primary" onClick={() => setShowForm(true)}>
+          <UIButton variant="primary" onClick={() => { setShowForm(true); setEditingItem(undefined); setFormError(null); clearError(); }}>
             + Nuevo Rango
           </UIButton>
         )}
       </div>
 
-      {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
+      {error && !showForm && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
 
       {showForm && (
         <GestiontablairGestiontablairdialogForm
@@ -76,6 +93,7 @@ export const GestiontablairGestiontablairdialogPage: React.FC = () => {
           onSubmit={handleSubmit}
           onCancel={handleCancel}
           loading={loading}
+          error={formError}
         />
       )}
 

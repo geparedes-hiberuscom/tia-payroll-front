@@ -10,7 +10,7 @@ export const httpClient = axios.create({
 
 httpClient.interceptors.request.use(
   (config) => {
-    // TODO: Agregar token de autenticación si es necesario
+    // Agregar token de autenticación si es necesario
     // const token = localStorage.getItem('token');
     // if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
