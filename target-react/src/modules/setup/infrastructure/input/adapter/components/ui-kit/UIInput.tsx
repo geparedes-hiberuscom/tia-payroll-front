@@ -140,6 +140,7 @@ export const UIInput: React.FC<UIInputProps> = ({
   children,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const isSelect = as === 'select';
   const sizeConfig = uiKitSizes.input[size];
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -199,9 +200,12 @@ export const UIInput: React.FC<UIInputProps> = ({
     cursor: disabled ? 'not-allowed' : 'text',
     transition: uiKitSizes.transition.fast,
     paddingLeft: iconLeft ? '36px' : sizeConfig.padding,
-    paddingRight: iconRight ? '36px' : sizeConfig.padding,
+    paddingRight: isSelect || iconRight ? '36px' : sizeConfig.padding,
     outline: 'none',
     opacity: disabled ? 0.6 : 1,
+    appearance: isSelect ? 'none' : undefined,
+    WebkitAppearance: isSelect ? 'none' : undefined,
+    MozAppearance: isSelect ? 'none' : undefined,
     ...style,
   };
 
@@ -267,6 +271,32 @@ export const UIInput: React.FC<UIInputProps> = ({
             style={inputStyle}
             aria-invalid={error}
           />
+        )}
+        {isSelect && (
+          <div
+            style={{
+              ...rightIconStyle,
+              right: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '20px',
+              height: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: 1,
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path
+                d="M6 8L10 12L14 8"
+                stroke={disabled ? uiKitColors.neutral.gray400 : uiKitColors.neutral.gray600}
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
         )}
         {iconRight && <div style={rightIconStyle}>{iconRight}</div>}
       </div>

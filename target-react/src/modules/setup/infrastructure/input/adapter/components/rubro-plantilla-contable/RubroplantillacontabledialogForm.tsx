@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { CreateRubroplantillacontabledialogRequest, UpdateRubroplantillacontabledialogRequest, RubroplantillacontabledialogResponse } from '../../dto/RubroplantillacontabledialogDto';
-import { UIButton, UIInput } from '../../components/ui-kit';
+import { UIButton, UIInput, UICombobox, UIComboboxOption } from '../../components/ui-kit';
+import { RubrosRubrosdialogGatewayAdapter } from '@modules/rubros/infrastructure/output/adapter/api/RubrosRubrosdialogGatewayAdapter';
+import { ProcesosProcesosdialogGatewayAdapter } from '@modules/procesos/infrastructure/output/adapter/api/ProcesosProcesosdialogGatewayAdapter';
 
 interface RubroplantillacontabledialogFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
@@ -24,7 +26,7 @@ export const RubroplantillacontabledialogForm: React.FC<Rubroplantillacontabledi
 }) => {
   const isEditMode = !!initialData;
 
-  // Estados para campos de creación/edición
+  // Estados de campos
   const [procesoId, setProcesoId] = useState(initialData?.procesoId?.toString() || '');
   const [rubroId, setRubroId] = useState(initialData?.rubroId || '');
   const [cuenta, setCuenta] = useState(initialData?.cuenta || '');
@@ -34,18 +36,54 @@ export const RubroplantillacontabledialogForm: React.FC<Rubroplantillacontabledi
   const [distribucionCosto, setDistribucionCosto] = useState(initialData?.distribucionCosto || '');
   const [dimensionId, setDimensionId] = useState(initialData?.dimensionId?.toString() || '');
 
+  // Opciones para combos
+  const [procesosOptions, setProcesosOptions] = useState<UIComboboxOption[]>([]);
+  const [rubrosOptions, setRubrosOptions] = useState<UIComboboxOption[]>([]);
+  const [loadingOptions, setLoadingOptions] = useState(false);
+  const [optionsError, setOptionsError] = useState<string | null>(null);
+
   useEffect(() => {
-    if (initialData) {
-      setProcesoId(initialData.procesoId?.toString() || '');
-      setRubroId(initialData.rubroId || '');
-      setCuenta(initialData.cuenta || '');
-      setDebeHaber(initialData.debeHaber || 'D');
-      setSubcuenta(initialData.subcuenta || '');
-      setAuxiliar(initialData.auxiliar || '');
-      setDistribucionCosto(initialData.distribucionCosto || '');
-      setDimensionId(initialData.dimensionId?.toString() || '');
-    }
-  }, [initialData]);
+    let cancelled = false;
+    const fetchOptions = async () => {
+      setLoadingOptions(true);
+      setOptionsError(null);
+      try {
+        const procesosGateway = new ProcesosProcesosdialogGatewayAdapter();
+        const rubrosGateway = new RubrosRubrosdialogGatewayAdapter();
+
+        const [procesosResponse, rubrosResponse] = await Promise.all([
+          procesosGateway.findAll({ page: 0, size: 200 }),
+          rubrosGateway.findAll({ page: 0, size: 200 }),
+        ]);
+
+        if (cancelled) return;
+
+        const procData = procesosResponse.data ?? [];
+        const rubData = rubrosResponse.content ?? [];
+
+        setProcesosOptions(
+          procData.map((p) => ({
+            value: String(p.id ?? ''),
+            label: p.nombre ?? p.descripcion ?? '',
+          })),
+        );
+        setRubrosOptions(
+          rubData.map((r) => ({
+            value: String(r.idRubro ?? ''),
+            label: r.nombre ?? '',
+          })),
+        );
+      } catch (err) {
+        if (!cancelled) {
+          setOptionsError(err instanceof Error ? err.message : 'No se pudieron cargar rubros y procesos');
+        }
+      } finally {
+        if (!cancelled) setLoadingOptions(false);
+      }
+    };
+    fetchOptions();
+    return () => { cancelled = true; };
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,39 +164,54 @@ export const RubroplantillacontabledialogForm: React.FC<Rubroplantillacontabledi
         </div>
       )}
 
-      {!isEditMode && (
-        <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
-          <legend style={{ fontWeight: 'bold', marginBottom: '0.75rem', fontSize: '0.875rem' }}>
-            Información requerida (Creación)
-          </legend>
-
-          <div style={twoColumnStyle}>
-            <UIInput
-              id="procesoId"
-              label="Proceso"
-              type="number"
-              value={procesoId}
-              onChange={(e) => setProcesoId(e.target.value)}
-              required
-              disabled={loading || isEditMode}
-              placeholder="Ej: 1"
-              fullWidth
-            />
-
-            <UIInput
-              id="rubroId"
-              label="Rubro"
-              type="text"
-              value={rubroId}
-              onChange={(e) => setRubroId(e.target.value)}
-              required
-              disabled={loading || isEditMode}
-              placeholder="Ej: RUB001"
-              fullWidth
-            />
-          </div>
-        </fieldset>
+      {optionsError && (
+        <div
+          style={{
+            backgroundColor: '#fff7ed',
+            border: '1px solid #fdba74',
+            borderRadius: 4,
+            padding: '0.75rem',
+            color: '#9a3412',
+            fontSize: '0.875rem',
+          }}
+        >
+          No se pudieron cargar catálogos de Proceso/Rubro: {optionsError}. Puedes ingresar el ID manualmente.
+        </div>
       )}
+
+      <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+        <legend style={{ fontWeight: 'bold', marginBottom: '0.75rem', fontSize: '0.875rem' }}>
+          Información requerida
+        </legend>
+
+        <div style={twoColumnStyle}>
+          <UICombobox
+            id="procesoId"
+            label="Proceso"
+            value={procesoId}
+            onChange={setProcesoId}
+            options={procesosOptions}
+            loadingOptions={loadingOptions}
+            required
+            disabled={loading || isEditMode}
+            placeholder="Ej: 1"
+            fullWidth
+          />
+
+          <UICombobox
+            id="rubroId"
+            label="Rubro"
+            value={rubroId}
+            onChange={setRubroId}
+            options={rubrosOptions}
+            loadingOptions={loadingOptions}
+            required
+            disabled={loading || isEditMode}
+            placeholder="Ej: RUB001"
+            fullWidth
+          />
+        </div>
+      </fieldset>
 
       <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
         <legend style={{ fontWeight: 'bold', marginBottom: '0.75rem', fontSize: '0.875rem' }}>

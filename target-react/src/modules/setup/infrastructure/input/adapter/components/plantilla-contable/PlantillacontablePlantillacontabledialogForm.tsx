@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { CreatePlantillacontablePlantillacontabledialogRequest, UpdatePlantillacontablePlantillacontabledialogRequest, PlantillacontablePlantillacontabledialogResponse } from '../../dto/PlantillacontablePlantillacontabledialogDto';
-import { UIButton, UIInput } from '../../components/ui-kit';
+import { UIButton, UIInput, UICombobox, UIComboboxOption } from '../../components/ui-kit';
+import { RubrosRubrosdialogGatewayAdapter } from '@modules/rubros/infrastructure/output/adapter/api/RubrosRubrosdialogGatewayAdapter';
+import { ProcesosProcesosdialogGatewayAdapter } from '@modules/procesos/infrastructure/output/adapter/api/ProcesosProcesosdialogGatewayAdapter';
 
 interface PlantillacontablePlantillacontabledialogFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
@@ -25,7 +27,7 @@ export const PlantillacontablePlantillacontabledialogForm: React.FC<Plantillacon
 }) => {
   const isEditMode = !!initialData;
 
-  // Estados para campos de creación/edición
+  // Estados de campos
   const [procesoId, setProcesoId] = useState(initialData?.procesoId?.toString() || '');
   const [rubroId, setRubroId] = useState(initialData?.rubroId || '');
   const [cuenta, setCuenta] = useState(initialData?.cuenta || '');
@@ -39,6 +41,55 @@ export const PlantillacontablePlantillacontabledialogForm: React.FC<Plantillacon
   const [agrupacionCC, setAgrupacionCC] = useState(initialData?.agrupacionCC || '');
   const [agrupacionLoc, setAgrupacionLoc] = useState(initialData?.agrupacionLoc || '');
   const [dimensionId, setDimensionId] = useState(initialData?.dimensionId?.toString() || '');
+
+  // Opciones para combos
+  const [procesosOptions, setProcesosOptions] = useState<UIComboboxOption[]>([]);
+  const [rubrosOptions, setRubrosOptions] = useState<UIComboboxOption[]>([]);
+  const [loadingOptions, setLoadingOptions] = useState(false);
+  const [optionsError, setOptionsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchOptions = async () => {
+      setLoadingOptions(true);
+      setOptionsError(null);
+      try {
+        const procesosGateway = new ProcesosProcesosdialogGatewayAdapter();
+        const rubrosGateway = new RubrosRubrosdialogGatewayAdapter();
+
+        const [procesosResponse, rubrosResponse] = await Promise.all([
+          procesosGateway.findAll({ page: 0, size: 200 }),
+          rubrosGateway.findAll({ page: 0, size: 200 }),
+        ]);
+
+        if (cancelled) return;
+
+        const procData = procesosResponse.data ?? [];
+        const rubData = rubrosResponse.content ?? [];
+
+        setProcesosOptions(
+          procData.map((p) => ({
+            value: String(p.id ?? ''),
+            label: p.nombre ?? p.descripcion ?? '',
+          })),
+        );
+        setRubrosOptions(
+          rubData.map((r) => ({
+            value: String(r.idRubro ?? ''),
+            label: r.nombre ?? '',
+          })),
+        );
+      } catch (err) {
+        if (!cancelled) {
+          setOptionsError(err instanceof Error ? err.message : 'No se pudieron cargar rubros y procesos');
+        }
+      } finally {
+        if (!cancelled) setLoadingOptions(false);
+      }
+    };
+    fetchOptions();
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     if (initialData) {
@@ -132,30 +183,47 @@ export const PlantillacontablePlantillacontabledialogForm: React.FC<Plantillacon
           ⚠️ {error}
         </div>
       )}
+
+      {optionsError && (
+        <div
+          style={{
+            backgroundColor: '#fff7ed',
+            border: '1px solid #fdba74',
+            borderRadius: 4,
+            padding: '0.75rem',
+            color: '#9a3412',
+            fontSize: '0.875rem',
+          }}
+        >
+          No se pudieron cargar catálogos de Proceso/Rubro: {optionsError}. Puedes ingresar el ID manualmente.
+        </div>
+      )}
       <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
         <legend style={{ fontWeight: 'bold', marginBottom: '0.75rem', fontSize: '0.875rem' }}>
           Información requerida
         </legend>
 
         <div style={twoColumnStyle}>
-          <UIInput
+          <UICombobox
             id="procesoId"
             label="Proceso"
-            type="number"
             value={procesoId}
-            onChange={(e) => setProcesoId(e.target.value)}
+            onChange={setProcesoId}
+            options={procesosOptions}
+            loadingOptions={loadingOptions}
             required
             disabled={loading}
             placeholder="Ej: 1"
             fullWidth
           />
 
-          <UIInput
+          <UICombobox
             id="rubroId"
             label="Rubro"
-            type="text"
             value={rubroId}
-            onChange={(e) => setRubroId(e.target.value)}
+            onChange={setRubroId}
+            options={rubrosOptions}
+            loadingOptions={loadingOptions}
             required
             disabled={loading}
             placeholder="Ej: RUB001"

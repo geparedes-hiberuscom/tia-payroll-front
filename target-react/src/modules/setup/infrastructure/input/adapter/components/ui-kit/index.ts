@@ -4,19 +4,17 @@
  */
 
 export { UIButton } from './UIButton';
-export type { } from './UIButton';
 
 export { UIInput } from './UIInput';
-export type { } from './UIInput';
 
 export { UICard } from './UICard';
-export type { } from './UICard';
 
 export { UITable } from './UITable';
-export type { } from './UITable';
 
 export { UIModal } from './UIModal';
-export type { } from './UIModal';
+
+export { UICombobox } from './UICombobox';
+export type { UIComboboxOption } from './UICombobox';
 
 // Re-export de estilos
 export { uiKitColors } from '../../styles/uiKitColors';

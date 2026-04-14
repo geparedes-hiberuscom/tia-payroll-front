@@ -46,6 +46,8 @@ export const RubroplantillacontabledialogPage: React.FC = () => {
   const handleEdit = (item: RubroplantillacontabledialogResponse) => {
     setEditingItem(item);
     setShowForm(true);
+    setFormError(null);
+    clearError();
   };
 
   const handleDelete = async (id: number) => {
@@ -67,22 +69,21 @@ export const RubroplantillacontabledialogPage: React.FC = () => {
           <UIButton 
             variant="primary"
             size="medium"
-            onClick={() => { setEditingItem(undefined); setShowForm(true); }}
+            onClick={() => { setEditingItem(undefined); setShowForm(true); setFormError(null); clearError(); }}
           >
             + Nuevo Rubro
           </UIButton>
         )}
       </div>
 
-      {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
-      {formError && <div style={{ backgroundColor: '#fee', border: '1px solid #fcc', borderRadius: 4, padding: '1rem', color: '#c33', marginBottom: '1rem' }}>⚠️ {formError}</div>}
+      {error && !showForm && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
 
       {showForm && (
         <div style={{ marginBottom: '2rem', padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: 6 }}>
           <RubroplantillacontabledialogForm 
             initialData={editingItem} 
             onSubmit={handleSubmit} 
-            onCancel={() => { setShowForm(false); setEditingItem(undefined); }} 
+            onCancel={() => { setShowForm(false); setEditingItem(undefined); setFormError(null); clearError(); }} 
             loading={loading}
             error={formError}
           />

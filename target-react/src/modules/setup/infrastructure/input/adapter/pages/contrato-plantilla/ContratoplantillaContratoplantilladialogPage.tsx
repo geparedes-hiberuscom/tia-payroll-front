@@ -46,6 +46,8 @@ export const ContratoplantillaContratoplantilladialogPage: React.FC = () => {
   const handleEdit = (item: ContratoplantillaContratoplantilladialogResponse) => {
     setEditingItem(item);
     setShowForm(true);
+    setFormError(null);
+    clearError();
   };
 
   const handleDelete = async (id: string) => {
@@ -68,17 +70,17 @@ export const ContratoplantillaContratoplantilladialogPage: React.FC = () => {
           <UIButton 
             variant="primary"
             size="medium"
-            onClick={() => { setEditingItem(undefined); setShowForm(true); }}
+            onClick={() => { setEditingItem(undefined); setShowForm(true); setFormError(null); clearError(); }}
           >
             + Nueva Plantilla
           </UIButton>
         )}
       </div>
 
-      {(formError || error) && (
+      {error && !showForm && (
         <ErrorBanner 
-          message={formError || error || ''} 
-          onRetry={() => { setFormError(null); clearError(); fetchAll(); }} 
+          message={error} 
+          onRetry={() => { clearError(); fetchAll(); }} 
         />
       )}
 
@@ -87,8 +89,9 @@ export const ContratoplantillaContratoplantilladialogPage: React.FC = () => {
           <ContratoplantillaContratoplantilladialogForm 
             initialData={editingItem} 
             onSubmit={handleSubmit} 
-            onCancel={() => { setShowForm(false); setEditingItem(undefined); }} 
+            onCancel={() => { setShowForm(false); setEditingItem(undefined); setFormError(null); clearError(); }} 
             loading={loading}
+            error={formError}
           />
         </div>
       )}
