@@ -26,7 +26,7 @@ export function useConsultarubrosidolist() {
     try {
       setLoading(true);
       setError(null);
-      const response = await consultarubrosidolistService.findAll(params);
+      const response = await consultarubrosidolistService.findAdvanced(params);
       setItems(response.items);
       setTotalElements(response.totalElements);
       setTotalPages(response.totalPages);

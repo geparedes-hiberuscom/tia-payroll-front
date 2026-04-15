@@ -10,6 +10,13 @@ export class CargarubrosidoViewMapper {
   static toDomain(response: CargarubrosidoResponse): Cargarubrosido {
     return {
       id: response.id,
+      bancoId: response.iidbanco,
+      usuarioModificacion: response.usuariomodificacionAu,
+      fechaModificacion: response.horamodificacionAu,
+      rubroId: response.rubroId ?? '',
+      ambito: response.ambito,
+      fechaAplica: response.fechaAplica,
+      usuarioIngreso: response.usuarioIngreso,
       nombreArchivo: response.nombreArchivo,
       fechaCarga: response.fechaCarga,
       estado: response.estado,
@@ -26,10 +33,20 @@ export class CargarubrosidoViewMapper {
 
   static toLineaDomain(response: CargarubrosidoLineaResponse): CargarubrosidoLinea {
     return {
+      iidrubrosIdoUpl: response.iidrubrosIdoUpl,
+      iidrubrosIdoUp: response.iidrubrosIdoUp,
+      dfdesde: response.dfdesde,
+      dfhasta: response.dfhasta,
+      mvalor01: response.mvalor01,
+      mvalor02: response.mvalor02,
+      vidrubro: response.vidrubro,
+      vcedula: response.vcedula,
+      itcomporta: response.itcomporta,
+      vcuentabanco: response.vcuentabanco,
       lineaId: response.lineaId,
       rubroId: response.rubroId,
       colaboradorId: response.colaboradorId,
-      valor: response.valor,
+      valor: response.valor ?? response.mvalor01,
       estado: response.estado,
       mensaje: response.mensaje,
     };
@@ -56,9 +73,18 @@ export class CargarubrosidoViewMapper {
   static toCreateRequest(model: CreateCargarubrosido): CreateCargarubrosidoRequest {
     return {
       archivo: model.archivo,
-      empresaId: model.empresaId,
-      rubroId: model.rubroId,
+      iidempresa: model.empresaId,
+      vidrubro: model.rubroId ?? '',
+      vidambito: model.ambito,
+      dfechaaplica: model.fechaAplica,
+      tipoAP: model.tipoAP,
+      iidBanco: model.bancoId,
+      vidTipoCta: model.tipoCuenta,
+      viTipoColaborador: model.tipoColaborador,
+      dtbFInicio: model.periodoInicio,
+      dtbFFin: model.periodoFin,
       descripcion: model.descripcion,
+      observaciones: model.observaciones,
     };
   }
 

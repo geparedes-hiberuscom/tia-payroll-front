@@ -20,4 +20,5 @@ export interface ConsultarubrosidolistGatewayPort {
   remove(id: string): Promise<DeleteResponseDTO>;
   exportar(request: ExportarConsultaIDORequest): Promise<ExportarResponseDTO>;
   cambiarEstado(id: string, request: CambiarEstadoIDORequest): Promise<ConsultarubrosidolistResponse>;
+  findAdvanced(params?: ConsultarubrosidolistFilterParams): Promise<ConsultarubrosidolistListResponse>;
 }

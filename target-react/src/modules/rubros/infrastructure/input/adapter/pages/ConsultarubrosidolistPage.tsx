@@ -1,60 +1,90 @@
-import React, { useState } from 'react';
-import { useConsultarubrosidolist } from '../hooks/useConsultarubrosidolist';
+import React from 'react';
+import {
+  Button,
+  ErrorBanner,
+  PageShell,
+} from '@shared/index';
+import { ConsultarubrosidolistFiltersSection } from '../components/ConsultarubrosidolistFiltersSection';
 import { ConsultarubrosidolistList } from '../components/ConsultarubrosidolistList';
-import { ConsultarubrosidolistForm } from '../components/ConsultarubrosidolistForm';
-import { Consultarubrosidolist, CreateConsultarubrosidolist, UpdateConsultarubrosidolist } from '../../../../domain/model/Consultarubrosidolist';
-import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
-import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
+import { ConsultarubrosidolistStats } from '../components/ConsultarubrosidolistStats';
+import { estadoOptions } from '../hooks/consultarubrosidolistPage.types';
+import { useConsultarubrosidolistPageController } from '../hooks/useConsultarubrosidolistPageController';
 
 export const ConsultarubrosidolistPage: React.FC = () => {
-  const { items, loading, error, fetchAll, create, update, remove, clearError } = useConsultarubrosidolist();
-  const [showForm, setShowForm] = useState(false);
-  const [editingItem, setEditingItem] = useState<Consultarubrosidolist | undefined>(undefined);
-
-  const handleSubmit = async (data: CreateConsultarubrosidolist | UpdateConsultarubrosidolist) => {
-    if (editingItem) {
-      await update(editingItem.id, data as UpdateConsultarubrosidolist);
-    } else {
-      await create(data as CreateConsultarubrosidolist);
-    }
-    setShowForm(false);
-    setEditingItem(undefined);
-  };
-
-  const handleDelete = async (id: number) => {
-    if (window.confirm('¿Estás seguro de eliminar este registro?')) {
-      await remove(id);
-    }
-  };
+  const {
+    items,
+    loading,
+    error,
+    catalogsError,
+    totalElements,
+    page,
+    empresas,
+    rubros,
+    filters,
+    nextEstado,
+    selectedItem,
+    enviados,
+    getError,
+    hasError,
+    setSelectedId,
+    setNextEstado,
+    setFilterField,
+    handleSearch,
+    handleReset,
+    handleExport,
+    handleEstado,
+    handleDelete,
+    handlePageChange,
+    handleRetry,
+  } = useConsultarubrosidolistPageController();
 
   return (
-    <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Consulta Rubros IDO</h1>
-        {!showForm && <button onClick={() => setShowForm(true)}>+ Nuevo</button>}
-      </div>
-
-      {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
-
-      {showForm && (
-        <ConsultarubrosidolistForm
-          initialData={editingItem}
-          onSubmit={handleSubmit}
-          onCancel={() => { setShowForm(false); setEditingItem(undefined); }}
-          loading={loading}
+    <PageShell
+      title="Consulta Operativa de Rubros IDO"
+      description="Concentra el flujo diario de revisión por empresa, localidad, rubro y colaborador; además expone exportación y cambio de estado operativo sobre registros consultados."
+      actions={
+        <>
+          <Button label="Buscar" onClick={handleSearch} />
+          <Button label="Exportar" variant="secondary" onClick={() => void handleExport()} />
+        </>
+      }
+    >
+      {(error || catalogsError) ? (
+        <ErrorBanner
+          message={error ?? catalogsError ?? 'No se pudo cargar la consulta'}
+          onRetry={() => void handleRetry()}
         />
-      )}
+      ) : null}
 
-      {loading && items.length === 0 ? (
-        <Loading message="Cargando consultas..." />
-      ) : (
+      <ConsultarubrosidolistStats totalElements={totalElements} enviados={enviados} />
+
+      <div className="grid gap-6 xl:grid-cols-[1fr_1.65fr]">
+        <ConsultarubrosidolistFiltersSection
+          filters={filters}
+          empresas={empresas}
+          rubros={rubros}
+          nextEstado={nextEstado}
+          estadoOptions={estadoOptions}
+          selectedItem={selectedItem}
+          getError={getError}
+          hasError={hasError}
+          onFilterChange={setFilterField}
+          onSearch={handleSearch}
+          onReset={handleReset}
+          onNextEstadoChange={setNextEstado}
+          onApplyEstado={() => void handleEstado()}
+        />
+
         <ConsultarubrosidolistList
           items={items}
           loading={loading}
-          onEdit={(item) => { setEditingItem(item); setShowForm(true); }}
-          onDelete={handleDelete}
+          page={page}
+          totalElements={totalElements}
+          onPageChange={(nextPage) => void handlePageChange(nextPage)}
+          onSelectItem={setSelectedId}
+          onDeleteItem={(itemId) => void handleDelete(itemId)}
         />
-      )}
-    </div>
+      </div>
+    </PageShell>
   );
 };

@@ -9,15 +9,21 @@ export class CargarubrosidoApiMapper {
 
   static toResponse(raw: any): CargarubrosidoResponse {
     return {
-      id: raw.id,
-      nombreArchivo: raw.nombreArchivo,
-      fechaCarga: raw.fechaCarga,
-      estado: raw.estado,
-      usuarioCarga: raw.usuarioCarga,
+      id: raw.id ?? raw.iidrubrosIdoUp,
+      iidrubrosIdoUp: raw.iidrubrosIdoUp,
+      vidrubro: raw.vidrubro,
+      vidambito: raw.vidambito ?? raw.ambito,
+      dfechaaplica: raw.dfechaaplica ?? raw.fechaAplica,
+      usuarioingresoAu: raw.usuarioingresoAu ?? raw.usuarioIngreso,
+      empresa: raw.empresa,
+      nombreArchivo: raw.nombreArchivo ?? raw.pathArchivo ?? '',
+      fechaCarga: raw.fechaCarga ?? raw.fechaIngreso ?? raw.dfechaaplica ?? '',
+      estado: raw.estado ?? 'PENDIENTE',
+      usuarioCarga: raw.usuarioCarga ?? raw.usuarioingresoAu ?? raw.usuarioIngreso ?? '',
       numeroRegistros: raw.numeroRegistros || 0,
       numeroErrores: raw.numeroErrores || 0,
       numeroExitosos: raw.numeroExitosos || 0,
-      empresaId: raw.empresaId,
+      empresaId: raw.empresaId ?? raw.iidempresa ?? raw.empresa?.id,
       procesoId: raw.procesoId,
       descripcion: raw.descripcion,
       fechaActualizacion: raw.fechaActualizacion,
@@ -26,10 +32,20 @@ export class CargarubrosidoApiMapper {
 
   static toLineaResponse(raw: any): CargarubrosidoLineaResponse {
     return {
-      lineaId: raw.lineaId,
-      rubroId: raw.rubroId,
-      colaboradorId: raw.colaboradorId,
-      valor: raw.valor,
+      iidrubrosIdoUpl: raw.iidrubrosIdoUpl,
+      iidrubrosIdoUp: raw.iidrubrosIdoUp,
+      dfdesde: raw.dfdesde,
+      dfhasta: raw.dfhasta,
+      mvalor01: raw.mvalor01,
+      mvalor02: raw.mvalor02,
+      vidrubro: raw.vidrubro,
+      vcedula: raw.vcedula,
+      itcomporta: raw.itcomporta,
+      vcuentabanco: raw.vcuentabanco,
+      lineaId: raw.lineaId ?? raw.iidrubrosIdoUpl,
+      rubroId: raw.rubroId ?? raw.vidrubro,
+      colaboradorId: raw.colaboradorId ?? 0,
+      valor: raw.valor ?? raw.mvalor01,
       estado: raw.estado,
       mensaje: raw.mensaje,
     };
@@ -62,14 +78,44 @@ export class CargarubrosidoApiMapper {
   static toCreatePayload(request: CreateCargarubrosidoRequest): FormData {
     const formData = new FormData();
     if (request.archivo) {
+      formData.append('file', request.archivo);
       formData.append('archivo', request.archivo);
     }
-    formData.append('empresaId', request.empresaId.toString());
-    if (request.rubroId) {
-      formData.append('rubroId', request.rubroId);
+    formData.append('iidempresa', request.iidempresa.toString());
+    formData.append('vidrubro', request.vidrubro);
+    formData.append('empresaId', request.iidempresa.toString());
+    formData.append('rubroId', request.vidrubro);
+    if (request.vidambito) {
+      formData.append('vidambito', request.vidambito);
+      formData.append('ambito', request.vidambito);
+    }
+    if (request.dfechaaplica) {
+      formData.append('dfechaaplica', request.dfechaaplica);
+      formData.append('fechaAplica', request.dfechaaplica);
+    }
+    if (request.tipoAP !== undefined) {
+      formData.append('tipoAP', request.tipoAP.toString());
+    }
+    if (request.iidBanco !== undefined) {
+      formData.append('iidBanco', request.iidBanco.toString());
+    }
+    if (request.vidTipoCta) {
+      formData.append('vidTipoCta', request.vidTipoCta);
+    }
+    if (request.viTipoColaborador) {
+      formData.append('viTipoColaborador', request.viTipoColaborador);
+    }
+    if (request.dtbFInicio) {
+      formData.append('dtbFInicio', request.dtbFInicio);
+    }
+    if (request.dtbFFin) {
+      formData.append('dtbFFin', request.dtbFFin);
     }
     if (request.descripcion) {
       formData.append('descripcion', request.descripcion);
+    }
+    if (request.observaciones) {
+      formData.append('observaciones', request.observaciones);
     }
     return formData;
   }

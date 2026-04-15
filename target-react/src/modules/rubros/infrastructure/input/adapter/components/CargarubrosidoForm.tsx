@@ -1,136 +1,271 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Form } from '../../../../../../shared';
-import { Cargarubrosido, CreateCargarubrosido, UpdateCargarubrosido } from '../../../../domain/model/Cargarubrosido';
+import React from 'react';
+import { SubmitHandler, UseFormReturn } from 'react-hook-form';
+import {
+  Button,
+  Field,
+  Form,
+  SectionCard,
+  inputClassName,
+  textAreaClassName,
+} from '@shared/index';
+import { CatalogOption } from '../hooks/useRubrosCatalogs';
+import { UploadFormState } from '../hooks/cargarubrosidoPage.types';
+
+const tipoAPOptions = [
+  { value: '1', label: 'Actualizacion de Datos de Rol' },
+  { value: '2', label: 'Salario Variable' },
+];
+
+const bancoOptions = [
+  { value: '1', label: 'Banco A' },
+  { value: '2', label: 'Banco B' },
+  { value: '100', label: 'EFE (Efectivo)' },
+];
+
+const tipoCuentaOptions = [
+  { value: '1', label: 'Cuenta Corriente' },
+  { value: '2', label: 'Cuenta Ahorros' },
+  { value: '3', label: 'Efectivo' },
+];
+
+const tipoColaboradorOptions = [
+  { value: '1', label: 'Activo' },
+  { value: '2', label: 'Ex-empleado' },
+];
+
+interface EmpresaOption {
+  iidempresa: number;
+  vempresanl: string;
+}
 
 interface CargarubrosidoFormProps {
-  initialData?: Cargarubrosido;
-  onSubmit: (data: CreateCargarubrosido | UpdateCargarubrosido) => void;
-  onCancel?: () => void;
-  loading?: boolean;
+  methods: UseFormReturn<UploadFormState>;
+  empresas: EmpresaOption[];
+  rubros: CatalogOption[];
+  loading: boolean;
+  loadingEmpresas: boolean;
+  loadingCatalogs: boolean;
+  getError: (field: string) => string | undefined;
+  hasError: (field: string) => boolean;
+  onFieldChange: <K extends keyof UploadFormState>(field: K, value: UploadFormState[K]) => void;
+  onSubmit: SubmitHandler<UploadFormState>;
+  onReset: () => void;
 }
 
-interface CargarubrosidoFormValues {
-  archivo: File | null;
-  empresaId: string;
-  rubroId: string;
-  descripcion: string;
-  estado: string;
-}
-
-export const CargarubrosidoForm: React.FC<CargarubrosidoFormProps> = ({ initialData, onSubmit, onCancel, loading }) => {
-  const isEditMode = Boolean(initialData);
-  const [errors, setErrors] = useState<string[]>([]);
-  const methods = useForm<CargarubrosidoFormValues>({
-    defaultValues: {
-      archivo: null,
-      empresaId: '',
-      rubroId: '',
-      descripcion: '',
-      estado: '',
-    },
-  });
-
-  useEffect(() => {
-    if (!initialData) {
-      methods.reset({
-        archivo: null,
-        empresaId: '',
-        rubroId: '',
-        descripcion: '',
-        estado: '',
-      });
-      return;
-    }
-
-    methods.reset({
-      archivo: null,
-      empresaId: initialData.empresaId ? String(initialData.empresaId) : '',
-      rubroId: '',
-      descripcion: initialData.descripcion ?? '',
-      estado: initialData.estado ?? '',
-    });
-  }, [initialData, methods]);
-
-  const validate = (formValues: CargarubrosidoFormValues): string[] => {
-    const next: string[] = [];
-    if (!isEditMode && !formValues.archivo) next.push('Debe seleccionar un archivo.');
-    if (!isEditMode && (!formValues.empresaId || Number.isNaN(Number(formValues.empresaId)))) next.push('Empresa ID es obligatorio y numérico.');
-    return next;
-  };
-
-  const handleSubmit = (formValues: CargarubrosidoFormValues) => {
-    const nextErrors = validate(formValues);
-    setErrors(nextErrors);
-    if (nextErrors.length > 0) return;
-
-    if (isEditMode) {
-      onSubmit({
-        estado: formValues.estado.trim() || undefined,
-        descripcion: formValues.descripcion.trim() || undefined,
-      });
-      return;
-    }
-
-    onSubmit({
-      archivo: formValues.archivo as File,
-      empresaId: Number(formValues.empresaId),
-      rubroId: formValues.rubroId.trim() || undefined,
-      descripcion: formValues.descripcion.trim() || undefined,
-    });
-  };
+export const CargarubrosidoForm: React.FC<CargarubrosidoFormProps> = ({
+  methods,
+  empresas,
+  rubros,
+  loading,
+  loadingEmpresas,
+  loadingCatalogs,
+  getError,
+  hasError,
+  onFieldChange,
+  onSubmit,
+  onReset,
+}) => {
+  const ambito = methods.watch('ambito');
+  const tipoAP = methods.watch('tipoAP');
+  const bancoId = methods.watch('bancoId');
+  const showAPFields = ambito === 'AP';
+  const showBancoFields = showAPFields && tipoAP === '1';
 
   return (
-    <Form methods={methods} onSubmit={handleSubmit} data-testid="cargarubrosido-form" style={{ display: 'grid', gap: '0.75rem', maxWidth: 640 }}>
-      <h3>{isEditMode ? 'Editar carga masiva' : 'Nueva carga masiva'}</h3>
-      {errors.length > 0 && (
-        <ul data-testid="cargarubrosido-form-errors" style={{ color: '#b91c1c', margin: 0 }}>
-          {errors.map((error) => <li key={error}>{error}</li>)}
-        </ul>
-      )}
+    <SectionCard
+      title="Preparar archivo"
+      description="Replica el flujo operativo de carga: empresa, ámbito, rubro, fecha de aplicación y archivo CSV."
+      action={<span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">CSV delimitado por ;</span>}
+    >
+      <Form
+        methods={methods}
+        onSubmit={onSubmit}
+        id="cargarubrosido-form"
+        data-testid="cargarubrosido-form"
+        className="grid gap-4 md:grid-cols-2"
+      >
+        <Field label="Empresa" error={getError('empresaId')}>
+          <select
+            className={inputClassName(hasError('empresaId'))}
+            disabled={loadingEmpresas || loading}
+            {...methods.register('empresaId')}
+            onChange={(e) => onFieldChange('empresaId', e.target.value)}
+          >
+            <option value="">Seleccione una empresa</option>
+            {empresas.map((empresa) => (
+              <option key={empresa.iidempresa} value={empresa.iidempresa}>
+                {empresa.vempresanl}
+              </option>
+            ))}
+          </select>
+        </Field>
 
-      {!isEditMode && (
-        <label>
-          Archivo
-          <input
-            data-testid="cargarubrosido-field-archivo"
-            type="file"
-            onChange={(e) => methods.setValue('archivo', e.target.files?.[0] ?? null)}
+        <Field label="Ámbito" hint="IDO, PTM o AP condicionan el archivo recibido.">
+          <select
+            className={inputClassName()}
             disabled={loading}
+            {...methods.register('ambito')}
+            onChange={(e) => onFieldChange('ambito', e.target.value)}
+          >
+            <option value="IDO">IDO</option>
+            <option value="PTM">PTM</option>
+            <option value="AP">AP</option>
+          </select>
+        </Field>
+
+        {showAPFields && (
+          <Field label="Tipo AP" hint="Visible solo cuando el ámbito es AP.">
+            <select
+              className={inputClassName()}
+              disabled={loading}
+              {...methods.register('tipoAP')}
+              onChange={(e) => onFieldChange('tipoAP', e.target.value)}
+            >
+              <option value="">Seleccione</option>
+              {tipoAPOptions.map((tipo) => (
+                <option key={tipo.value} value={tipo.value}>
+                  {tipo.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+        )}
+
+        {showBancoFields && (
+          <Field label="Banco" hint="Opcional para Actualización de Datos de Rol.">
+            <select
+              className={inputClassName()}
+              disabled={loading}
+              {...methods.register('bancoId')}
+              onChange={(e) => onFieldChange('bancoId', e.target.value)}
+            >
+              <option value="">Seleccione</option>
+              {bancoOptions.map((banco) => (
+                <option key={banco.value} value={banco.value}>
+                  {banco.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+        )}
+
+        {showBancoFields && bancoId !== '100' && (
+          <Field label="Tipo de Cuenta">
+            <select
+              className={inputClassName()}
+              disabled={loading}
+              {...methods.register('tipoCuenta')}
+            >
+              <option value="">Seleccione</option>
+              {tipoCuentaOptions.map((tipoCuenta) => (
+                <option key={tipoCuenta.value} value={tipoCuenta.value}>
+                  {tipoCuenta.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+        )}
+
+        {showBancoFields && (
+          <Field label="Tipo Colaborador">
+            <select
+              className={inputClassName()}
+              disabled={loading}
+              {...methods.register('tipoColaborador')}
+            >
+              <option value="">Seleccione</option>
+              {tipoColaboradorOptions.map((tipo) => (
+                <option key={tipo.value} value={tipo.value}>
+                  {tipo.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+        )}
+
+        <Field label="Rubro" hint="Opcional según el formato de carga configurado.">
+          <select
+            className={inputClassName()}
+            disabled={loadingCatalogs || loading}
+            {...methods.register('rubroId')}
+          >
+            <option value="">Todos o no aplica</option>
+            {rubros.map((rubro) => (
+              <option key={rubro.value} value={rubro.value}>
+                {rubro.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <Field label="Fecha de aplicación" error={getError('fechaAplica')}>
+          <input
+            type="date"
+            className={inputClassName(hasError('fechaAplica'))}
+            disabled={loading}
+            {...methods.register('fechaAplica')}
           />
-        </label>
-      )}
+        </Field>
 
-      {!isEditMode && (
-        <label>
-          Empresa ID
-          <input data-testid="cargarubrosido-field-empresaid" {...methods.register('empresaId')} disabled={loading} required />
-        </label>
-      )}
+        <Field label="Período Filtro (Inicio)">
+          <input
+            type="date"
+            className={inputClassName()}
+            disabled={loading}
+            {...methods.register('periodoInicio')}
+          />
+        </Field>
 
-      {!isEditMode && (
-        <label>
-          Rubro ID
-          <input data-testid="cargarubrosido-field-rubroid" {...methods.register('rubroId')} disabled={loading} />
-        </label>
-      )}
+        <Field label="Período Filtro (Fin)">
+          <input
+            type="date"
+            className={inputClassName()}
+            disabled={loading}
+            {...methods.register('periodoFin')}
+          />
+        </Field>
 
-      <label>
-        Descripcion
-        <input data-testid="cargarubrosido-field-descripcion" {...methods.register('descripcion')} disabled={loading} />
-      </label>
+        <div className="md:col-span-2">
+          <Field label="Archivo CSV" error={getError('archivo')} hint={methods.watch('archivo')?.name ?? 'Seleccione el archivo fuente'}>
+            <input
+              type="file"
+              accept=".csv,text/csv"
+              className={inputClassName(hasError('archivo'))}
+              disabled={loading}
+              {...methods.register('archivo')}
+              onChange={(e) => onFieldChange('archivo', e.target.files?.[0] ?? null)}
+            />
+          </Field>
+        </div>
 
-      {isEditMode && (
-        <label>
-          Estado
-          <input data-testid="cargarubrosido-field-estado" {...methods.register('estado')} disabled={loading} />
-        </label>
-      )}
+        <div className="md:col-span-2">
+          <Field label="Descripción" hint="Se persistirá junto al encabezado de la carga.">
+            <input
+              type="text"
+              className={inputClassName()}
+              placeholder="Carga quincenal abril"
+              disabled={loading}
+              {...methods.register('descripcion')}
+            />
+          </Field>
+        </div>
 
-      <div style={{ display: 'flex', gap: '0.5rem' }}>
-        <button type="submit" data-testid="cargarubrosido-submit" disabled={loading}>{loading ? 'Guardando...' : isEditMode ? 'Actualizar' : 'Crear'}</button>
-        {onCancel && <button type="button" data-testid="cargarubrosido-cancel" onClick={onCancel} disabled={loading}>Cancelar</button>}
-      </div>
-    </Form>
+        <div className="md:col-span-2">
+          <Field label="Observaciones">
+            <textarea
+              className={textAreaClassName()}
+              placeholder="Notas operativas, validaciones previas o referencias de la carga"
+              disabled={loading}
+              {...methods.register('observaciones')}
+            />
+          </Field>
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button type="submit" label="Guardar carga" isLoading={loading} />
+          <Button label="Limpiar" variant="secondary" onClick={onReset} disabled={loading} />
+        </div>
+      </Form>
+    </SectionCard>
   );
-};
+}

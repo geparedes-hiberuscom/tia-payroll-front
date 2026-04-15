@@ -38,10 +38,15 @@ export class CargarubrosidoApplicationService implements CargarubrosidoUseCase {
     }
     const request = CargarubrosidoViewMapper.toCreateRequest(model);
     const result = await this.gatewayPort.create(request);
-    if (!result.success) {
-      throw new CargarubrosidoBusinessRuleError('UPLOAD_FAILED', result.message);
+    const isSuccess = result.success ?? result.exitosa;
+    if (!isSuccess) {
+      throw new CargarubrosidoBusinessRuleError('UPLOAD_FAILED', result.message ?? result.mensaje ?? 'Error al cargar archivo');
     }
-    return this.findById(String(result.id));
+    const createdId = result.id ?? result.iidrubrosIdoUp;
+    if (!createdId) {
+      throw new CargarubrosidoBusinessRuleError('UPLOAD_NO_ID', 'La API no retornó identificador de la carga');
+    }
+    return this.findById(String(createdId));
   }
 
   async update(id: string, model: UpdateCargarubrosido): Promise<Cargarubrosido> {
@@ -73,8 +78,9 @@ export class CargarubrosidoApplicationService implements CargarubrosidoUseCase {
       throw new CargarubrosidoValidationError('El ID es requerido para aprobar');
     }
     const result = await this.gatewayPort.aprobar(id);
-    if (!result.success) {
-      throw new CargarubrosidoBusinessRuleError('APROBAR_FAILED', result.message);
+    const isSuccess = result.success ?? true;
+    if (!isSuccess) {
+      throw new CargarubrosidoBusinessRuleError('APROBAR_FAILED', result.message ?? 'No se pudo aprobar la carga');
     }
     return this.findById(id);
   }

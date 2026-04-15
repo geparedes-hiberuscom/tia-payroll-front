@@ -11,6 +11,7 @@ export interface ConsultarubrosidolistUseCase {
   update(id: string, model: UpdateConsultarubrosidolist): Promise<Consultarubrosidolist>;
   remove(id: string): Promise<void>;
   exportar(filter: ConsultarubrosidolistFilter): Promise<Blob>;
+  findAdvanced(filter?: ConsultarubrosidolistFilter): Promise<ConsultarubrosidolistPageResult>;
   cambiarEstado(id: string, estado: string): Promise<Consultarubrosidolist>;
 }
 

@@ -10,14 +10,26 @@ export class ConsultarubrosidolistApiMapper {
   static toResponse(raw: any): ConsultarubrosidolistResponse {
     return {
       id: raw.id,
-      rubroId: raw.rubroId,
-      colaboradorId: raw.colaboradorId,
-      tipoComportamiento: raw.tipoComportamiento || 0,
-      valor01: raw.valor01 || 0,
-      empresaId: raw.empresaId,
-      estado: raw.estado,
-      fechaDesde: raw.fechaDesde,
-      fechaHasta: raw.fechaHasta,
+      dfechapagocaja: raw.dfechapagocaja,
+      rubroId: raw.vidrubro ?? raw.rubroId,
+      colaboradorId: raw.iidcolaborador ?? raw.colaboradorId,
+      tipoComportamiento: raw.itcomporta ?? raw.tipoComportamiento ?? 0,
+      valor01: raw.mvalor01 ?? raw.valor01 ?? 0,
+      valor02: raw.mvalor02 ?? raw.valor02,
+      empresaId: raw.iidempresa ?? raw.empresaId,
+      localidadId: raw.iidlocalidad,
+      centroCostoId: raw.iidcentrocosto ?? raw.centroCostoId,
+      rolId: raw.iidrol,
+      neroId: raw.inero,
+      cartaImpresion: raw.icartaimpresion,
+      flagEnvio: raw.iflagenvio,
+      generarCarta: raw.igenerarcarta,
+      estadoCaja: raw.vestadoCaja,
+      usuarioCaja: raw.vusuarioCaja,
+      vstts: raw.vstts,
+      estado: raw.vstts ?? raw.estado,
+      fechaDesde: raw.dfdesde ?? raw.fechaDesde,
+      fechaHasta: raw.dfhasta ?? raw.fechaHasta,
       nombreColaborador: raw.nombreColaborador,
       nombreRubro: raw.nombreRubro,
       fechaCreacion: raw.fechaCreacion,
@@ -47,12 +59,25 @@ export class ConsultarubrosidolistApiMapper {
 
   static toCreatePayload(request: CreateConsultarubrosidolistRequest): Record<string, unknown> {
     return {
-      rubroId: request.rubroId,
-      colaboradorId: request.colaboradorId,
-      empresaId: request.empresaId,
+      dfechapagocaja: request.dfechapagocaja,
+      vidrubro: request.rubroId,
+      iidcolaborador: request.colaboradorId,
+      iidempresa: request.empresaId,
+      iidlocalidad: request.localidadId,
+      iidcentrocosto: request.centroCostoId,
+      iidrol: request.rolId,
+      inero: request.neroId,
+      itcomporta: request.tipoComportamiento,
+      mvalor01: request.valor01,
+      mvalor02: request.valor02,
+      icartaimpresion: request.cartaImpresion,
+      iflagenvio: request.flagEnvio,
+      igenerarcarta: request.generarCarta,
+      vestadoCaja: request.estadoCaja,
+      vusuarioCaja: request.usuarioCaja,
       estado: request.estado,
-      fechaDesde: request.fechaDesde,
-      fechaHasta: request.fechaHasta,
+      dfdesde: request.fechaDesde,
+      dfhasta: request.fechaHasta,
     };
   }
 
@@ -64,19 +89,19 @@ export class ConsultarubrosidolistApiMapper {
 
   static toExportPayload(request: ExportarConsultaIDORequest): Record<string, unknown> {
     return {
-      rubroId: request.rubroId,
-      colaboradorId: request.colaboradorId,
-      empresaId: request.empresaId,
+      vidrubro: request.rubroId,
+      iidcolaborador: request.colaboradorId,
+      iidempresa: request.empresaId,
       estado: request.estado,
-      fechaDesde: request.fechaDesde,
-      fechaHasta: request.fechaHasta,
+      dfdesde: request.fechaDesde,
+      dfhasta: request.fechaHasta,
       formato: request.formato || 'XLSX',
     };
   }
 
   static toCambiarEstadoPayload(request: CambiarEstadoIDORequest): Record<string, unknown> {
     return {
-      estado: request.estado,
+      vstts: request.vstts,
     };
   }
 }

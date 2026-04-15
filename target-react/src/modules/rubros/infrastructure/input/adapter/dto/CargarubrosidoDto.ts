@@ -9,10 +9,19 @@
 // ─── Request DTOs ───
 
 export interface CreateCargarubrosidoRequest {
-  archivo: File;  // Binary multipart
-  empresaId: number;
-  rubroId?: string;
+  archivo: File;
+  iidempresa: number;
+  vidrubro: string;
+  vidambito?: string;
+  dfechaaplica?: string;
+  tipoAP?: number;
+  iidBanco?: number;
+  vidTipoCta?: string;
+  viTipoColaborador?: string;
+  dtbFInicio?: string;
+  dtbFFin?: string;
   descripcion?: string;
+  observaciones?: string;
 }
 
 export interface UpdateCargarubrosidoRequest {
@@ -33,6 +42,15 @@ export interface CargarubrosidoFilterParams {
 
 export interface CargarubrosidoResponse {
   id: number;
+  iidbanco?: string;
+  vidtctabanco?: string;
+  tipoContrato?: string;
+  rubroId?: string;
+  ambito?: string;
+  fechaAplica?: string;
+  usuarioIngreso?: string;
+  usuariomodificacionAu?: string;
+  horamodificacionAu?: string;
   nombreArchivo: string;
   fechaCarga: string;
   estado: string;
@@ -47,6 +65,16 @@ export interface CargarubrosidoResponse {
 }
 
 export interface CargarubrosidoLineaResponse {
+  iidrubrosIdoUpl?: number;
+  iidrubrosIdoUp?: number;
+  dfdesde?: string;
+  dfhasta?: string;
+  mvalor01?: number;
+  mvalor02?: number;
+  vidrubro?: string;
+  vcedula?: string;
+  itcomporta?: number;
+  vcuentabanco?: string;
   lineaId?: number;
   rubroId: string;
   colaboradorId: number;
@@ -74,10 +102,30 @@ export interface CargarubrosidoLineaListResponse {
 // ─── Response alias
 export type CargaMasivaIDOPageResponseDTO = CargarubrosidoListResponse;
 export type CargaMasivaIDOResponseDTO = CargarubrosidoResponse;
-export type CargaMasivaIDOLineaPageResponseDTO = CargarubrosidoLineaListResponse;
-export type CargaMasivaIDOResultDTO = { id: number; success: boolean; message: string };
-export type ProcesoResponseDTO = { success: boolean; message: string };
+export type CargaMasivaIDOLineaPageResponseDTO =
+  CargarubrosidoLineaListResponse;
+export type CargaMasivaIDOResultDTO = {
+  iidrubrosIdoUp?: number;
+  id?: number;
+  exitosa?: boolean;
+  success?: boolean;
+  mensaje?: string;
+  message?: string;
+  totalLineas?: number;
+  lineasProcesadas?: number;
+  lineasConError?: number;
+};
+export type ProcesoResponseDTO = {
+  success?: boolean;
+  message?: string;
+  registrosProcesados?: number;
+};
 export type DeleteResponseDTO = { success: boolean; message: string };
+
+export interface AprobarCargaMasivaRequestDTO {
+  accion: string;
+  observaciones?: string;
+}
 
 // ─── API Error DTO ───
 

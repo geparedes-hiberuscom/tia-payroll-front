@@ -26,12 +26,8 @@ const RubrosidomainRubrosidolistRubrosidodetailCreatePage = lazy(() => import('@
 const RubrosidomainRubrosidolistRubrosidodetailDetailPage = lazy(() => import('@modules/rubros/infrastructure/input/adapter/pages').then((m) => ({ default: m.RubrosidomainRubrosidolistRubrosidodetailDetailPage })));
 
 const ConsultarubrosidolistPage = lazy(() => import('@modules/rubros/infrastructure/input/adapter/pages').then((m) => ({ default: m.ConsultarubrosidolistPage })));
-const ConsultarubrosidolistCreatePage = lazy(() => import('@modules/rubros/infrastructure/input/adapter/pages').then((m) => ({ default: m.ConsultarubrosidolistCreatePage })));
-const ConsultarubrosidolistDetailPage = lazy(() => import('@modules/rubros/infrastructure/input/adapter/pages').then((m) => ({ default: m.ConsultarubrosidolistDetailPage })));
 
 const CargarubrosidoPage = lazy(() => import('@modules/rubros/infrastructure/input/adapter/pages').then((m) => ({ default: m.CargarubrosidoPage })));
-const CargarubrosidoCreatePage = lazy(() => import('@modules/rubros/infrastructure/input/adapter/pages').then((m) => ({ default: m.CargarubrosidoCreatePage })));
-const CargarubrosidoDetailPage = lazy(() => import('@modules/rubros/infrastructure/input/adapter/pages').then((m) => ({ default: m.CargarubrosidoDetailPage })));
 
 export const rubrosRoutes = [
   <Route key="rubros" path={ROUTES.RUBROS} element={w(<RubrosPage />)} />,
@@ -57,14 +53,6 @@ export const rubrosRoutes = [
   <Route key="rubrosidomain-rubrosidolist-rubrosidodetail-edit" path={ROUTES.PATHS['rubrosidomain-rubrosidolist-rubrosidodetail'] + '/:id/edit'} element={w(<RubrosidomainRubrosidolistRubrosidodetailCreatePage />)} />,
 
   <Route key="consultarubrosidolist" path={ROUTES.PATHS['consultarubrosidolist']} element={w(<ConsultarubrosidolistPage />)} />,
-  <Route key="consultarubrosidolist-create" path={ROUTES.PATHS['consultarubrosidolist'] + '/create'} element={w(<ConsultarubrosidolistCreatePage />)} />,
-  <Route key="consultarubrosidolist-detail" path={ROUTES.PATHS['consultarubrosidolist'] + '/:id'} element={w(<ConsultarubrosidolistDetailPage />)} />,
-  <Route key="consultarubrosidolist-edit" path={ROUTES.PATHS['consultarubrosidolist'] + '/:id/edit'} element={w(<ConsultarubrosidolistCreatePage />)} />,
-  <Route key="consultarubrosidolist-editar" path={ROUTES.PATHS['consultarubrosidolist'] + '/editar/:id'} element={w(<ConsultarubrosidolistCreatePage />)} />,
 
   <Route key="cargarubrosido" path={ROUTES.PATHS['cargarubrosido']} element={w(<CargarubrosidoPage />)} />,
-  <Route key="cargarubrosido-create" path={ROUTES.PATHS['cargarubrosido'] + '/create'} element={w(<CargarubrosidoCreatePage />)} />,
-  <Route key="cargarubrosido-detail" path={ROUTES.PATHS['cargarubrosido'] + '/:id'} element={w(<CargarubrosidoDetailPage />)} />,
-  <Route key="cargarubrosido-edit" path={ROUTES.PATHS['cargarubrosido'] + '/:id/edit'} element={w(<CargarubrosidoCreatePage />)} />,
-  <Route key="cargarubrosido-editar" path={ROUTES.PATHS['cargarubrosido'] + '/editar/:id'} element={w(<CargarubrosidoCreatePage />)} />,
 ];

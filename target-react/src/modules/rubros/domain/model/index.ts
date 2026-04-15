@@ -5,5 +5,5 @@ export * from './Consultarubrosidolist';
 export * from './Rubros';
 export * from './RubrosRubrosdialog';
 export * from './Rubrosidocargaxproceso';
-export * from './RubrosidomainRubrosidolistRubrosidodetail';
+export * from './Rubrosidomain';
 export * from './Rubrosxprocesodialog';

@@ -22,6 +22,11 @@ export class ConsultarubrosidolistGatewayAdapter implements Consultarubrosidolis
     return ConsultarubrosidolistApiMapper.toListResponse(data);
   }
 
+  async findAdvanced(params?: ConsultarubrosidolistFilterParams): Promise<ConsultarubrosidolistListResponse> {
+    const { data } = await httpClient.get(`${BASE_PATH}/avanzada`, { params });
+    return ConsultarubrosidolistApiMapper.toListResponse(data);
+  }
+
   async create(request: CreateConsultarubrosidolistRequest): Promise<ConsultarubrosidolistResponse> {
     const payload = ConsultarubrosidolistApiMapper.toCreatePayload(request);
     const { data } = await httpClient.post(BASE_PATH, payload);

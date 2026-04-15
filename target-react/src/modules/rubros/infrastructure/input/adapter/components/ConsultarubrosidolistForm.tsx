@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form } from '../../../../../../shared';
+import { Form } from '@shared/index';
 import { Consultarubrosidolist, CreateConsultarubrosidolist, UpdateConsultarubrosidolist } from '../../../../domain/model/Consultarubrosidolist';
 
 interface ConsultarubrosidolistFormProps {
@@ -76,9 +76,9 @@ export const ConsultarubrosidolistForm: React.FC<ConsultarubrosidolistFormProps>
       <h3>{isEditMode ? 'Editar consulta' : 'Nueva consulta'}</h3>
       {!isEditMode && (
         <>
-          <label>Rubro ID<input data-testid="consultarubrosidolist-field-rubroid" {...methods.register('rubroId')} disabled={loading} /></label>
-          <label>Colaborador ID<input data-testid="consultarubrosidolist-field-colaboradorid" {...methods.register('colaboradorId')} disabled={loading} /></label>
-          <label>Empresa ID<input data-testid="consultarubrosidolist-field-empresaid" {...methods.register('empresaId')} disabled={loading} /></label>
+          <label>Rubro<input data-testid="consultarubrosidolist-field-rubroid" {...methods.register('rubroId')} disabled={loading} /></label>
+          <label>Colaborador<input data-testid="consultarubrosidolist-field-colaboradorid" {...methods.register('colaboradorId')} disabled={loading} /></label>
+          <label>Empresa<input data-testid="consultarubrosidolist-field-empresaid" {...methods.register('empresaId')} disabled={loading} /></label>
           <label>Fecha Desde<input data-testid="consultarubrosidolist-field-fechadesde" type="date" {...methods.register('fechaDesde')} disabled={loading} /></label>
           <label>Fecha Hasta<input data-testid="consultarubrosidolist-field-fechahasta" type="date" {...methods.register('fechaHasta')} disabled={loading} /></label>
         </>

@@ -22,14 +22,34 @@
 
 export interface Consultarubrosidolist {
   id: number;
+  dfechapagocaja?: string;
   rubroId: string;
-  colaboradorId: number;
-  tipoComportamiento: number;
-  valor01: number;
+  rubroNombre?: string;
+  colaboradorId?: number;
   empresaId?: number;
+  localidadId?: number;
+  centroCostoId?: number;
+  rolId?: number;
+  neroId?: number;
+  tipoComportamiento: number;
+  valor01?: number;
+  valor02?: number;
+  cartaImpresion?: number;
+  flagEnvio?: number;
+  generarCarta?: number;
+  estadoCaja?: string;
+  usuarioCaja?: string;
+  vstts?: string;
   estado?: string;
   fechaDesde?: string;
   fechaHasta?: string;
+  aplicacion?: string;
+  origen?: string;
+  cargaUploadId?: number;
+  usuarioIngreso?: string;
+  fechaIngreso?: string;
+  usuarioModificacion?: string;
+  fechaModificacion?: string;
   nombreColaborador?: string;
   nombreRubro?: string;
   fechaCreacion?: string;
@@ -38,8 +58,21 @@ export interface Consultarubrosidolist {
 
 export type CreateConsultarubrosidolist = {
   rubroId?: string;
+  dfechapagocaja?: string;
   colaboradorId?: number;
   empresaId?: number;
+  localidadId?: number;
+  centroCostoId?: number;
+  rolId?: number;
+  neroId?: number;
+  tipoComportamiento?: number;
+  valor01?: number;
+  valor02?: number;
+  cartaImpresion?: number;
+  flagEnvio?: number;
+  generarCarta?: number;
+  estadoCaja?: string;
+  usuarioCaja?: string;
   estado?: string;
   fechaDesde?: string;
   fechaHasta?: string;
@@ -52,13 +85,20 @@ export type UpdateConsultarubrosidolist = {
 export interface ConsultarubrosidolistFilter {
   page?: number;
   size?: number;
+  pagina?: number;
+  tamanio?: number;
   rubroId?: string;
+  vidrubro?: string;
   colaboradorId?: number;
+  iidcolaborador?: number;
   empresaId?: number;
+  iidempresa?: number;
   estado?: string;
   fechaDesde?: string;
+  dfdesde?: string;
   fechaHasta?: string;
   localidadId?: number;
+  iidlocalidad?: number;
   centroCostoId?: number;
 }
 

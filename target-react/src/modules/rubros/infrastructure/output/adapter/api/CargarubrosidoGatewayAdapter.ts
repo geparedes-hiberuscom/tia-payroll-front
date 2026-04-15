@@ -24,7 +24,19 @@ export class CargarubrosidoGatewayAdapter implements CargarubrosidoGatewayPort {
 
   async create(request: CreateCargarubrosidoRequest): Promise<CargaMasivaIDOResultDTO> {
     const payload = CargarubrosidoApiMapper.toCreatePayload(request);
-    const { data } = await httpClient.post(BASE_PATH, payload, {
+    const { data } = await httpClient.post(`${BASE_PATH}/upload`, payload, {
+      params: {
+        iidempresa: request.iidempresa,
+        vidrubro: request.vidrubro,
+        vidambito: request.vidambito,
+        dfechaaplica: request.dfechaaplica,
+        tipoAP: request.tipoAP,
+        iidBanco: request.iidBanco,
+        vidTipoCta: request.vidTipoCta,
+        viTipoColaborador: request.viTipoColaborador,
+        dtbFInicio: request.dtbFInicio,
+        dtbFFin: request.dtbFFin,
+      },
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return data;
@@ -50,7 +62,10 @@ export class CargarubrosidoGatewayAdapter implements CargarubrosidoGatewayPort {
   }
 
   async aprobar(id: string): Promise<ProcesoResponseDTO> {
-    const { data } = await httpClient.post(`${BASE_PATH}/${id}/aprobar`);
+    const { data } = await httpClient.post(`${BASE_PATH}/${id}/aprobar`, {
+      accion: 'A',
+      observacion: 'Aprobado desde aplicación React',
+    });
     return data;
   }
 }

@@ -22,6 +22,16 @@
 // GeneratedAt: 2026-03-27
 
 export interface CargarubrosidoLinea {
+  iidrubrosIdoUpl?: number;
+  iidrubrosIdoUp?: number;
+  dfdesde?: string;
+  dfhasta?: string;
+  mvalor01?: number;
+  mvalor02?: number;
+  vidrubro?: string;
+  vcedula?: string;
+  itcomporta?: number;
+  vcuentabanco?: string;
   lineaId?: number;
   rubroId: string;
   colaboradorId: number;
@@ -32,14 +42,32 @@ export interface CargarubrosidoLinea {
 
 export interface Cargarubrosido {
   id: number;
-  nombreArchivo: string;
-  fechaCarga: string;
-  estado: string;
-  usuarioCarga: string;
-  numeroRegistros: number;
-  numeroErrores: number;
-  numeroExitosos: number;
+  iidrubrosIdoUp?: number;
   empresaId?: number;
+  rubroId: string;
+  vidrubro?: string;
+  estado?: string;
+  ambito?: string;
+  vidambito?: string;
+  accion?: string;
+  fechaAplica?: string;
+  dfechaaplica?: string;
+  pathArchivo?: string;
+  empresaNombreLargo?: string;
+  empresaNombreCorto?: string;
+  bancoId?: string;
+  rubroNombre?: string;
+  usuarioIngreso?: string;
+  usuarioModificacion?: string;
+  fechaIngreso?: string;
+  fechaModificacion?: string;
+  // Legacy aliases kept for current UI compatibility.
+  nombreArchivo?: string;
+  fechaCarga?: string;
+  usuarioCarga?: string;
+  numeroRegistros?: number;
+  numeroErrores?: number;
+  numeroExitosos?: number;
   procesoId?: string;
   descripcion?: string;
   fechaActualizacion?: string;
@@ -49,7 +77,17 @@ export type CreateCargarubrosido = {
   archivo: File;
   empresaId: number;
   rubroId?: string;
+  accion?: string;
+  fechaAplica?: string;
+  ambito?: string;
+  tipoAP?: number;
+  bancoId?: number;
+  tipoCuenta?: string;
+  tipoColaborador?: string;
+  periodoInicio?: string;
+  periodoFin?: string;
   descripcion?: string;
+  observaciones?: string;
 };
 
 export type UpdateCargarubrosido = {

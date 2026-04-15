@@ -29,6 +29,12 @@ export class ConsultarubrosidolistApplicationService implements Consultarubrosid
     return ConsultarubrosidolistViewMapper.toPageResult(response);
   }
 
+    async findAdvanced(filter?: ConsultarubrosidolistFilter): Promise<ConsultarubrosidolistPageResult> {
+    const params = filter ? ConsultarubrosidolistViewMapper.toFilterParams(filter) : undefined;
+    const response = await this.gatewayPort.findAdvanced(params);
+    return ConsultarubrosidolistViewMapper.toPageResult(response);
+  }
+
   async create(model: CreateConsultarubrosidolist): Promise<Consultarubrosidolist> {
     const request = ConsultarubrosidolistViewMapper.toCreateRequest(model);
     const response = await this.gatewayPort.create(request);
@@ -64,7 +70,7 @@ export class ConsultarubrosidolistApplicationService implements Consultarubrosid
     if (!estado || estado.trim() === '') {
       throw new ConsultarubrosidolistValidationError('El estado es requerido', 'estado');
     }
-    const response = await this.gatewayPort.cambiarEstado(id, { estado });
+    const response = await this.gatewayPort.cambiarEstado(id, { vstts: estado });
     return ConsultarubrosidolistViewMapper.toDomain(response);
   }
 }

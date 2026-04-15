@@ -10,8 +10,21 @@
 
 export interface CreateConsultarubrosidolistRequest {
   rubroId?: string;
+  dfechapagocaja?: string;
   colaboradorId?: number;
   empresaId?: number;
+  localidadId?: number;
+  centroCostoId?: number;
+  rolId?: number;
+  neroId?: number;
+  tipoComportamiento?: number;
+  valor01?: number;
+  valor02?: number;
+  cartaImpresion?: number;
+  flagEnvio?: number;
+  generarCarta?: number;
+  estadoCaja?: string;
+  usuarioCaja?: string;
   estado?: string;
   fechaDesde?: string;
   fechaHasta?: string;
@@ -32,19 +45,26 @@ export interface ExportarConsultaIDORequest {
 }
 
 export interface CambiarEstadoIDORequest {
-  estado: string;
+  vstts: string;
 }
 
 export interface ConsultarubrosidolistFilterParams {
   page?: number;
   size?: number;
+  pagina?: number;
+  tamanio?: number;
   rubroId?: string;
+  vidrubro?: string;
   colaboradorId?: number;
+  iidcolaborador?: number;
   empresaId?: number;
+  iidempresa?: number;
   estado?: string;
   fechaDesde?: string;
+  dfdesde?: string;
   fechaHasta?: string;
   localidadId?: number;
+  iidlocalidad?: number;
   centroCostoId?: number;
 }
 
@@ -52,11 +72,23 @@ export interface ConsultarubrosidolistFilterParams {
 
 export interface ConsultarubrosidolistResponse {
   id: number;
+  dfechapagocaja?: string;
   rubroId: string;
   colaboradorId: number;
   tipoComportamiento: number;
   valor01: number;
+  valor02?: number;
   empresaId: number;
+  localidadId?: number;
+  centroCostoId?: number;
+  rolId?: number;
+  neroId?: number;
+  cartaImpresion?: number;
+  flagEnvio?: number;
+  generarCarta?: number;
+  estadoCaja?: string;
+  usuarioCaja?: string;
+  vstts?: string;
   estado: string;
   fechaDesde: string;
   fechaHasta?: string;
