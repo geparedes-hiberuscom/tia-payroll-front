@@ -4,18 +4,31 @@ import {
   EfectoSelectValue,
   RubrosRubrosdialogDetalleTabProps,
 } from "./types";
-import { MultiSelectList } from "@shared/infrastructure/input/adapter/components/MultiSelectList";
+import {
+  Field,
+  checkboxClassName,
+  inputClassName,
+  textAreaClassName,
+  MultiSelectList,
+} from "@shared/infrastructure/input/adapter/components/ui/molecules";
 
 export const RubrosRubrosdialogDetalleTab: React.FC<
   RubrosRubrosdialogDetalleTabProps
-> = ({ methods, isEditMode, loading, clases=[] }) => {
+> = ({
+  methods,
+  isEditMode,
+  loading,
+  clases = [],
+  procedimientos = [],
+  fieldErrors = {},
+}) => {
   const formValues = methods.watch();
 
   return (
-    <div style={{ display: "grid", gap: "0.75rem" }}>
-      <label>
-        ID Rubro
+    <div className="grid gap-4 md:grid-cols-2">
+      <Field label="ID Rubro" error={fieldErrors.idRubro}>
         <input
+          className={inputClassName(Boolean(fieldErrors.idRubro))}
           data-testid="rubros-rubrosdialog-field-idrubro"
           value={formValues.idRubro}
           onChange={(event) => methods.setValue("idRubro", event.target.value)}
@@ -23,23 +36,22 @@ export const RubrosRubrosdialogDetalleTab: React.FC<
           pattern="[A-Za-z0-9_-]{2,30}"
           disabled={loading || isEditMode}
         />
-      </label>
+      </Field>
 
-      <label>
-        Nombre
+      <Field label="Nombre" error={fieldErrors.nombre}>
         <input
+          className={inputClassName(Boolean(fieldErrors.nombre))}
           data-testid="rubros-rubrosdialog-field-nombre"
           value={formValues.nombre}
           onChange={(event) => methods.setValue("nombre", event.target.value)}
-          required
           maxLength={120}
           disabled={loading}
         />
-      </label>
+      </Field>
 
-      <label>
-        Ambito
+      <Field label="Ambito" error={fieldErrors.ambito}>
         <select
+          className={inputClassName(Boolean(fieldErrors.ambito))}
           data-testid="rubros-rubrosdialog-field-ambito"
           value={formValues.ambito}
           onChange={(event) =>
@@ -53,11 +65,11 @@ export const RubrosRubrosdialogDetalleTab: React.FC<
           <option value="IDO">Ingreso Deduccion Otros</option>
           <option value="PTM">Prestamos</option>
         </select>
-      </label>
+      </Field>
 
-      <label>
-        Efecto
+      <Field label="Efecto" error={fieldErrors.efecto}>
         <select
+          className={inputClassName(Boolean(fieldErrors.efecto))}
           data-testid="rubros-rubrosdialog-field-efecto"
           value={formValues.efecto}
           onChange={(event) =>
@@ -71,11 +83,14 @@ export const RubrosRubrosdialogDetalleTab: React.FC<
           <option value="EGR">Egreso</option>
           <option value="NA">Ninguno</option>
         </select>
-      </label>
+      </Field>
 
-      <label>
-        Secuencia Impresion
+      <Field
+        label="Secuencia Impresion"
+        error={fieldErrors.secuenciaImpresion}
+      >
         <input
+          className={inputClassName(Boolean(fieldErrors.secuenciaImpresion))}
           data-testid="rubros-rubrosdialog-field-secuencia-impresion"
           type="number"
           value={formValues.secuenciaImpresion}
@@ -85,11 +100,14 @@ export const RubrosRubrosdialogDetalleTab: React.FC<
           min={0}
           disabled={loading}
         />
-      </label>
+      </Field>
 
-      <label>
-        Secuencia Sobregiro
+      <Field
+        label="Secuencia Sobregiro"
+        error={fieldErrors.secuenciaSobregiro}
+      >
         <input
+          className={inputClassName(Boolean(fieldErrors.secuenciaSobregiro))}
           data-testid="rubros-rubrosdialog-field-secuencia-sobregiro"
           type="number"
           value={formValues.secuenciaSobregiro}
@@ -99,24 +117,33 @@ export const RubrosRubrosdialogDetalleTab: React.FC<
           min={0}
           disabled={loading}
         />
-      </label>
+      </Field>
 
-      <label>
-        Procedimiento
-        <input
+      <Field
+        label="Procedimiento"
+        error={fieldErrors.procedimientoCalculo}
+      >
+        <select
+          className={inputClassName(Boolean(fieldErrors.procedimientoCalculo))}
           data-testid="rubros-rubrosdialog-field-procedimientoCalculo"
           value={formValues.procedimientoCalculo}
           onChange={(event) =>
             methods.setValue("procedimientoCalculo", event.target.value)
           }
-          maxLength={50}
           disabled={loading}
-        />
-      </label>
+        >
+          <option value="">Selecciona procedimiento</option>
+          {procedimientos.map((procedimiento) => (
+            <option key={procedimiento.value} value={procedimiento.value}>
+              {procedimiento.label}
+            </option>
+          ))}
+        </select>
+      </Field>
 
-      <label>
-        Id Rubro Homologacion
+      <Field label="Id Rubro Homologacion" error={fieldErrors.rubroHistorico}>
         <input
+          className={inputClassName(Boolean(fieldErrors.rubroHistorico))}
           data-testid="rubros-rubrosdialog-field-rubro-historico"
           type="number"
           value={formValues.rubroHistorico}
@@ -125,40 +152,51 @@ export const RubrosRubrosdialogDetalleTab: React.FC<
           }
           disabled={loading}
         />
-      </label>
+      </Field>
 
-      <div className="flex flex-wrap gap-x-lg">
-        <label style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-          <input
-            data-testid="rubros-rubrosdialog-field-aplica-interfaz"
-            type="checkbox"
-            checked={formValues.aplicaInterfaz}
-            onChange={(event) =>
-              methods.setValue("aplicaInterfaz", event.target.checked)
-            }
-            disabled={loading}
-          />
-          Aplica Interfaz
-        </label>
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:col-span-2">
+        <p className="text-sm font-medium text-slate-700">
+          Opciones de integracion
+        </p>
+        <div className="mt-3 flex flex-wrap gap-6">
+          <label className="flex items-center gap-2 text-sm text-slate-700">
+            <input
+              className={checkboxClassName()}
+              data-testid="rubros-rubrosdialog-field-aplica-interfaz"
+              type="checkbox"
+              checked={formValues.aplicaInterfaz}
+              onChange={(event) =>
+                methods.setValue("aplicaInterfaz", event.target.checked)
+              }
+              disabled={loading}
+            />
+            Aplica Interfaz
+          </label>
 
-        <label style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-          <input
-            data-testid="rubros-rubrosdialog-field-inserta-en-lote"
-            type="checkbox"
-            checked={formValues.insertaEnLote}
-            onChange={(event) =>
-              methods.setValue("insertaEnLote", event.target.checked)
-            }
-            disabled={loading}
-          />
-          Inserta En Lote
-        </label>
-
+          <label className="flex items-center gap-2 text-sm text-slate-700">
+            <input
+              className={checkboxClassName()}
+              data-testid="rubros-rubrosdialog-field-inserta-en-lote"
+              type="checkbox"
+              checked={formValues.insertaEnLote}
+              onChange={(event) =>
+                methods.setValue("insertaEnLote", event.target.checked)
+              }
+              disabled={loading}
+            />
+            Inserta En Lote
+          </label>
+        </div>
       </div>
 
-      <label>
-        Observaciones
+      <Field
+        label="Observaciones"
+        hint="Describe reglas o notas operativas del rubro."
+        error={fieldErrors.observaciones}
+        className="col-span-full"
+      >
         <textarea
+          className={textAreaClassName(Boolean(fieldErrors.observaciones))}
           data-testid="rubros-rubrosdialog-field-observaciones"
           value={formValues.observaciones}
           onChange={(event) =>
@@ -167,18 +205,26 @@ export const RubrosRubrosdialogDetalleTab: React.FC<
           maxLength={255}
           disabled={loading}
         />
-      </label>
+      </Field>
 
-      <MultiSelectList
-        label="Clases"
-        options={clases.map((clase) => ({ id: clase.id, label: clase.nombre }))}
-        selectedIds={formValues.clases}
-        onChange={(selectedIds) =>
-          methods.setValue("clases", selectedIds as number[])
-        }
-        disabled={loading}
-        testId="rubros-rubrosdialog-field-clases"
-      />
+      <div className="md:col-span-2">
+        <MultiSelectList
+          label="Clases"
+          options={clases.map((clase) => ({
+            id: clase.id,
+            label: clase.nombre,
+          }))}
+          selectedIds={formValues.clases}
+          onChange={(selectedIds) =>
+            methods.setValue("clases", selectedIds as number[])
+          }
+          disabled={loading}
+          testId="rubros-rubrosdialog-field-clases"
+        />
+        {fieldErrors.clases ? (
+          <p className="mt-2 text-xs font-medium text-rose-600">{fieldErrors.clases}</p>
+        ) : null}
+      </div>
     </div>
   );
 };

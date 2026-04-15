@@ -1,54 +1,98 @@
-import React, { useState } from 'react';
-import { useRubrosxprocesodialog } from '../hooks/useRubrosxprocesodialog';
-import { RubrosxprocesodialogList } from '../components/RubrosxprocesodialogList';
+import React from 'react';
+import {
+  Button,
+  ErrorBanner,
+  PageShell,
+} from '@shared/index';
 import { RubrosxprocesodialogForm } from '../components/RubrosxprocesodialogForm';
-import { CreateRubrosxprocesodialog, Rubrosxprocesodialog, UpdateRubrosxprocesodialog } from '../../../../domain/model/Rubrosxprocesodialog';
-import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
-import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
+import { RubrosxprocesodialogStats } from '../components/RubrosxprocesodialogStats';
+import { RubrosxprocesodialogTableSection } from '../components/RubrosxprocesodialogTableSection';
+import { useRubrosxprocesodialogPageController } from '../hooks/useRubrosxprocesodialogPageController';
 
 export const RubrosxprocesodialogPage: React.FC = () => {
-  const { items, loading, error, fetchAll, create, update, remove, clearError } = useRubrosxprocesodialog();
-  const [showForm, setShowForm] = useState(false);
-  const [editingItem, setEditingItem] = useState<Rubrosxprocesodialog | undefined>(undefined);
-
-  const handleSubmit = async (data: CreateRubrosxprocesodialog | UpdateRubrosxprocesodialog) => {
-    if (editingItem) {
-      await update(editingItem.id, data as UpdateRubrosxprocesodialog);
-    } else {
-      await create(data as CreateRubrosxprocesodialog);
-    }
-    setShowForm(false);
-    setEditingItem(undefined);
-  };
+  const {
+    items,
+    loading,
+    error,
+    catalogsError,
+    rubros,
+    procesos,
+    methods,
+    filters,
+    selectedItem,
+    totalElements,
+    page,
+    hasError,
+    getError,
+    setSelectedId,
+    setFilterField,
+    applyFilters,
+    resetFilters,
+    resetForm,
+    handleSave,
+    handleEditSelected,
+    loadItemIntoForm,
+    handleDelete,
+    handlePageChange,
+    handleRetry,
+  } = useRubrosxprocesodialogPageController();
 
   return (
-    <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Rubros por Proceso</h1>
-        {!showForm && <button onClick={() => setShowForm(true)}>+ Nuevo</button>}
-      </div>
-
-      {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
-
-      {showForm && (
-        <RubrosxprocesodialogForm
-          initialData={editingItem}
-          onSubmit={handleSubmit}
-          onCancel={() => { setShowForm(false); setEditingItem(undefined); }}
-          loading={loading}
+    <PageShell
+      title="Rubros por Proceso"
+      description="Administra la composición de rubros dentro de cada proceso de nómina, con secuencia, procedimiento, frecuencia, ámbito de ejecución y banderas operativas."
+      actions={
+        <>
+          <Button
+            label={selectedItem ? 'Actualizar asignación' : 'Guardar asignación'}
+            type="submit"
+            form="rubrosxprocesodialog-form"
+            isLoading={loading}
+          />
+          <Button label="Nueva" variant="secondary" onClick={resetForm} />
+        </>
+      }
+    >
+      {(error || catalogsError) ? (
+        <ErrorBanner
+          message={error ?? catalogsError ?? 'No se pudo cargar la pantalla'}
+          onRetry={() => void handleRetry()}
         />
-      )}
+      ) : null}
 
-      {loading && items.length === 0 ? (
-        <Loading message="Cargando asignaciones..." />
-      ) : (
-        <RubrosxprocesodialogList
+      <RubrosxprocesodialogStats items={items} totalElements={totalElements} />
+
+      <div className="grid gap-6 xl:grid-cols-[1fr_1.65fr]">
+        <RubrosxprocesodialogForm
+          methods={methods}
+          rubros={rubros}
+          procesos={procesos}
+          loading={loading}
+          isEditMode={Boolean(selectedItem)}
+          getError={getError}
+          hasError={hasError}
+          onSubmit={handleSave}
+          onLoadSelected={handleEditSelected}
+          onReset={resetForm}
+        />
+
+        <RubrosxprocesodialogTableSection
           items={items}
           loading={loading}
-          onEdit={(item) => { setEditingItem(item); setShowForm(true); }}
-          onDelete={async (itemId) => { if (window.confirm('¿Eliminar este registro?')) await remove(itemId); }}
+          page={page}
+          totalElements={totalElements}
+          rubros={rubros}
+          procesos={procesos}
+          filters={filters}
+          onSelectItem={setSelectedId}
+          onEditItem={loadItemIntoForm}
+          onDeleteItem={(itemId) => void handleDelete(itemId)}
+          onFilterChange={setFilterField}
+          onApplyFilters={applyFilters}
+          onResetFilters={resetFilters}
+          onPageChange={(nextPage) => void handlePageChange(nextPage)}
         />
-      )}
-    </div>
+      </div>
+    </PageShell>
   );
 };

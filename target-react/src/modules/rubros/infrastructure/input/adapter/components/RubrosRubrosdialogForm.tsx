@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
+  Button,
   DimensionItem,
   ErrorBanner,
   Form,
+  SectionCard,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
   useDimensiones,
   useEmpresas,
-} from "../../../../../../shared";
+} from '@shared/index';
 import {
   AmbitoSelectValue,
   EfectoSelectValue,
   RubrosRubrosdialogDetalleTab,
+  RubrosRubrosdialogFormFieldErrors,
   RubrosRubrosdialogFormValues,
   RubrosRubrosdialogParametrosTab,
 } from "./rubros-rubrosdialog-form-tabs";
@@ -26,6 +29,7 @@ import {
   UpdateRubrosRubrosdialog,
 } from "../../../../domain/model/RubrosRubrosdialog";
 import { useClasesrubro } from "../hooks";
+import { useRubrosCatalogs } from '../hooks/useRubrosCatalogs';
 
 interface RubrosRubrosdialogFormProps {
   initialData?: RubrosRubrosdialog;
@@ -79,12 +83,17 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
   const methods = useForm<RubrosRubrosdialogFormValues>({
     defaultValues: defaultFormValues,
   });
-  const [errors, setErrors] = useState<string[]>([]);
+  const [fieldErrors, setFieldErrors] =
+    useState<RubrosRubrosdialogFormFieldErrors>({});
   const [cargos, setCargos] = useState<DimensionItem[]>([]);
   const [roles, setRoles] = useState<DimensionItem[]>([]);
 
   const { items: clasesRubrosItems } = useClasesrubro();
   const { items: empresasItems } = useEmpresas();
+  const { procedimientos, loading: loadingProcedimientos } = useRubrosCatalogs({
+    loadRubros: false,
+    loadProcedimientos: true,
+  });
   const { fetchItems } = useDimensiones();
 
   useEffect(() => {
@@ -205,23 +214,234 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
 
   const validate = (formValues: RubrosRubrosdialogFormValues): string[] => {
     const nextErrors: string[] = [];
+    const nextFieldErrors: RubrosRubrosdialogFormFieldErrors = {};
+
+    const add = (
+      message: string,
+      field?: keyof RubrosRubrosdialogFormValues,
+    ) => {
+      nextErrors.push(message);
+      if (field && !nextFieldErrors[field]) {
+        nextFieldErrors[field] = message;
+      }
+    };
+
+    const parseNumberField = (
+      value: string,
+      label: string,
+      field: keyof RubrosRubrosdialogFormValues,
+      options?: { integer?: boolean; min?: number },
+    ): number | undefined => {
+      const trimmed = value.trim();
+      if (!trimmed) {
+        add(`${label} es obligatorio.`, field);
+        return undefined;
+      }
+
+      const parsed = Number(trimmed);
+      if (Number.isNaN(parsed)) {
+        add(`${label} debe ser un numero valido.`, field);
+        return undefined;
+      }
+
+      if (options?.integer && !Number.isInteger(parsed)) {
+        add(`${label} debe ser un numero entero.`, field);
+        return undefined;
+      }
+
+      if (options?.min !== undefined && parsed < options.min) {
+        add(`${label} debe ser mayor o igual a ${options.min}.`, field);
+        return undefined;
+      }
+
+      return parsed;
+    };
+
     if (
       !isEditMode &&
       !/^[A-Za-z0-9_-]{2,30}$/.test(formValues.idRubro.trim())
     ) {
-      nextErrors.push(
+      add(
         "El ID de rubro debe tener entre 2 y 30 caracteres alfanumericos.",
+        "idRubro",
       );
     }
+
+    if (!formValues.idRubro.trim()) {
+      add("El ID de rubro es obligatorio.", "idRubro");
+    }
+
     if (!formValues.nombre.trim()) {
-      nextErrors.push("El nombre es obligatorio.");
+      add("El nombre es obligatorio.", "nombre");
     }
+
     if (formValues.nombre.trim().length > 120) {
-      nextErrors.push("El nombre no puede exceder 120 caracteres.");
+      add("El nombre no puede exceder 120 caracteres.", "nombre");
     }
+
     if (formValues.carta.trim().length > 10) {
-      nextErrors.push("Carta no puede exceder 10 caracteres.");
+      add("Carta no puede exceder 10 caracteres.");
     }
+
+    if (formValues.ambito === "-1") {
+      add("Ambito es obligatorio.", "ambito");
+    }
+
+    if (formValues.efecto === "-1") {
+      add("Efecto es obligatorio.", "efecto");
+    }
+
+    if (!formValues.procedimientoCalculo.trim()) {
+      add("Procedimiento es obligatorio.", "procedimientoCalculo");
+    }
+
+    parseNumberField(
+      formValues.rubroHistorico,
+      "Id Rubro Homologacion",
+      "rubroHistorico",
+    );
+    parseNumberField(
+      formValues.secuenciaImpresion,
+      "Secuencia Impresion",
+      "secuenciaImpresion",
+      {
+        integer: true,
+        min: 0,
+      },
+    );
+    parseNumberField(
+      formValues.secuenciaSobregiro,
+      "Secuencia Sobregiro",
+      "secuenciaSobregiro",
+      {
+        integer: true,
+        min: 0,
+      },
+    );
+
+    if (formValues.ambito === "PTM") {
+      setActiveTab("parametros");
+
+      if (formValues.iidempresa === "-1") {
+        add("Empresa es obligatoria para ambito PTM.", "iidempresa");
+      }
+
+      const antiguedad = parseNumberField(
+        formValues.antiguedadMinima,
+        "Antiguedad Laboral",
+        "antiguedadMinima",
+        {
+          integer: true,
+          min: 0,
+        },
+      );
+      if (antiguedad !== undefined && antiguedad <= 6) {
+        add("Antiguedad Laboral debe ser mayor a 6 meses.", "antiguedadMinima");
+      }
+
+      const plazoMinimo = parseNumberField(
+        formValues.plazoMinimo,
+        "Plazo Minimo",
+        "plazoMinimo",
+        {
+          integer: true,
+          min: 1,
+        },
+      );
+      const plazoMaximo = parseNumberField(
+        formValues.plazoMaximo,
+        "Plazo Maximo",
+        "plazoMaximo",
+        {
+          integer: true,
+          min: 1,
+        },
+      );
+      if (
+        plazoMinimo !== undefined &&
+        plazoMaximo !== undefined &&
+        plazoMinimo >= plazoMaximo
+      ) {
+        add("Plazo Minimo siempre debe ser menor a Plazo Maximo.", "plazoMinimo");
+      }
+
+      parseNumberField(
+        formValues.montoMaximo,
+        "Monto Maximo",
+        "montoMaximo",
+        {
+          min: 0,
+        },
+      );
+
+      if (
+        formValues.cargosQueAplican.length === 0 &&
+        formValues.rolesQueAplican.length === 0
+      ) {
+        add(
+          "Debes seleccionar al menos un cargo o un grupo de empleados que aplica.",
+          "cargosQueAplican",
+        );
+      }
+
+      const numAprobaciones = parseNumberField(
+        formValues.numAprobaciones,
+        "Numero Aprobaciones",
+        "numAprobaciones",
+        {
+          integer: true,
+          min: 1,
+        },
+      );
+      const numAprobacionesNoLocales = parseNumberField(
+        formValues.numAprobacionesNoLocales,
+        "Numero Aprobaciones No Locales",
+        "numAprobacionesNoLocales",
+        {
+          integer: true,
+          min: 1,
+        },
+      );
+
+      const totalAprobadoresAlmacen = formValues.cargosQueApruebanAlmacen.length;
+      const totalAprobadoresOficina = formValues.cargosQueApruebanOficina.length;
+
+      if (totalAprobadoresAlmacen < 2) {
+        add(
+          "Debes elegir al menos dos cargos de aprobacion en almacen.",
+          "cargosQueApruebanAlmacen",
+        );
+      }
+
+      if (totalAprobadoresOficina < 2) {
+        add(
+          "Debes elegir al menos dos cargos de aprobacion en oficina.",
+          "cargosQueApruebanOficina",
+        );
+      }
+
+      if (
+        numAprobaciones !== undefined &&
+        numAprobaciones !== totalAprobadoresAlmacen
+      ) {
+        add(
+          "Numero Aprobaciones debe coincidir con la cantidad de cargos que aprueban en almacen.",
+          "numAprobaciones",
+        );
+      }
+
+      if (
+        numAprobacionesNoLocales !== undefined &&
+        numAprobacionesNoLocales !== totalAprobadoresOficina
+      ) {
+        add(
+          "Numero Aprobaciones No Locales debe coincidir con la cantidad de cargos que aprueban en oficina.",
+          "numAprobacionesNoLocales",
+        );
+      }
+    }
+
+    setFieldErrors(nextFieldErrors);
     return nextErrors;
   };
 
@@ -231,10 +451,10 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
     }
 
     const nextErrors = validate(formValues);
-    setErrors(nextErrors);
     if (nextErrors.length > 0) {
       return;
     }
+    setFieldErrors({});
 
     if (isEditMode) {
       onSubmit({
@@ -343,109 +563,100 @@ export const RubrosRubrosdialogForm: React.FC<RubrosRubrosdialogFormProps> = ({
   };
 
   return (
-    <Form
-      methods={methods}
-      onSubmit={handleSubmit}
-      data-testid="rubros-rubrosdialog-form"
-      style={{
-        display: "grid",
-        gap: "0.75rem",
-        maxWidth: 640,
-        marginBottom: "1rem",
-      }}
-    >
-      <h3>{isEditMode ? "Editar rubro" : "Crear rubro"}</h3>
-      {isReadOnlyMode && (
-        <div
-          data-testid="rubros-rubrosdialog-readonly-badge"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            width: "fit-content",
-            padding: "0.2rem 0.6rem",
-            borderRadius: 999,
-            backgroundColor: "#e5e7eb",
-            color: "#374151",
-            fontSize: "0.75rem",
-            fontWeight: 600,
-            letterSpacing: "0.02em",
-          }}
-        >
-          Solo lectura
+    <div className="grid gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p className="mt-1 text-sm text-slate-500">
+            Configura datos base, comportamiento y parametros operativos del rubro.
+          </p>
         </div>
-      )}
-      {errors.length > 0 && (
-        <ul
-          data-testid="rubros-rubrosdialog-form-errors"
-          style={{ color: "#b91c1c", margin: 0 }}
-        >
-          {errors.map((error) => (
-            <li key={error}>{error}</li>
-          ))}
-        </ul>
-      )}
-
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList aria-label="Secciones del formulario de rubros">
-          <TabsTrigger value="detalle">Detalle</TabsTrigger>
-          {showParametrosTab && (
-            <TabsTrigger value="parametros">Parametros</TabsTrigger>
-          )}
-        </TabsList>
-
-        <TabsContent value="detalle">
-          <RubrosRubrosdialogDetalleTab
-            methods={methods}
-            isEditMode={isEditMode}
-            loading={Boolean(loading) || isReadOnlyMode}
-            clases={clasesRubrosItems}
-          />
-        </TabsContent>
-
-        {showParametrosTab && (
-          <TabsContent value="parametros">
-            <RubrosRubrosdialogParametrosTab
-              methods={methods}
-              loading={Boolean(loading) || isReadOnlyMode}
-              empresas={empresasItems}
-              cargos={cargos}
-              roles={roles}
-            />
-          </TabsContent>
-        )}
-      </Tabs>
-      {error && <ErrorBanner message={error} />}
-      <div style={{ display: "flex", gap: "0.5rem" }}>
-        {!isReadOnlyMode && (
-          <button
-            type="submit"
-            data-testid="rubros-rubrosdialog-submit"
-            disabled={loading}
+        {isReadOnlyMode ? (
+          <div
+            data-testid="rubros-rubrosdialog-readonly-badge"
+            className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600"
           >
-            {loading ? "Guardando..." : isEditMode ? "Actualizar" : "Crear"}
-          </button>
-        )}
-        {isReadOnlyMode && isEditMode && (
-          <button
-            type="button"
-            data-testid="rubros-rubrosdialog-enable-edit"
-            onClick={() => setIsReadOnlyMode(false)}
-            disabled={loading}
-          >
-            Editar
-          </button>
-        )}
-        {onCancel && (
-          <button
-            type="button"
-            data-testid="rubros-rubrosdialog-cancel"
-            onClick={onCancel}
-            disabled={loading}
-          >
-            Cancelar
-          </button>
-        )}
+            Solo lectura
+          </div>
+        ) : null}
       </div>
-    </Form>
+
+      {error ? <ErrorBanner message={error} /> : null}
+
+      <Form
+        methods={methods}
+        onSubmit={handleSubmit}
+        data-testid="rubros-rubrosdialog-form"
+        className="grid gap-4"
+      >
+        <SectionCard className="w-full"
+          title="Configuracion del rubro"
+          description="Completa la informacion base en Detalle y, cuando aplique, parametros de aprobacion para Préstamos."
+        >
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList aria-label="Secciones del formulario de rubros">
+              <TabsTrigger value="detalle">Detalle</TabsTrigger>
+              {showParametrosTab ? (
+                <TabsTrigger value="parametros">Parametros</TabsTrigger>
+              ) : null}
+            </TabsList>
+
+            <TabsContent value="detalle">
+              <RubrosRubrosdialogDetalleTab
+                methods={methods}
+                isEditMode={isEditMode}
+                loading={Boolean(loading) || Boolean(loadingProcedimientos) || isReadOnlyMode}
+                clases={clasesRubrosItems}
+                procedimientos={procedimientos}
+                fieldErrors={fieldErrors}
+              />
+            </TabsContent>
+
+            {showParametrosTab ? (
+              <TabsContent value="parametros">
+                <RubrosRubrosdialogParametrosTab
+                  methods={methods}
+                  loading={Boolean(loading) || isReadOnlyMode}
+                  empresas={empresasItems}
+                  cargos={cargos}
+                  roles={roles}
+                  fieldErrors={fieldErrors}
+                />
+              </TabsContent>
+            ) : null}
+          </Tabs>
+        </SectionCard>
+
+        <div className="flex flex-wrap gap-3">
+          {!isReadOnlyMode ? (
+            <Button
+              type="submit"
+              testId="rubros-rubrosdialog-submit"
+              label={loading ? "Guardando..." : isEditMode ? "Actualizar" : "Crear"}
+              isLoading={loading}
+            />
+          ) : null}
+          {isReadOnlyMode && isEditMode ? (
+            <Button
+              type="button"
+              testId="rubros-rubrosdialog-enable-edit"
+              label="Editar"
+              variant="secondary"
+              onClick={() => setIsReadOnlyMode(false)}
+              disabled={loading}
+            />
+          ) : null}
+          {onCancel ? (
+            <Button
+              type="button"
+              testId="rubros-rubrosdialog-cancel"
+              label="Cancelar"
+              variant="ghost"
+              onClick={onCancel}
+              disabled={loading}
+            />
+          ) : null}
+        </div>
+      </Form>
+    </div>
   );
 };

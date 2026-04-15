@@ -6,6 +6,7 @@ import { RubrosRubrosdialogForm } from '../components/RubrosRubrosdialogForm';
 import { CreateRubrosRubrosdialog, UpdateRubrosRubrosdialog } from '../../../../domain/model/RubrosRubrosdialog';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
+import { Button, PageShell, SectionCard } from '@shared/index';
 
 export const RubrosRubrosdialogCreatePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,18 +27,43 @@ export const RubrosRubrosdialogCreatePage: React.FC = () => {
     navigate(ROUTES.PATHS['rubros-rubrosdialog']);
   };
 
-  if (isEditMode && loading && !selectedItem) return <Loading message="Cargando datos..." />;
+  if (isEditMode && loading && !selectedItem) {
+    return (
+      <PageShell
+        title="Rubros"
+        description="Gestiona la creacion y actualizacion de rubros con una interfaz consistente con el resto del modulo."
+      >
+        <Loading message="Cargando datos..." />
+      </PageShell>
+    );
+  }
 
   return (
-    <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
-      <h1>{isEditMode ? 'Editar' : 'Crear'} rubro</h1>
+    <PageShell
+      title={isEditMode ? 'Editar rubro' : 'Crear rubro'}
+      description="Completa los datos de negocio y parametros operativos del rubro dentro de un flujo guiado por tabs."
+      actions={
+        <Button
+          type="button"
+          variant="ghost"
+          label="Volver"
+          onClick={() => navigate(-1)}
+        />
+      }
+    >
       {error && <ErrorBanner message={error} onRetry={clearError} />}
-      <RubrosRubrosdialogForm
-        initialData={isEditMode ? selectedItem ?? undefined : undefined}
-        onSubmit={handleSubmit}
-        onCancel={() => navigate(-1)}
-        loading={loading}
-      />
-    </div>
+
+      <SectionCard
+        title="Formulario de rubro"
+        description="Registra informacion principal, observaciones y parametros avanzados cuando el ambito lo requiere."
+      >
+        <RubrosRubrosdialogForm
+          initialData={isEditMode ? selectedItem ?? undefined : undefined}
+          onSubmit={handleSubmit}
+          onCancel={() => navigate(-1)}
+          loading={loading}
+        />
+      </SectionCard>
+    </PageShell>
   );
 };

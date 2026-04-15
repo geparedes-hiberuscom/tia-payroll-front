@@ -13,12 +13,22 @@ export interface CreateRubrosxprocesodialogRequest {
   procesoId: number;
   secuencia?: number;
   frecuenciaEjecucion?: string;
+  procedimientoCalculo?: string;
+  ambitoEjecucion?: string;
+  insertaEnLote?: string;
+  validaPlantillaContable?: string;
+  estado?: string;
   activo?: boolean;
 }
 
 export interface UpdateRubrosxprocesodialogRequest {
   secuencia?: number;
   frecuenciaEjecucion?: string;
+  procedimientoCalculo?: string;
+  ambitoEjecucion?: string;
+  insertaEnLote?: string;
+  validaPlantillaContable?: string;
+  estado?: string;
   activo?: boolean;
 }
 
@@ -34,9 +44,20 @@ export interface RubrosxprocesodialogFilterParams {
 export interface RubrosxprocesodialogResponse {
   id: number;
   rubroId: string;
+  rubroNombre?: string;
   procesoId: number;
+  procesoNombre?: string;
   secuencia?: number;
   frecuenciaEjecucion?: string;
+  procedimientoCalculo?: string;
+  ambitoEjecucion?: string;
+  insertaEnLote?: string;
+  validaPlantillaContable?: string;
+  estado?: string;
+  usuarioIngreso?: string;
+  fechaIngreso?: string;
+  usuarioModificacion?: string;
+  fechaModificacion?: string;
   activo?: boolean;
   fechaCreacion?: string;
   fechaActualizacion?: string;

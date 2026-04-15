@@ -16,7 +16,7 @@ export const Form = <TFieldValues extends FieldValues>({
 }: FormProps<TFieldValues>) => {
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} {...formProps}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} className='grid md:grid-cols-2 gap-4' {...formProps}>
         {children}
       </form>
     </FormProvider>

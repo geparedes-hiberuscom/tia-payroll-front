@@ -13,6 +13,9 @@ const CostosPage = lazy(() => import('@modules/costos').then((m) => ({ default: 
 const BeneficiosPage = lazy(() => import('@modules/beneficios').then((m) => ({ default: m.BeneficiosPage })));
 const IntegracionesPage = lazy(() => import('@modules/integraciones').then((m) => ({ default: m.IntegracionesPage })));
 const ReportesPage = lazy(() => import('@modules/reportes').then((m) => ({ default: m.ReportesPage })));
+const UIKitDemoPage = lazy(() =>
+  import('@shared/infrastructure/input/adapter/pages/UIKitDemoPage').then((m) => ({ default: m.UIKitDemoPage })),
+);
 
 const withSuspense = (element: React.ReactElement) => (
   <Suspense fallback={<Loading message="Cargando modulo..." />}>
@@ -33,6 +36,7 @@ export const AppRouter: React.FC = () => {
       <Route path={ROUTES.BENEFICIOS} element={withSuspense(<BeneficiosPage />)} />
       <Route path={ROUTES.INTEGRACIONES} element={withSuspense(<IntegracionesPage />)} />
       <Route path={ROUTES.REPORTES} element={withSuspense(<ReportesPage />)} />
+      <Route path={ROUTES.UIKIT_DEMO} element={withSuspense(<UIKitDemoPage />)} />
 
       {rubrosRoutes}
       {procesosRoutes}

@@ -9,9 +9,14 @@ import {
   RubrosRubrosdialog,
   UpdateRubrosRubrosdialog,
 } from "../../../../domain/model/RubrosRubrosdialog";
-import { Loading } from "@shared/infrastructure/input/adapter/components/Loading";
-import { ErrorBanner } from "@shared/infrastructure/input/adapter/components/ErrorBanner";
-import { Modal } from "@shared/infrastructure/input/adapter/components/Modal";
+import {
+  Button,
+  ErrorBanner,
+  Loading,
+  Modal,
+  PageShell,
+  SectionCard,
+} from '@shared/index';
 
 export const RubrosRubrosdialogPage: React.FC = () => {
   const {
@@ -44,28 +49,26 @@ export const RubrosRubrosdialogPage: React.FC = () => {
     }
     await fetchAll(activeFilters);
     setShowForm(false);
-        setIsReadOnlyForm(false);
+    setIsReadOnlyForm(false);
     setEditingItem(undefined);
   };
 
+  const handleView = async (item: RubrosRubrosdialog) => {
+    const detailedItem = await fetchById(item.idRubro);
+    setEditingItem(detailedItem ?? item);
+    setIsReadOnlyForm(true);
+    setShowForm(true);
+  };
 
-    const handleView = async (item: RubrosRubrosdialog) => {
-     const detailedItem = await fetchById(item.idRubro);
-      setEditingItem(detailedItem ?? item);
-      setIsReadOnlyForm(true);
-      setShowForm(true);
-    };
+  const handleEdit = async (item: RubrosRubrosdialog) => {
+    const detailedItem = await fetchById(item.idRubro);
+    setEditingItem(detailedItem ?? item);
+    setIsReadOnlyForm(false);
+    setShowForm(true);
+  };
 
-    const handleEdit = async (item: RubrosRubrosdialog) => {
-      const detailedItem = await fetchById(item.idRubro);
-      setEditingItem(detailedItem ?? item);
-      setIsReadOnlyForm(false);
-      setShowForm(true);
-    };
-  
-
-    const handleDelete = async (id: string) => {
-    const ok = window.confirm('Deseas eliminar este registro?');
+  const handleDelete = async (id: string) => {
+    const ok = window.confirm("Deseas eliminar este registro?");
     if (!ok) {
       return;
     }
@@ -74,22 +77,23 @@ export const RubrosRubrosdialogPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 960, margin: "0 auto", padding: "2rem" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h1>Rubros</h1>
-        {!showForm && (
-          <button onClick={() => {setShowForm(true);
-            setIsReadOnlyForm(false);
-            setEditingItem(undefined)
-          }}>+ Nuevo</button>
-        )}
-      </div>
+    <PageShell
+      title="Rubros"
+      description="Administra rubros, consulta su detalle y configura parametros operativos desde un formulario con tabs."
+      actions={
+        !showForm ? (
+          <Button
+            type="button"
+            label="Nuevo rubro"
+            onClick={() => {
+              setShowForm(true);
+              setIsReadOnlyForm(false);
+              setEditingItem(undefined);
+            }}
+          />
+        ) : undefined
+      }
+    >
 
       {error && (
         <ErrorBanner
@@ -101,18 +105,23 @@ export const RubrosRubrosdialogPage: React.FC = () => {
         />
       )}
 
-      <RubrosRubrosdialogFilter
-        loading={loading}
-        onApply={(params) => {
-          setActiveFilters(params);
-          fetchAll(params);
-        }}
-        onClear={() => {
-          const emptyFilters: RubrosRubrosdialogFilterModel = { page: 0 };
-          setActiveFilters(emptyFilters);
-          fetchAll(emptyFilters);
-        }}
-      />
+      <SectionCard
+        title="Filtros"
+        description="Refina la busqueda por identificador, nombre, ambito y efecto."
+      >
+        <RubrosRubrosdialogFilter
+          loading={loading}
+          onApply={(params) => {
+            setActiveFilters(params);
+            fetchAll(params);
+          }}
+          onClear={() => {
+            const emptyFilters: RubrosRubrosdialogFilterModel = { page: 0 };
+            setActiveFilters(emptyFilters);
+            fetchAll(emptyFilters);
+          }}
+        />
+      </SectionCard>
 
       {showForm && (
         <Modal
@@ -124,7 +133,14 @@ export const RubrosRubrosdialogPage: React.FC = () => {
               setIsReadOnlyForm(false);
             }
           }}
-          title={""}
+          title={
+            editingItem
+              ? isReadOnlyForm
+                ? "Detalle de rubro"
+                : "Editar rubro"
+              : "Nuevo rubro"
+          }
+          size="lg"
         >
           <RubrosRubrosdialogForm
             initialData={editingItem}
@@ -136,7 +152,7 @@ export const RubrosRubrosdialogPage: React.FC = () => {
               setEditingItem(undefined);
             }}
             loading={loading}
-            error={error??''}
+            error={error ?? ""}
           />
         </Modal>
       )}
@@ -144,26 +160,31 @@ export const RubrosRubrosdialogPage: React.FC = () => {
       {loading && items.length === 0 ? (
         <Loading message="Cargando rubros..." />
       ) : (
-        <RubrosRubrosdialogList
-          items={items}
-          loading={loading}
-          onView={handleView}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          page={page}
-          pageSize={activeFilters.size ?? 10}
-          totalItems={totalElements}
-          onPageChange={(nextPage) => {
-            const nextFilters: RubrosRubrosdialogFilterModel = {
-              ...activeFilters,
-              page: nextPage,
-              size: activeFilters.size ?? 10,
-            };
-            setActiveFilters(nextFilters);
-            fetchAll(nextFilters);
-          }}
-        />
+        <SectionCard
+          title="Listado de rubros"
+          description="Consulta resultados paginados y ejecuta acciones de ver, editar o eliminar."
+        >
+          <RubrosRubrosdialogList
+            items={items}
+            loading={loading}
+            onView={handleView}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            page={page}
+            pageSize={activeFilters.size ?? 10}
+            totalItems={totalElements}
+            onPageChange={(nextPage) => {
+              const nextFilters: RubrosRubrosdialogFilterModel = {
+                ...activeFilters,
+                page: nextPage,
+                size: activeFilters.size ?? 10,
+              };
+              setActiveFilters(nextFilters);
+              fetchAll(nextFilters);
+            }}
+          />
+        </SectionCard>
       )}
-    </div>
+    </PageShell>
   );
 };

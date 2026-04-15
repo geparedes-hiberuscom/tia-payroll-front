@@ -11,9 +11,20 @@ export class RubrosxprocesodialogApiMapper {
     return {
       id: raw.id,
       rubroId: raw.rubroId,
+      rubroNombre: raw.rubroNombre,
       procesoId: raw.procesoId,
+      procesoNombre: raw.procesoNombre,
       secuencia: raw.secuencia,
       frecuenciaEjecucion: raw.frecuenciaEjecucion,
+      procedimientoCalculo: raw.procedimientoCalculo,
+      ambitoEjecucion: raw.ambitoEjecucion,
+      insertaEnLote: raw.insertaEnLote,
+      validaPlantillaContable: raw.validaPlantillaContable,
+      estado: raw.estado,
+      usuarioIngreso: raw.usuarioIngreso,
+      fechaIngreso: raw.fechaIngreso,
+      usuarioModificacion: raw.usuarioModificacion,
+      fechaModificacion: raw.fechaModificacion,
       activo: raw.activo ?? true,
       fechaCreacion: raw.fechaCreacion,
       fechaActualizacion: raw.fechaActualizacion,
@@ -38,6 +49,11 @@ export class RubrosxprocesodialogApiMapper {
       procesoId: request.procesoId,
       secuencia: request.secuencia,
       frecuenciaEjecucion: request.frecuenciaEjecucion,
+      procedimientoCalculo: request.procedimientoCalculo,
+      ambitoEjecucion: request.ambitoEjecucion,
+      insertaEnLote: request.insertaEnLote,
+      validaPlantillaContable: request.validaPlantillaContable,
+      estado: request.estado,
       activo: request.activo ?? true,
     };
   }
@@ -46,6 +62,11 @@ export class RubrosxprocesodialogApiMapper {
     return {
       secuencia: request.secuencia,
       frecuenciaEjecucion: request.frecuenciaEjecucion,
+      procedimientoCalculo: request.procedimientoCalculo,
+      ambitoEjecucion: request.ambitoEjecucion,
+      insertaEnLote: request.insertaEnLote,
+      validaPlantillaContable: request.validaPlantillaContable,
+      estado: request.estado,
       activo: request.activo,
     };
   }

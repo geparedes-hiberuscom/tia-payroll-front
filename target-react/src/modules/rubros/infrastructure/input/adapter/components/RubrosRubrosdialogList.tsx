@@ -1,6 +1,6 @@
 import React from 'react';
 import { RubrosRubrosdialog } from '../../../../domain/model/RubrosRubrosdialog';
-import { Table } from '../../../../../../shared';
+import { Button, Table } from '@shared/index';
 
 interface RubrosRubrosdialogListProps {
   items: RubrosRubrosdialog[];
@@ -36,42 +36,41 @@ export const RubrosRubrosdialogList: React.FC<RubrosRubrosdialogListProps> = ({
       key: 'acciones',
       header: 'Acciones',
       render: (item: RubrosRubrosdialog) => (
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div className="flex flex-wrap gap-2">
           {onView && (
-            <button
+            <Button
               type="button"
-              className="btn btn-secondary"
+              label="Ver"
+              size="sm"
+              variant="secondary"
               onClick={(event) => {
                 event.stopPropagation();
                 onView(item);
               }}
-            >
-              Ver
-            </button>
+            />
           )}
           {onEdit && (
-            <button
+            <Button
               type="button"
-              className="btn btn-primary"
+              label="Editar"
+              size="sm"
               onClick={(event) => {
                 event.stopPropagation();
                 onEdit(item);
               }}
-            >
-              Editar
-            </button>
+            />
           )}
           {onDelete && (
-            <button
+            <Button
               type="button"
-              className="btn btn-danger"
+              label="Eliminar"
+              size="sm"
+              variant="outline"
               onClick={(event) => {
                 event.stopPropagation();
                 onDelete(item.idRubro);
               }}
-            >
-              Eliminar
-            </button>
+            />
           )}
         </div>
       ),
@@ -79,7 +78,7 @@ export const RubrosRubrosdialogList: React.FC<RubrosRubrosdialogListProps> = ({
   ];
 
   return (
-    <div data-testid="rubros-rubrosdialog-list" style={{ display: 'grid', gap: '0.75rem' }}>
+    <div data-testid="rubros-rubrosdialog-list" className="grid gap-3">
       <Table<RubrosRubrosdialog>
         items={items}
         columns={columns}
@@ -94,7 +93,7 @@ export const RubrosRubrosdialogList: React.FC<RubrosRubrosdialogListProps> = ({
         className="card"
       />
       {onSelect && (
-        <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+        <div className="text-sm text-slate-500">
           Tip: haz click en una fila para ver el detalle.
         </div>
       )}

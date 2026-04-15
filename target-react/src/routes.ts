@@ -5,6 +5,7 @@
 export const ROUTES = {
   HOME: '/',
   SETUP: '/setup',
+  UIKIT_DEMO: '/uikit-demo',
   RUBROS: '/rubros',
   PROCESOS: '/procesos',
   CONSULTAS: '/consultas',

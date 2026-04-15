@@ -13,10 +13,11 @@ export const RubrosxprocesodialogDetail: React.FC<RubrosxprocesodialogDetailProp
     <h2>Detalle rubro por proceso</h2>
     <dl>
       <dt>ID</dt><dd>{item.id}</dd>
-      <dt>Rubro</dt><dd>{item.rubroId}</dd>
-      <dt>Proceso</dt><dd>{item.procesoId}</dd>
+      <dt>Rubro</dt><dd>{item.rubroNombre ?? item.rubroId}</dd>
+      <dt>Proceso</dt><dd>{item.procesoNombre ?? item.procesoId}</dd>
       <dt>Secuencia</dt><dd>{item.secuencia ?? 'N/A'}</dd>
       <dt>Frecuencia</dt><dd>{item.frecuenciaEjecucion ?? 'N/A'}</dd>
+      <dt>Estado</dt><dd>{item.estado ?? 'N/A'}</dd>
       <dt>Activo</dt><dd>{item.activo ? 'Si' : 'No'}</dd>
     </dl>
     <div style={{ display: 'flex', gap: '0.5rem' }}>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import type { RubrosRubrosdialogFilter as RubrosRubrosdialogFilterModel } from "@modules/rubros/domain/model/RubrosRubrosdialog";
+import { Button, Field, inputClassName } from '@shared/index';
 
 type AmbitoFilterValue = NonNullable<RubrosRubrosdialogFilterModel["ambito"]> | "";
 type EfectoFilterValue = NonNullable<RubrosRubrosdialogFilterModel["efecto"]> | "";
@@ -43,42 +44,32 @@ export const RubrosRubrosdialogFilter: React.FC<RubrosRubrosdialogFilterProps> =
     <form
       onSubmit={handleApply}
       data-testid="rubros-rubrosdialog-filter"
-      style={{
-        display: "grid",
-        gap: "0.75rem",
-        marginBottom: "1rem",
-        padding: "1rem",
-        border: "1px solid #e5e7eb",
-        borderRadius: 8,
-        background: "#fff",
-      }}
+      className="grid gap-4"
     >
-      <strong>Filtros</strong>
-
-      <div style={{ display: "grid", gap: "0.75rem", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))" }}>
-        <label>
-          ID Rubro
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <Field label="ID Rubro">
           <input
+            className={inputClassName()}
             data-testid="rubros-rubrosdialog-filter-idrubro"
             value={idRubro}
             onChange={(event) => setIdRubro(event.target.value)}
             disabled={loading}
           />
-        </label>
+        </Field>
 
-        <label>
-          Nombre
+        <Field label="Nombre">
           <input
+            className={inputClassName()}
             data-testid="rubros-rubrosdialog-filter-nombre"
             value={nombre}
             onChange={(event) => setNombre(event.target.value)}
             disabled={loading}
           />
-        </label>
+        </Field>
 
-        <label>
-          Efecto
+        <Field label="Efecto">
           <select
+            className={inputClassName()}
             data-testid="rubros-rubrosdialog-filter-efecto"
             value={efecto}
             onChange={(event) => setEfecto(event.target.value as EfectoFilterValue)}
@@ -89,11 +80,11 @@ export const RubrosRubrosdialogFilter: React.FC<RubrosRubrosdialogFilterProps> =
             <option value="EGR">Egreso</option>
             <option value="NA">Ninguno</option>
           </select>
-        </label>
+        </Field>
 
-        <label>
-          Ambito
+        <Field label="Ambito">
           <select
+            className={inputClassName()}
             data-testid="rubros-rubrosdialog-filter-ambito"
             value={ambito}
             onChange={(event) => setAmbito(event.target.value as AmbitoFilterValue)}
@@ -104,16 +95,12 @@ export const RubrosRubrosdialogFilter: React.FC<RubrosRubrosdialogFilterProps> =
             <option value="IDO">Ingreso Deduccion Otros</option>
             <option value="PTM">Prestamos</option>
           </select>
-        </label>
+        </Field>
       </div>
 
-      <div style={{ display: "flex", gap: "0.5rem" }}>
-        <button type="submit" disabled={loading} data-testid="rubros-rubrosdialog-filter-apply">
-          Buscar
-        </button>
-        <button type="button" disabled={loading} onClick={handleClear} data-testid="rubros-rubrosdialog-filter-clear">
-          Limpiar
-        </button>
+      <div className="flex flex-wrap gap-3">
+        <Button type="submit" disabled={loading} testId="rubros-rubrosdialog-filter-apply" label="Buscar" />
+        <Button type="button" disabled={loading} onClick={handleClear} testId="rubros-rubrosdialog-filter-clear" label="Limpiar" variant="ghost" />
       </div>
     </form>
   );

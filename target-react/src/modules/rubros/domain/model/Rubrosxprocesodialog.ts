@@ -22,9 +22,20 @@
 export interface Rubrosxprocesodialog {
   id: number;
   rubroId: string;
+  rubroNombre?: string;
   procesoId: number;
+  procesoNombre?: string;
   secuencia?: number;
   frecuenciaEjecucion?: string;
+  procedimientoCalculo?: string;
+  ambitoEjecucion?: string;
+  insertaEnLote?: string;
+  validaPlantillaContable?: string;
+  estado?: string;
+  usuarioIngreso?: string;
+  fechaIngreso?: string;
+  usuarioModificacion?: string;
+  fechaModificacion?: string;
   activo?: boolean;
   fechaCreacion?: string;
   fechaActualizacion?: string;
@@ -35,12 +46,22 @@ export type CreateRubrosxprocesodialog = {
   procesoId: number;
   secuencia?: number;
   frecuenciaEjecucion?: string;
+  procedimientoCalculo?: string;
+  ambitoEjecucion?: string;
+  insertaEnLote?: string;
+  validaPlantillaContable?: string;
+  estado?: string;
   activo?: boolean;
 };
 
 export type UpdateRubrosxprocesodialog = {
   secuencia?: number;
   frecuenciaEjecucion?: string;
+  procedimientoCalculo?: string;
+  ambitoEjecucion?: string;
+  insertaEnLote?: string;
+  validaPlantillaContable?: string;
+  estado?: string;
   activo?: boolean;
 };
 

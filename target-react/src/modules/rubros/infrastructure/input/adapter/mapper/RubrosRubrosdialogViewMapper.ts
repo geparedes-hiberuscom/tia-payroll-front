@@ -2,7 +2,7 @@
 // Source: migration/plan/config.json
 // GeneratedAt: 2026-03-27
 
-import { RubrosRubrosdialog, CreateRubrosRubrosdialog, UpdateRubrosRubrosdialog, RubrosRubrosdialogFilter, RubrosRubrosdialogPageResult, AprobacionCargo } from '../../../../domain/model/RubrosRubrosdialog';
+import { RubrosRubrosdialog, CreateRubrosRubrosdialog, UpdateRubrosRubrosdialog, RubrosRubrosdialogFilter, RubrosRubrosdialogPageResult } from '../../../../domain/model/RubrosRubrosdialog';
 import { RubrosRubrosdialogResponse, RubrosRubrosdialogListResponse, CreateRubrosRubrosdialogRequest, UpdateRubrosRubrosdialogRequest, RubrosRubrosdialogFilterParams, AprobacionCargoDto } from '../dto/RubrosRubrosdialogDto';
 
 export class RubrosRubrosdialogViewMapper {
@@ -38,8 +38,8 @@ export class RubrosRubrosdialogViewMapper {
       iidempresa: response.iidempresa,
       cargosQueAplican: response.cargosQueAplican,
       rolesQueAplican: response.rolesQueAplican,
-      cargosQueApruebanAlmacen: response.cargosQueApruebanAlmacen as AprobacionCargo[] | undefined,
-      cargosQueApruebanOficina: response.cargosQueApruebanOficina as AprobacionCargo[] | undefined,
+      cargosQueApruebanAlmacen: response.cargosQueApruebanAlmacen as number[] | undefined,
+      cargosQueApruebanOficina: response.cargosQueApruebanOficina as number[] | undefined,
     };
   }
 

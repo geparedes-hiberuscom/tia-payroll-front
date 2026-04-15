@@ -11,9 +11,20 @@ export class RubrosxprocesodialogViewMapper {
     return {
       id: response.id,
       rubroId: response.rubroId,
+      rubroNombre: response.rubroNombre,
       procesoId: response.procesoId,
+      procesoNombre: response.procesoNombre,
       secuencia: response.secuencia,
       frecuenciaEjecucion: response.frecuenciaEjecucion,
+      procedimientoCalculo: response.procedimientoCalculo,
+      ambitoEjecucion: response.ambitoEjecucion,
+      insertaEnLote: response.insertaEnLote,
+      validaPlantillaContable: response.validaPlantillaContable,
+      estado: response.estado,
+      usuarioIngreso: response.usuarioIngreso,
+      fechaIngreso: response.fechaIngreso,
+      usuarioModificacion: response.usuarioModificacion,
+      fechaModificacion: response.fechaModificacion,
       activo: response.activo,
       fechaCreacion: response.fechaCreacion,
       fechaActualizacion: response.fechaActualizacion,
@@ -35,6 +46,11 @@ export class RubrosxprocesodialogViewMapper {
       procesoId: model.procesoId,
       secuencia: model.secuencia,
       frecuenciaEjecucion: model.frecuenciaEjecucion,
+      procedimientoCalculo: model.procedimientoCalculo,
+      ambitoEjecucion: model.ambitoEjecucion,
+      insertaEnLote: model.insertaEnLote,
+      validaPlantillaContable: model.validaPlantillaContable,
+      estado: model.estado,
       activo: model.activo,
     };
   }
@@ -43,6 +59,11 @@ export class RubrosxprocesodialogViewMapper {
     return {
       secuencia: model.secuencia,
       frecuenciaEjecucion: model.frecuenciaEjecucion,
+      procedimientoCalculo: model.procedimientoCalculo,
+      ambitoEjecucion: model.ambitoEjecucion,
+      insertaEnLote: model.insertaEnLote,
+      validaPlantillaContable: model.validaPlantillaContable,
+      estado: model.estado,
       activo: model.activo,
     };
   }

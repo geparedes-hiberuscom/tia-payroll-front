@@ -4,6 +4,11 @@ import { DragDropItem } from "@shared/infrastructure/input/adapter/components/Dr
 import { Clasesrubro } from '@modules/rubros/domain/model';
 import { DimensionItem, Empresa } from '@shared/index';
 
+export interface ProcedureOption {
+  value: string;
+  label: string;
+}
+
 export type AmbitoSelectValue = AmbitoRubro | "-1";
 export type EfectoSelectValue = EfectoRubro | "-1";
 
@@ -37,11 +42,17 @@ export interface RubrosRubrosdialogFormValues {
   cargosQueApruebanOficina: DragDropItem[];
 }
 
+export type RubrosRubrosdialogFormFieldErrors = Partial<
+  Record<keyof RubrosRubrosdialogFormValues, string>
+>;
+
 export interface RubrosRubrosdialogDetalleTabProps {
   methods: UseFormReturn<RubrosRubrosdialogFormValues>;
   isEditMode: boolean;
   loading?: boolean;
   clases?: Clasesrubro[];
+  procedimientos?: ProcedureOption[];
+  fieldErrors?: RubrosRubrosdialogFormFieldErrors;
 }
 
 export interface RubrosRubrosdialogParametrosTabProps {
@@ -50,4 +61,5 @@ export interface RubrosRubrosdialogParametrosTabProps {
   empresas?: Empresa[];
   cargos?: DimensionItem[];
   roles?: DimensionItem[];
+  fieldErrors?: RubrosRubrosdialogFormFieldErrors;
 }
