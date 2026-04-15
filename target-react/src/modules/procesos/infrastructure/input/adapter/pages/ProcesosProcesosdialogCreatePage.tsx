@@ -4,9 +4,9 @@ import { ROUTES } from '../../../../../../routes';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 import { useProcesosProcesosdialog } from '../hooks/useProcesosProcesosdialog';
-import { ProcesosProcesosdialogViewMapper } from '../mapper/ProcesosProcesosdialogViewMapper';
 import { ProcesosProcesosdialogForm } from '../components/ProcesosProcesosdialogForm';
 import { CreateProcesosProcesosdialog, UpdateProcesosProcesosdialog } from '../../../../domain/model/ProcesosProcesosdialog';
+import { Button, PageShell, SectionCard } from '@shared/index';
 
 export const ProcesosProcesosdialogCreatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -24,32 +24,55 @@ export const ProcesosProcesosdialogCreatePage: React.FC = () => {
     if (!selectedItem || !isEditMode) {
       return undefined;
     }
-    return ProcesosProcesosdialogViewMapper.toDomain(selectedItem);
+    return selectedItem;
   }, [selectedItem, isEditMode]);
 
   const handleSubmit = async (data: CreateProcesosProcesosdialog | UpdateProcesosProcesosdialog) => {
     if (isEditMode && id) {
-      await update(id, ProcesosProcesosdialogViewMapper.toUpdateRequest(data as UpdateProcesosProcesosdialog));
+      await update(id, data as UpdateProcesosProcesosdialog);
     } else {
-      await create(ProcesosProcesosdialogViewMapper.toCreateRequest(data as CreateProcesosProcesosdialog));
+      await create(data as CreateProcesosProcesosdialog);
     }
     navigate(ROUTES.PATHS['procesos-procesosdialog']);
   };
 
   if (isEditMode && loading && !initialData) {
-    return <Loading message="Cargando datos para edicion..." />;
+    return (
+      <PageShell
+        title="Procesos"
+        description="Mantiene la configuracion de procesos operativos con una interfaz alineada al resto del sistema."
+      >
+        <Loading message="Cargando datos para edicion..." />
+      </PageShell>
+    );
   }
 
   return (
-    <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }} data-testid="procesos-procesosdialog-create-page">
-      <h1>{isEditMode ? 'Editar' : 'Crear'} proceso</h1>
+    <PageShell
+      title={isEditMode ? 'Editar proceso' : 'Crear proceso'}
+      description="Define los identificadores del proceso y los procedimientos relacionados para ejecucion, reversion y contabilizacion."
+      actions={
+        <Button
+          type="button"
+          variant="ghost"
+          label="Volver"
+          onClick={() => navigate(ROUTES.PATHS['procesos-procesosdialog'])}
+        />
+      }
+    >
       {error && <ErrorBanner message={error} onRetry={() => { clearError(); if (isEditMode && id) { fetchById(id); } }} />}
-      <ProcesosProcesosdialogForm
-        initialData={initialData}
-        onSubmit={handleSubmit}
-        onCancel={() => navigate(ROUTES.PATHS['procesos-procesosdialog'])}
-        loading={loading}
-      />
-    </div>
+
+      <SectionCard
+        title="Formulario de proceso"
+        description="Completa informacion principal y procedimientos para ejecutar la operacion de forma controlada."
+      >
+        <ProcesosProcesosdialogForm
+          initialData={initialData}
+          onSubmit={handleSubmit}
+          onCancel={() => navigate(ROUTES.PATHS['procesos-procesosdialog'])}
+          loading={loading}
+        />
+      </SectionCard>
+    </PageShell>
   );
 };

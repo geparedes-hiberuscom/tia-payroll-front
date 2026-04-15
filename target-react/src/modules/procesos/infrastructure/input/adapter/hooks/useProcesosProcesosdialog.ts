@@ -1,22 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ProcesosProcesosdialogService } from '../../../../application/service/ProcesosProcesosdialogService';
+import { ProcesosProcesosdialogApplicationService } from '../../../../application/service/ProcesosProcesosdialogApplicationService';
 import { ProcesosProcesosdialogGatewayAdapter } from '../../../output/adapter/api/ProcesosProcesosdialogGatewayAdapter';
-import { CreateProcesosProcesosdialogRequest, ProcesosProcesosdialogFilterParams, ProcesosProcesosdialogResponse, UpdateProcesosProcesosdialogRequest } from '../dto/ProcesosProcesosdialogDto';
+import { CreateProcesosProcesosdialog, ProcesosProcesosdialog,ProcesosProcesosdialogFilter,UpdateProcesosProcesosdialog,ProcesosProcesosdialogPageResult } from '@modules/procesos/domain/model/ProcesosProcesosdialog';
 
 const gateway = new ProcesosProcesosdialogGatewayAdapter();
-const service = new ProcesosProcesosdialogService(gateway);
+const service = new ProcesosProcesosdialogApplicationService(gateway);
 
 export function useProcesosProcesosdialog() {
-  const [items, setItems] = useState<ProcesosProcesosdialogResponse[]>([]);
-  const [selectedItem, setSelectedItem] = useState<ProcesosProcesosdialogResponse | null>(null);
+  const [items, setItems] = useState<ProcesosProcesosdialog[]>([]);
+  const [selectedItem, setSelectedItem] = useState<ProcesosProcesosdialog | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalElements, setTotalElements] = useState(0);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
-  const lastFiltersRef = useRef<ProcesosProcesosdialogFilterParams | undefined>(undefined);
+  const lastFiltersRef = useRef<ProcesosProcesosdialogFilter | undefined>(undefined);
 
-  const fetchAll = useCallback(async (params?: ProcesosProcesosdialogFilterParams) => {
+  const fetchAll = useCallback(async (params?: ProcesosProcesosdialogFilter) => {
     setLoading(true);
     setError(null);
     try {
@@ -47,7 +47,7 @@ export function useProcesosProcesosdialog() {
     }
   }, []);
 
-  const create = useCallback(async (request: CreateProcesosProcesosdialogRequest) => {
+  const create = useCallback(async (request: CreateProcesosProcesosdialog) => {
     setLoading(true);
     setError(null);
     try {
@@ -59,7 +59,7 @@ export function useProcesosProcesosdialog() {
     }
   }, [fetchAll]);
 
-  const update = useCallback(async (id: string, request: UpdateProcesosProcesosdialogRequest) => {
+  const update = useCallback(async (id: string, request: UpdateProcesosProcesosdialog) => {
     setLoading(true);
     setError(null);
     try {
@@ -78,7 +78,7 @@ export function useProcesosProcesosdialog() {
     try {
       await service.remove(id);
       await fetchAll(lastFiltersRef.current);
-      if (selectedItem?.id === id) setSelectedItem(null);
+      if (selectedItem?.id === Number(id)) setSelectedItem(null);
     } finally {
       setLoading(false);
     }

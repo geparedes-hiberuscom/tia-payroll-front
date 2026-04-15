@@ -10,7 +10,7 @@ export class ProcesosProcesosdialogApiMapper {
     const source = raw as Partial<ProcesosProcesosdialogResponse> & { id?: string | number; rubroId?: string };
     return {
       ...(source as ProcesosProcesosdialogResponse),
-      id: String(source.id ?? source.rubroId ?? ''),
+      id: Number(source.id ?? source.rubroId ?? ''),
     };
   }
 

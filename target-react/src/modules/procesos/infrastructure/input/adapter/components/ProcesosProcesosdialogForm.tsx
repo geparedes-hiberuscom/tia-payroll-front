@@ -1,12 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Form } from '../../../../../../shared';
-import { CreateProcesosProcesosdialog, UpdateProcesosProcesosdialog, ProcesosProcesosdialog } from '../../../../domain/model/ProcesosProcesosdialog';
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  Button,
+  DimensionItem,
+  Field,
+  Form,
+  SectionCard,
+  getDominioList,
+  inputClassName,
+  textAreaClassName,
+  useDimensiones,
+  useEmpresas,
+  useProcedimientos,
+} from "@shared/index";
+import {
+  CreateProcesosProcesosdialog,
+  UpdateProcesosProcesosdialog,
+  ProcesosProcesosdialog,
+} from "@modules/procesos/domain/model/ProcesosProcesosdialog";
 
 interface ProcesosProcesosdialogFormProps {
   /** Si se pasa initialData, el formulario está en modo edición */
   initialData?: ProcesosProcesosdialog;
-  onSubmit: (data: CreateProcesosProcesosdialog | UpdateProcesosProcesosdialog) => void;
+  onSubmit: (
+    data: CreateProcesosProcesosdialog | UpdateProcesosProcesosdialog,
+  ) => void;
   onCancel?: () => void;
   loading?: boolean;
   readOnly?: boolean;
@@ -14,44 +32,76 @@ interface ProcesosProcesosdialogFormProps {
 
 interface ProcesosProcesosdialogFormValues {
   empresaId: string;
-  tipoProceso: string;
-  frecuencia: string;
+  procesoId: string;
   rolId: string;
-  spEjecucion: string;
-  spReversion: string;
-  spContabilizacion: string;
-  spSalvarHistoricos: string;
+  tipoProceso: string;
+  tipoProcesoIc: string;
+  storedProcEjecucion: string;
+  storedProcReversion: string;
+  storedProcContabilizacion: string;
+  storedProcSalvarHistoricos: string;
+  frecuenciaId: string;
   busquedaCpr: string;
-  procesoSecurityId: string;
-  nombre: string;
-  descripcion: string;
-  activo: boolean;
+  aplicaSobreMesAnterior: boolean;
 }
 
-export const ProcesosProcesosdialogForm: React.FC<ProcesosProcesosdialogFormProps> = ({
-  initialData,
-  onSubmit,
-  onCancel,
-  loading,
-  readOnly = false,
-}) => {
+export const ProcesosProcesosdialogForm: React.FC<
+  ProcesosProcesosdialogFormProps
+> = ({ initialData, onSubmit, onCancel, loading, readOnly = false }) => {
   const isEditMode = !!initialData;
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(readOnly);
+  const [rolesOptions, setRolesOptions] = useState<DimensionItem[]>([]);
+  const [frecuenciaOptions] = useState<DimensionItem[]>(
+    getDominioList("FRECEJECUCIONPROCESOS").map((item) => ({
+      id: item.id,
+      codigoDimension: "FRECEJECUCIONPROCESOS",
+      codigo: item.domId,
+      descripcion: item.domText,
+    })),
+  );
+
+  const { items: empresas, loading: loadingEmpresas } = useEmpresas();
+  const { fetchItems, loading: loadingDimensiones } = useDimensiones();
+  const { items: procedimientos, loading: loadingProcedimientos } =
+    useProcedimientos();
+  const buildProcedureOptions = (
+  ) => {
+    const options = new Map<string, string>();
+    procedimientos.forEach((procedimiento) => {
+      const value = procedimiento.nombreProcedimiento?.trim();
+      if (!value) {
+        return;
+      }
+
+      const label = procedimiento.tipo
+        ? `${procedimiento.tipo} - ${value}`
+        : value;
+
+      options.set(value, label);
+    });
+
+    return Array.from(options.entries()).map(([value, label]) => ({
+      value,
+      label,
+    }));
+  };
+
+  const procedimientoOptions = buildProcedureOptions();
+
   const methods = useForm<ProcesosProcesosdialogFormValues>({
     defaultValues: {
-      empresaId: '',
-      tipoProceso: '',
-      frecuencia: '',
-      rolId: '',
-      spEjecucion: '',
-      spReversion: '',
-      spContabilizacion: '',
-      spSalvarHistoricos: '',
-      busquedaCpr: '',
-      procesoSecurityId: '',
-      nombre: '',
-      descripcion: '',
-      activo: true,
+      empresaId: "",
+      procesoId: "",
+      rolId: "",
+      tipoProceso: "",
+      tipoProcesoIc: "",
+      storedProcEjecucion: "",
+      storedProcReversion: "",
+      storedProcContabilizacion: "",
+      storedProcSalvarHistoricos: "",
+      frecuenciaId: "",
+      busquedaCpr: "",
+      aplicaSobreMesAnterior: false,
     },
   });
 
@@ -60,39 +110,57 @@ export const ProcesosProcesosdialogForm: React.FC<ProcesosProcesosdialogFormProp
   }, [readOnly]);
 
   useEffect(() => {
+    let isMounted = true;
+
+    const loadCatalogs = async () => {
+      const rolesResponse = await fetchItems("DMRO");
+
+      if (!isMounted) {
+        return;
+      }
+
+      setRolesOptions(rolesResponse?.items ?? []);
+    };
+
+    void loadCatalogs();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [fetchItems]);
+
+  useEffect(() => {
     if (!initialData) {
       methods.reset({
-        empresaId: '',
-        tipoProceso: '',
-        frecuencia: '',
-        rolId: '',
-        spEjecucion: '',
-        spReversion: '',
-        spContabilizacion: '',
-        spSalvarHistoricos: '',
-        busquedaCpr: '',
-        procesoSecurityId: '',
-        nombre: '',
-        descripcion: '',
-        activo: true,
+        empresaId: "",
+        procesoId: "",
+        rolId: "",
+        tipoProceso: "",
+        tipoProcesoIc: "",
+        storedProcEjecucion: "",
+        storedProcReversion: "",
+        storedProcContabilizacion: "",
+        storedProcSalvarHistoricos: "",
+        frecuenciaId: "",
+        busquedaCpr: "",
+        aplicaSobreMesAnterior: false,
       });
       return;
     }
 
     methods.reset({
       empresaId: String(initialData.empresaId),
+      procesoId: String(initialData.procesoId)??1,
+      rolId: initialData.rolId !== undefined ? String(initialData.rolId) : "",
       tipoProceso: initialData.tipoProceso,
-      frecuencia: initialData.frecuencia ?? '',
-      rolId: initialData.rolId !== undefined ? String(initialData.rolId) : '',
-      spEjecucion: initialData.spEjecucion ?? '',
-      spReversion: initialData.spReversion ?? '',
-      spContabilizacion: initialData.spContabilizacion ?? '',
-      spSalvarHistoricos: initialData.spSalvarHistoricos ?? '',
-      busquedaCpr: initialData.busquedaCpr ?? '',
-      procesoSecurityId: initialData.procesoSecurityId !== undefined ? String(initialData.procesoSecurityId) : '',
-      nombre: initialData.nombre ?? '',
-      descripcion: initialData.descripcion ?? '',
-      activo: initialData.activo ?? true,
+      tipoProcesoIc: initialData.tipoProcesoIc ?? "",
+      storedProcEjecucion: initialData.storedProcEjecucion ?? "",
+      storedProcReversion: initialData.storedProcReversion ?? "",
+      storedProcContabilizacion: initialData.storedProcContabilizacion ?? "",
+      storedProcSalvarHistoricos: initialData.storedProcSalvarHistoricos ?? "",
+      frecuenciaId: initialData.frecuenciaId ?? "",
+      busquedaCpr: initialData.busquedaCpr ?? "",
+      aplicaSobreMesAnterior: initialData.aplicaSobreMesAnterior ?? false,
     });
   }, [initialData, methods]);
 
@@ -101,207 +169,278 @@ export const ProcesosProcesosdialogForm: React.FC<ProcesosProcesosdialogFormProp
       return;
     }
 
+    const baseData = {
+      empresaId: Number(formValues.empresaId),
+      procesoId: Number(formValues.procesoId),
+      tipoProceso: formValues.tipoProceso.trim(),
+      rolId: formValues.rolId ? Number(formValues.rolId) : undefined,
+      tipoProcesoIc: formValues.tipoProcesoIc.trim() || undefined,
+      storedProcEjecucion: formValues.storedProcEjecucion.trim() || undefined,
+      storedProcReversion: formValues.storedProcReversion.trim() || undefined,
+      storedProcContabilizacion:
+        formValues.storedProcContabilizacion.trim() || undefined,
+      storedProcSalvarHistoricos:
+        formValues.storedProcSalvarHistoricos.trim() || undefined,
+      frecuenciaId: formValues.frecuenciaId.trim() || undefined,
+      busquedaCpr: formValues.busquedaCpr.trim() || undefined,
+      aplicaSobreMesAnterior: formValues.aplicaSobreMesAnterior,
+    };
+
     if (isEditMode) {
-      onSubmit({
-        empresaId: Number(formValues.empresaId),
-        tipoProceso: formValues.tipoProceso.trim(),
-        frecuencia: formValues.frecuencia.trim() || undefined,
-        rolId: formValues.rolId ? Number(formValues.rolId) : undefined,
-        spEjecucion: formValues.spEjecucion.trim() || undefined,
-        spReversion: formValues.spReversion.trim() || undefined,
-        spContabilizacion: formValues.spContabilizacion.trim() || undefined,
-        spSalvarHistoricos: formValues.spSalvarHistoricos.trim() || undefined,
-        busquedaCpr: formValues.busquedaCpr.trim() || undefined,
-        procesoSecurityId: formValues.procesoSecurityId ? Number(formValues.procesoSecurityId) : undefined,
-        nombre: formValues.nombre.trim() || undefined,
-        descripcion: formValues.descripcion.trim() || undefined,
-        activo: formValues.activo,
-      } as UpdateProcesosProcesosdialog);
+      onSubmit(baseData as UpdateProcesosProcesosdialog);
       return;
     }
 
-    onSubmit({
-      empresaId: Number(formValues.empresaId),
-      tipoProceso: formValues.tipoProceso.trim(),
-      frecuencia: formValues.frecuencia.trim() || undefined,
-      rolId: formValues.rolId ? Number(formValues.rolId) : undefined,
-      spEjecucion: formValues.spEjecucion.trim() || undefined,
-      spReversion: formValues.spReversion.trim() || undefined,
-      spContabilizacion: formValues.spContabilizacion.trim() || undefined,
-      spSalvarHistoricos: formValues.spSalvarHistoricos.trim() || undefined,
-      busquedaCpr: formValues.busquedaCpr.trim() || undefined,
-      procesoSecurityId: formValues.procesoSecurityId ? Number(formValues.procesoSecurityId) : undefined,
-      nombre: formValues.nombre.trim() || undefined,
-      descripcion: formValues.descripcion.trim() || undefined,
-    } as CreateProcesosProcesosdialog);
+    onSubmit(baseData as CreateProcesosProcesosdialog);
   };
 
-  const readOnlyFormStyle = isReadOnlyMode
-    ? {
-        backgroundColor: '#f9fafb',
-      }
-    : {};
-
   return (
-    <Form
-      methods={methods}
-      onSubmit={handleSubmit}
-      data-testid="procesos-procesosdialog-form"
-      style={{ display: 'grid', gap: '0.75rem', maxWidth: 640, marginBottom: '1rem', ...readOnlyFormStyle }}
-    >
-      <h3>{isEditMode ? 'Editar proceso' : 'Crear proceso'}</h3>
-      {isReadOnlyMode && (
-        <div
-          data-testid="procesos-procesosdialog-readonly-badge"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            width: 'fit-content',
-            padding: '0.2rem 0.6rem',
-            borderRadius: 999,
-            backgroundColor: '#e5e7eb',
-            color: '#374151',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            letterSpacing: '0.02em',
-          }}
-        >
-          Solo lectura
+    <div className="grid gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p className="mt-1 text-sm text-slate-500">
+            Define identificadores, procedimientos asociados y reglas operativas del proceso.
+          </p>
         </div>
-      )}
-
-      <label className="form-field">
-        Empresa ID
-        <input
-          data-testid="procesos-procesosdialog-empresaid"
-          {...methods.register('empresaId', {
-            required: 'Empresa ID es obligatorio',
-            validate: (value) => !Number.isNaN(Number(value)) || 'Debe ser un número',
-          })}
-          disabled={Boolean(loading) || isReadOnlyMode}
-        />
-      </label>
-      {methods.formState.errors.empresaId && <p className="field-error">{methods.formState.errors.empresaId.message}</p>}
-
-      <label className="form-field">
-        Tipo de proceso
-        <input
-          data-testid="procesos-procesosdialog-tipoproceso"
-          {...methods.register('tipoProceso', { required: 'Tipo de proceso es obligatorio' })}
-          disabled={Boolean(loading) || isReadOnlyMode}
-        />
-      </label>
-      {methods.formState.errors.tipoProceso && <p className="field-error">{methods.formState.errors.tipoProceso.message}</p>}
-
-      <label className="form-field">
-        Frecuencia
-        <input
-          data-testid="procesos-procesosdialog-frecuencia"
-          {...methods.register('frecuencia')}
-          disabled={Boolean(loading) || isReadOnlyMode}
-        />
-      </label>
-
-      <label className="form-field">
-        Rol ID
-        <input
-          data-testid="procesos-procesosdialog-rolid"
-          {...methods.register('rolId', {
-            validate: (value) => !value || !Number.isNaN(Number(value)) || 'Debe ser un número',
-          })}
-          disabled={Boolean(loading) || isReadOnlyMode}
-        />
-      </label>
-      {methods.formState.errors.rolId && <p className="field-error">{methods.formState.errors.rolId.message}</p>}
-
-      <label className="form-field">
-        SP Ejecución
-        <input data-testid="procesos-procesosdialog-spejecucion" {...methods.register('spEjecucion')} disabled={Boolean(loading) || isReadOnlyMode} />
-      </label>
-
-      <label className="form-field">
-        SP Reversión
-        <input data-testid="procesos-procesosdialog-spreversion" {...methods.register('spReversion')} disabled={Boolean(loading) || isReadOnlyMode} />
-      </label>
-
-      <label className="form-field">
-        SP Contabilización
-        <input
-          data-testid="procesos-procesosdialog-spcontabilizacion"
-          {...methods.register('spContabilizacion')}
-          disabled={Boolean(loading) || isReadOnlyMode}
-        />
-      </label>
-
-      <label className="form-field">
-        SP Salvar Históricos
-        <input
-          data-testid="procesos-procesosdialog-spsalvarhistoricos"
-          {...methods.register('spSalvarHistoricos')}
-          disabled={Boolean(loading) || isReadOnlyMode}
-        />
-      </label>
-
-      <label className="form-field">
-        Búsqueda CPR
-        <input data-testid="procesos-procesosdialog-busquedacpr" {...methods.register('busquedaCpr')} disabled={Boolean(loading) || isReadOnlyMode} />
-      </label>
-
-      <label className="form-field">
-        Proceso Security ID
-        <input
-          data-testid="procesos-procesosdialog-procesosecurityid"
-          {...methods.register('procesoSecurityId', {
-            validate: (value) => !value || !Number.isNaN(Number(value)) || 'Debe ser un número',
-          })}
-          disabled={Boolean(loading) || isReadOnlyMode}
-        />
-      </label>
-      {methods.formState.errors.procesoSecurityId && <p className="field-error">{methods.formState.errors.procesoSecurityId.message}</p>}
-
-      <label className="form-field">
-        Nombre
-        <input data-testid="procesos-procesosdialog-nombre" {...methods.register('nombre')} disabled={Boolean(loading) || isReadOnlyMode} />
-      </label>
-
-      <label className="form-field">
-        Descripción
-        <textarea data-testid="procesos-procesosdialog-descripcion" {...methods.register('descripcion')} disabled={Boolean(loading) || isReadOnlyMode} rows={3} />
-      </label>
-
-      <label className="form-field" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-        <input
-          type="checkbox"
-          {...methods.register('activo')}
-          disabled={Boolean(loading) || isReadOnlyMode}
-          data-testid="procesos-procesosdialog-activo"
-          style={{ width: 'auto' }}
-        />
-        Activo
-      </label>
-
-      <div style={{ display: 'flex', gap: '0.5rem' }}>
-        {!isReadOnlyMode && (
-          <button type="submit" disabled={loading}>
-            {loading ? 'Guardando...' : isEditMode ? 'Actualizar' : 'Crear'}
-          </button>
-        )}
-        {isReadOnlyMode && isEditMode && (
-          <button
-            type="button"
-            data-testid="procesos-procesosdialog-enable-edit"
-            onClick={() => setIsReadOnlyMode(false)}
-            disabled={loading}
+        {isReadOnlyMode ? (
+          <div
+            data-testid="procesos-procesosdialog-readonly-badge"
+            className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600"
           >
-            Editar
-          </button>
-        )}
-        {onCancel && (
-          <button type="button" onClick={onCancel} disabled={loading}>
-            Cancelar
-          </button>
-        )}
+            Solo lectura
+          </div>
+        ) : null}
       </div>
-    </Form>
+
+      <Form
+        methods={methods}
+        onSubmit={handleSubmit}
+        data-testid="procesos-procesosdialog-form"
+        className="grid gap-4"
+      >
+        <SectionCard
+          title="Datos principales"
+          description="Captura la identificación del proceso y su configuración base."
+          className="w-full"
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field
+              label="Empresa"
+              error={methods.formState.errors.empresaId?.message}
+            >
+              <select
+                className={inputClassName(Boolean(methods.formState.errors.empresaId))}
+                data-testid="procesos-procesosdialog-empresaid"
+                {...methods.register("empresaId", {
+                  required: "Empresa es obligatoria",
+                  validate: (value) =>
+                    !Number.isNaN(Number(value)) || "Debe ser un numero",
+                })}
+                disabled={Boolean(loading) || Boolean(loadingEmpresas) || isReadOnlyMode}
+              >
+                <option value="">Selecciona empresa</option>
+                {empresas.map((empresa) => (
+                  <option key={empresa.iidempresa} value={empresa.iidempresa}>
+                    {empresa.vempresanl}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Field
+              label="Proceso"
+              error={methods.formState.errors.tipoProcesoIc?.message}
+            >
+              <input
+                className={inputClassName(Boolean(methods.formState.errors.tipoProcesoIc))}
+                data-testid="procesos-procesosdialog-tipoProcesoIc"
+                {...methods.register("tipoProcesoIc", {
+                  required: "Proceso es obligatorio",
+                  validate: (value) =>
+                    !Number.isNaN(Number(value)) || "Debe ser un numero",
+                })}
+                disabled={Boolean(loading) || isReadOnlyMode}
+              />
+            </Field>
+
+            <Field label="Rol" error={methods.formState.errors.rolId?.message}>
+              <select
+                className={inputClassName(Boolean(methods.formState.errors.rolId))}
+                data-testid="procesos-procesosdialog-rolid"
+                {...methods.register("rolId", {
+                  required: "Rol es obligatorio",
+                  validate: (value) =>
+                    !value || !Number.isNaN(Number(value)) || "Debe ser un numero",
+                })}
+                disabled={Boolean(loading) || Boolean(loadingDimensiones) || isReadOnlyMode}
+              >
+                <option value="">Selecciona rol</option>
+                {rolesOptions.map((rol) => (
+                  <option key={rol.id} value={rol.id}>
+                    {rol.descripcion}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Field label="Frecuencia de ejecución" error={methods.formState.errors.frecuenciaId?.message}>
+              <select
+                className={inputClassName()}
+                data-testid="procesos-procesosdialog-frecuenciaid"
+                {...methods.register("frecuenciaId")}
+                disabled={Boolean(loading) || Boolean(loadingDimensiones) || isReadOnlyMode}
+              >
+                <option value="">Selecciona frecuencia</option>
+                {frecuenciaOptions.map((frecuencia) => (
+                  <option key={frecuencia.id} value={frecuencia.codigo}>
+                    {frecuencia.descripcion}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+          </div>
+        </SectionCard>
+
+        <SectionCard
+          title="Procedimientos"
+          description="Relaciona los stored procedures que participan en la ejecución y reversión del proceso."
+          className="w-full"
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Proceso de Ejecución">
+              <select
+                className={inputClassName()}
+                data-testid="procesos-procesosdialog-storedprocejec"
+                {...methods.register("storedProcEjecucion")}
+                disabled={
+                  Boolean(loading) ||
+                  Boolean(loadingProcedimientos) ||
+                  isReadOnlyMode
+                }
+              >
+                <option value="">Selecciona procedimiento</option>
+                {procedimientoOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Field label="Proceso de Reversión">
+              <select
+                className={inputClassName()}
+                data-testid="procesos-procesosdialog-storedprocrev"
+                {...methods.register("storedProcReversion")}
+                disabled={
+                  Boolean(loading) ||
+                  Boolean(loadingProcedimientos) ||
+                  isReadOnlyMode
+                }
+              >
+                <option value="">Selecciona procedimiento</option>
+                {procedimientoOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Field label="Proceso de Contabilización">
+              <select
+                className={inputClassName()}
+                data-testid="procesos-procesosdialog-storedproccont"
+                {...methods.register("storedProcContabilizacion")}
+                disabled={
+                  Boolean(loading) ||
+                  Boolean(loadingProcedimientos) ||
+                  isReadOnlyMode
+                }
+              >
+                <option value="">Selecciona procedimiento</option>
+                {procedimientoOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Field label="Proceso para Salvar Historicos">
+              <select
+                className={inputClassName()}
+                data-testid="procesos-procesosdialog-storedprocsalv"
+                {...methods.register("storedProcSalvarHistoricos")}
+                disabled={
+                  Boolean(loading) ||
+                  Boolean(loadingProcedimientos) ||
+                  isReadOnlyMode
+                }
+              >
+                <option value="">Selecciona procedimiento</option>
+                {procedimientoOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <div className="md:col-span-2">
+              <Field
+                label="Observaciones"
+                error={methods.formState.errors.busquedaCpr?.message}
+              >
+                <textarea
+                  className={textAreaClassName(
+                    Boolean(methods.formState.errors.busquedaCpr),
+                  )}
+                  data-testid="procesos-procesosdialog-busquedacpr"
+                  {...methods.register("busquedaCpr", {
+                    maxLength: {
+                      value: 10,
+                      message: "Maximo 10 caracteres",
+                    },
+                  })}
+                  maxLength={10}
+                  disabled={Boolean(loading) || isReadOnlyMode}
+                />
+              </Field>
+            </div>
+          </div>
+        </SectionCard>
+
+        <div className="flex flex-wrap gap-3">
+          {!isReadOnlyMode ? (
+            <Button
+              type="submit"
+              label={loading ? "Guardando..." : isEditMode ? "Actualizar" : "Crear"}
+              isLoading={loading}
+            />
+          ) : null}
+          {isReadOnlyMode && isEditMode ? (
+            <Button
+              type="button"
+              testId="procesos-procesosdialog-enable-edit"
+              label="Editar"
+              variant="secondary"
+              onClick={() => setIsReadOnlyMode(false)}
+              disabled={loading}
+            />
+          ) : null}
+          {onCancel ? (
+            <Button
+              type="button"
+              label="Cancelar"
+              variant="ghost"
+              onClick={onCancel}
+              disabled={loading}
+            />
+          ) : null}
+        </div>
+      </Form>
+    </div>
   );
 };

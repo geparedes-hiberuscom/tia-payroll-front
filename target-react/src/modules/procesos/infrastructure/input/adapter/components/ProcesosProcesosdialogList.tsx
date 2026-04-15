@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProcesosProcesosdialog } from '../../../../domain/model/ProcesosProcesosdialog';
-import { Table } from '../../../../../../shared';
+import { Table } from '@shared/index';
 
 type ProcesosProcesosdialogListProps = {
   items: ProcesosProcesosdialog[];
@@ -29,13 +29,8 @@ export const ProcesosProcesosdialogList: React.FC<ProcesosProcesosdialogListProp
     { key: 'id', header: 'ID', accessor: 'id' as const },
     { key: 'nombre', header: 'Nombre', render: (item: ProcesosProcesosdialog) => item.nombre ?? '-' },
     { key: 'tipoProceso', header: 'Tipo', accessor: 'tipoProceso' as const },
-    { key: 'frecuencia', header: 'Frecuencia', accessor: 'frecuencia' as const },
+    { key: 'frecuencia', header: 'Frecuencia', accessor: 'frecuenciaId' as const },
     { key: 'empresaId', header: 'Empresa', accessor: 'empresaId' as const },
-    {
-      key: 'estado',
-      header: 'Estado',
-      render: (item: ProcesosProcesosdialog) => (item.activo === false ? 'Inactivo' : 'Activo'),
-    },
     {
       key: 'acciones',
       header: 'Acciones',
@@ -59,7 +54,7 @@ export const ProcesosProcesosdialogList: React.FC<ProcesosProcesosdialogListProp
               className="btn btn-danger"
               onClick={(event) => {
                 event.stopPropagation();
-                onDelete(item.id);
+                onDelete(String(item.id));
               }}
             >
               Eliminar

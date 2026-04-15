@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Form } from '../../../../../../shared';
+import { Form } from '@shared/index';
 
 interface ProcesosFormProps {
   onSubmit: (data: { nombre: string }) => void;

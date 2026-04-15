@@ -39,8 +39,8 @@ export class ProcesosProcesosdialogApplicationService implements ProcesosProceso
   ): Promise<ProcesosProcesosdialog> {
     if (!model.empresaId)
       throw new ProcesosProcesosdialogValidationError("empresaId requerido");
-    if (!model.tipoProceso?.trim())
-      throw new ProcesosProcesosdialogValidationError("tipoProceso requerido");
+    if (!model.procesoId)
+      throw new ProcesosProcesosdialogValidationError("procesoId requerido");
     return ProcesosProcesosdialogViewMapper.toDomain(
       await this.gateway.create(
         ProcesosProcesosdialogViewMapper.toCreateRequest(model),

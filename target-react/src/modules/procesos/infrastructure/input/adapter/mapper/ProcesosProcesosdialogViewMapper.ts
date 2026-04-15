@@ -2,13 +2,98 @@
 // Source: migration/plan/config.json
 // GeneratedAt: 2026-04-01
 
-import { CreateProcesosProcesosdialog, ProcesosProcesosdialog, ProcesosProcesosdialogFilter, ProcesosProcesosdialogPageResult, UpdateProcesosProcesosdialog } from '../../../../domain/model/ProcesosProcesosdialog';
-import { CreateProcesosProcesosdialogRequest, ProcesosProcesosdialogFilterParams, ProcesosProcesosdialogListResponse, ProcesosProcesosdialogResponse, UpdateProcesosProcesosdialogRequest } from '../dto/ProcesosProcesosdialogDto';
+import {
+  CreateProcesosProcesosdialog,
+  ProcesosProcesosdialog,
+  ProcesosProcesosdialogFilter,
+  ProcesosProcesosdialogPageResult,
+  UpdateProcesosProcesosdialog,
+} from "../../../../domain/model/ProcesosProcesosdialog";
+import {
+  CreateProcesosProcesosdialogRequest,
+  ProcesosProcesosdialogFilterParams,
+  ProcesosProcesosdialogListResponse,
+  ProcesosProcesosdialogResponse,
+  UpdateProcesosProcesosdialogRequest,
+} from "../dto/ProcesosProcesosdialogDto";
 
 export class ProcesosProcesosdialogViewMapper {
-  static toDomain(response: ProcesosProcesosdialogResponse): ProcesosProcesosdialog { return { ...response }; }
-  static toPageResult(listResponse: ProcesosProcesosdialogListResponse): ProcesosProcesosdialogPageResult { return { data: listResponse.data.map(this.toDomain), totalElements: listResponse.totalElements, totalPages: listResponse.totalPages, page: listResponse.page, size: listResponse.size }; }
-  static toCreateRequest(model: CreateProcesosProcesosdialog): CreateProcesosProcesosdialogRequest { return { ...model }; }
-  static toUpdateRequest(model: UpdateProcesosProcesosdialog): UpdateProcesosProcesosdialogRequest { return { ...model }; }
-  static toFilterParams(filter: ProcesosProcesosdialogFilter): ProcesosProcesosdialogFilterParams { return { ...filter }; }
+  static toDomain(
+    response: ProcesosProcesosdialogResponse,
+  ): ProcesosProcesosdialog {
+    return {
+      ...response,
+      id: response.iidproceso,
+      empresaId: response.iidempresa,
+      rolId: response.iiddmrol,
+      procesoId: response.iidproceso,
+      tipoProceso: response.ctipoproceso,
+      tipoProcesoIc: response.ctipoprocesoic,
+      storedProcEjecucion: response.vspejecucion,
+      storedProcReversion: response.vspreversion,
+      storedProcContabilizacion: response.vspcontabilizacion,
+      storedProcSalvarHistoricos: response.vspsalvarhistoricos,
+      frecuenciaId: response.vidfrecuencia,
+      busquedaCpr: response.vbusquedacpr,
+      aplicaSobreMesAnterior:  response.caplicasobmesant=="S",
+      usuarioIngreso: response.horaingresoAu,
+      fechaIngreso: response.fechaIngreso,
+      usuarioModificacion: response.usuariomodificacionAu,
+      fechaModificacion: response.horamodificacionAu,
+    };
+  }
+  static toPageResult(
+    listResponse: ProcesosProcesosdialogListResponse,
+  ): ProcesosProcesosdialogPageResult {
+    return {
+      data: listResponse.data.map(this.toDomain),
+      totalElements: listResponse.totalElements,
+      totalPages: listResponse.totalPages,
+      page: listResponse.page,
+      size: listResponse.size,
+    };
+  }
+  static toCreateRequest(
+    model: CreateProcesosProcesosdialog,
+  ): CreateProcesosProcesosdialogRequest {
+    return {
+      ...model,
+      iidempresa: model.empresaId,
+      iiddmrol: model.rolId,
+      iidproceso: model.procesoId,
+      ctipoproceso: model.tipoProceso,
+      ctipoprocesoic: model.tipoProcesoIc,
+      vspejecucion: model.storedProcEjecucion,
+      vspreversion: model.storedProcReversion,
+      vspcontabilizacion: model.storedProcContabilizacion,
+      vspsalvarhistoricos: model.storedProcSalvarHistoricos,
+      vidfrecuencia: model.frecuenciaId,
+      vbusquedacpr: model.busquedaCpr,
+      caplicasobmesant: model.aplicaSobreMesAnterior?"S":"N",
+    };
+  }
+  static toUpdateRequest(
+    model: UpdateProcesosProcesosdialog,
+  ): UpdateProcesosProcesosdialogRequest {
+    return {
+      ...model,
+      iidempresa: model.empresaId,
+      iiddmrol: model.rolId,
+      iidproceso: model.procesoId,
+      ctipoproceso: model.tipoProceso,
+      ctipoprocesoic: model.tipoProcesoIc,
+      vspejecucion: model.storedProcEjecucion,
+      vspreversion: model.storedProcReversion,
+      vspcontabilizacion: model.storedProcContabilizacion,
+      vspsalvarhistoricos: model.storedProcSalvarHistoricos,
+      vidfrecuencia: model.frecuenciaId,
+      vbusquedacpr: model.busquedaCpr,
+      caplicasobmesant: model.aplicaSobreMesAnterior?"S":"N",
+    };
+  }
+  static toFilterParams(
+    filter: ProcesosProcesosdialogFilter,
+  ): ProcesosProcesosdialogFilterParams {
+    return { ...filter };
+  }
 }

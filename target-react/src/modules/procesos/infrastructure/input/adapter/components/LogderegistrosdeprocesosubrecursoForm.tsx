@@ -4,7 +4,7 @@ import { useFormValidation } from '@shared/infrastructure/input/adapter/hooks/us
 import { maxLength, minLength, pattern, required } from '@shared/infrastructure/input/adapter/validation/formValidation';
 import { Logderegistrosdeprocesosubrecurso, CreateLogderegistrosdeprocesosubrecurso, UpdateLogderegistrosdeprocesosubrecurso } from '../../../../domain/model/Logderegistrosdeprocesosubrecurso';
 
-import { Form } from '../../../../../../shared';
+import { Form } from '@shared/index';
 
 interface LogderegistrosdeprocesosubrecursoFormProps {
   initialData?: Logderegistrosdeprocesosubrecurso;

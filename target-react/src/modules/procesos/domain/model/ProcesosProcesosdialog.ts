@@ -2,25 +2,50 @@
 // Source: migration/plan/config.json
 // GeneratedAt: 2026-04-01
 
+/**
+ * Estructura de un Proceso de Nómina
+ * Alineada con el contrato API: ProcesoNominaResponseDTO
+ * Se usa en módulos que requieren gestión de procesos de nómina
+ */
 export interface ProcesosProcesosdialog {
-  id: string;
+  id: number;
   empresaId: number;
-  tipoProceso: string;
-  frecuencia?: string;
-  rolId?: number;
-  spEjecucion?: string;
-  spReversion?: string;
-  spContabilizacion?: string;
-  spSalvarHistoricos?: string;
-  busquedaCpr?: string;
-  procesoSecurityId?: number;
   nombre?: string;
-  descripcion?: string;
-  activo?: boolean;
+  rolId?: number;
+  procesoId: number;
+  tipoProceso: string;
+  tipoProcesoIc?: string;
+  storedProcEjecucion?: string;
+  storedProcReversion?: string;
+  storedProcContabilizacion?: string;
+  storedProcSalvarHistoricos?: string;
+  frecuenciaId?: string;
+  busquedaCpr?: string;
+  aplicaSobreMesAnterior?: boolean;
+  usuarioIngreso?: string;
+  fechaIngreso?: string;
+  usuarioModificacion?: string;
+  fechaModificacion?: string;
 }
 
-export type CreateProcesosProcesosdialog = Omit<ProcesosProcesosdialog, 'id'>;
-export type UpdateProcesosProcesosdialog = Partial<Omit<ProcesosProcesosdialog, 'id'>>;
+export type CreateProcesosProcesosdialog = Omit<
+  ProcesosProcesosdialog,
+  | "id"
+  | "usuarioIngreso"
+  | "fechaIngreso"
+  | "usuarioModificacion"
+  | "fechaModificacion"
+>;
+export type UpdateProcesosProcesosdialog = Partial<
+  Omit<
+    ProcesosProcesosdialog,
+    | "id"
+    | "usuarioIngreso"
+    | "fechaIngreso"
+    | "usuarioModificacion"
+    | "fechaModificacion"
+  >
+>;
 
 export interface ProcesosProcesosdialogFilter {
   page?: number;

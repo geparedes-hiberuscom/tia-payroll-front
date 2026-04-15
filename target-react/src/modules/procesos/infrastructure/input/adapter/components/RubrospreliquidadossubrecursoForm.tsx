@@ -4,7 +4,7 @@ import { useFormValidation } from '@shared/infrastructure/input/adapter/hooks/us
 import { maxLength, minLength, pattern, required } from '@shared/infrastructure/input/adapter/validation/formValidation';
 import { Rubrospreliquidadossubrecurso, CreateRubrospreliquidadossubrecurso, UpdateRubrospreliquidadossubrecurso } from '../../../../domain/model/Rubrospreliquidadossubrecurso';
 
-import { Form } from '../../../../../../shared';
+import { Form } from '@shared/index';
 
 interface RubrospreliquidadossubrecursoFormProps {
   initialData?: Rubrospreliquidadossubrecurso;

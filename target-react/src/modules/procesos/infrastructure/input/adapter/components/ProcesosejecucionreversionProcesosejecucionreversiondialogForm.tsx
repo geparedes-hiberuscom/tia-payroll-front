@@ -4,7 +4,7 @@ import { useFormValidation } from '@shared/infrastructure/input/adapter/hooks/us
 import { maxLength, minLength, pattern, required } from '@shared/infrastructure/input/adapter/validation/formValidation';
 import { ProcesosejecucionreversionProcesosejecucionreversiondialog, CreateProcesosejecucionreversionProcesosejecucionreversiondialog, UpdateProcesosejecucionreversionProcesosejecucionreversiondialog } from '../../../../domain/model/ProcesosejecucionreversionProcesosejecucionreversiondialog';
 
-import { Form } from '../../../../../../shared';
+import { Form } from '@shared/index';
 
 interface ProcesosejecucionreversionProcesosejecucionreversiondialogFormProps {
   initialData?: ProcesosejecucionreversionProcesosejecucionreversiondialog;

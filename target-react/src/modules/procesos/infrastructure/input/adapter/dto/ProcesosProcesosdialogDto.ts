@@ -1,32 +1,32 @@
 export interface CreateProcesosProcesosdialogRequest {
-  empresaId: number;
-  tipoProceso: string;
-  frecuencia?: string;
-  rolId?: number;
-  spEjecucion?: string;
-  spReversion?: string;
-  spContabilizacion?: string;
-  spSalvarHistoricos?: string;
-  busquedaCpr?: string;
-  procesoSecurityId?: number;
-  nombre?: string;
-  descripcion?: string;
+    iidempresa: number;
+
+  iidproceso: number;
+  ctipoproceso: string;
+  iiddmrol?: number;
+  ctipoprocesoic?: string;
+  vspejecucion?: string;
+  vspreversion?: string;
+  vspcontabilizacion?: string;
+  vspsalvarhistoricos?: string;
+  vidfrecuencia?: string;
+  vbusquedacpr?: string;
+  caplicasobmesant?: string;
 }
 
 export interface UpdateProcesosProcesosdialogRequest {
-  empresaId?: number;
-  tipoProceso?: string;
-  frecuencia?: string;
-  rolId?: number;
-  spEjecucion?: string;
-  spReversion?: string;
-  spContabilizacion?: string;
-  spSalvarHistoricos?: string;
-  busquedaCpr?: string;
-  procesoSecurityId?: number;
-  nombre?: string;
-  descripcion?: string;
-  activo?: boolean;
+  iidempresa?: number;
+  iidproceso?: number;
+  ctipoproceso?: string;
+  iiddmrol?: number;
+  ctipoprocesoic?: string;
+  vspejecucion?: string;
+  vspreversion?: string;
+  vspcontabilizacion?: string;
+  vspsalvarhistoricos?: string;
+  vidfrecuencia?: string;
+  vbusquedacpr?: string;
+  caplicasobmesant?: string;
 }
 
 export interface ProcesosProcesosdialogFilterParams {
@@ -39,20 +39,23 @@ export interface ProcesosProcesosdialogFilterParams {
 }
 
 export interface ProcesosProcesosdialogResponse {
-  id: string;
-  empresaId: number;
-  tipoProceso: string;
-  frecuencia?: string;
-  rolId?: number;
-  spEjecucion?: string;
-  spReversion?: string;
-  spContabilizacion?: string;
-  spSalvarHistoricos?: string;
-  busquedaCpr?: string;
-  procesoSecurityId?: number;
-  nombre?: string;
-  descripcion?: string;
-  activo?: boolean;
+  id: number;
+  iidempresa: number;
+  iidproceso: number;
+  ctipoproceso: string;
+  iiddmrol?: number;
+  ctipoprocesoic?: string;
+  vspejecucion?: string;
+  vspreversion?: string;
+  vspcontabilizacion?: string;
+  vspsalvarhistoricos?: string;
+  vidfrecuencia?: string;
+  vbusquedacpr?: string;
+  caplicasobmesant?: string;
+  horaingresoAu?: string;
+  fechaIngreso?: string;
+  usuariomodificacionAu?: string;
+  horamodificacionAu?: string;
 }
 
 export interface ProcesosProcesosdialogListResponse {

@@ -4,7 +4,7 @@ import { useFormValidation } from '@shared/infrastructure/input/adapter/hooks/us
 import { maxLength, minLength, pattern, required } from '@shared/infrastructure/input/adapter/validation/formValidation';
 import { Ejecucionbot, CreateEjecucionbot, UpdateEjecucionbot } from '../../../../domain/model/Ejecucionbot';
 
-import { Form } from '../../../../../../shared';
+import { Form } from '@shared/index';
 
 interface EjecucionbotFormProps {
   initialData?: Ejecucionbot;
