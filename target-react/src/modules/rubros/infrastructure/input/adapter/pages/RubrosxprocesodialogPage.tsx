@@ -6,7 +6,7 @@ import {
 } from '@shared/index';
 import { RubrosxprocesodialogForm } from '../components/RubrosxprocesodialogForm';
 import { RubrosxprocesodialogStats } from '../components/RubrosxprocesodialogStats';
-import { RubrosxprocesodialogTableSection } from '../components/RubrosxprocesodialogTableSection';
+import { RubrosxprocesodialogList } from '../components/RubrosxprocesodialogList';
 import { useRubrosxprocesodialogPageController } from '../hooks/useRubrosxprocesodialogPageController';
 
 export const RubrosxprocesodialogPage: React.FC = () => {
@@ -76,7 +76,7 @@ export const RubrosxprocesodialogPage: React.FC = () => {
           onReset={resetForm}
         />
 
-        <RubrosxprocesodialogTableSection
+        <RubrosxprocesodialogList
           items={items}
           loading={loading}
           page={page}

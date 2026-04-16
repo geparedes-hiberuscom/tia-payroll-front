@@ -9,8 +9,12 @@
 // ─── Request DTOs ───
 
 export interface CreateRubrosidocargaxprocesoRequest {
-  empresaId: number;
-  rubroId: string;
+  iidempresa: number;
+  vidrubro: string;
+  accion: string;
+  fechaAplica: string;
+  ambito?: string;
+  iidrubrosIdo?: number;
   procesoId?: number;
   descripcion?: string;
 }
@@ -18,6 +22,7 @@ export interface CreateRubrosidocargaxprocesoRequest {
 export interface UpdateRubrosidocargaxprocesoRequest {
   accion?: string;
   fechaAplica?: string;
+  ambito?: string;
   estado?: string;
 }
 
@@ -33,6 +38,18 @@ export interface RubrosidocargaxprocesoFilterParams {
 
 export interface RubrosidocargaxprocesoResponse {
   id: number;
+  iidrubrosIdocp?: number;
+  iidrubrosIdo?: number;
+  iidempresa?: number;
+  vidrubro?: string;
+  vidambito?: string;
+  dfechaaplica?: string;
+  usuarioingresoAu?: string;
+  empresa?: string;
+  fechaCarga?: string;
+  cargadoPor?: string;
+  registrosProcesados?: number;
+  mensaje?: string;
   procesoId: string;
   fechaEjecucion: string;
   estado: string;
@@ -56,7 +73,7 @@ export interface RubrosidocargaxprocesoListResponse {
 // ─── Response alias
 export type CargaProcesoListResponseDTO = RubrosidocargaxprocesoListResponse;
 export type CargaProcesoResponseDTO = RubrosidocargaxprocesoResponse;
-export type ProcesoResponseDTO = { success: boolean; message: string };
+export type ProcesoResponseDTO = { success?: boolean; message?: string; id?: number; iidrubrosIdocp?: number; registrosProcesados?: number };
 export type DeleteResponseDTO = { success: boolean; message: string };
 
 // ─── API Error DTO ───

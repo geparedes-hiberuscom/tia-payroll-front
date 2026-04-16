@@ -9,14 +9,26 @@ export class RubrosidocargaxprocesoApiMapper {
 
   static toResponse(raw: any): RubrosidocargaxprocesoResponse {
     return {
-      id: raw.id,
-      procesoId: raw.procesoId,
-      fechaEjecucion: raw.fechaEjecucion,
+      id: raw.id ?? raw.iidrubrosIdocp,
+      iidrubrosIdocp: raw.iidrubrosIdocp,
+      iidrubrosIdo: raw.iidrubrosIdo,
+      iidempresa: raw.iidempresa,
+      vidrubro: raw.vidrubro,
+      vidambito: raw.vidambito,
+      dfechaaplica: raw.dfechaaplica,
+      usuarioingresoAu: raw.usuarioingresoAu,
+      empresa: raw.empresa,
+      fechaCarga: raw.fechaCarga,
+      cargadoPor: raw.cargadoPor,
+      registrosProcesados: raw.registrosProcesados,
+      mensaje: raw.mensaje,
+      procesoId: raw.procesoId ?? String(raw.iidrubrosIdocp ?? raw.id ?? ''),
+      fechaEjecucion: raw.fechaEjecucion ?? raw.fechaCarga,
       estado: raw.estado,
-      numeroRegistrosCargados: raw.numeroRegistrosCargados || 0,
-      numeroErrores: raw.numeroErrores || 0,
-      usuarioEjecucion: raw.usuarioEjecucion,
-      empresaId: raw.empresaId,
+      numeroRegistrosCargados: raw.numeroRegistrosCargados ?? raw.registrosProcesados ?? 0,
+      numeroErrores: raw.numeroErrores ?? 0,
+      usuarioEjecucion: raw.usuarioEjecucion ?? raw.cargadoPor,
+      empresaId: raw.empresaId ?? raw.iidempresa,
       descripcion: raw.descripcion,
       fechaCreacion: raw.fechaCreacion,
       fechaActualizacion: raw.fechaActualizacion,
@@ -37,8 +49,12 @@ export class RubrosidocargaxprocesoApiMapper {
 
   static toCreatePayload(request: CreateRubrosidocargaxprocesoRequest): Record<string, unknown> {
     return {
-      empresaId: request.empresaId,
-      rubroId: request.rubroId,
+      iidempresa: request.iidempresa,
+      vidrubro: request.vidrubro,
+      accion: request.accion,
+      fechaAplica: request.fechaAplica,
+      ambito: request.ambito,
+      iidrubrosIdo: request.iidrubrosIdo,
       procesoId: request.procesoId,
       descripcion: request.descripcion,
     };
@@ -48,6 +64,7 @@ export class RubrosidocargaxprocesoApiMapper {
     return {
       accion: request.accion,
       fechaAplica: request.fechaAplica,
+      ambito: request.ambito,
       estado: request.estado,
     };
   }

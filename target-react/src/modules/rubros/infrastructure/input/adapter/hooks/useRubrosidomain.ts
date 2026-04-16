@@ -1,31 +1,31 @@
 import { useState, useEffect, useCallback } from 'react';
-import { RubrosidomainRubrosidolistRubrosidodetailApplicationService } from '@modules/rubros/application/service/RubrosidomainRubrosidolistRubrosidodetailApplicationService';
-import { RubrosidomainRubrosidolistRubrosidodetailGatewayAdapter } from '@modules/rubros/infrastructure/output/adapter/api/RubrosidomainRubrosidolistRubrosidodetailGatewayAdapter';
-import { RubrosidomainRubrosidolistRubrosidodetail, CreateRubrosidomainRubrosidolistRubrosidodetail, UpdateRubrosidomainRubrosidolistRubrosidodetail, RubrosidomainRubrosidolistRubrosidodetailFilter } from '@modules/rubros/domain/model/RubrosidomainRubrosidolistRubrosidodetail';
+import { RubrosidomainApplicationService } from '@modules/rubros/application/service/RubrosidomainApplicationService';
+import { RubrosidomainGatewayAdapter } from '@modules/rubros/infrastructure/output/adapter/api/RubrosidomainGatewayAdapter';
+import { Rubrosidomain, CreateRubrosidomain, UpdateRubrosidomain, RubrosidomainFilter } from '@modules/rubros/domain/model/Rubrosidomain';
 
 // ─── Inyección manual: Gateway Adapter → Application Service ───
-const gatewayAdapter = new RubrosidomainRubrosidolistRubrosidodetailGatewayAdapter();
-const rubrosidomainRubrosidolistRubrosidodetailService = new RubrosidomainRubrosidolistRubrosidodetailApplicationService(gatewayAdapter);
+const gatewayAdapter = new RubrosidomainGatewayAdapter();
+const rubrosidomainService = new RubrosidomainApplicationService(gatewayAdapter);
 
 /**
- * Custom Hook: useRubrosidomainRubrosidolistRubrosidodetail
+ * Custom Hook: useRubrosidomain
  * Conecta la UI con el Application Service de rubrosIDOMain.zul / rubrosIDOList.zul / rubrosIDODetail.zul.
  * Maneja estado de carga, errores y datos.
  */
-export function useRubrosidomainRubrosidolistRubrosidodetail() {
-  const [items, setItems] = useState<RubrosidomainRubrosidolistRubrosidodetail[]>([]);
-  const [selectedItem, setSelectedItem] = useState<RubrosidomainRubrosidolistRubrosidodetail | null>(null);
+export function useRubrosidomain(autoLoad = true ) {
+  const [items, setItems] = useState<Rubrosidomain[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Rubrosidomain | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalElements, setTotalElements] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(0);
 
-  const fetchAll = useCallback(async (params?: RubrosidomainRubrosidolistRubrosidodetailFilter) => {
+  const fetchAll = useCallback(async (params?: RubrosidomainFilter) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await rubrosidomainRubrosidolistRubrosidodetailService.findAll(params);
+      const response = await rubrosidomainService.findAll(params);
       setItems(response.items);
       setTotalElements(response.totalElements);
       setTotalPages(response.totalPages);
@@ -41,7 +41,7 @@ export function useRubrosidomainRubrosidolistRubrosidodetail() {
     try {
       setLoading(true);
       setError(null);
-      const item = await rubrosidomainRubrosidolistRubrosidodetailService.findById(String(id));
+      const item = await rubrosidomainService.findById(String(id));
       setSelectedItem(item);
       return item;
     } catch (err) {
@@ -52,11 +52,11 @@ export function useRubrosidomainRubrosidolistRubrosidodetail() {
     }
   }, []);
 
-  const create = useCallback(async (request: CreateRubrosidomainRubrosidolistRubrosidodetail) => {
+  const create = useCallback(async (request: CreateRubrosidomain) => {
     try {
       setLoading(true);
       setError(null);
-      const created = await rubrosidomainRubrosidolistRubrosidodetailService.create(request);
+      const created = await rubrosidomainService.create(request);
       setItems(prev => [...prev, created]);
       return created;
     } catch (err) {
@@ -67,11 +67,11 @@ export function useRubrosidomainRubrosidolistRubrosidodetail() {
     }
   }, []);
 
-  const update = useCallback(async (id: string | number, request: UpdateRubrosidomainRubrosidolistRubrosidodetail) => {
+  const update = useCallback(async (id: string | number, request: UpdateRubrosidomain) => {
     try {
       setLoading(true);
       setError(null);
-      const updated = await rubrosidomainRubrosidolistRubrosidodetailService.update(String(id), request);
+      const updated = await rubrosidomainService.update(String(id), request);
       setItems(prev => prev.map(item => item.id === Number(id) ? updated : item));
       if (selectedItem?.id === Number(id)) {
         setSelectedItem(updated);
@@ -89,7 +89,7 @@ export function useRubrosidomainRubrosidolistRubrosidodetail() {
     try {
       setLoading(true);
       setError(null);
-      await rubrosidomainRubrosidolistRubrosidodetailService.remove(String(id));
+      await rubrosidomainService.remove(String(id));
       setItems(prev => prev.filter(item => item.id !== Number(id)));
       if (selectedItem?.id === Number(id)) {
         setSelectedItem(null);
@@ -103,8 +103,10 @@ export function useRubrosidomainRubrosidolistRubrosidodetail() {
   }, [selectedItem]);
 
   useEffect(() => {
-    fetchAll();
-  }, [fetchAll]);
+    if (autoLoad) {
+      fetchAll();
+    }
+  }, [fetchAll, autoLoad]);
 
   return {
     items,

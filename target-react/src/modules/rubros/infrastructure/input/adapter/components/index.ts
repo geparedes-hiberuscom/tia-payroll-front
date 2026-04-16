@@ -1,17 +1,13 @@
 // Components barrel — auto-generated
 export { RubrosRubrosdialogList } from './RubrosRubrosdialogList';
 export { RubrosRubrosdialogForm } from './RubrosRubrosdialogForm';
-export { RubrosRubrosdialogDetail } from './RubrosRubrosdialogDetail';
-export { RubrosRubrosdialogCard } from './RubrosRubrosdialogCard';
 export { RubrosRubrosdialogFilter } from './RubrosRubrosdialogFilter';
-export { RubrosxprocesodialogList } from './RubrosxprocesodialogList';
 export { RubrosxprocesodialogForm } from './RubrosxprocesodialogForm';
-export { RubrosxprocesodialogDetail } from './RubrosxprocesodialogDetail';
-export { RubrosxprocesodialogCard } from './RubrosxprocesodialogCard';
-export { RubrosidomainRubrosidolistRubrosidodetailList } from './RubrosidomainRubrosidolistRubrosidodetailList';
-export { RubrosidomainRubrosidolistRubrosidodetailForm } from './RubrosidomainRubrosidolistRubrosidodetailForm';
-export { RubrosidomainRubrosidolistRubrosidodetailDetail } from './RubrosidomainRubrosidolistRubrosidodetailDetail';
-export { RubrosidomainRubrosidolistRubrosidodetailCard } from './RubrosidomainRubrosidolistRubrosidodetailCard';
+export { RubrosxprocesodialogStats } from './RubrosxprocesodialogStats';
+export { RubrosxprocesodialogList } from './RubrosxprocesodialogList';
+export { RubrosidomainForm } from './RubrosidomainForm';
+export { RubrosidocargaxprocesoForm } from './RubrosidocargaxprocesoForm';
+export { RubrosidocargaxprocesoStats } from './RubrosidocargaxprocesoStats';
 export { RubrosidocargaxprocesoList } from './RubrosidocargaxprocesoList';
 export { CargarubrosidoForm } from './CargarubrosidoForm';
 export { CargarubrosidoStats } from './CargarubrosidoStats';

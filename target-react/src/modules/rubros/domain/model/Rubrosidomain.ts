@@ -2,15 +2,25 @@
 // Source: migration/plan/config.json
 // GeneratedAt: 2026-03-27
 
-export interface RubrosidomainRubrosidolistRubrosidodetail {
+export interface Rubrosidomain {
   id: number;
+  dfechapagocaja?: string;
   rubroId: string;
   colaboradorId: number;
   empresaId: number;
+  centroCostoId?: number;
+  localidadId?: number;
+  neroId?: number;
+  rolId?: number;
   tipoComportamiento?: number;
   valor01?: number;
   valor02?: number;
   valor03?: number;
+  cartaImpresion?: number;
+  flagEnvio?: number;
+  generarCarta?: number;
+  estadoCaja?: string;
+  usuarioCaja?: string;
   estado?: string;
   fechaDesde?: string;
   fechaHasta?: string;
@@ -20,29 +30,53 @@ export interface RubrosidomainRubrosidolistRubrosidodetail {
   fechaActualizacion?: string;
 }
 
-export type CreateRubrosidomainRubrosidolistRubrosidodetail = {
+export type CreateRubrosidomain = {
+  dfechapagocaja?: string;
   rubroId: string;
   colaboradorId: number;
   empresaId: number;
+  centroCostoId?: number;
+  localidadId?: number;
+  neroId?: number;
+  rolId?: number;
   tipoComportamiento?: number;
   valor01?: number;
   valor02?: number;
   valor03?: number;
+  cartaImpresion?: number;
+  flagEnvio?: number;
+  generarCarta?: number;
+  estadoCaja?: string;
+  usuarioCaja?: string;
   estado?: string;
   fechaDesde?: string;
   fechaHasta?: string;
 };
 
-export type UpdateRubrosidomainRubrosidolistRubrosidodetail = {
+export type UpdateRubrosidomain = {
+  dfechapagocaja?: string;
+  rubroId?: string;
+  colaboradorId?: number;
+  empresaId?: number;
+  centroCostoId?: number;
+  localidadId?: number;
+  neroId?: number;
+  rolId?: number;
   tipoComportamiento?: number;
   valor01?: number;
   valor02?: number;
   valor03?: number;
+  cartaImpresion?: number;
+  flagEnvio?: number;
+  generarCarta?: number;
+  estadoCaja?: string;
+  usuarioCaja?: string;
   estado?: string;
+  fechaDesde?: string;
   fechaHasta?: string;
 };
 
-export interface RubrosidomainRubrosidolistRubrosidodetailFilter {
+export interface RubrosidomainFilter {
   page?: number;
   size?: number;
   rubroId?: string;
@@ -53,8 +87,8 @@ export interface RubrosidomainRubrosidolistRubrosidodetailFilter {
   fechaHasta?: string;
 }
 
-export interface RubrosidomainRubrosidolistRubrosidodetailPageResult {
-  items: RubrosidomainRubrosidolistRubrosidodetail[];
+export interface RubrosidomainPageResult {
+  items: Rubrosidomain[];
   totalElements: number;
   totalPages: number;
   currentPage: number;

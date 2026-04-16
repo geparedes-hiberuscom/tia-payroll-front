@@ -34,10 +34,10 @@ export type {
 } from './RubrosidocargaxprocesoDto';
 
 export type {
-  CreateRubrosidomainRubrosidolistRubrosidodetailRequest, UpdateRubrosidomainRubrosidolistRubrosidodetailRequest,
-  RubrosidomainRubrosidolistRubrosidodetailFilterParams,
-  RubrosidomainRubrosidolistRubrosidodetailResponse, RubrosidomainRubrosidolistRubrosidodetailListResponse,
-} from './RubrosidomainRubrosidolistRubrosidodetailDto';
+  CreateRubrosidomainRequest, UpdateRubrosidomainRequest,
+  RubrosidomainFilterParams,
+  RubrosidomainResponse, RubrosidomainListResponse,
+} from './RubrosidomainDto';
 
 export type {
   CreateRubrosxprocesodialogRequest, UpdateRubrosxprocesodialogRequest, RubrosxprocesodialogFilterParams,

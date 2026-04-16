@@ -102,6 +102,21 @@ export function useRubrosidocargaxproceso() {
     }
   }, [selectedItem]);
 
+  const ejecutarCarga = useCallback(async (request: CreateRubrosidocargaxproceso) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await rubrosidocargaxprocesoService.ejecutarCarga(request);
+      await fetchAll();
+      return response;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error al ejecutar la carga por proceso');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [fetchAll]);
+
   useEffect(() => {
     fetchAll();
   }, [fetchAll]);
@@ -118,6 +133,7 @@ export function useRubrosidocargaxproceso() {
     create,
     update,
     remove,
+    ejecutarCarga,
     clearError: () => setError(null),
   };
 }

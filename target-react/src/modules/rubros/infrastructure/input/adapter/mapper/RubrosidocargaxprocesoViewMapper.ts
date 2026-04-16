@@ -10,6 +10,22 @@ export class RubrosidocargaxprocesoViewMapper {
   static toDomain(response: RubrosidocargaxprocesoResponse): Rubrosidocargaxproceso {
     return {
       id: response.id,
+      iidrubrosIdocp: response.iidrubrosIdocp,
+      iidrubrosIdo: response.iidrubrosIdo,
+      iidempresa: response.iidempresa,
+      vidrubro: response.vidrubro,
+      vidambito: response.vidambito,
+      dfechaaplica: response.dfechaaplica,
+      usuarioingresoAu: response.usuarioingresoAu,
+      empresa: response.empresa,
+      fechaCarga: response.fechaCarga,
+      cargadoPor: response.cargadoPor,
+      registrosProcesados: response.registrosProcesados,
+      mensaje: response.mensaje,
+      rubroId: response.vidrubro ?? '',
+      ambito: response.vidambito,
+      fechaAplica: response.dfechaaplica,
+      usuarioIngreso: response.usuarioingresoAu,
       procesoId: response.procesoId,
       fechaEjecucion: response.fechaEjecucion,
       estado: response.estado,
@@ -34,8 +50,12 @@ export class RubrosidocargaxprocesoViewMapper {
 
   static toCreateRequest(model: CreateRubrosidocargaxproceso): CreateRubrosidocargaxprocesoRequest {
     return {
-      empresaId: model.empresaId,
-      rubroId: model.rubroId,
+      iidempresa: model.empresaId,
+      vidrubro: model.rubroId,
+      accion: model.accion,
+      fechaAplica: model.fechaAplica,
+      ambito: model.ambito,
+      iidrubrosIdo: model.iidrubrosIdo,
       procesoId: model.procesoId,
       descripcion: model.descripcion,
     };
@@ -45,6 +65,7 @@ export class RubrosidocargaxprocesoViewMapper {
     return {
       accion: model.accion,
       fechaAplica: model.fechaAplica,
+      ambito: model.ambito,
       estado: model.estado,
     };
   }

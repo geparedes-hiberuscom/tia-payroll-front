@@ -22,13 +22,39 @@
 
 export interface Rubrosidocargaxproceso {
   id: number;
-  procesoId: string;
-  fechaEjecucion: string;
-  estado: string;
-  numeroRegistrosCargados: number;
-  numeroErrores: number;
-  usuarioEjecucion: string;
+  iidrubrosIdocp?: number;
+  iidrubrosIdo?: number;
+  iidempresa?: number;
+  vidrubro?: string;
+  vidambito?: string;
+  dfechaaplica?: string;
+  usuarioingresoAu?: string;
+  empresa?: string;
+  fechaCarga?: string;
+  cargadoPor?: string;
+  registrosProcesados?: number;
+  mensaje?: string;
   empresaId: number;
+  rubroId: string;
+  rubroNombre?: string;
+  ambito?: string;
+  accion?: string;
+  fechaAplica?: string;
+  estado?: string;
+  pathArchivo?: string;
+  usuarioIngreso?: string;
+  fechaIngreso?: string;
+  efecto?: 'ING' | 'EGR' | 'NA';
+  aplicacion?: string;
+  valor1?: number;
+  valor2?: number;
+  origen?: string;
+  // Legacy aliases kept for current UI compatibility.
+  procesoId?: string;
+  fechaEjecucion?: string;
+  numeroRegistrosCargados?: number;
+  numeroErrores?: number;
+  usuarioEjecucion?: string;
   descripcion?: string;
   fechaCreacion?: string;
   fechaActualizacion?: string;
@@ -37,6 +63,12 @@ export interface Rubrosidocargaxproceso {
 export type CreateRubrosidocargaxproceso = {
   empresaId: number;
   rubroId: string;
+  accion: string;
+  fechaAplica: string;
+  ambito?: string;
+  iidrubrosIdo?: number;
+  dfechaaplica?: string;
+  vidambito?: string;
   procesoId?: number;
   descripcion?: string;
 };
@@ -44,6 +76,7 @@ export type CreateRubrosidocargaxproceso = {
 export type UpdateRubrosidocargaxproceso = {
   accion?: string;
   fechaAplica?: string;
+  ambito?: string;
   estado?: string;
 };
 

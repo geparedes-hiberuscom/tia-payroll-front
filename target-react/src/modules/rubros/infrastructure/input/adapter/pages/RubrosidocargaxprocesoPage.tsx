@@ -1,54 +1,65 @@
-import React, { useState } from 'react';
-import { useRubrosidocargaxproceso } from '../hooks/useRubrosidocargaxproceso';
-import { RubrosidocargaxprocesoList } from '../components/RubrosidocargaxprocesoList';
+import React from 'react';
+import {
+  Button,
+  ErrorBanner,
+  PageShell,
+} from '@shared/index';
 import { RubrosidocargaxprocesoForm } from '../components/RubrosidocargaxprocesoForm';
-import { CreateRubrosidocargaxproceso, Rubrosidocargaxproceso, UpdateRubrosidocargaxproceso } from '../../../../domain/model/Rubrosidocargaxproceso';
-import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
-import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
+import { RubrosidocargaxprocesoList } from '../components/RubrosidocargaxprocesoList';
+import { useRubrosidocargaxprocesoPageController } from '../hooks/useRubrosidocargaxprocesoPageController';
 
 export const RubrosidocargaxprocesoPage: React.FC = () => {
-  const { items, loading, error, fetchAll, create, update, remove, clearError } = useRubrosidocargaxproceso();
-  const [showForm, setShowForm] = useState(false);
-  const [editingItem, setEditingItem] = useState<Rubrosidocargaxproceso | undefined>(undefined);
-
-  const handleSubmit = async (data: CreateRubrosidocargaxproceso | UpdateRubrosidocargaxproceso) => {
-    if (editingItem) {
-      await update(editingItem.id, data as UpdateRubrosidocargaxproceso);
-    } else {
-      await create(data as CreateRubrosidocargaxproceso);
-    }
-    setShowForm(false);
-    setEditingItem(undefined);
-  };
+  const {
+    items,
+    loading,
+    error,
+    catalogsError,
+    procesos,
+    methods,
+    filters,
+    getError,
+    hasError,
+    setFilterField,
+    handleSearch,
+    handleResetForm,
+    handleRetry,
+  } = useRubrosidocargaxprocesoPageController();
 
   return (
-    <div style={{ maxWidth: 960, margin: '0 auto', padding: '2rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Rubros IDO por Proceso</h1>
-        {!showForm && <button onClick={() => setShowForm(true)}>+ Nuevo</button>}
-      </div>
-
-      {error && <ErrorBanner message={error} onRetry={() => { clearError(); fetchAll(); }} />}
-
-      {showForm && (
-        <RubrosidocargaxprocesoForm
-          initialData={editingItem}
-          onSubmit={handleSubmit}
-          onCancel={() => { setShowForm(false); setEditingItem(undefined); }}
-          loading={loading}
+    <PageShell
+      title="Consulta de rubros cargados por proceso"
+      description="Visualiza los rubros cargados por proceso, período y colaborador, separados por tipo (ingresos, descuentos, otros) con totales por sección."
+      actions={
+        <>
+          <Button label="Refrescar" variant="secondary" onClick={() => void handleRetry()} />
+        </>
+      }
+    >
+      {(error || catalogsError) ? (
+        <ErrorBanner
+          message={error ?? catalogsError ?? 'No se pudo cargar la página'}
+          onRetry={() => void handleRetry()}
         />
-      )}
+      ) : null}
 
-      {loading && items.length === 0 ? (
-        <Loading message="Cargando ejecuciones..." />
-      ) : (
+      <div className="grid gap-6 lg:grid-cols-[1fr_1.5fr]">
+        <RubrosidocargaxprocesoForm
+          methods={methods}
+          procesos={procesos}
+          loading={loading}
+          getError={getError}
+          hasError={hasError}
+          onSearch={handleSearch}
+          onReset={handleResetForm}
+        />
+
         <RubrosidocargaxprocesoList
           items={items}
           loading={loading}
-          onEdit={(item) => { setEditingItem(item); setShowForm(true); }}
-          onDelete={async (id) => { if (window.confirm('¿Eliminar este registro?')) await remove(id); }}
+          filters={filters}
+          onFilterChange={setFilterField}
         />
-      )}
-    </div>
+      </div>
+    </PageShell>
   );
 };

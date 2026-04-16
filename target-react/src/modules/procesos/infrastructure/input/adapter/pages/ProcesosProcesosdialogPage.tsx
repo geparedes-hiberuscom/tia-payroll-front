@@ -9,7 +9,7 @@ import { ProcesosProcesosdialogFilterParams } from '../dto/ProcesosProcesosdialo
 import { Button, Modal, PageShell, SectionCard, Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/index';
 import { useRubrosxprocesodialogPageController } from '@modules/rubros/infrastructure/input/adapter/hooks/useRubrosxprocesodialogPageController';
 import { RubrosxprocesodialogForm } from '@modules/rubros/infrastructure/input/adapter/components/RubrosxprocesodialogForm';
-import { RubrosxprocesodialogTableSection } from '@modules/rubros/infrastructure/input/adapter/components/RubrosxprocesodialogTableSection';
+import { RubrosxprocesodialogList } from '@modules/rubros/infrastructure/input/adapter/components/RubrosxprocesodialogList';
 
 export const ProcesosProcesosdialogPage: React.FC = () => {
   const { items, loading, error, create, update, remove, fetchAll, clearError, page, size, totalElements } = useProcesosProcesosdialog();
@@ -204,7 +204,7 @@ export const ProcesosProcesosdialogPage: React.FC = () => {
             </TabsList>
 
             <TabsContent value="listado">
-              <RubrosxprocesodialogTableSection
+              <RubrosxprocesodialogList
                 items={rubrosProcesoItems}
                 loading={rubrosProcesoLoading}
                 page={rubrosProcesoPage}

@@ -8,29 +8,53 @@
 
 // ─── Request DTOs ───
 
-export interface CreateRubrosidomainRubrosidolistRubrosidodetailRequest {
+export interface CreateRubrosidomainRequest {
+  dfechapagocaja?: string;
   rubroId: string;
   colaboradorId: number;
   empresaId: number;
+  centroCostoId?: number;
+  localidadId?: number;
+  neroId?: number;
+  rolId?: number;
   tipoComportamiento?: number;
   valor01?: number;
   valor02?: number;
   valor03?: number;
+  cartaImpresion?: number;
+  flagEnvio?: number;
+  generarCarta?: number;
+  estadoCaja?: string;
+  usuarioCaja?: string;
   estado?: string;
   fechaDesde?: string;
   fechaHasta?: string;
 }
 
-export interface UpdateRubrosidomainRubrosidolistRubrosidodetailRequest {
+export interface UpdateRubrosidomainRequest {
+  dfechapagocaja?: string;
+  rubroId?: string;
+  colaboradorId?: number;
+  empresaId?: number;
+  centroCostoId?: number;
+  localidadId?: number;
+  neroId?: number;
+  rolId?: number;
   tipoComportamiento?: number;
   valor01?: number;
   valor02?: number;
   valor03?: number;
+  cartaImpresion?: number;
+  flagEnvio?: number;
+  generarCarta?: number;
+  estadoCaja?: string;
+  usuarioCaja?: string;
   estado?: string;
+  fechaDesde?: string;
   fechaHasta?: string;
 }
 
-export interface RubrosidomainRubrosidolistRubrosidodetailFilterParams {
+export interface RubrosidomainFilterParams {
   page?: number;
   size?: number;
   rubroId?: string;
@@ -43,15 +67,25 @@ export interface RubrosidomainRubrosidolistRubrosidodetailFilterParams {
 
 // ─── Response DTOs ───
 
-export interface RubrosidomainRubrosidolistRubrosidodetailResponse {
+export interface RubrosidomainResponse {
   id: number;
+  dfechapagocaja?: string;
   rubroId: string;
   colaboradorId: number;
   empresaId: number;
+  centroCostoId?: number;
+  localidadId?: number;
+  neroId?: number;
+  rolId?: number;
   tipoComportamiento?: number;
   valor01?: number;
   valor02?: number;
   valor03?: number;
+  cartaImpresion?: number;
+  flagEnvio?: number;
+  generarCarta?: number;
+  estadoCaja?: string;
+  usuarioCaja?: string;
   estado?: string;
   fechaDesde?: string;
   fechaHasta?: string;
@@ -61,8 +95,8 @@ export interface RubrosidomainRubrosidolistRubrosidodetailResponse {
   fechaActualizacion?: string;
 }
 
-export interface RubrosidomainRubrosidolistRubrosidodetailListResponse {
-  content: RubrosidomainRubrosidolistRubrosidodetailResponse[];
+export interface RubrosidomainListResponse {
+  content: RubrosidomainResponse[];
   totalElements: number;
   totalPages: number;
   number?: number;
@@ -70,13 +104,13 @@ export interface RubrosidomainRubrosidolistRubrosidodetailListResponse {
 }
 
 // ─── Response alias for pagination
-export type RubroIDOPageResponseDTO = RubrosidomainRubrosidolistRubrosidodetailListResponse;
-export type RubroIDOResponseDTO = RubrosidomainRubrosidolistRubrosidodetailResponse;
+export type RubroIDOPageResponseDTO = RubrosidomainListResponse;
+export type RubroIDOResponseDTO = RubrosidomainResponse;
 export type DeleteResponseDTO = { success: boolean; message: string };
 
 // ─── API Error DTO ───
 
-export interface RubrosidomainRubrosidolistRubrosidodetailErrorResponse {
+export interface RubrosidomainErrorResponse {
   timestamp: string;
   status: number;
   error: string;
