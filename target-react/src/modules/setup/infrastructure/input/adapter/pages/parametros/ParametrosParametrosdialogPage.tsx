@@ -6,9 +6,7 @@ import { ParametrosParametrosdialogForm } from '../../components/parametros/Para
 import { ParametrosParametrosdialogFilter } from '../../components/parametros/ParametrosParametrosdialogFilter';
 import { ParametrosDeleteConfirmModal } from '../../components/parametros/ParametrosDeleteConfirmModal';
 import { CreateParametrosParametrosdialogRequest, UpdateParametrosParametrosdialogRequest, ParametrosParametrosdialogResponse, ParametrosParametrosdialogFilterParams } from '../../dto/ParametrosParametrosdialogDto';
-import { Modal } from '@shared/infrastructure/input/adapter/components/Modal';
-import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
-import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
+import { Modal, Loading, ErrorBanner } from '@shared/infrastructure/input/adapter/components';
 
 export const ParametrosParametrosdialogPage: React.FC = () => {
   const {
