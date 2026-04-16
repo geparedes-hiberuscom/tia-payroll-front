@@ -131,11 +131,6 @@ input, select, textarea {
   width: 100%;
 }
 
-input[type="checkbox"] {
-  width: auto;
-  padding: 0;
-}
-
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--color-primary);
@@ -240,17 +235,9 @@ button.btn-text {
 .justify-between { justify-content: space-between; }
 .justify-center { justify-content: center; }
 .gap-xs { gap: var(--spacing-xs); }
-.gap-x-xs { column-gap: var(--spacing-xs); }
-.gap-y-xs { row-gap: var(--spacing-xs); }
 .gap-sm { gap: var(--spacing-sm); }
-.gap-x-sm { column-gap: var(--spacing-sm); }
-.gap-y-sm { row-gap: var(--spacing-sm); }
 .gap-md { gap: var(--spacing-md); }
-.gap-x-md { column-gap: var(--spacing-md); }
-.gap-y-md { row-gap: var(--spacing-md); }
 .gap-lg { gap: var(--spacing-lg); }
-.gap-x-lg { column-gap: var(--spacing-lg); }
-.gap-y-lg { row-gap: var(--spacing-lg); }
 
 /* ─── Card ─── */
 
@@ -274,80 +261,6 @@ button.btn-text {
   margin-bottom: var(--spacing-md);
   padding-bottom: var(--spacing-sm);
   border-bottom: 1px solid var(--color-divider);
-}
-
-/* ─── Tabs ─── */
-
-.tabs-root {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
-.tabs-list {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  width: fit-content;
-  max-width: 100%;
-  padding: var(--spacing-xs);
-  overflow-x: auto;
-  background: #f5f7fb;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-
-.tabs-list[data-orientation='vertical'] {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  width: 100%;
-}
-
-.tabs-trigger {
-  justify-content: center;
-  min-height: 2.5rem;
-  padding: var(--spacing-sm) var(--spacing-md);
-  color: var(--color-text-secondary);
-  white-space: nowrap;
-  background: transparent;
-  border: none;
-  border-radius: calc(var(--border-radius-md) - 2px);
-}
-
-.tabs-trigger:hover:not(:disabled) {
-  background: rgba(25, 118, 210, 0.08);
-  color: var(--color-primary-dark);
-}
-
-.tabs-trigger[data-state='active'] {
-  color: var(--color-primary-dark);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
-}
-
-.tabs-trigger:focus-visible {
-  outline: 2px solid rgba(25, 118, 210, 0.35);
-  outline-offset: 2px;
-}
-
-.tabs-trigger[data-disabled] {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.tabs-content {
-  padding: var(--spacing-lg);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
-}
-
-.tabs-content:focus-visible {
-  outline: 2px solid rgba(25, 118, 210, 0.25);
-  outline-offset: 2px;
 }
 
 /* ─── Table ─── */

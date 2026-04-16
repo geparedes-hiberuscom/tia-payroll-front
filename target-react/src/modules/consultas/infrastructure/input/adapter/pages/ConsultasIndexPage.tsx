@@ -88,14 +88,3 @@ export const ConsultasIndexPage: React.FC = () => {
     </div>
   );
 };
-        <li><a href="/nominaresumengralxrubro">nominaresumenGralxRubro.zul</a></li>
-        <li><a href="/nominaresumengralcxrubro">nominaresumenGralCxRubro.zul</a></li>
-        <li><a href="/comparativonominas">comparativoNominas.zul</a></li>
-        <li><a href="/consueldo">conSueldo.zul</a></li>
-        <li><a href="/acumulados">acumulados.zul</a></li>
-        <li><a href="/dtoscompartidossubrecursos">DTOs compartidos (subrecursos)</a></li>
-        </ul>
-      </nav>
-    </div>
-  );
-};

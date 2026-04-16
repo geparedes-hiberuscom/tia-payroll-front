@@ -1,3 +1,7 @@
+// Auto-generated barrel
+export * from './ProcesosForm';
+export * from './ProcesosList';
+
 export * from './EjecucionbotCard';
 export * from './EjecucionbotDetail';
 export * from './EjecucionbotForm';

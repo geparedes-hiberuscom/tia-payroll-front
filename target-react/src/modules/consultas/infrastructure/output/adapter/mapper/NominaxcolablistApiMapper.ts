@@ -1,3 +1,62 @@
 import { NominaxcolablistResponse, NominaxcolablistListResponse, CreateNominaxcolablistRequest, RubroHistoricoDTO } from '../../../input/adapter/dto/NominaxcolablistDto';
 
-/**\n * API Mapper: nominaxColabList.zul\n * Transforma: raw API responses ↔ typed DTOs\n */\nexport class NominaxcolablistApiMapper {\n\n  static toResponse(raw: any): NominaxcolablistResponse {\n    return {\n      ejecucionId: raw.ejecucionId,\n      colaboradorId: raw.colaboradorId,\n      cedula: raw.cedula,\n      apellidosNombres: raw.apellidosNombres,\n      empresaId: raw.empresaId,\n      totalIngresos: raw.totalIngresos,\n      totalEgresos: raw.totalEgresos,\n      totalNeto: raw.totalNeto,\n      totalRubros: raw.totalRubros,\n      totalNoDeducible: raw.totalNoDeducible,\n    };\n  }\n\n  static toListResponse(raw: any): NominaxcolablistListResponse {\n    return {\n      data: (raw.content || raw.data || []).map((item: any) => NominaxcolablistApiMapper.toResponse(item)),\n      totalElements: raw.totalElements || 0,\n      totalPages: raw.totalPages || 0,\n      page: raw.page || 0,\n      size: raw.size || 20,\n    };\n  }\n\n  static toRubroHistoricoList(raw: any): RubroHistoricoDTO[] {\n    const items = raw.items || raw.content || raw || [];\n    return items.map((item: any) => ({\n      ejecucionId: item.ejecucionId,\n      colaboradorId: item.colaboradorId,\n      rubroId: item.rubroId,\n      rubroNombre: item.rubroNombre,\n      efecto: item.efecto,\n      valorSalida01: item.valorSalida01,\n      valorSalida02: item.valorSalida02,\n      valorSalida03: item.valorSalida03,\n      valorSalida04: item.valorSalida04,\n      valorSalida05: item.valorSalida05,\n      fechaInicioSalida: item.fechaInicioSalida,\n      fechaFinSalida: item.fechaFinSalida,\n      rubrosIdoUplId: item.rubrosIdoUplId,\n      usuarioIngreso: item.usuarioIngreso,\n      fechaIngreso: item.fechaIngreso,\n    }));\n  }\n\n  static toExportPayload(request: CreateNominaxcolablistRequest): Record<string, unknown> {\n    return {\n      ejecucionId: request.ejecucionId,\n      empresaId: request.empresaId,\n      formato: request.formato || 'XLSX',\n    };\n  }\n}
+/**
+ * API Mapper: nominaxColabList.zul
+ * Transforma: raw API responses ↔ typed DTOs
+ */
+export class NominaxcolablistApiMapper {
+
+  static toResponse(raw: any): NominaxcolablistResponse {
+    return {
+      ejecucionId: raw.ejecucionId,
+      colaboradorId: raw.colaboradorId,
+      cedula: raw.cedula,
+      apellidosNombres: raw.apellidosNombres,
+      empresaId: raw.empresaId,
+      totalIngresos: raw.totalIngresos,
+      totalEgresos: raw.totalEgresos,
+      totalNeto: raw.totalNeto,
+      totalRubros: raw.totalRubros,
+      totalNoDeducible: raw.totalNoDeducible,
+    };
+  }
+
+  static toListResponse(raw: any): NominaxcolablistListResponse {
+    return {
+      data: (raw.content || raw.data || []).map((item: any) => NominaxcolablistApiMapper.toResponse(item)),
+      totalElements: raw.totalElements || 0,
+      totalPages: raw.totalPages || 0,
+      page: raw.page || 0,
+      size: raw.size || 20,
+    };
+  }
+
+  static toRubroHistoricoList(raw: any): RubroHistoricoDTO[] {
+    const items = raw.items || raw.content || raw || [];
+    return items.map((item: any) => ({
+      ejecucionId: item.ejecucionId,
+      colaboradorId: item.colaboradorId,
+      rubroId: item.rubroId,
+      rubroNombre: item.rubroNombre,
+      efecto: item.efecto,
+      valorSalida01: item.valorSalida01,
+      valorSalida02: item.valorSalida02,
+      valorSalida03: item.valorSalida03,
+      valorSalida04: item.valorSalida04,
+      valorSalida05: item.valorSalida05,
+      fechaInicioSalida: item.fechaInicioSalida,
+      fechaFinSalida: item.fechaFinSalida,
+      rubrosIdoUplId: item.rubrosIdoUplId,
+      usuarioIngreso: item.usuarioIngreso,
+      fechaIngreso: item.fechaIngreso,
+    }));
+  }
+
+  static toExportPayload(request: CreateNominaxcolablistRequest): Record<string, unknown> {
+    return {
+      ejecucionId: request.ejecucionId,
+      empresaId: request.empresaId,
+      formato: request.formato || 'XLSX',
+    };
+  }
+}

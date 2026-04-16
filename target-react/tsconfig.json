@@ -20,11 +20,10 @@
     "noFallthroughCasesInSwitch": true,
     "ignoreDeprecations": "6.0",
 
-    "baseUrl": ".",
     "paths": {
-      "@shared/*": ["src/shared/*"],
-      "@modules/*": ["src/modules/*"],
-      "utils-tailwindcss": ["src/lib/utils.ts"]
+      "@shared/*": ["./src/shared/*"],
+      "@modules/*": ["./src/modules/*"],
+      "utils-tailwindcss": ["./src/lib/utils.ts"]
     }
   },
   "include": ["src"],

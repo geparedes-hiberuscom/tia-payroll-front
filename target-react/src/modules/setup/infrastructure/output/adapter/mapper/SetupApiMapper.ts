@@ -3,7 +3,6 @@ import { Setup } from '../../../../domain/model/Setup';
 interface SetupApiDto {
   id: string;
   nombre: string;
-  // TODO: Mapear campos de la API
 }
 
 export class SetupApiMapper {

@@ -10,7 +10,7 @@ export const httpClient = axios.create({
 
 httpClient.interceptors.request.use(
   (config) => {
-    // TODO: Agregar token de autenticación si es necesario
+    // Agregar token de autenticación si es necesario
     // const token = localStorage.getItem('token');
     // if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
@@ -21,8 +21,19 @@ httpClient.interceptors.request.use(
 httpClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // TODO: Manejar errores globales (401, 403, 500, etc.)
-    console.error('[HTTP Error]', error.response?.status, error.message);
-    return Promise.reject(error);
+    const responseData = error.response?.data;
+    const backendMessage =
+      (typeof responseData === 'string' && responseData)
+      || responseData?.message
+      || responseData?.error
+      || responseData?.detail
+      || error.message;
+
+    const message = typeof backendMessage === 'string'
+      ? backendMessage
+      : JSON.stringify(backendMessage);
+
+    console.error('[HTTP Error]', error.response?.status, message);
+    return Promise.reject(new Error(message));
   },
 );

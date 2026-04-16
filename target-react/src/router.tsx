@@ -2,10 +2,11 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ROUTES } from './routes';
+import { setupRoutes } from './modules/setup/setupRoutes';
 import { rubrosRoutes } from './modules/rubros/rubrosRoutes';
 import { procesosRoutes } from './modules/procesos/procesosRoutes';
 
-const SetupPage = lazy(() => import('@modules/setup').then((m) => ({ default: m.SetupPage })));
+const SetupIndexPage = lazy(() => import('@modules/setup/infrastructure/input/adapter/pages').then((m) => ({ default: m.SetupIndexPage })));
 const ConsultasPage = lazy(() => import('@modules/consultas').then((m) => ({ default: m.ConsultasPage })));
 const PagoPage = lazy(() => import('@modules/pago').then((m) => ({ default: m.PagoPage })));
 const PrestamosPage = lazy(() => import('@modules/prestamos').then((m) => ({ default: m.PrestamosPage })));
@@ -28,7 +29,7 @@ export const AppRouter: React.FC = () => {
     <Routes>
       <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.SETUP} replace />} />
 
-      <Route path={ROUTES.SETUP} element={withSuspense(<SetupPage />)} />
+      <Route path={ROUTES.SETUP} element={withSuspense(<SetupIndexPage />)} />
       <Route path={ROUTES.CONSULTAS} element={withSuspense(<ConsultasPage />)} />
       <Route path={ROUTES.PAGO} element={withSuspense(<PagoPage />)} />
       <Route path={ROUTES.PRESTAMOS} element={withSuspense(<PrestamosPage />)} />
@@ -38,6 +39,7 @@ export const AppRouter: React.FC = () => {
       <Route path={ROUTES.REPORTES} element={withSuspense(<ReportesPage />)} />
       <Route path={ROUTES.UIKIT_DEMO} element={withSuspense(<UIKitDemoPage />)} />
 
+      {setupRoutes}
       {rubrosRoutes}
       {procesosRoutes}
 
