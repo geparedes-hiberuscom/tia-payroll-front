@@ -5,7 +5,6 @@ import {
   SectionCard,
   Table,
   formatDateLabel,
-  formatNumberLabel,
   inputClassName,
   renderStatusBadge,
 } from '@shared/index';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { UIButton } from '../../components/ui-kit';
-import { Modal } from '@shared/infrastructure/input/adapter/components/Modal';
+import { Modal } from '@shared/index';
 
 interface ParametrosDeleteConfirmModalProps {
   open: boolean;

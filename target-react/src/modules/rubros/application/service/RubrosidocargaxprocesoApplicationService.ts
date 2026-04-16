@@ -73,6 +73,6 @@ export class RubrosidocargaxprocesoApplicationService implements Rubrosidocargax
     if ('id' in response) {
       return { success: true, message: 'Carga ejecutada correctamente' };
     }
-    return response;
+    return { success: false, message: response.message ?? 'Error al ejecutar la carga' };
   }
 }

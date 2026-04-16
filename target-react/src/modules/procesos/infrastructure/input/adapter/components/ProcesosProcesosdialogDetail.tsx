@@ -26,21 +26,20 @@ export const ProcesosProcesosdialogDetail: React.FC<ProcesosProcesosdialogDetail
         <dt><strong>Tipo de Proceso</strong></dt>
         <dd>{item.tipoProceso}</dd>
         <dt><strong>Frecuencia</strong></dt>
-        <dd>{item.frecuencia}</dd>
+        <dd>{item.frecuenciaId}</dd>
         <dt><strong>Rol ID</strong></dt>
         <dd>{item.rolId ?? '-'}</dd>
         <dt><strong>Nombre</strong></dt>
         <dd>{item.nombre ?? '-'}</dd>
         <dt><strong>Descripción</strong></dt>
-        <dd>{item.descripcion ?? '-'}</dd>
+        <dd>{item.busquedaCpr ?? '-'}</dd>
         <dt><strong>Activo</strong></dt>
-        <dd>{item.activo === false ? 'No' : 'Si'}</dd>
       </dl>
 
       <div style={{ display: 'flex', gap: '0.5rem' }}>
         {onEdit && <button type="button" data-testid="procesos-procesosdialog-detail-edit" onClick={() => onEdit(item)}>Editar</button>}
         {onDelete && (
-          <button type="button" data-testid="procesos-procesosdialog-detail-delete" style={{ color: '#b91c1c' }} onClick={() => onDelete(item.id)}>
+          <button type="button" data-testid="procesos-procesosdialog-detail-delete" style={{ color: '#b91c1c' }} onClick={() => onDelete(String(item.id))}>
             Eliminar
           </button>
         )}

@@ -46,6 +46,7 @@ export interface CargarubrosidoResponse {
   vidtctabanco?: string;
   tipoContrato?: string;
   rubroId?: string;
+  rubroNombre?: string;
   ambito?: string;
   fechaAplica?: string;
   usuarioIngreso?: string;
@@ -53,6 +54,7 @@ export interface CargarubrosidoResponse {
   horamodificacionAu?: string;
   nombreArchivo: string;
   fechaCarga: string;
+  accion:string;
   estado: string;
   usuarioCarga: string;
   numeroRegistros: number;

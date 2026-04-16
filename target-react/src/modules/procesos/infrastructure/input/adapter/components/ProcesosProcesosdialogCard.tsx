@@ -23,14 +23,11 @@ export const ProcesosProcesosdialogCard: React.FC<ProcesosProcesosdialogCardProp
     >
       <div>
         <h4 style={{ margin: 0 }}>{item.nombre ?? `Proceso ${item.id}`}</h4>
-        <p className="text-muted" style={{ margin: '0.5rem 0' }}>{item.descripcion ?? 'Sin descripcion'}</p>
+        <p className="text-muted" style={{ margin: '0.5rem 0' }}>{item.procesoId ?? 'Sin descripcion'}</p>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           <span className="badge badge-info">Empresa: {item.empresaId}</span>
           <span className="badge badge-primary">Tipo: {item.tipoProceso}</span>
-          <span className="badge badge-secondary">Frecuencia: {item.frecuencia}</span>
-          <span className={`badge ${item.activo === false ? 'badge-warning' : 'badge-success'}`}>
-            {item.activo === false ? 'Inactivo' : 'Activo'}
-          </span>
+          <span className="badge badge-secondary">Frecuencia: {item.frecuenciaId}</span>
         </div>
       </div>
       <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -42,7 +39,7 @@ export const ProcesosProcesosdialogCard: React.FC<ProcesosProcesosdialogCardProp
         {onDelete && (
           <button
             className="btn btn-danger"
-            onClick={(e) => { e.stopPropagation(); onDelete(item.id); }}
+            onClick={(e) => { e.stopPropagation(); onDelete(String(item.id)); }}
           >
             Eliminar
           </button>

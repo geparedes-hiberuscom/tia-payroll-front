@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ProcesosProcesosdialogApplicationService } from '../../../../application/service/ProcesosProcesosdialogApplicationService';
 import { ProcesosProcesosdialogGatewayAdapter } from '../../../output/adapter/api/ProcesosProcesosdialogGatewayAdapter';
-import { CreateProcesosProcesosdialog, ProcesosProcesosdialog,ProcesosProcesosdialogFilter,UpdateProcesosProcesosdialog,ProcesosProcesosdialogPageResult } from '@modules/procesos/domain/model/ProcesosProcesosdialog';
+import { CreateProcesosProcesosdialog, ProcesosProcesosdialog,ProcesosProcesosdialogFilter,UpdateProcesosProcesosdialog, } from '@modules/procesos/domain/model/ProcesosProcesosdialog';
 
 const gateway = new ProcesosProcesosdialogGatewayAdapter();
 const service = new ProcesosProcesosdialogApplicationService(gateway);

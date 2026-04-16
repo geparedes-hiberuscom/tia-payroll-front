@@ -4,7 +4,6 @@ import { ROUTES } from '../../../../../../routes';
 import { Loading } from '@shared/infrastructure/input/adapter/components/Loading';
 import { ErrorBanner } from '@shared/infrastructure/input/adapter/components/ErrorBanner';
 import { useProcesosProcesosdialog } from '../hooks/useProcesosProcesosdialog';
-import { ProcesosProcesosdialogViewMapper } from '../mapper/ProcesosProcesosdialogViewMapper';
 import { ProcesosProcesosdialogDetail } from '../components/ProcesosProcesosdialogDetail';
 
 export const ProcesosProcesosdialogDetailPage: React.FC = () => {
@@ -18,7 +17,7 @@ export const ProcesosProcesosdialogDetailPage: React.FC = () => {
     }
   }, [id, fetchById]);
 
-  const domainItem = useMemo(() => (selectedItem ? ProcesosProcesosdialogViewMapper.toDomain(selectedItem) : null), [selectedItem]);
+  const domainItem = useMemo(() => (selectedItem ?? null), [selectedItem]);
 
   if (loading && !domainItem) {
     return <Loading message="Cargando detalle..." />;

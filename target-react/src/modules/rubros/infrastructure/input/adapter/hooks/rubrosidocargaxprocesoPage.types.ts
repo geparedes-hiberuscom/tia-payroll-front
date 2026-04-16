@@ -6,6 +6,8 @@ export type CargaProcesoFormState = {
   accion: string;
   fechaAplica: string;
   descripcion: string;
+  anio?: string;
+  mes?: string;
 };
 
 export type CargaProcesoFilterState = {

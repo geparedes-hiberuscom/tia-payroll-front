@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormValidation } from '@shared/infrastructure/input/adapter/hooks/useFormValidation';
 import { required } from '@shared/infrastructure/input/adapter/validation/formValidation';
-import { Rubrosidocargaxproceso } from '@modules/rubros/domain/model/Rubrosidocargaxproceso';
 import { useRubrosCatalogs } from './useRubrosCatalogs';
 import { useRubrosidocargaxproceso } from './useRubrosidocargaxproceso';
 import {
